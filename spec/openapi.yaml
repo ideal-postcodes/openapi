@@ -4,9 +4,9 @@ info:
   description: Open API spec for Ideal Postcodes API (api.ideal-postcodes.co.uk)
   contact:
     email: support@ideal-postcodes.co.uk
-  version: 1.0.0
+  version: 0.0.1
 servers:
-  - url: 'https://api.ideal-postcodes.co.uk/v1/'
+  - url: "https://api.ideal-postcodes.co.uk/v1/"
     variables: {}
 security:
   - api_key: []

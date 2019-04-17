@@ -1,6 +1,6 @@
 {
-  "name": "ideal-postcodes",
-  "version": "1.0.0",
+  "name": "@ideal-postcodes/openapi",
+  "version": "0.0.1",
   "dependencies": {
     "swagger-repo": "~2.0.0-rc.11"
   },
