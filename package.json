@@ -2,7 +2,8 @@
   "name": "@ideal-postcodes/openapi",
   "description": "Ideal Postcodes OpenAPI v3 specifications",
   "version": "0.0.1",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "swagger-repo": "~2.0.0-rc.11"
   },
   "private": true,
