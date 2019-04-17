@@ -2,3 +2,30 @@ theme:
   colors:
     primary:
       main: '#32329f'
+  typography:
+    headings:
+      fontFamily: '"Lato", sans-serif'
+      fontWeight: '700'
+      lineHeight: '1em'
+      wordWrap: 'break-word'
+    color: '#000'
+    fontFamily: 'Lora'
+    fontSize: '16px'
+    lineHeight: '1.6875em'
+    optimizeSpeed: true
+    smoothing: 'antialiased'
+    code:
+      backgroundColor: '#f7f9fc'
+      borderRadius: '2px'
+      fontFamily: '"Inconsolata", Menlo, Courier, monospace'
+      font-weight: 400
+      lineHeight: '24px'
+      verticalAlign: 'baseline'
+    links:
+      backgroundColor: '#fff'
+      color: '#000'
+      textDecoration: 'underline'
+    logo:
+      maxHeight: '260px'
+      maxWidth: '260px'
+      gutter: '2px'
