@@ -1,22 +1,42 @@
-# Ideal Postcodes OpenAPI Specification
+<h1 align="center">
+  <img src="https://img.ideal-postcodes.co.uk/OpenAPI%20Logo@3x.png" alt="OpenAPI">
+</h1>
 
+> Ideal Postcodes OpenAPI (v2) Specification (api.ideal-postcodes.co.uk)
 
-## Working on specification
-### Install
+[![CircleCI](https://circleci.com/gh/ideal-postcodes/openapi.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/openapi)
 
-1. Install [Node JS](https://nodejs.org/)
-2. Clone repo and run `npm install` in the repo root
+OpenAPI Specification is an API description format for REST APIs. Our OpenAPI files describes the entire API including available endpoints, operation parameters and request outputs.
 
-### Usage
+A number of [Open Source Tools](https://swagger.io/tools/open-source/open-source-integrations/) are available for you to consume our API specifications.
 
-#### `npm start`
-Starts the development server.
+## Features
 
-#### `npm run build`
-Bundles the spec and prepares web_deploy folder with static assets.
+- OpenAPI v2 specification for api.ideal-postcodes.co.uk
+- Automated documentation generator
+- OpenAPI specification testing and linting
+- Automated deploys to [openapi.ideal-postcodes.co.uk](https://openapi.ideal-postcodes.co.uk/)
 
-#### `npm test`
-Validates the spec.
+## Links
 
-#### `npm run gh-pages`
-Deploys docs to GitHub Pages. You don't need to run it manually if you have Travis CI configured.
+- [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.co.uk)
+- [SwaggerUI](https://openapi.ideal-postcodes.co.uk/swagger-ui/)
+- OpenAPI v2 Raw Files: [JSON](https://openapi.ideal-postcodes.co.uk/openapi.json) [YAML](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
+
+## Getting Started
+
+### Build specifications
+
+```
+npm run build
+```
+
+### Run spec validation
+
+```
+npm test
+```
+
+## Licence
+
+MIT
