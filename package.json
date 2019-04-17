@@ -8,7 +8,6 @@
   "scripts": {
     "start": "swagger-repo serve",
     "build": "swagger-repo build -o public",
-    "test": "swagger-repo validate",
-    "gh-pages": "swagger-repo gh-pages"
+    "test": "swagger-repo validate"
   }
 }
