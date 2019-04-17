@@ -21,8 +21,8 @@ A number of [Open Source Tools](https://swagger.io/tools/open-source/open-source
 
 - [Github Repository](https://github.com/ideal-postcodes/openapi)
 - [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.dev)
-- OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.co.uk/openapi.json)
-- OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
+- OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.dev/openapi.json)
+- OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.dev/openapi.yaml)
 
 ## Getting Started
 
