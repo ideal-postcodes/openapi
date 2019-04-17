@@ -1,13 +1,45 @@
 {
-  "name": "ideal-postcodes",
-  "version": "1.0.0",
-  "dependencies": {
+  "name": "@ideal-postcodes/openapi",
+  "description": "Ideal Postcodes OpenAPI v3 specifications",
+  "version": "0.0.1",
+  "dependencies": {},
+  "devDependencies": {
     "swagger-repo": "~2.0.0-rc.11"
   },
   "private": true,
   "scripts": {
+    "prepublish": "npm run build",
     "start": "swagger-repo serve",
     "build": "swagger-repo build -o public",
     "test": "swagger-repo validate"
-  }
+  },
+  "main": "dist/index.js",
+  "author": {
+    "name": "Ideal Postcodes",
+    "email": "support@ideal-postcodes.co.uk",
+    "url": "https://ideal-postcodes.co.uk"
+  },
+  "bugs": {
+    "url": "https://github.com/ideal-postcodes/openapi/issues",
+    "email": "support@ideal-postcodes.co.uk"
+  },
+  "homepage": "https://github.com/ideal-postcodes/openapi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ideal-postcodes/openapi.git"
+  },
+  "license": "MIT",
+  "files": [
+    "dist/index.js",
+    "public/openapi.json"
+  ],
+  "keywords": [
+    "Ideal Postcodes",
+    "OpenAPI",
+    "UK",
+    "Addressing",
+    "Royal",
+    "Mail",
+    "PAF"
+  ]
 }
