@@ -2,7 +2,7 @@
   <img src="https://img.ideal-postcodes.co.uk/OpenAPI%20Logo@3x.png" alt="OpenAPI">
 </h1>
 
-> Ideal Postcodes OpenAPI (v2) Specification (api.ideal-postcodes.co.uk)
+> Ideal Postcodes OpenAPI (v3) Specification (api.ideal-postcodes.co.uk)
 
 [![CircleCI](https://circleci.com/gh/ideal-postcodes/openapi.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/openapi)
 
@@ -12,16 +12,17 @@ A number of [Open Source Tools](https://swagger.io/tools/open-source/open-source
 
 ## Features
 
-- OpenAPI v2 specification for api.ideal-postcodes.co.uk
+- OpenAPI v3 specification for api.ideal-postcodes.co.uk
 - Automated documentation generator
 - OpenAPI specification testing and linting
-- Automated deploys to [openapi.ideal-postcodes.co.uk](https://openapi.ideal-postcodes.co.uk/)
+- Automated deploys to [openapi.ideal-postcodes.dev](https://openapi.ideal-postcodes.dev)
 
 ## Links
 
-- [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.co.uk)
-- [SwaggerUI](https://openapi.ideal-postcodes.co.uk/swagger-ui/)
-- OpenAPI v2 Raw Files: [JSON](https://openapi.ideal-postcodes.co.uk/openapi.json) [YAML](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
+- [Github Repository](https://github.com/ideal-postcodes/openapi)
+- [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.dev)
+- OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.co.uk/openapi.json)
+- OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
 
 ## Getting Started
 
