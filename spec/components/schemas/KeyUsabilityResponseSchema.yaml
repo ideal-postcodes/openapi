@@ -1,0 +1,10 @@
+title: KeyUsabilityResponseSchema
+type: object
+properties:
+  result:
+    $ref: '#/components/schemas/KeyUsabilityResult'
+  message:
+    type: string
+  code:
+    type: integer
+    format: int32

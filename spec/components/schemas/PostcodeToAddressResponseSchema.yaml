@@ -1,0 +1,13 @@
+title: PostcodeToAddressResponseSchema
+type: object
+properties:
+  result:
+    type: array
+    items:
+      $ref: '#/components/schemas/Address'
+    description: ''
+  code:
+    type: integer
+    format: int32
+  message:
+    type: string

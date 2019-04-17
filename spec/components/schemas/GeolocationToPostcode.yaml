@@ -1,0 +1,38 @@
+title: GeolocationToPostcode
+type: object
+properties:
+  eastings:
+    type: integer
+    description: >-
+      Eastings reference using the Ordnance Survey National Grid reference
+      system. Northern Ireland Eastings uses the Irish Grid Reference System.
+      Metres from origin. E.g. 550458. Returns an empty string if no location
+      data is available. Otherwise a number is returned
+    format: int32
+  northings:
+    type: integer
+    description: >-
+      Northings reference using the Ordnance Survey National Grid reference
+      system. Northern Ireland Northings uses the Irish Grid Reference System.
+      Metres from origin. E.g. 180458. Returns an empty string if no location
+      data is available. Otherwise a number is returned
+    format: int32
+  longitude:
+    type: number
+    description: >-
+      The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode
+      level. Can be a positive or negative decimal. E.g. -0.1283983. Returns an
+      empty string if no location data is available. Otherwise, a number is
+      returned
+  latitude:
+    type: number
+    description: >-
+      The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode
+      level Can be a positive or negative decimal. E.g. 51.5083983. Returns an
+      empty string if no location data is available. Otherwise a number is
+      returned
+  distance:
+    type: number
+  postcode:
+    type: string
+    description: Correctly formatted postcode. Capitalised and spaced.

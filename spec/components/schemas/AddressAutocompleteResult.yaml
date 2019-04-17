@@ -1,0 +1,8 @@
+title: AddressAutocompleteResult
+type: object
+properties:
+  hits:
+    type: array
+    items:
+      $ref: '#/components/schemas/AddressAutocompleteHit'
+    description: ''

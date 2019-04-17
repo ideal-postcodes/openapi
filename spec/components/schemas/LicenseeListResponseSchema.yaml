@@ -1,0 +1,10 @@
+title: LicenseeListResponseSchema
+type: object
+properties:
+  message:
+    type: string
+  code:
+    type: integer
+    format: int32
+  result:
+    $ref: '#/components/schemas/LicenseeListResult'

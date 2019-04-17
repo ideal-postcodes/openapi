@@ -1,0 +1,124 @@
+get:
+  tags:
+    - Licensees
+  summary: retrieveLicensee
+  description: Returns licensee information as identified by the licensee key.
+  operationId: RetrieveLicensee
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    - name: licensee_key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LicenseeResponseSchema'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '402':
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '404':
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '500':
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []
+delete:
+  tags:
+    - Licensees
+  summary: deleteLicensee
+  description: >-
+    Cancels a licensee key. This renders a licensee unusable. This action can be
+    reversed if you get in contact with us.
+  operationId: DeleteLicensee
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    - name: licensee_key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteLicenseeResponseSchema'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '402':
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '404':
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '500':
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []

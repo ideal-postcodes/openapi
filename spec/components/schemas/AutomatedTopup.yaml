@@ -1,0 +1,5 @@
+title: AutomatedTopup
+type: object
+properties:
+  enabled:
+    type: boolean

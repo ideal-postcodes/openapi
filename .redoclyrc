@@ -1,0 +1,7 @@
+specFileName: /Users/cablanchard/Desktop/openapiv3.yaml
+apiTitle: Ideal Postcodes
+splitSpec: true
+codeSamples: true
+swaggerUI: false
+travis: false
+oasVersion: 3.0.0

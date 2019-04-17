@@ -1,0 +1,184 @@
+get:
+  tags:
+    - Licensees
+  summary: listLicensees
+  description: Returns a list of licensees for a key.
+  operationId: ListLicensees
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    - name: starting_after
+      in: query
+      description: Specify ID of the licensee after which you would like to list results
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+    - name: limit
+      in: query
+      description: >-
+        Specify the maximum number of results to return per page. Default and
+        maximum is `100`.
+      style: form
+      explode: true
+      schema:
+        maximum: 100
+        minimum: 0
+        type: integer
+        format: int32
+    - name: query
+      in: query
+      description: Filter result by licensee name. Query can be shortened to `q=`
+      style: form
+      explode: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LicenseeListResponseSchema'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '402':
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '404':
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '500':
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []
+post:
+  tags:
+    - Licensees
+  summary: createLicensee
+  description: Create a licensee for the specified API Key.
+  operationId: CreateLicensee
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  requestBody:
+    description: ''
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CreateLicenseeSchema'
+    required: true
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LicenseeResponseSchema'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '402':
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '404':
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '500':
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressLookupResponseSchema'
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []
+put:
+  tags:
+    - Licensees
+  summary: updateLicensee
+  description: Update particulars for a licensee
+  operationId: UpdateLicensee
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  requestBody:
+    description: ''
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/UpdateLicenseeSchema'
+    required: true
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LicenseeResponseSchema'
+    '400':
+      description: Bad request
+    '402':
+      description: Request failed
+    '404':
+      description: Resource not found
+    '500':
+      description: Server error
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []

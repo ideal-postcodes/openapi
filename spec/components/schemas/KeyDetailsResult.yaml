@@ -1,0 +1,27 @@
+title: KeyDetailsResult
+type: object
+properties:
+  lookups_remaining:
+    minimum: 0
+    type: integer
+    format: int32
+  daily_limit:
+    $ref: '#/components/schemas/KeyDailyLimit'
+  individual_limit:
+    $ref: '#/components/schemas/KeyIndividualLimit'
+  allowed_urls:
+    type: array
+    items:
+      type: string
+    description: >-
+      A whitelist of authorised URLs. An empty list means that whitelisting is
+      disabled
+  notifications:
+    $ref: '#/components/schemas/Notifications'
+  automated_topups:
+    $ref: '#/components/schemas/AutomatedTopup'
+  current_purchases:
+    type: array
+    items:
+      $ref: '#/components/schemas/CurrentPurchase'
+    description: ''

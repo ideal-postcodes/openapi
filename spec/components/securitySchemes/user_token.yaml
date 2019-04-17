@@ -1,0 +1,4 @@
+type: apiKey
+description: ''
+name: user_token
+in: query

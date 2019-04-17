@@ -1,0 +1,13 @@
+title: KeyUsageDailyCountEpoch
+type: object
+properties:
+  date:
+    type: string
+  count:
+    type: integer
+    description: >-
+      An array of objects representing number of paid lookups made on specific
+      days, ordered by date. Each object contains a `date` attribute, which
+      represents the day and a `count` attribute, which represents the number of
+      paid lookups made on that day.
+    format: int32

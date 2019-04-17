@@ -1,0 +1,115 @@
+get:
+  tags:
+    - Keys
+  summary: downloadUsageHistory
+  description: >
+    Returns a CSV download of lookups performed and associated information.
+
+
+    Note that the `Content-Type` returned will be CSV (text/csv). For a non 200
+
+    response, the `Content-Type` will revert to JSON with the error code and
+
+    message embedded.
+
+
+    This method requires a `user_token`, which can be found on your [accounts
+    page](https://ideal-postcodes.co.uk/account).
+
+
+    A maximum interval of 90 days can be provided for analysis. If no start or
+    end date is provided, the last 21 days will be used as the default interval.
+
+
+    ### GDPR Update
+
+
+    After May 2018, the API will begin to redact IP Address, Search Term and URL
+    data that is older than 28 days from our stores on a weekly basis as part of
+    our new data protection strategy. This means the aforementioned data points
+    will no longer be retrievable from this API if it is more than 28 days old.
+
+
+    Reach out to us by [mail](<mailto:support@ideal-postcodes.co.uk>) or
+    [chat](https://chat.ideal-postcodes.co.uk) if you would like to modify this
+    28 day window or prefer this data not be collected at all.
+  operationId: DownloadUsageHistory
+  parameters:
+    - name: key
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    - name: start
+      in: query
+      description: >-
+        An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.
+        1418556452651. If no start time is provided, the start time will be
+        assigned to a time 21 days prior to the end time.
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+    - name: end
+      in: query
+      description: >-
+        An end date/time in the form of a UNIX Timestamp in milliseconds, e.g.
+        1418556452651. If no end time is provided, the current time will be
+        used.
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+    - name: licensee
+      in: query
+      description: >-
+        Sublicensed keys only. This will restrict the analysed dataset to a
+        specific licensee.
+      style: form
+      explode: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      headers: {}
+      content:
+        text/csv:
+          schema:
+            type: string
+            description: Success
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+    '402':
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+    '404':
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+    '500':
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+    '503':
+      description: Rate limit exceeded
+  deprecated: false
+  security:
+    - api_key: []
+      user_token: []

@@ -1,0 +1,4 @@
+type: apiKey
+description: ''
+name: api_key
+in: query

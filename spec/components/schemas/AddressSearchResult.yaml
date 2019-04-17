@@ -1,0 +1,21 @@
+title: AddressSearchResult
+type: object
+properties:
+  total:
+    minimum: 0
+    type: integer
+    format: int32
+  limit:
+    maximum: 0
+    minimum: 0
+    type: integer
+    format: int32
+  page:
+    minimum: 0
+    type: integer
+    format: int32
+  hits:
+    type: array
+    items:
+      $ref: '#/components/schemas/Address'
+    description: ''

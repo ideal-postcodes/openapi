@@ -1,0 +1,10 @@
+title: AddressAutocompleteResponseSchema
+type: object
+properties:
+  result:
+    $ref: '#/components/schemas/AddressAutocompleteResult'
+  code:
+    type: integer
+    format: int32
+  message:
+    type: string

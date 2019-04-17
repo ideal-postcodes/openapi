@@ -1,0 +1,10 @@
+title: AddressLookupResponseSchema
+type: object
+properties:
+  result:
+    $ref: '#/components/schemas/Address'
+  code:
+    type: integer
+    format: int32
+  message:
+    type: string

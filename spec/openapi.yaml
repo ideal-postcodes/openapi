@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info:
+  title: IdealPostcodes API
+  description: Open API spec for Ideal Postcodes API (api.ideal-postcodes.co.uk)
+  contact:
+    email: support@ideal-postcodes.co.uk
+  version: 1.0.0
+servers:
+  - url: 'https://api.ideal-postcodes.co.uk/v1/'
+    variables: {}
+security:
+  - api_key: []
+    user_token: []
+tags:
+  - name: Postcodes
+  - name: Addresses
+  - name: Autocomplete
+  - name: UDPRN
+  - name: UMPRN
+  - name: Keys
+  - name: Licensees
