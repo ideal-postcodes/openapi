@@ -39,6 +39,20 @@ npm run build
 npm test
 ```
 
+### Download and Access via npm
+
+#### Install
+
+```bash
+npm install @ideal-postcodes/openapi
+```
+
+#### Require specs
+
+```javascript
+const { spec } = require("@ideal-postcodes/openapi");
+```
+
 ## Licence
 
 MIT

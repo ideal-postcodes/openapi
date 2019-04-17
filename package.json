@@ -6,7 +6,6 @@
   "devDependencies": {
     "swagger-repo": "~2.0.0-rc.11"
   },
-  "private": true,
   "scripts": {
     "prepublish": "npm run build",
     "start": "swagger-repo serve",
