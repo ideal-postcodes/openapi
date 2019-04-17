@@ -23,6 +23,7 @@ A number of [Open Source Tools](https://swagger.io/tools/open-source/open-source
 - [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.dev)
 - OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.dev/openapi.json)
 - OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.dev/openapi.yaml)
+- [NPM Package](https://www.npmjs.com/package/@ideal-postcodes/openapi)
 
 ## Getting Started
 
