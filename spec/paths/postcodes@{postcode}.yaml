@@ -180,7 +180,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '503':
       description: Rate limit exceeded
   deprecated: false
