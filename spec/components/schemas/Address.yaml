@@ -7,7 +7,7 @@ properties:
   postcode_inward:
     type: string
     description: >-
-      The second part of a postcode is known as the inward Code. e.g. The inward
+      The second part of a postcode is known as the inward code. e.g. The inward
       code of ID1 1QD is 1QD. This part is one number followed by two letters.
       The number identifies the sector in the postal district. The letters then
       define one or more properties in that sector.
