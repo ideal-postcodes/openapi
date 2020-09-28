@@ -1,0 +1,10 @@
+title: Traditional County
+type: string
+description: >-
+  Traditional counties are provided by the Association of British Counties.
+  It’s historical data, and can date from the 1800s. Data source: Royal
+  Mail. May be empty.
+examples:
+  - Kent
+  - Hampshire
+  - Lancashire

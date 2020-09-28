@@ -1,0 +1,13 @@
+title: Country
+enum:
+  - England
+  - Scotland
+  - Wales
+  - Northern Ireland
+  - Guernsey
+  - Jersey
+  - Isle of Man
+type: string
+description: >-
+  The country for which the postcode belongs to. May be empty for a small
+  number of addresses

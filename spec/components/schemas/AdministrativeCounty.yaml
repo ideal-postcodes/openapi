@@ -1,0 +1,13 @@
+title: Administrative County
+type: string
+description: >-
+  The current administrative county to which the postcode has been assigned.
+  A Unitary Authority name, where one is present. If there is no Unitary
+  Authority, the County name is used. This information is not static,
+  because County boundaries may change due to administrative changes. Data
+  source: ONS. May be empty.
+examples:
+  - Kent
+  - North Yorkshire
+  - Hampshire
+

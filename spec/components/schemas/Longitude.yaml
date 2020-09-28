@@ -1,0 +1,13 @@
+title: Longitude
+type: number
+oneOf:
+  - number
+  - string
+description: >-
+  The longitude of the postcode (WGS84/ETRS89). Rooftop accurate if UPRN is present, otherwise is accurate to postcode centroid. Can be a positive or negative decimal. 
+  Returns an empty string if no location data is available. Otherwise, a number is returned.
+examples:
+  - -4.220425
+  - -2.3638843
+  - -0.0965355
+  - ""

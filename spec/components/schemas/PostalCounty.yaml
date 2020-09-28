@@ -1,0 +1,11 @@
+title: Postal County
+type: string
+description: >-
+  Postal counties were used for the distribution of mail before the Postcode
+  system was introduced in the 1970s. The Former Postal County was the
+  Administrative County at the time. This data rarely changes. Data source:
+  Royal Mail. May be empty.
+examples:
+  - Dorset
+  - Essex
+  - Worcestershire

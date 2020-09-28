@@ -1,0 +1,13 @@
+title: Premise
+maxLength: 84
+type: string
+description: >-
+  A pre-computed string which sensibly combines building_number,
+  building_name and sub_building_name. building_number, building_name and
+  sub_building_name represent raw data from Royal Mail's and can be
+  difficult to parse if you are unaware of how the Postcode Address File
+  premise fields work together. For this reason, we also provide a
+  pre-computed premise field which intelligently gathers these points into a
+  single, simple premise string. This field is ideal if you want to pull
+  premise information and thoroughfare information separately instead of
+  using our address lines data.

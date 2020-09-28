@@ -1,0 +1,11 @@
+title: UPRN
+type: string
+description: >-
+  UPRN stands for Unique Property Reference Number and was created by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property.
+  Up to 12 digits in length.
+  Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, it can potentially be more than 32 bits which can be problematic for some languages and databases which are expecting 32 bit integers.
+examples:
+  - "906700131855"
+  - "100120045112"
+  - "10091004080"
+  - ""

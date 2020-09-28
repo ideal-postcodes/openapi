@@ -1,0 +1,6 @@
+title: Department Name
+maxLength: 60
+type: string
+description: >-
+  Used to supplment Organisation Name to identify a deparment within the
+  organisation.

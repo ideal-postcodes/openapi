@@ -1,0 +1,7 @@
+title: Double Dependant Locality
+maxLength: 35
+type: string
+description: >-
+  Used to supplement Dependant Locality. A Double Dependant Locality
+  supplied along with a Dependant Locality if the Dependant Locality exists
+  twice in the same locality.

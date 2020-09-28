@@ -1,0 +1,10 @@
+title: County
+type: string
+description: >-
+  Since postal, administrative or traditional counties may not apply to some
+  addresses, the county field is designed to return whatever county data is
+  available. Normally, the postal county is returned. If this is not
+  present, the county field will fall back to the administrative county. If
+  the administrative county is also not present, the county field will fall
+  back to the traditional county. May be empty in cases where no
+  administrative, postal or traditional county present.

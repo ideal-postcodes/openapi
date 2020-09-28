@@ -1,0 +1,9 @@
+title: Thoroughfare
+maxLength: 80
+type: string
+description: >-
+  Also known as the street or road name. In general each Thoroughfare Name
+  will have a separate Postcode. Longer Thoroughfares with high number
+  ranges often have multiple Postcodes covering the entire length of the
+  road, with breaks at suitable points e.g. junctions or natural breaks in
+  the road.

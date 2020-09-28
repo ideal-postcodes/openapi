@@ -1,0 +1,7 @@
+title: PO Box
+type: string
+description: >-
+  When the PO Box Number field is populated it will contain PO BOX nnnnnn
+  where n represents the PO Box number. Note that the PO Box details can
+  occasionally consist of a combination of numbers and letters e.g. HK860.
+  PO Box Numbers are only allocated to Large Users.

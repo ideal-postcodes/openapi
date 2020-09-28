@@ -1,0 +1,13 @@
+title: Eastings
+type: integer
+description: >-
+  Eastings reference using the Ordnance Survey National Grid reference
+  system. Northern Ireland Eastings uses the Irish Grid Reference System.
+  Metres from origin. E.g. 550458. Returns an empty string if no location
+  data is available. Otherwise a number is returned
+format: int32
+examples:
+  - 180459
+  - 261080
+  - 335008
+  - ""

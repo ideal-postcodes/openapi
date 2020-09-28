@@ -1,0 +1,7 @@
+title: Sub Building Name
+maxLength: 30
+type: string
+description: >-
+  When a premise is split into individual units such as flats, apartments or
+  business units. Cannot be present without either building_name or
+  building_number. E.g. Flat 1, A, 10B

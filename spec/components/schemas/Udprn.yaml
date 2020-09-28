@@ -1,0 +1,13 @@
+title: UDPRN
+type: integer
+description: >-
+  UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail
+  assigns a unique UDPRN code for each premise on PAF. Simple, unique
+  reference number for each Delivery Point. Unlikely to be reused when an
+  address expires. Up to 8-digit numeric code. A new UDPRN is automatically
+  assigned to each new Delivery Point added to PAF.
+format: int32
+examples:
+  - 9438257
+  - 50012605
+  - 53314521

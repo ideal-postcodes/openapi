@@ -1,0 +1,4 @@
+title: Organisation Name
+maxLength: 60
+type: string
+description: Name of the organisation registered at this address.

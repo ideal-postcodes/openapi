@@ -1,0 +1,9 @@
+title: Post Town
+maxLength: 30
+type: string
+description: >-
+  A Post Town is mandatory for delivery of mail to a Delivery Point. This is
+  not necessarily the nearest town geographically, but a routing instruction
+  to the Royal Mail delivery office sorting mail for that Delivery Point. A
+  Post Town will always be present in every address, and for some Localities
+  the Post Town will be the only locality element present.

@@ -1,7 +1,7 @@
 get:
   tags:
     - Postcodes
-  summary: postcodeToAddresses
+  summary: Retrieve Addresses for a Postcode
   description: >
     Returns the complete list of addresses for a postcode.
 
@@ -109,7 +109,7 @@ get:
   parameters:
     - name: postcode
       in: path
-      description: ''
+      description: Postcode to extract addresses
       required: true
       style: simple
       explode: false
@@ -186,4 +186,3 @@ get:
   deprecated: false
   security:
     - api_key: []
-      user_token: []

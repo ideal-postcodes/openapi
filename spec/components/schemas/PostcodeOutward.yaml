@@ -1,0 +1,14 @@
+title: Postcode Outward Code
+maxLength: 4
+maxLength: 2
+type: string
+description: >-
+  The first part of a postcode is known as the outward code. e.g. The
+  outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct
+  local area for delivery. This part of the code contains the area and the
+  district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or
+  ‘B23’.
+examples:
+  - SW1A
+  - CF24
+  - E1

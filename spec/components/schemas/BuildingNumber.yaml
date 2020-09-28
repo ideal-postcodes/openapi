@@ -1,0 +1,4 @@
+title: Building Number
+maxLength: 4
+type: string
+description: Number to identify premise on a thoroughfare or dependant thoroughfare.

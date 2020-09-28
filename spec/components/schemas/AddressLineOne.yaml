@@ -1,0 +1,9 @@
+title: Address Line Two
+type: string
+description: >-
+  Second Address Line. Often contains thoroughfare and locality information.
+  May be empty.
+examples:
+  - "Bluebell Court"
+  - "186 Promenade"
+  - ""

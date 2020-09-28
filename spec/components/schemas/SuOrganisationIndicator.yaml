@@ -1,0 +1,12 @@
+title: SU Organisation Indicator
+enum:
+  - Y
+  - ""
+type: string
+description: >-
+  Small User Organisation Indicator can have the values 'Y' or empty string. A
+  value of 'Y' indicates that a Small User Organisation is present at this
+  address.
+examples:
+  - "Y"
+  - ""

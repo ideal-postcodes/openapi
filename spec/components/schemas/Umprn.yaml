@@ -1,0 +1,14 @@
+title: UMPRN
+oneOf: 
+  - type: int32
+  - type: string
+description: >-
+  A small minority of individual premises (as identified by a UDPRN) may
+  have multiple occupants behind the same letterbox. These are known as
+  Multiple Residence occupants and can be queried via the Multiple Residence
+  dataset. Simple, unique reference number for each Multiple Residence
+  occupant. 8-character numeric code. Note: this will be an empty string
+  when not used for legacy reasons
+examples:
+  - ""
+  - 98798798

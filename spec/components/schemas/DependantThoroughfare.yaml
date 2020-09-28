@@ -1,0 +1,7 @@
+title: Dependant Thoroughfare
+maxLength: 80
+type: string
+description: >-
+  Used to supplement thoroughfare. When a thoroughfare name is used twice in
+  the same Post Town, the dependant thoroughfare is added to uniquely
+  indentify a delivery point.

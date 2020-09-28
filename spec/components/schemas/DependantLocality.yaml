@@ -1,0 +1,8 @@
+title: Dependant Locality
+maxLength: 35
+type: string
+description: >-
+  When the same thoroughfare name reoccurs in a Post town, it may not be
+  possible to make it dependant on a dependant thoroughfare. In this case
+  the thoroughfare is dependant on a locality. For example if we want to
+  find 1 Back Lane in Huddersfield we see that there are three.
