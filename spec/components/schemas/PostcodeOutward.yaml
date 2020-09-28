@@ -1,6 +1,6 @@
 title: Postcode Outward Code
 maxLength: 4
-maxLength: 2
+minLength: 2
 type: string
 description: >-
   The first part of a postcode is known as the outward code. e.g. The
@@ -12,3 +12,4 @@ examples:
   - SW1A
   - CF24
   - E1
+  - ""
