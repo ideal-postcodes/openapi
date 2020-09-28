@@ -5,13 +5,13 @@ properties:
     minimum: 0
     type: number
     description: >-
-      The maximum number of lookups this licensee can perform in a day. null
+      The maximum number of lookups this Licensee can perform in a day. null
       indicates the limit is not active
   count:
     minimum: 0
     type: number
     description: >-
-      The number lookups performed by the licensee on the day represented b
+      The number lookups performed by the Licensee on the day represented b
       `licesees.daily.updatedAt`
   updatedAt:
     type: string

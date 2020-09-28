@@ -1,6 +1,6 @@
 title: Address
 description: >-
-  The Address object can represent a Postcode Address File, Multiple Residence or Not Yet Built addres record.
+  The Address object can represent a Postcode Address File, Multiple Residence or Not Yet Built address record.
 type: object
 properties:
   postcode:

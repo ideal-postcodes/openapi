@@ -4,4 +4,4 @@ properties:
   deleted:
     minimum: 0
     type: number
-    description: Number of licensees deleted.
+    description: Number of Licensees deleted.

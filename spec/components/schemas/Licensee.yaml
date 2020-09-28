@@ -4,13 +4,13 @@ properties:
   id:
     type: string
     description: >-
-      An immutable ID provided for every licensee. Primarily used for paginated
+      An immutable ID provided for every Licensee. Primarily used for paginated
       list requests
   key:
     type: string
     description: >-
-      Uniquely identifies a licensee for a key. Required to perform paid lookups
-      for a specific licensee
+      Uniquely identifies a Licensee for a key. Required to perform paid lookups
+      for a specific Licensee
   name:
     type: string
     description: Licensee individual or organisation name
@@ -24,7 +24,7 @@ properties:
     description: Licensee's postcode
   createdAt:
     type: string
-    description: Timestamp for when the licensee was created
+    description: Timestamp for when the Licensee was created
   whitelist:
     type: array
     items:

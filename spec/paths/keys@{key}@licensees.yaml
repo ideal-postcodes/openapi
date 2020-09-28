@@ -2,7 +2,7 @@ get:
   tags:
     - Licensees
   summary: listLicensees
-  description: Returns a list of licensees for a key.
+  description: Returns a list of Licensees for a key.
   operationId: ListLicensees
   parameters:
     - name: key
@@ -15,7 +15,7 @@ get:
         type: string
     - name: starting_after
       in: query
-      description: Specify ID of the licensee after which you would like to list results
+      description: Specify ID of the Licensee after which you would like to list results
       style: form
       explode: true
       schema:
@@ -35,7 +35,7 @@ get:
         format: int32
     - name: query
       in: query
-      description: Filter result by licensee name. Query can be shortened to `q=`
+      description: Filter result by Licensee name. Query can be shortened to `q=`
       style: form
       explode: true
       schema:
@@ -82,7 +82,7 @@ post:
   tags:
     - Licensees
   summary: createLicensee
-  description: Create a licensee for the specified API Key.
+  description: Create a Licensee for the specified API Key.
   operationId: CreateLicensee
   parameters:
     - name: key
@@ -142,7 +142,7 @@ put:
   tags:
     - Licensees
   summary: updateLicensee
-  description: Update particulars for a licensee
+  description: Update particulars for a Licensee
   operationId: UpdateLicensee
   parameters:
     - name: key

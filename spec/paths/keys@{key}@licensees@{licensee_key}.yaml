@@ -2,7 +2,7 @@ get:
   tags:
     - Licensees
   summary: retrieveLicensee
-  description: Returns licensee information as identified by the licensee key.
+  description: Returns Licensee information as identified by the Licensee key.
   operationId: RetrieveLicensee
   parameters:
     - name: key
@@ -64,7 +64,7 @@ delete:
     - Licensees
   summary: deleteLicensee
   description: >-
-    Cancels a licensee key. This renders a licensee unusable. This action can be
+    Cancels a Licensee key. This renders a Licensee unusable. This action can be
     reversed if you get in contact with us.
   operationId: DeleteLicensee
   parameters:
