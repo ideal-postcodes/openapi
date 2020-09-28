@@ -4,3 +4,7 @@ type: string
 description: >-
   Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A, K,
   Victoria House
+examples:
+  - ""
+  - ""
+  - ""

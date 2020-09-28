@@ -7,3 +7,7 @@ description: >-
   to the Royal Mail delivery office sorting mail for that Delivery Point. A
   Post Town will always be present in every address, and for some Localities
   the Post Town will be the only locality element present.
+examples:
+  - "LONDON"
+  - "CARDIFF"
+  - "LONDON"
