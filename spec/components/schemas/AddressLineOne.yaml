@@ -5,5 +5,6 @@ description: >-
   In the case of a commercial premise, the first line is always the full
   name of the registered organisation. Never empty.
 examples:
-  - "10 High Street"
-  - "Prime Minister & First Lord Of The Treasury"
+  - Prime Minister & First Lord Of The Treasury
+  - Flat
+  - Flat 8

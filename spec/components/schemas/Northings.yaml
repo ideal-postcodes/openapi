@@ -7,7 +7,6 @@ description: >-
   data is available. Otherwise a number is returned
 format: int32
 examples:
-  - 663868
-  - 165160
-  - 183301
-  - ""
+  - 179951
+  - 177098
+  - 181670

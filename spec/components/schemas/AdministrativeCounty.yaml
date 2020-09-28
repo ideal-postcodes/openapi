@@ -7,7 +7,7 @@ description: >-
   because County boundaries may change due to administrative changes. Data
   source: ONS. May be empty.
 examples:
-  - Kent
-  - North Yorkshire
-  - Hampshire
+  - ""
+  - ""
+  - ""
 

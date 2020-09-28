@@ -8,5 +8,6 @@ description: >-
   value of 'Y' indicates that a Small User Organisation is present at this
   address.
 examples:
-  - "Y"
+  - ""
+  - ""
   - ""

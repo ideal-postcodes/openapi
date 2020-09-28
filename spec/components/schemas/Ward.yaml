@@ -4,8 +4,6 @@ description: >-
   The current administrative/electoral area to which the postcode has been
   assigned. May be empty for a small number of addresses. Data source: ONS
 examples:
-  - Calton
-  - Kingsmead
-  - "St Peter's"
-  - Westgate
-  - ""
+  - St James's
+  - Adamsdown
+  - Spitalfields & Banglatown

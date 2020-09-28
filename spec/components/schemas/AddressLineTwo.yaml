@@ -4,6 +4,6 @@ description: >-
   Second Address Line. Often contains thoroughfare and locality information.
   May be empty.
 examples:
-  - "Bluebell Court"
-  - "186 Promenade"
-  - ""
+  - 10 Downing Street
+  - 10 Broadway
+  - 8 Whites Row

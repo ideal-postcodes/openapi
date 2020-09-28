@@ -1,5 +1,5 @@
 title: UMPRN
-oneOf: 
+oneOf:
   - type: int32
   - type: string
 description: >-
@@ -11,4 +11,5 @@ description: >-
   when not used for legacy reasons
 examples:
   - ""
-  - 98798798
+  - ""
+  - ""

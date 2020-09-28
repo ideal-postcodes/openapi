@@ -3,5 +3,6 @@ type: string
 description: >-
   Correctly formatted postcode. Capitalised and spaced.
 examples:
-  - SW1A 2AA
-  - TS15 0HU
+  - L
+  - S
+  - S

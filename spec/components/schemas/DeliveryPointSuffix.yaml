@@ -2,9 +2,6 @@ title: Delivery Point Suffix
 type: string
 minLength: 2
 maxLength: 2
-examples:
-  - 1A
-  - 2B
 description: >-
   A unique Royal Mail 2-character code (the first numeric & the second
   alphabetical), which, when added to the Postcode, enables each live
@@ -12,3 +9,7 @@ description: >-
   deleted from PAF the DPS may be reused (although they aren’t reused until
   all remaining Delivery Points in the range have been allocated). The DPS
   for a Large User is always '1A' as each Large User has its own Postcode.
+examples:
+  - 1A
+  - 2J
+  - 2U

@@ -6,6 +6,6 @@ description: >-
   Administrative County at the time. This data rarely changes. Data source:
   Royal Mail. May be empty.
 examples:
-  - Dorset
-  - Essex
-  - Worcestershire
+  - London
+  - South Glamorgan
+  - London

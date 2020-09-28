@@ -5,7 +5,6 @@ description: >-
   Up to 12 digits in length.
   Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, it can potentially be more than 32 bits which can be problematic for some languages and databases which are expecting 32 bit integers.
 examples:
-  - "906700131855"
-  - "100120045112"
-  - "10091004080"
+  - "100023336956"
   - ""
+  - "6141993"

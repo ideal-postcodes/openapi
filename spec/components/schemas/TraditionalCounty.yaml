@@ -5,6 +5,6 @@ description: >-
   It’s historical data, and can date from the 1800s. Data source: Royal
   Mail. May be empty.
 examples:
-  - Kent
-  - Hampshire
-  - Lancashire
+  - Greater London
+  - Glamorgan
+  - Greater London
