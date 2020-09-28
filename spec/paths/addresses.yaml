@@ -1,66 +1,36 @@
 get:
   tags:
     - Addresses
-  summary: addressSearch
-  description: >
+  summary: Address Search
+  description: |
     Returns a list of addresses that match the query ordered by relevance score.
 
-    This query accepts an optional limit and page query (defaults to 10 and 0
-    respectively).
+    This query accepts an optional limit and page query (defaults to 10 and 0 respectively).  
 
+    If a valid postcode is passed as the query string, the entire address list for that postcode is returned as the result. Note, in these cases, limit parameter is ignored and fixed at 100.
 
-    If a valid postcode is passed as the query string, the entire address list
-
-    for that postcode is returned as the result. Note, in these cases, limit
-
-    parameter is ignored and fixed at 100. If your key is configured to return
-
-    Multiple Residence data, you may need to query more pages to return the
-
-    entire list as more than 100 delivery points or residences may be returned.
-
+    If your key is configured to return Multiple Residence data, you may need to query more pages to return the entire list as more than 100 delivery points or residences may be returned.
 
     ### Testing
 
-
     - **ID1 1QD** Returns a successful query response `2000`
-
     - **ID1 KFA** Returns an empty query response `2000`
-
     - **ID1 CLIP** Returns "no lookups remaining" error `4020`
-
     - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error
     `4021`
 
-
-    Test requests will undergo usual authentication and restriction rules
-    (individual and daily lookup limits) to surface any problems you may have
-    during implementation. However, it will not count towards a postcode lookup
-    on your key.
-
+    Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
 
     ### Notes
 
+    This is not an Address Autocomplete method. Each request that returns an address incurs a lookup charge.
 
-    This is not an Address Autocomplete method. Each request that returns an
-    address incurs a lookup charge.
-
-
-    If a valid postcode is passed as the query string, the entire address list
-    for that postcode is passed as a result. Note, in these cases, limit and
-    page parameters are ignored.
-
+    If a valid postcode is passed as the query string, the entire address list for that postcode is passed as a result. Note, in these cases, limit and page parameters are ignored.
 
     ### Pricing
 
-
     Per lookup charges apply. Queries which find no match are not charged.
 
-
-    ### Data Source
-
-
-    Royal Mail (Postcode Address File), Ordnance Survey (Code-Point Open).
   operationId: AddressSearch
   parameters:
     - name: query
@@ -71,11 +41,11 @@ get:
       explode: true
       schema:
         type: string
+        example: "10 Downing street"
     - name: limit
       in: query
-      description: >-
-        Specifies the upper limit on the number of address results to be
-        returned. Max is 100 addresses. Query can be shortened to `l=`
+      description: |
+        Specifies the upper limit on the number of address results to be returned. Max is 100 addresses. Query can be shortened to `l=`
       style: form
       explode: true
       schema:
@@ -87,9 +57,8 @@ get:
         example: 10
     - name: page
       in: query
-      description: >-
-        Specifies the page of results to be returned. Query can be shortened to
-        `p=`
+      description: |
+        Specifies the page of results to be returned. Query can be shortened to `p=`
       style: form
       explode: true
       schema:
@@ -100,10 +69,8 @@ get:
         example: 0
     - name: filter
       in: query
-      description: >-
-        Comma separated whitelist of address elements to return. E.g.
-        `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and
-        `line_3` address elements in your response
+      description: |
+        Comma separated whitelist of address elements to return. E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2 and `line_3` address elements in your response
       style: form
       explode: true
       schema:
@@ -111,17 +78,15 @@ get:
     - name: postcode_outward
       in: query
       description: >-
-        Comma separated list of outward codes with which to restrict result set.
-        E.g. `postcode_outward=sw1a`, `postcode_outward=tr8,le18`
+        Comma separated list of outward codes with which to restrict result set.  E.g. `postcode_outward=sw1a`, `postcode_outward=tr8,le18`
       style: form
       explode: true
       schema:
         type: string
     - name: licensee
       in: query
-      description: >-
-        Only required if you are using a sublicensed key. This parameter will
-        associate the request with your Licensee
+      description: |
+        Only required if you are using a sublicensed key. This parameter will associate the request with your licensee.
       style: form
       explode: true
       schema:
@@ -163,4 +128,3 @@ get:
   deprecated: false
   security:
     - api_key: []
-      user_token: []
