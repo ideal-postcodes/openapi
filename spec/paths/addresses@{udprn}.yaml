@@ -72,7 +72,7 @@ get:
       in: query
       description: >-
         Only required if you are using a sublicensed key. This parameter will
-        associate the request with your licensee
+        associate the request with your Licensee
       style: form
       explode: true
       schema:

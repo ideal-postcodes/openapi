@@ -1,7 +1,7 @@
 type: apiKey
 description: >-
-  Required for sensitive API Key operations such as usage statistic extraction, licensee creation, etc.
+  Required for sensitive API Key operations such as usage statistic extraction, Licensee creation, etc.
 
-  Typically begins `uk_`.
+  Typically begins with `uk_`.
 name: user_token
 in: query

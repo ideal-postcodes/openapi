@@ -9,5 +9,5 @@ properties:
   hasMore:
     type: boolean
     description: >-
-      Returns true if there are more licensees listed after the maximum number
+      Returns true if there are more Licensees listed after the maximum number
       of results as implied by `limit`

@@ -69,7 +69,7 @@ get:
       in: query
       description: >-
         Sublicensed keys only. This will restrict the analysed dataset to a
-        specific licensee.
+        specific Licensee.
       style: form
       explode: true
       schema:

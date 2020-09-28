@@ -4,5 +4,5 @@ properties:
   limit:
     type: number
     description: >-
-      The maximum number of lookups this licensee can perform in a day. Set to
+      The maximum number of lookups this Licensee can perform in a day. Set to
       `null` to deactivate the limit

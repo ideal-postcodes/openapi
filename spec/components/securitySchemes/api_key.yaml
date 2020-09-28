@@ -2,6 +2,6 @@ type: apiKey
 description: >-
   Authenticate by passing an api_key as part of the query string.
 
-  Typically begins `ak_`.
+  Typically begins with `ak_`.
 name: api_key
 in: query
