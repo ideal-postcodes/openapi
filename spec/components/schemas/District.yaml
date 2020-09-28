@@ -4,7 +4,6 @@ description: >-
   The current district/unitary authority to which the postcode has been
   assigned. Data source: ONS
 examples:
-  - High Peak
-  - Highland
-  - Camden
-  - ''
+  - Westminster
+  - Cardiff
+  - Tower Hamlets

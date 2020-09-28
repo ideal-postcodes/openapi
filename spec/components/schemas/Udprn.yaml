@@ -8,6 +8,6 @@ description: >-
   assigned to each new Delivery Point added to PAF.
 format: int32
 examples:
-  - 9438257
-  - 50012605
-  - 53314521
+  - 23747771
+  - 55354785
+  - 7831631
