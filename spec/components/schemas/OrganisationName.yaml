@@ -2,3 +2,7 @@ title: Organisation Name
 maxLength: 60
 type: string
 description: Name of the organisation registered at this address.
+examples:
+  - Prime Minister & First Lord Of The Treasury
+  - ""
+  - ""

@@ -7,3 +7,7 @@ description: >-
   ranges often have multiple Postcodes covering the entire length of the
   road, with breaks at suitable points e.g. junctions or natural breaks in
   the road.
+examples:
+  - Downing Street
+  - Broadway
+  - Whites Row

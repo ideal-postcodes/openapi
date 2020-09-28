@@ -11,3 +11,7 @@ description: >-
   single, simple premise string. This field is ideal if you want to pull
   premise information and thoroughfare information separately instead of
   using our address lines data.
+examples:
+  - "10"
+  - Flat, 10
+  - Flat 8, 8

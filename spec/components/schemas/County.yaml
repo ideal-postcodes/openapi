@@ -8,3 +8,7 @@ description: >-
   the administrative county is also not present, the county field will fall
   back to the traditional county. May be empty in cases where no
   administrative, postal or traditional county present.
+examples:
+  - London
+  - South Glamorgan
+  - London
