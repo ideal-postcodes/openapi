@@ -1,0 +1,11 @@
+name: page
+in: query
+description: |
+  Specifies the page of results to be returned. Query can be shortened to `p=`
+style: form
+schema:
+  minimum: 0
+  type: integer
+  format: int32
+  default: 0
+  example: 0

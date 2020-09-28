@@ -1,0 +1,39 @@
+- name: Address Attributes
+  description: Attributes which can be found on the Address object
+  type: string
+  enum:
+    - postcode
+    - postcode_inward
+    - postcode_outward
+    - post_town
+    - dependent_locality
+    - double_dependent_locality
+    - thoroughfare
+    - dependent_thoroughfare
+    - building_number
+    - building_name
+    - sub_building_name
+    - po_box
+    - department_name
+    - organisation_name
+    - udprn
+    - umprn
+    - postcode_type
+    - su_organisation_indicator
+    - delivery_point_suffix
+    - line_1
+    - line_2
+    - line_3
+    - premise
+    - country
+    - county
+    - administrative_county
+    - postal_county
+    - traditional_county
+    - district
+    - ward
+    - longitude
+    - latitude
+    - eastings
+    - northings
+    - uprn

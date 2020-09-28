@@ -4,7 +4,9 @@ properties:
   code:
     type: integer
     format: int32
+    example: 2000
   message:
     type: string
+    example: Success
   result:
     $ref: '#/components/schemas/AddressSearchResult'

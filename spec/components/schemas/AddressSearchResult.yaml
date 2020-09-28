@@ -3,19 +3,23 @@ type: object
 properties:
   total:
     minimum: 0
+    example: 82
     type: integer
     format: int32
   limit:
-    maximum: 0
+    maximum: 100
+    default: 10
     minimum: 0
+    example: 10
     type: integer
     format: int32
   page:
     minimum: 0
+    example: 0
     type: integer
     format: int32
   hits:
     type: array
     items:
       $ref: '#/components/schemas/Address'
-    description: ''
+    description: List of addresses that match search query

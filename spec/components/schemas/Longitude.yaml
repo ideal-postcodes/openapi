@@ -1,5 +1,4 @@
 title: Longitude
-type: number
 oneOf:
   - number
   - string
@@ -10,3 +9,4 @@ examples:
   - -0.12767
   - -3.158041
   - -0.0752958
+  - ""

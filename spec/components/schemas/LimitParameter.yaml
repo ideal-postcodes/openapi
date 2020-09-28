@@ -1,0 +1,16 @@
+name: limit
+in: query
+description: |
+  Specifies the upper limit on the number of address results to be returned. 
+
+  Maximum is 100 addresses. 
+
+  Query can be shortened to `l=`
+style: form
+schema:
+  maximum: 100
+  minimum: 0
+  type: integer
+  format: int32
+  default: 10
+  example: 10

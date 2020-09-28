@@ -1,0 +1,7 @@
+name: licensee
+in: query
+description: |
+  Only required if you are using a sublicensed key. This parameter will associate the request with your licensee.
+style: form
+schema:
+  type: string

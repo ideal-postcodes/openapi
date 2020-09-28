@@ -1,0 +1,11 @@
+name: postcode_outward
+in: query
+description: |
+  Comma separated list of outward codes with which to restrict result set.
+
+  E.g. `postcode_outward=sw1a`, `postcode_outward=tr8,le18`
+style: form
+schema:
+  type: array
+  items:
+    $ref: '#/components/schemas/PostcodeOutward'

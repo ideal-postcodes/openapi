@@ -1,0 +1,8 @@
+name: query
+in: query
+description: Specifies the address you wish to query. Query can be shortened to `q=`
+required: true
+style: form
+schema:
+  type: string
+  example: "10 Downing street"
