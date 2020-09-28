@@ -1,5 +1,15 @@
-title: KeyUsabilityResult
+title: Key Usability Result
 type: object
 properties:
   available:
     type: boolean
+    example: true
+    description: |
+      Determines whether the key can be used by the requesting agent. Returns `false` if one of the following conditions are met.
+
+      - Key has no lookups remaining
+      - Daily limit has been reached on the key
+      - Daily individual limit has been reached
+      - Key is not being used via an authorised URL
+      - (Sublicensed key only) Key has a valid licensee attached
+      - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee

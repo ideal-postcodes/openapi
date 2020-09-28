@@ -3,7 +3,7 @@ in: query
 description: |
   Specifies the upper limit on the number of address results to be returned. 
 
-  Maximum is 100 addresses. 
+  If a postcode is queried then the limit is discarded and all addresses for the postcode are returned.
 
   Query can be shortened to `l=`
 style: form

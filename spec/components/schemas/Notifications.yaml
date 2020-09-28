@@ -3,8 +3,14 @@ type: object
 properties:
   emails:
     type: array
+    description: |
+      An array of email addresses to be contacted upon certain events for this API Key
     items:
       type: string
-    description: ''
+    example:
+      - ["foo@example.com", "bar@example.com"]
   enabled:
+    description: |
+      Indicates whether email notifications are active
     type: boolean
+    example: true

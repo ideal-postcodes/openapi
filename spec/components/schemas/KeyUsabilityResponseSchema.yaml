@@ -2,9 +2,13 @@ title: KeyUsabilityResponseSchema
 type: object
 properties:
   result:
-    $ref: '#/components/schemas/KeyUsabilityResult'
+    oneOf:
+      - $ref: '#/components/schemas/KeyUsabilityResult'
+      - $ref: '#/components/schemas/KeyDetailsResult'
   message:
     type: string
+    example: Success
   code:
     type: integer
     format: int32
+    example: 2000

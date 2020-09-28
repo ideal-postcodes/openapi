@@ -1,11 +1,13 @@
-title: KeyDailyLimit
+title: Key Aggregate Daily Limit
 type: object
 properties:
   limit:
-    minimum: 0
-    type: integer
-    description: |-
-      `number` or `null`. The daily lookup limit currently set on your key. 
+    type: number
+    nullable: true
+    example: null
+    description: |
+      The daily lookup limit currently set on your key. 
+
       `null` means the limit is currently disabled.
     format: int32
   consumed:
@@ -13,3 +15,4 @@ properties:
     type: integer
     description: Number of lookups performed today which count towards your daily limit.
     format: int32
+    example: 100

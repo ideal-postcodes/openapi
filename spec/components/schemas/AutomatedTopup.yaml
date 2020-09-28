@@ -2,4 +2,7 @@ title: AutomatedTopup
 type: object
 properties:
   enabled:
+    description: |
+      Indicates whether automated top-ups are active on this API Key
     type: boolean
+    example: true

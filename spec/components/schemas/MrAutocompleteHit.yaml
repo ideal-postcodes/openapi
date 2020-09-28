@@ -1,0 +1,19 @@
+title: Multiple Residence Autocomplete Hit
+type: object
+properties:
+  suggestion:
+    type: string
+    description: |
+      Suggestion for your given query, represented as a partial address.
+  urls:
+    $ref: '#/components/schemas/MrAutocompleteHitUrls'
+  udprn:
+    type: number
+    format: int32
+    description: |
+      Represents the UDPRN of a premise. i.e. the ID for the parent of the Multiple Residence premise
+  umprn:
+    type: number
+    format: int32
+    description: |
+      Represents the UMPRN of a the Multiple Residence premise itself

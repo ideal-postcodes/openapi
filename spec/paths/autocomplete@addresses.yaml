@@ -1,9 +1,9 @@
 get:
   tags:
     - Autocomplete
-  summary: addressAutocomplete
+  summary: Address Autocomplete
   description: |
-    Use `/autocomplete` to retrieve address suggestions for a partial string.
+    Use `/autocomplete` to implement Address Finder functionality by retrieving address suggestions for a partial string.
 
     ### Implementing Autocomplete
 
@@ -13,9 +13,7 @@ get:
     2. Retrieve the entire address by following the URL provided by the
     suggestion
 
-
     Step 2 will decrement your lookup balance.
-
 
     Please note, this API is [not intended to be a free standalone resource](#pricing).
 
@@ -84,48 +82,10 @@ get:
 
   operationId: AddressAutocomplete
   parameters:
-    - name: query
-      in: query
-      description: Specifies the address you wish to query. Query can be shortened to `q=`
-      required: true
-      style: form
-      explode: true
-      schema:
-        type: string
-    - name: licensee
-      in: query
-      description: >-
-        Only required if you are using a sublicensed key. This parameter will
-        associate the request with your licensee
-      style: form
-      explode: true
-      schema:
-        type: string
-    - name: limit
-      in: query
-      description: >-
-        Specifies the maximum number of suggestions to retrieve. Range must be
-        1-100. By default the limit is 10, unless a postcode is queried (then
-        all addresses at that postcode will be returned). Limit can be shortened
-        to `l=`
-      style: form
-      explode: true
-      schema:
-        maximum: 100
-        minimum: 1
-        type: integer
-        format: int32
-        default: 10
-        example: 10
-    - name: postcode_outward
-      in: query
-      description: >-
-        Comma separated list of outward codes with which to restrict result set.
-        E.g. `postcode_outward=sw1a`, `postcode_outward=tr8,le18`
-      style: form
-      explode: true
-      schema:
-        type: string
+    - $ref: '#/components/schemas/QueryParameter'
+    - $ref: '#/components/schemas/LimitParameter'
+    - $ref: '#/components/schemas/LicenseeParameter'
+    - $ref: '#/components/schemas/PostcodeOutward'
   responses:
     '200':
       description: Success
@@ -154,28 +114,27 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '402':
       description: Request failed
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '404':
       description: Resource not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '500':
       description: Server error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '503':
       description: Rate limit exceeded
   deprecated: false
   security:
     - api_key: []
-      user_token: []

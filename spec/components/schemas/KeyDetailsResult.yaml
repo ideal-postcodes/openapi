@@ -1,8 +1,12 @@
-title: KeyDetailsResult
+title: Key Details Result
 type: object
 properties:
   lookups_remaining:
+    title: Lookups Remaining
     minimum: 0
+    example: 800
+    description: |
+      The balance remaining on your API Key
     type: integer
     format: int32
   daily_limit:
@@ -13,7 +17,7 @@ properties:
     type: array
     items:
       type: string
-    description: >-
+    description: |
       A whitelist of authorised URLs. An empty list means that whitelisting is
       disabled
   notifications:

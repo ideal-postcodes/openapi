@@ -1,43 +1,37 @@
 get:
   tags:
     - Keys
-  summary: checkKeyUsability
-  description: >
+  summary: Check Key Usability
+  description: |
     Currently returns whether the key is useable via the `available` property.
 
-    You may Use this method to discover if the key is useable before making
+    You may use this method to discover if the key is useable before making further requests.
 
-    further requests.
-
-
-    When the `user_token` is not provided, this API returns public information
-    on key. 
-
+    When the `user_token` is not provided, this API returns public information on key. 
 
     ### Testing
 
-
     To test your implementation of our API, you may use the following test keys.
 
-
     - **iddqd** Availability will return as `true`
-
     - **idkfa** Availability will return as `false`
+
   operationId: CheckKeyUsability
   parameters:
     - name: key
       in: path
-      description: ''
+      description: Your API Key. Typically begins `ak_`
       required: true
       style: simple
-      explode: false
       schema:
         type: string
     - name: user_token
       in: query
-      description: ''
+      description: |
+        If `user_token` is omitted, the API will only indicate whether the API Key is usable for a given session
+
+        If `user_token` is provided, the API will return a detailed API Key response object containing more information
       style: form
-      explode: true
       schema:
         type: string
   responses:
@@ -53,28 +47,26 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '402':
       description: Request failed
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '404':
       description: Resource not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '500':
       description: Server error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AddressLookupResponseSchema'
+            $ref: '#/components/schemas/ErrorResponseSchema'
     '503':
       description: Rate limit exceeded
   deprecated: false
-  security:
-    - api_key: []
-      user_token: []
+  security: []

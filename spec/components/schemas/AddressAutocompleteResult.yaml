@@ -1,8 +1,10 @@
-title: AddressAutocompleteResult
+title: Address Autocomplete Result
 type: object
 properties:
   hits:
     type: array
     items:
-      $ref: '#/components/schemas/AddressAutocompleteHit'
-    description: ''
+      anyOf:
+        - $ref: '#/components/schemas/AddressAutocompleteHit'
+        - $ref: '#/components/schemas/MrAutocompleteHit'
+    description: Address suggestions for query

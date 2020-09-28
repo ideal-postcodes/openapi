@@ -1,4 +1,4 @@
-title: CurrentPurchase
+title: Current Purchases
 type: object
 properties:
   expires:

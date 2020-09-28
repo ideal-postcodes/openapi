@@ -1,11 +1,13 @@
-title: KeyIndividualLimit
+title: Individual IP Daily Limits
 type: object
 properties:
   consumed:
     minimum: 0
     type: integer
-    description: |-
-      `number` or `null` Limit set on the number of lookups that can be 
-      performed from a single IP address. `null` means the limit is currently 
-      disabled.
+    nullable: true
+    example: 10
+    description: |
+      `number` or `null` Limit set on the number of lookups that can be performed from a single IP address.
+
+      `null` means the limit is currently disabled.
     format: int32

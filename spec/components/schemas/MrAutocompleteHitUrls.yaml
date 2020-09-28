@@ -1,0 +1,13 @@
+title: Multiple Residence Address Suggestion URLs
+description: |
+  URLs to fully resolve address suggestion
+type: object
+properties:
+  udprn:
+    type: string
+    description: |
+      Retrieve the entire details for the parent premise of the Multiple Residence household
+  umprn:
+    type: string
+    description: |
+      Retrieve the entire details for a suggested Multiple Residence household
