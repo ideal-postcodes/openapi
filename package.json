@@ -1,18 +1,20 @@
 {
   "name": "@ideal-postcodes/openapi",
   "description": "Ideal Postcodes OpenAPI v3 specifications",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
-    "swagger-repo": "~2.0.0-rc.11"
+    "@cablanchard/tsconfig": "~2.0.0",
+    "@redocly/openapi-cli": "~1.0.0-beta.55",
+    "typescript": "~4.4.2"
   },
   "scripts": {
-    "prepublish": "npm run build",
-    "start": "swagger-repo serve",
-    "build": "swagger-repo build -o public",
-    "test": "swagger-repo validate"
+    "start": "openapi preview-docs",
+    "build": "tsc",
+    "test": "openapi lint dist/openapi.yaml && openapi lint dist/openapi.json"
   },
-  "main": "dist/index.js",
+  "main": "dist/openapi.js",
+  "types": "dist/openapi.d.ts",
   "author": {
     "name": "Ideal Postcodes",
     "email": "support@ideal-postcodes.co.uk",
@@ -29,8 +31,7 @@
   },
   "license": "MIT",
   "files": [
-    "dist/index.js",
-    "public/openapi.json"
+    "dist"
   ],
   "keywords": [
     "Ideal Postcodes",

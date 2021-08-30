@@ -1,0 +1,7 @@
+{
+  "extends": "@cablanchard/tsconfig",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["openapi.ts"]
+}
