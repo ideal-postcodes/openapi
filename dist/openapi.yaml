@@ -1,0 +1,3761 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  license:
+    name: AGPLv3
+    url: 'https://opensource.org/licenses/AGPL-3.0'
+  title: API Reference - Ideal Postcodes
+  termsOfService: 'https://terms.ideal-postcodes.co.uk'
+  description: >
+    # Getting Started
+
+
+    ## Overview
+
+
+    ### Methods
+
+
+    All API methods are either a `GET`, `POST` or `OPTIONS` request.
+
+
+    The API communicates over both HTTPS and plain HTTP using IPv4 and IPv6.
+
+
+    We recommend using HTTPS only.
+
+
+    ### Responses
+
+
+    We use appropriate HTTP status codes where possible to indicate the request
+    status.
+
+
+    All responses are returned in JSON.
+
+
+    ### Rate Limiting
+
+
+    Each IP address is rate limited at 25 requests per second. Tripping the rate
+    limit will result in a 503 response.
+
+
+    The autocomplete API also has an additional rate limit.
+
+
+    If you expect to breach the limit please [contact
+    us](https:ideal-postcodes.co.uk/support) and we can move you to an endpoint
+    with a higher limit.
+
+
+    ### JSONP
+
+
+    [JSONP](http://en.wikipedia.org/wiki/JSONP) requests are supported. Simply
+    include a `callback=` in your request as a query parameter and your result
+    will be returned wrapped in a function designated by your request.
+
+
+    ## Authentication
+
+
+    Most requests require an **API key** for authentication. Authenticate by
+    passing an `api_key` as part of the query string. For example:
+
+
+    ```
+
+    api.ideal-postcodes.co.uk/v1/postcodes/ID11QD?api_key=iddqd
+
+    ```
+
+
+    Alternatively, authentication can be transmitted via the `Authorization`
+    header using the following scheme:
+
+
+    ```
+
+    Authorization: IDEALPOSTCODES api_key="iddqd" [other_key="foo"]
+
+    ```
+
+
+    ## Versioning
+
+
+    This API is versioned with a simple prefix in the URL. The current version
+    is `/v1/`. We will maintain backwards-compatibility by releasing breaking
+    changes under a new version.
+
+
+    Please note that we consider the following changes backwards-compatible:
+
+
+    - Adding new properties to existing API responses
+
+    - Adding new API endpoints
+
+    - Adding new optional request parameters to existing API endpoints
+
+    - Changing the order of properties in existing API responses
+
+    - Changing the autocomplete address suggestion format
+
+
+    ## Error Handling
+
+
+    A successful lookup is accompanied with a HTTP status code of 200 and a
+    response code of 2000 (found in the body).
+
+
+    An error has occurred if the HTTP status code is not 200. Errors can range
+    from a benign 404 (resource not found) to more urgent errors (your API Key
+    ran out of credit, failed authentication, etc).
+
+
+    ## Testing
+
+
+    Each method has a simple testing procedure available which does not affect
+    your account balance. You can find these methods
+    [here](https://ideal-postcodes.co.uk/documentation/testing).
+
+
+    ### Community Key
+
+
+    Our documentation and demos make heavy use of our community key `iddqd`,
+    which allows convenient access for trialing the API.
+
+
+    Although many restrictions on this key are relaxed to allow developers make
+    test requests, this key has a limit of 15 lookups per IP address per day as
+    well as a daily usage cap. If you hit any limit restrictions, you can
+    continue testing the API by creating a key of your own and using our free
+    test methods.
+
+
+    Please be kind with the community key. We're trusting everyone to use it
+    responsibly so that other developers may quickly trial the API. Thank you!
+
+
+    ## Metadata
+
+
+    Requests that affect your balance may be annotated with arbitrary metadata.
+    This data is stored along with your lookup history and can be queried at a
+    later date via the API or the dashboard. We call the ability to label your
+    requests [tagging](https://ideal-postcodes.co.uk/documentation/metadata).
+
+
+    # Response Codes
+
+
+    The API returns two indicators to help you to determine the status of each
+    HTTP request.
+
+
+    The first is the **HTTP Status**, which is found in the status-line of all
+    HTTP requests. The API will return status codes that adhere to HTTP /1.1
+    Specifications wherever possible.
+
+
+    `2XX` status codes indicates success while `4XX` and `5XX` indicate client
+    and server errors respectively.
+
+
+    The second is the **API response code**, which can be found in the `code`
+    property of the response body. This code will provide a more specific reason
+    if a failure has occurred and can point you in the right direction when
+    debugging.
+
+
+    Please use the glossary of code numbers and HTTP status codes below when
+    debugging your requests.
+
+
+    ## 200 Request Success
+
+
+    | HTTP Code | API Code | Description                                  |
+
+    | --------- | -------- | -------------------------------------------- |
+
+    | 200       | 2000     | Success. Request was completed successfully. |
+
+
+    ## 400 Bad Request
+
+
+    The request could not be understood due to some input error.
+
+
+    | HTTP Code | API Code |
+    Description                                                                                                                          
+    |
+
+    | --------- | -------- |
+    -------------------------------------------------------------------------------------------------------------------------------------
+    |
+
+    | 400       | 4000     | Invalid syntax submitted. Some part of your request
+    was malformed or did not match our
+    specifications.                                |
+
+    | 400       | 4001     | Validation failed on your submitted data. Some of
+    the data you provided did not meet our validation requirements, e.g. string
+    length. |
+
+    | 400       | 4005     | Invalid start date. Please ensure start dates are
+    provided as a UTC Timestamp in
+    milliseconds.                                        |
+
+    | 400       | 4006     | Invalid end date. Please ensure end dates are
+    provided as a UTC Timestamp in
+    milliseconds.                                            |
+
+    | 400       | 4007     | Invalid date range. Check if your start and end
+    dates are in the right
+    order.                                                         |
+
+    | 400       | 4008     | Invalid date range. Check that your date range is
+    90 days or
+    less.                                                                    |
+
+    | 400       | 4009     | Too many tags. Please specify no more than 3 tags
+    to
+    query.                                                                          
+    |
+
+
+    ## 401 Unauthorised
+
+
+    Authorization credentials are not valid.
+
+
+    | HTTP Code | API Code |
+    Description                                                                                                                                                       
+    |
+
+    | --------- | -------- |
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    |
+
+    | 401       | 4010     | Invalid Key. The `api_key` you provided is not
+    valid.                                                                                                             
+    |
+
+    | 401       | 4011     | Requesting URL not on whitelist. The cross domain
+    request is not coming from a whitelisted URL. You can update or disable your
+    allowed URLs via your Key settings. |
+
+    | 401       | 4012     | Failed user authentication. Invalid `user_token`
+    presented.                                                                                                       
+    |
+
+    | 401       | 4013     | Licensee Key is required. Sublicensed keys require
+    you need to present licensee credentials via the `licensee`
+    parameter.                                          |
+
+
+    ## 402 Request Failed
+
+
+    Your request is well-formed but are not able to complete your request for
+    another reason.
+
+
+    | HTTP Code | API Code |
+    Description                                                                                                                                                                                                                                                       
+    |
+
+    | --------- | -------- |
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    |
+
+    | 402       | 4020     | Key balance depleted. You're out of lookups on your
+    API
+    Key.                                                                                                                                                                                                      
+    |
+
+    | 402       | 4021     | Limit reached. One of your lookup limits has been
+    breached for today. This could either be your total daily limit on your key
+    or the individual IP limit. You can either wait for for the limit to reset
+    (after a day) or manually disable or increase your limit. |
+
+
+    ## 404 Resource Not Found
+
+
+    The resource you requested does not exist.
+
+
+    | HTTP Code | API Code |
+    Description                                                                                  
+    |
+
+    | --------- | -------- |
+    ---------------------------------------------------------------------------------------------
+    |
+
+    | 404       | 4040     | Postcode not found. The postcode you have submitted
+    does not exist.                           |
+
+    | 404       | 4041     | User not found. Your user could not be identified
+    given the credentials you presented.        |
+
+    | 404       | 4042     | Key not found. Your key could not be identified
+    given the credentials you presented.          |
+
+    | 404       | 4044     | No UDPRN found. No address is associated with the
+    UDPRN queried                               |
+
+    | 404       | 4045     | No licensee found. Your licensee could not be
+    identified given the credentials you presented. |
+
+    | 404       | 4046     | No UMPRN found. No Multiple Residence premise is
+    associated with the UMPRN queried.           |
+
+
+    ## 500 Server Error
+
+
+    A error occurred on our server.
+
+
+    | HTTP Code | API Code |
+    Description                                                                                                                                                                             
+    |
+
+    | --------- | -------- |
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    |
+
+    | 500       | 5000     | An error occurred on our end. These errors are
+    logged and queued so we can understand what went wrong. However, if you need
+    speedy resolution please email support@ideal-postcodes.co.uk |
+
+    | 500       | 5001     | Akin to
+    5000.                                                                                                                                                                           
+    |
+
+    | 500       | 5002     | The server took too long to process on our end, so
+    we aborted the request. You may retry the
+    request.                                                                                   
+    |
+  contact:
+    email: support@ideal-postcodes.co.uk
+    name: Ideal Postcodes Support
+    url: 'https://ideal-postcodes.co.uk/support'
+externalDocs:
+  description: 'More on our APIs, libraries with guides and examples'
+  url: 'https://docs.ideal-postcodes.co.uk'
+servers:
+  - url: 'https://api.ideal-postcodes.co.uk/v1'
+    description: Ideal Postcodes API Server
+    variables: {}
+tags:
+  - name: Autocomplete
+    description: 'Autocomplete addresses, for search-as-you-type'
+  - name: Postcodes
+    description: UK Postcode Search
+  - name: Addresses
+    description: Query and retrieve addresses
+  - name: UDPRN
+    description: Retrieve a UK address by UDPRN
+  - name: UMPRN
+    description: Retrieve a UK multiple occupancy by UMPRN
+  - name: Keys
+    description: Monitor and manage API Keys
+  - name: Licensees
+    description: >
+      The Licensee resource represents an alternate legal End User of our data
+      who may not be same entity as the owners of the Ideal Postcodes account.
+
+
+      The concept of Licensees underpins our sublicensing platform, which allows
+      users to license multiple external organisations or individuals to access
+      data under the same account.
+
+
+      Sublicensing is ideal for platform vendors, who provide services to
+      multiple clients who in turn each have their own users.
+  - name: Configs
+    description: >
+      The Config resource allows users to assign serialised configuration data
+      to API Keys. The payloads assigned to a Config object can later be
+      retrieved to dynamically configure your integration.
+
+
+      Useful if you need to configure your integration remotely rather than
+      editing code in situ.
+paths:
+  '/postcodes/{postcode}':
+    get:
+      tags:
+        - Postcodes
+      summary: List Addresses
+      operationId: Postcodes
+      description: >
+        Returns the complete list of addresses for a postcode. Postcode searches
+        are space and case insensitive.
+
+
+        The Postcode Lookup API provides a JSON interface to search UK addresses
+        from a postcode. It can be used to power Postcode Lookup driven address
+        searches, like [Postcode Lookup](/postcode-lookup).
+
+
+        ## JavaScript Example
+
+
+        ```javascript
+
+        const { Client, postcodes } = require("@ideal-postcodes/core-node");
+
+
+        const api_key = "iddqd";
+
+
+        const client = new Client({ api_key: "iddqd" });
+
+
+        await postcodes.retrieve(client, "ID1 1QD", { query: { api_key } });
+
+        ```
+
+
+        This API models postcodes as a HTTP resource. The above example provides
+        a thin JavaScript abstraction and more control over the HTTP request and
+        response. The JavaScript client also provides a number of terser helper
+        methods like
+        [`client.lookupPostcode`](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
+
+
+        If you wish to quickly add Postcode Lookup driven address finder on your
+        page, see our [Postcode Lookup plugin](/postcode-lookup) and [associated
+        demos](/postcode-lookup-demo).
+
+
+        [JavaScript client method
+        documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
+
+
+        ## Postcode Not Found
+
+
+        Lookup balance is unaffected by invalid postcodes. The API returns a
+        `404` response with response body:
+
+
+        ```json
+
+        {
+          "code": 4040,
+          "message": "Postcode not found",
+          "suggestions": ["SW1A 0AA"]
+        }
+
+        ```
+
+
+        ### Suggestions
+
+
+        If a postcode cannot be found, the API will provide up to 5 closest
+        matching postcodes. Common errors will be corrected first (e.g. mixing
+        up `O` and `0` or `I` and `1`).
+
+
+        If the suggestion list is small (fewer than 3), there is a high
+        probability the correct postcode is there. You may notify the user or
+        immediately trigger new searches.
+
+
+        The suggestion list will be empty if the postcode has deviated too far
+        from a valid postcode format.
+
+
+        ## Multiple Residence
+
+
+        A small number of Multiple Residence postcodes will return more than 100
+        premises and may require pagination. Use `page` to paginate the result
+        set.
+
+
+        ```javascript
+
+        const { lookupPostcode, Client } =
+        require("@ideal-postcodes/core-node");
+
+
+        const client = new Client({ api_key: "iddqdmr" });
+
+
+        await lookupPostcode({ client, postcode: "CV4 7AL", page: 1 });
+
+        ```
+
+
+        ## Testing
+
+
+        To test your implementation of our API we have a range of test postcodes
+        that yield both successful and unsuccessful responses to your request.
+        They are the following
+
+
+        - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
+
+        - `ID1 KFA` Returns "postcode not found", error `4040`
+
+        - `ID1 CLIP` Returns "no lookups remaining", error `4020`
+
+        - `ID1 CHOP` Returns "daily (or individual) lookup limit breached",
+        error `4021`
+
+
+        Test requests will undergo usual authentication and restriction rules
+        (individual and daily lookup limits) to surface any problems you may
+        have during implementation. However, it will not count towards a lookup
+        on your key.
+      parameters:
+        - name: postcode
+          in: path
+          description: Postcode to retrieve
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/Postcode'
+        - name: api_key
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: filter
+          in: query
+          style: form
+          required: false
+          explode: false
+          schema:
+            $ref: '#/components/schemas/FilterParam'
+        - name: page
+          in: query
+          style: form
+          required: false
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PageParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostcodeResponse'
+        '404':
+          description: Postcode Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostcodeNotFoundResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: |
+            https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA?api_key=iddqd
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -G -k \
+            --url 'https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA' \
+            --d "api_key=iddqd"
+  '/udprn/{udprn}':
+    get:
+      tags:
+        - UDPRN
+      summary: Retrieve
+      operationId: UDPRN
+      description: >
+        Returns an address as identified by its Unique Delivery Point Reference
+        Number (UDPRN).
+
+
+        You may find it useful to store UDPRN information as it can be used to
+        retrieve the most recent information for an address. It can also be used
+        to test for a deleted address.
+
+
+        UDPRNs are an eight digit unique numeric code (e.g. 25962203) for any
+        premise on the Postcode Address File. It's essentially a unique
+        identifier for every address in the UK that Royal Mail has in its
+        database.
+
+
+        ## Testing
+
+
+        To test your implementation of our API we have a range of test UDPRNs
+        that yield both successful and unsuccessful responses to your request.
+
+
+        They are the following:
+
+
+        - `0` Returns a successful UDPRN lookup response
+          `2000`
+        - `-1` Returns "UDPRN not found", error `4044`
+
+        - `-2` Returns "no lookups remaining", error `4020`
+
+        - `-3` Returns "daily (or individual) lookup limit breached",
+          error `4021`
+
+        Test requests will undergo usual authentication and restriction rules
+        (individual and daily lookup limits) to surface any problems you may
+        have during implementation. However, it will not count towards a
+        postcode lookup on your key.
+      parameters:
+        - name: udprn
+          in: path
+          description: UDPRN to be retrieved
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: filter
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/FilterParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UDPRNResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: |
+            https://api.ideal-postcodes.co.uk/v1/udprn/0?api_key=iddqd
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G https://api.ideal-postcodes.co.uk/v1/udprn/0 \
+              -d "api_key=iddqd"
+  '/umprn/{umprn}':
+    get:
+      tags:
+        - UMPRN
+      summary: Retrieve
+      operationId: UMPRN
+      description: >
+        Returns a multiple occupancy address identified as identifited via its
+        UMPRN (Multiple Residence Unique ID).
+
+
+        UMPRNs are a unique numeric code for any Multiple Residence household on
+        the optional Multiple Residence dataset.
+
+
+        ## Testing
+
+
+        To test your implementation of our API we have a range of test UMPRNs
+        that yield both successful and unsuccessful responses to your request.
+        They are the following
+
+
+        - `0` Returns a successful UMPRN lookup response `2000`
+
+        - `-1` Returns "UMPRN not found", error `4044`
+
+        - `-2` Returns "no lookups remaining", error `4020`
+
+        - `-3` Returns "daily (or individual) lookup limit breached", error
+        `4021`
+
+
+        Test requests will undergo usual authentication and restriction rules
+        (individual and daily lookup limits) to surface any problems you may
+        have during implementation. However, it will not count towards a
+        postcode lookup on your key.
+
+
+        ### Pricing
+
+
+        Per lookup charges apply. Empty responses are not charged.
+      parameters:
+        - name: umprn
+          in: path
+          description: UMPRN to be retrieved
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: filter
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/FilterParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UMPRNResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: |
+            https://api.ideal-postcodes.co.uk/v1/umprn/0?api_key=iddqdmr
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G https://api.ideal-postcodes.co.uk/v1/umprn/0 \
+              -d "api_key=iddqdmr"
+  '/keys/{key}':
+    get:
+      tags:
+        - Keys
+      summary: Availability
+      operationId: KeyAvailability
+      description: >
+        Returns public information on key. Currently only returns whether the
+        key is currently useable via the `available` property. Use this to
+        discover if the key is useable before making further requests.
+
+
+        You may pass both API Keys (beginning `ak_`) and Sublicensed Keys
+        (beginning `sl_`).
+
+
+        ## Testing
+
+
+        To test your implementation of our API, you may use the following test
+        keys.
+
+
+        - **iddqd** Availability will return as `true`
+
+        - **idkfa** Availability will return as `false`
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyResponse'
+        '404':
+          description: Invalid Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/keys/{key}/details':
+    get:
+      tags:
+        - Keys
+      summary: Details
+      operationId: KeyDetails
+      description: >
+        Returns private data on the key including remaining lookups, available
+        datasets and usage limits.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: user_token
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyDetailsResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      deprecated: false
+  '/keys/{key}/usage':
+    get:
+      tags:
+        - Keys
+      summary: Usage Stats
+      operationId: KeyUsage
+      description: >
+        Reports the number of lookups consumed on a key for a range of days.
+
+
+        A maximum interval of 90 days can be provided for analysis. If no start
+        or end date is provided, the last 21 days will be used as the default
+        interval.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: start
+          in: query
+          description: >-
+            A start date/time in the form of a UNIX Timestamp in milliseconds,
+            e.g. `1418556452651`. If no start time is provided, the start time
+            will be assigned to a time 21 days prior to the end time.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/StartParam'
+        - name: end
+          in: query
+          description: >-
+            An end date/time in the form of a UNIX Timestamp in milliseconds,
+            e.g. `1418556452651`. If no end time is provided, the current time
+            will be used.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/EndParam'
+        - name: tags
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/TagsParam'
+        - name: licensee
+          in: query
+          description: >-
+            Sublicensed keys only. This will restrict the analysed dataset to a
+            specific licensee.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LicenseeParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyUsageResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/keys/iddqd/usage?user_token=my_secret_token
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G https://api.ideal-postcodes.co.uk/v1/keys/iddqd/usage \
+              -d "user_token=my_secret_token"
+  '/keys/{key}/lookups':
+    get:
+      tags:
+        - Keys
+      summary: Logs (CSV)
+      operationId: KeyLogs
+      description: >
+        Reports lookup information on a key for paid lookups.
+
+
+        This method requires a `user_token`, which can be found on your
+        [accounts page](https://ideal-postcodes.co.uk/account).
+
+
+        A maximum interval of 90 days can be provided for analysis. If no start
+        or end date is provided, the last 21 days will be used as the default
+        interval.
+
+
+        ## Download Usage History (CSV)
+
+
+        `GET /keys/:key/lookups`
+
+
+        Returns a CSV download of lookups performed and associated information.
+
+
+        Note that the Content-Type returned will be CSV (text/csv). For a non
+        200 response, the `Content-Type` will revert to JSON with the error code
+        and message embedded.
+
+
+        ## Data Redaction
+
+
+        Personally Identifiable Data (PII) caught in this your usage log
+        (including IP, search term and URL data) will be redacted on a weekly
+        basis.
+
+
+        By default, PII will be redacted if it is older than 21 days. This
+        timeframe can be configured from your dashboard.
+
+
+        You may prevent PII collection altogether by setting the interval to `0`
+        days.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: start
+          in: query
+          description: >-
+            An start date/time in the form of a UNIX Timestamp in milliseconds,
+            e.g. `1418556452651`. If no start time is provided, the start time
+            will be assigned to a time 21 days prior to the end time.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/StartParam'
+        - name: end
+          in: query
+          description: >-
+            An end date/time in the form of a UNIX Timestamp in milliseconds,
+            e.g. `1418556452651`. If no end time is provided, the current time
+            will be used.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/EndParam'
+        - name: licensee
+          in: query
+          description: >-
+            Sublicensed keys only. This will restrict the analysed dataset to a
+            specific licensee.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LicenseeParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/csv:
+              example: >
+                2015-02-21T16:05:22.991Z,82.85.128.18,SW12AA,https://www.example.com/,Postcode
+                Lookup,
+
+                2015-02-21T16:05:38.298Z,82.85.128.18,10 Downing Street
+                London,https://www.example.com/,Address Lookup,CRM
+
+                2015-02-21T16:06:49.227Z,82.85.128.18,OX44PP,https://www.example.com/,Postcode
+                Lookup,"Website,Live"
+
+                2015-02-21T16:07:02.706Z,82.85.128.18,PL9
+                9HE,https://www.example.com/,Postcode Lookup,
+              schema:
+                type: string
+                description: Success
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/keys/iddqd/lookups?user_token=my_secret_token
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G https://api.ideal-postcodes.co.uk/v1/keys/iddqd/lookups \
+              -d "user_token=my_secret_token"
+  /autocomplete/addresses:
+    get:
+      tags:
+        - Autocomplete
+      summary: Find Address
+      description: >
+        The address autocomplete API returns a list of address suggestions that
+        match the query ordered by relevance score.
+
+
+        This API can be used to power realtime address finders, also known as
+        address autofill or address autocomplete.
+
+
+        If you wish to quickly add address autocompletion to your address forms,
+        see [Address Finder](/address-finder) and [associated
+        demos](/address-finder-demo).
+
+
+        ## Implementing Address Autocomplete
+
+
+        Retrieving addresses using Address Autocomplete is a 2 step process.
+
+
+        1. Retrieve partial address suggestions via `/autocomplete/addresses`
+
+        2. Retrieve the entire address by following the URL provided by the
+        suggestion
+
+
+        Step 2 will decrement your lookup balance.
+
+
+        Please note, this API is not intended to be a free standalone resource.
+
+
+        ### JavaScript Example
+
+
+        #### Step 1. Retrieve a list of suggestions
+
+
+        ```javascript
+
+        const { Client, autocomplete } = require("@ideal-postcodes/core-node");
+
+
+        const response = await autocomplete.list(client, {
+          query: {
+            query: "221b bake",
+            api_key: "iddqd",
+          },
+        });
+
+        ```
+
+
+        #### Step 2. Resolve a suggestion retrieved above for a full address
+
+
+        ```javascript
+
+        const { lookupUdprn } = require("@ideal-postcodes/core-node");
+
+
+        const udprn = 17646242;
+
+
+        await lookupUdprn({ client, udprn });
+
+        ```
+
+
+        ## Filters
+
+
+        You can strictly narrow your result by adding filters to your
+        querystring which correspond with an address attribute.
+
+
+        For instance, you can restrict to postcode `SW1A 2AA` by appending
+        `postcode=sw1a2aa`.
+
+
+        If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty
+        result set is returned and no lookup is incurred.
+
+
+        You can also scope using multiple terms for the same filter with a comma
+        separated list of terms. E.g. Restrict results to E1, E2 and E3 outward
+        codes: `postcode_outward=e1,e2,e3`. Multiple terms are
+        <code>OR</code>'ed, i.e. the matching result sets are combined.
+
+
+        All filters can accept multiple terms unless stated otherwise below.
+
+
+        Multiple filters can also be combined. E.g. Restrict results to small
+        user organisations in the N postcode area:
+        `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are
+        <code>AND</code>'ed, i.e. each additional filter narrows the result set.
+
+
+        A maximum of **10** terms are allowed across all filters.
+
+
+        ## Biases
+
+
+        You can boost certain addresses results that correspond with a certain
+        address attribute. All bias searches are prefixed with `bias_`.
+
+
+        Biased searches, unlike filtered searches, also allow unmatched
+        addresses to appear - although they will rank lower.
+
+
+        For instance, can boost addreses the postcode areas `SW` and `SE` by
+        appending `bias_postcode_area=SW,SE`.
+
+
+        If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect
+        is applied.
+
+
+        You may scope using multiple terms for the same bias with a comma
+        separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3`
+        outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
+
+
+        All biases can accept multiple terms unless stated otherwise below.
+
+
+        A combined maximum of **5** terms are allowed across all biases.
+
+
+        [JavaScript client method
+        documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
+
+
+        ## Suggestion Format
+
+
+        The suggestion format is prone to change over time. Attempts to parse
+        the suggestion may result in your integration breaking. Instead use the
+        suggestion as-is.
+
+
+        ## Querying with a Postcode
+
+
+        - If a postcode is passed as a query, all addresses for that postcode
+        will be listed as the result if the limit parameter is not supplied
+
+        - If a postcode forms only part of the query, your autocomplete results
+        will be filtered by that postcode
+
+
+        ## Querying Multiple Residence
+
+
+        For Multiple Residence enabled keys, any Multiple Residence households
+        will also return a UMPRN id, which can be retrieved with the
+        `/umprn/:id` endpoint. Note that Multiple Residence households will
+        always have a parent premise with a UDPRN, and a single UDPRN premise
+        may have many Multiple Residence households with different UMPRNs. For
+        instance:
+
+
+        ## Rate Limiting
+
+
+        You can make up to 3000 requests to the autocomplete API within a 5
+        minute span. The HTTP Header contains information on your current rate
+        limit.
+
+
+        | Header                  |
+        Description                                                                           
+        |
+
+        | ----------------------- |
+        --------------------------------------------------------------------------------------
+        |
+
+        | `X-RateLimit-Limit`     | The maximum number of requests that can be
+        made in 5 minutes                           |
+
+        | `X-RateLimit-Remaining` | The remaining requests within the current
+        rate limit window                            |
+
+        | `X-RateLimit-Reset`     | The time when the rate limit window resets
+        in Unix Time (seconds) or UTC Epoch seconds |
+
+
+        ## Pricing
+
+
+        This API currently does not affect your balance. However, subsequent
+        searches require a paid request (e.g. a UDPRN search). This paid
+        request, will yield the complete address.
+
+
+        Please note, this API is not intended as a standalone free resource.
+        Integrations that consistently make autocomplete requests without a paid
+        request to resolve an address may be disrupted via tightened rate
+        limits. Continued misuse will result in account suspension.
+
+
+        ## Testing
+
+
+        `ID1 1QD` will return address suggestions, that when retrieved via
+        `/udprn/:id` will not affect your balance.
+      operationId: AddressAutocomplete
+      parameters:
+        - name: query
+          in: query
+          description: >-
+            Specifies the address you wish to query. Query can be shortened to
+            `q=`
+          style: form
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: limit
+          in: query
+          style: form
+          description: >
+            Limits number of address suggestions unless a postcode is detected.
+            In this instance entire list of addreses for that postcode is
+            returned.
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LimitParam'
+        - name: postcode_outward
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeOutwardParam'
+        - name: postcode
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeParam'
+        - name: postcode_area
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeAreaParam'
+        - name: postcode_sector
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeSectorParam'
+        - name: post_town
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostTownParam'
+        - name: uprn
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UPRNParam'
+        - name: country
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/CountryParam'
+        - name: postcode_type
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeTypeParam'
+        - name: su_organisation_indicator
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/SmallUserParam'
+        - name: box
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BoxParam'
+        - name: bias_postcode_outward
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeOutwardParam'
+        - name: bias_postcode
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeParam'
+        - name: bias_postcode_area
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeAreaParam'
+        - name: bias_postcode_sector
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeSectorParam'
+        - name: bias_post_town
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPosttownParam'
+        - name: bias_thoroughfare
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasThoroughfareParam'
+        - name: bias_country
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasCountryParam'
+        - name: bias_lonlat
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasLonLatParam'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-RateLimit-Limit:
+              description: The maximum number of requests that can be made in 5 minutes
+              schema:
+                type: number
+                format: int32
+            X-RateLimit-Remaining:
+              description: The remaining requests within the current rate limit window
+              schema:
+                type: number
+                format: int32
+            X-RateLimit-Reset:
+              description: >
+                The time when the rate limit window resets in Unix Time
+                (seconds) or UTC Epoch seconds.
+              schema:
+                type: number
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutocompleteResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=iddqd&q=10%20downing
+        - lang: cURL
+          label: CLI
+          source: >
+            curl -k -G
+            'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses' \
+              -d 'api_key=iddqd' \
+              --data-urlencode 'query=10 downing'
+  /addresses:
+    get:
+      tags:
+        - Addresses
+      summary: Extract Addresses
+      description: >
+        Extract a list of comlpete addresses that match the query ordered by
+        relevance score. This query accepts an optional limit and page query
+        (defaults to 10 and 0 respectively).
+
+
+        If a valid postcode is passed as the query string, the entire address
+        list for that postcode is returned as the result. Note, in these cases,
+        limit parameter is ignored and fixed at 100.
+
+
+        This API designed as a multi-purpose tool for generating address lists,
+        cleansing and wholesale data extraction according to specific
+        parameters. For address autocomplete, see our autocomplete API - which
+        is designed for speed and ergonomics.
+
+
+        If a valid postcode is passed as the query string, the entire address
+        list for that postcode is passed as a result. Note, in these cases,
+        limit and page parameters are ignored.
+
+
+        ### JavaScript Example
+
+
+        ```javascript
+
+        const { Client, lookupAddress } = require("@ideal-postcodes/core-node");
+
+
+        const client = new Client({ api_key: "iddqd" });
+
+
+        await lookupAddress({ client, query: "10 Brompton Rd" });
+
+        ```
+
+
+        [JavaScript client method
+        documentation](https://github.com/ideal-postcodes/core-interface#search-for-an-address)
+
+
+        ## Filters
+
+
+        You can strictly narrow your result by adding filters to your query
+        string which correspond with an address attribute.
+
+
+        For instance, you can restrict to postcode `SW1A 2AA` by appending
+        `postcode=sw1a2aa`.
+
+
+        If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty
+        result set is returned and no lookup is incurred.
+
+
+        You can also scope using multiple terms for the same filter with a comma
+        separated list of terms. E.g. Restrict results to E1, E2 and E3 outward
+        codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the
+        matching result sets are combined.
+
+
+        All filters can accept multiple terms unless stated otherwise below.
+
+
+        Multiple filters can also be combined. E.g. Restrict results to small
+        user organisations in the N postcode area:
+        `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are
+        `AND`'ed, i.e. each additional filter narrows the result set.
+
+
+        A combined maximum of 5 terms are allowed across all filters.
+
+
+        ## Biases
+
+
+        You can boost certain addresses results that correspond with a certain
+        address attribute. All bias searches are prefixed with `bias_`.
+
+
+        Biased searches, unlike filtered searches, also allow unmatched
+        addresses to appear - although they will rank lower.
+
+
+        For instance, you can boost addreses the postcode areas `SW` and `SE` by
+        appending `bias_postcode_area=SW,SE`.
+
+
+        If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect
+        is applied.
+
+
+        You may scope using multiple terms for the same bias with a comma
+        separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3`
+        outward codes: `bias_postcode_outward=e1,e2,e3`.
+
+
+        All biases can accept multiple terms unless stated otherwise below.
+
+
+        A combined maximum of 5 terms are allowed across all biases.
+
+
+        ## Search by Postcode and Building Name or Number
+
+
+        Search by postcode and building attribute with the postcode filter and
+        query argument. E.g. For "SW1A 2AA Prime Minister"
+        `/v1/addresses?postcode=sw1a2aa&q=prime minister`.
+
+
+        The advantage of using filters is a postcode mismatch does not result in
+        a lookup as no results are returned.
+
+
+        #### Search By UPRN
+
+
+        Search by UPRN using the `uprn` filter and excluding the query argument.
+        E.g. `/v1/addresses?uprn=100`.
+
+
+        ## Testing
+
+
+        - **ID1 1QD** Returns a successful query response `2000`
+
+        - **ID1 KFA** Returns an empty query response `2000`
+
+        - **ID1 CLIP** Returns "no lookups remaining" error `4020`
+
+        - **ID1 CHOP** Returns "daily (or individual) lookup limit breached"
+        error `4021`
+
+
+        Test requests will undergo usual authentication and restriction rules
+        (individual and daily lookup limits) to surface any problems you may
+        have during implementation. However, it will not count towards a
+        postcode lookup on your key.
+      operationId: Addresses
+      parameters:
+        - name: api_key
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: query
+          in: query
+          description: >-
+            Specifies the address you wish to query. Query can be shortened to
+            `q=`
+          style: form
+          explode: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LimitParam'
+        - name: page
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PageParam'
+        - name: filter
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/FilterParam'
+        - name: postcode_outward
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeOutwardParam'
+        - name: postcode
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeParam'
+        - name: postcode_area
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeAreaParam'
+        - name: postcode_sector
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeSectorParam'
+        - name: post_town
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostTownParam'
+        - name: uprn
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UPRNParam'
+        - name: country
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/CountryParam'
+        - name: postcode_type
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/PostcodeTypeParam'
+        - name: su_organisation_indicator
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/SmallUserParam'
+        - name: box
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BoxParam'
+        - name: bias_postcode_outward
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeOutwardParam'
+        - name: bias_postcode
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeParam'
+        - name: bias_postcode_area
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeAreaParam'
+        - name: bias_postcode_sector
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPostcodeSectorParam'
+        - name: bias_post_town
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasPosttownParam'
+        - name: bias_thoroughfare
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasThoroughfareParam'
+        - name: bias_country
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasCountryParam'
+        - name: bias_lonlat
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasLonLatParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/addresses?api_key=iddqd&query=10%20downing%20street%20london
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G 'https://api.ideal-postcodes.co.uk/v1/addresses' \
+              -d 'api_key=iddqd' \
+              --data-urlencode 'query=10 downing street london'
+  '/keys/{key}/licensees':
+    get:
+      tags:
+        - Licensees
+      summary: List
+      description: Returns a list of licensees for a key.
+      operationId: ListLicensees
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: starting_after
+          in: query
+          description: >-
+            Specify ID of the licensee after which you would like to list
+            results
+          style: form
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+        - name: limit
+          in: query
+          description: >-
+            Specify the maximum number of results to return per page. Default
+            and maximum is `100`.
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LimitParam'
+        - name: query
+          in: query
+          description: Filter result by licensee name. Query can be shortened to `q=`
+          style: form
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseesResponse'
+    post:
+      tags:
+        - Licensees
+      summary: Create
+      description: Create a licensee for the specified API Key.
+      operationId: CreateLicensee
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LicenseeEditable'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseeResponse'
+  '/keys/{key}/licensees/{licensee}':
+    get:
+      tags:
+        - Licensees
+      summary: Retrieve
+      description: Returns licensee information as identified by the licensee key.
+      operationId: RetrieveLicensee
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: licensee
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LicenseeParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseeResponse'
+    delete:
+      tags:
+        - Licensees
+      summary: Cancel
+      description: >-
+        Cancels a licensee key. This renders a licensee unusable. This action
+        can be reversed if you get in contact with us.
+      operationId: DeleteLicensee
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: licensee
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LicenseeParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                required:
+                  - result
+                  - code
+                  - message
+                title: Licensee Delete Response
+                type: object
+                properties:
+                  result:
+                    type: object
+                    required:
+                      - deleted
+                    properties:
+                      deleted:
+                        type: number
+                        format: int32
+                        example: 1
+                        minimum: 0
+                  code:
+                    type: integer
+                    format: int32
+                    enum:
+                      - 2000
+                  message:
+                    type: string
+                    enum:
+                      - Success
+    put:
+      tags:
+        - Licensees
+      summary: Update
+      description: Update Licensee
+      operationId: UpdateLicensee
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: licensee
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/LicenseeParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LicenseeEditable'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseeResponse'
+  '/keys/{key}/configs':
+    get:
+      tags:
+        - Configs
+      summary: List
+      description: Lists configurations associated with a key
+      operationId: ListConfigs
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+    post:
+      tags:
+        - Configs
+      summary: Create
+      description: Create a config
+      operationId: CreateConfig
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigNewParam'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+  '/keys/{key}/configs/{config}':
+    get:
+      tags:
+        - Configs
+      summary: Retrieve
+      description: Retrieve config object by name
+      operationId: RetrieveConfig
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: config
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ConfigParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+    delete:
+      tags:
+        - Configs
+      summary: Delete
+      description: Permanently deletes a configuration object.
+      operationId: DeleteConfig
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: config
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ConfigParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Config Delete Response
+                type: object
+                required:
+                  - result
+                  - code
+                  - message
+                properties:
+                  result:
+                    type: object
+                    required:
+                      - deleted
+                    properties:
+                      deleted:
+                        type: number
+                        format: int32
+                        example: 1
+                        minimum: 0
+                  code:
+                    type: integer
+                    format: int32
+                    enum:
+                      - 2000
+                  message:
+                    type: string
+                    enum:
+                      - Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+    post:
+      tags:
+        - Configs
+      summary: Update
+      description: Updates configuration object
+      operationId: UpdateConfig
+      parameters:
+        - name: key
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: config
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ConfigParam'
+        - name: user_token
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/UserTokenParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigUpdateParam'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+components:
+  schemas:
+    Postcode:
+      title: Postcode
+      type: string
+      description: Correctly formatted postcode. Capitalised and spaced.
+      maxLength: 8
+      minLength: 6
+      example: SW1A 2AA
+    ApiKeyParam:
+      title: API Key
+      type: string
+      description: |
+        Your Ideal Postcodes API Key. Typically beings `ak_`.
+
+        Available from your dashboard
+      example: ak_hk71kco54zGSGvF9eXXrvvnMOLLNh
+    FilterParam:
+      title: Filter
+      type: string
+      description: >
+        Comma separated whitelist of address elements to return. 
+
+
+        E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and
+        `line_3` address elements in your response
+      example: 'line_1,line_2,line_3'
+    PageParam:
+      title: Page
+      type: integer
+      format: int32
+      description: >
+        0 indexed indicator of the page of results to receive. Virtually all
+        postcode results are returned on page 0. 
+
+
+        A small number of Multiple Residence postcodes may need pagination (i.e.
+        have more than 100 premises).
+      minimum: 0
+      default: 0
+      example: 0
+    PostcodeOutward:
+      title: Postcode Outward
+      type: string
+      description: >-
+        The first part of a postcode is known as the outward code. e.g. The
+        outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct
+        local area for delivery. This part of the code contains the area and the
+        district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or
+        ‘B23’.
+      maxLength: 4
+      minLength: 2
+      example: SW1A
+    PostcodeInward:
+      title: Postcode Inward
+      type: string
+      description: >-
+        The second part of a postcode is known as the inward Code. e.g.  The
+        inward code of ID1 1QD is 1QD. This part is one number followed by two
+        letters.  The number identifies the sector in the postal district.  The
+        letters then define one or more properties in that sector.
+      maxLength: 3
+      minLength: 3
+      example: 2AA
+    PostTown:
+      title: Post Town
+      type: string
+      description: >-
+        A Post Town is mandatory for delivery of mail to a Delivery Point. This
+        is not necessarily the nearest town geographically, but a routing
+        instruction to the Royal Mail delivery office sorting mail for that
+        Delivery Point. A Post Town will always be present in every address, and
+        for some Localities the Post Town will be the only locality element
+        present.
+      maxLength: 30
+      example: London
+    DependentLocality:
+      title: Dependant Locality
+      type: string
+      description: >-
+        When the same thoroughfare name reoccurs in a Post town, it may not be
+        possible to make it dependant on a dependant thoroughfare. In this case
+        the thoroughfare is dependant on a locality. For example if we want to
+        find 1 Back Lane in Huddersfield we see that there are three.
+      maxLength: 35
+      example: ''
+    DoubleDependantLocality:
+      title: Double Dependant Locality
+      type: string
+      description: >-
+        Used to supplement Dependant Locality. A Double Dependant Locality
+        supplied along with a Dependant Locality if the Dependant Locality
+        exists twice in the same locality.
+      maxLength: 35
+      example: ''
+    Thoroughfare:
+      title: Thoroughfare
+      type: string
+      description: >-
+        Also known as the street or road name. In general each Thoroughfare Name
+        will have a separate Postcode. Longer Thoroughfares with high number
+        ranges often have multiple Postcodes covering the entire length of the
+        road, with breaks at suitable points e.g. junctions or natural breaks in
+        the road.
+      maxLength: 80
+      example: Downing Street
+    DependentThoroughfare:
+      title: Dependent Thoroughfare
+      type: string
+      description: >-
+        Used to supplement thoroughfare. When a thoroughfare name is used twice
+        in the same Post Town, the dependant thoroughfare is added to uniquely
+        indentify a delivery point.
+      maxLength: 80
+      example: ''
+    BuildingNumber:
+      title: Building Number
+      type: string
+      description: Number to identify premise on a thoroughfare or dependant thoroughfare.
+      maxLength: 4
+      example: '10'
+    BuildingName:
+      title: Building Name
+      type: string
+      description: >-
+        Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A,
+        K, Victoria House
+      maxLength: 50
+      example: ''
+    SubBuildingName:
+      title: Sub-Building Name
+      type: string
+      description: >-
+        When a premise is split into individual units such as flats, apartments
+        or business units. Cannot be present without either building_name or
+        building_number. E.g. Flat 1, A, 10B
+      maxLength: 30
+      example: ''
+    POBox:
+      title: PO Box
+      type: string
+      description: >-
+        When the PO Box Number field is populated it will contain PO BOX nnnnnn
+        where n represents the PO Box number. Note that the PO Box details can
+        occasionally consist of a combination of numbers and letters. PO Box
+        Numbers are only allocated to Large Users.
+      maxLength: 6
+      example: HK860
+    DepartmentName:
+      title: Department Name
+      type: string
+      description: >-
+        Used to supplment Organisation Name to identify a deparment within the
+        organisation.
+      maxLength: 60
+      example: ''
+    OrganisationName:
+      title: Organisation Name
+      type: string
+      description: >-
+        Used to supplment Organisation Name to identify a deparment within the
+        organisation.
+      maxLength: 60
+      example: Prime Minister &amp; First Lord Of The Treasury
+    UMPRN:
+      title: UMPRN
+      description: >-
+        A small minority of individual premises (as identified by a UDPRN) may
+        have multiple occupants behind the same letterbox. These are known as
+        Multiple Residence occupants and can be queried via the Multiple
+        Residence dataset. Simple, unique reference number for each Multiple
+        Residence occupant. 8-character numeric code. Note: this will be an
+        empty string `""` when not used for legacy reasons
+      oneOf:
+        - type: string
+          description: 'If premise is not multiple occupancy, this will be an empty string'
+          enum:
+            - ''
+        - type: number
+          description: 'If premise is multiple occupancy, this will be an integer'
+          example: 983729
+          minimum: 0
+          maximum: 99999999
+    PostcodeType:
+      title: Postcode Type
+      enum:
+        - S
+        - L
+      type: string
+      description: >-
+        This indicates the type of user. It can only take the values 'S' or 'L'
+        indicating small or large respectively. Large User Postcodes. These are
+        assigned to one single address either due to the large volume of mail
+        received at that address, or because a PO Box or Selectapost service has
+        been set up. Small User Postcodes. These identify a group of Delivery
+        Points. On average there are 15 Delivery Points per Postcode. However
+        this can vary between 1 and, in some cases, 100. There will never be
+        more than 100 Delivery Points on a Postcode.
+      example: S
+    SuOrganisationIndicator:
+      title: Small User Organisation Indicator
+      type: string
+      description: >-
+        Small User Organisation Indicator can have the values 'Y' or space. A
+        value of 'Y' indicates that a Small User Organisation is present at this
+        address.
+      example: ''
+    DeliveryPointSuffix:
+      title: Delivery Point Suffix
+      type: string
+      description: >-
+        A unique Royal Mail 2-character code (the first numeric & the second
+        alphabetical), which, when added to the Postcode, enables each live
+        Delivery Point to be uniquely identified. Once the Delivery Point is
+        deleted from PAF the DPS may be reused (although they aren’t reused
+        until all remaining Delivery Points in the range have been allocated).
+        The DPS for a Large User is always '1A' as each Large User has its own
+        Postcode. E.g. 2B
+      example: 1A
+    Line1:
+      title: Line 1
+      type: string
+      description: >-
+        First Address Line. Often contains premise and thoroughfare information.
+        In the case of a commercial premise, the first line is always the full
+        name of the registered organisation. Never empty.
+      example: Prime Minister &amp; First Lord of Treasury
+    Line2:
+      title: Line 2
+      type: string
+      description: >-
+        Second Address Line. Often contains thoroughfare and locality
+        information. May be empty.
+      example: 10 Downing Street
+    Line3:
+      title: Line 3
+      type: string
+      description: Third address line. May be empty.
+      example: ''
+    Premise:
+      title: Premise
+      type: string
+      description: >-
+        A pre-computed string which sensibly combines building_number,
+        building_name and sub_building_name. building_number, building_name and
+        sub_building_name represent raw data from Royal Mail's and can be
+        difficult to parse if you are unaware of how the Postcode Address File
+        premise fields work together. For this reason, we also provide a
+        pre-computed premise field which intelligently gathers these points into
+        a single, simple premise string. This field is ideal if you want to pull
+        premise information and thoroughfare information separately instead of
+        using our address lines data.
+      maxLength: 84
+      example: '10'
+    Country:
+      title: Country
+      type: string
+      description: >-
+        The country for which the postcode belongs to. May be empty for a small
+        number of addresses. Data source: ONS
+      example: England
+    County:
+      title: County
+      type: string
+      description: >-
+        Since postal, administrative or traditional counties may not apply to
+        some addresses, the county field is designed to return whatever county
+        data is available. Normally, the postal county is returned. If this is
+        not present, the county field will fall back to the administrative
+        county. If the administrative county is also not present, the county
+        field will fall back to the traditional county. May be empty in cases
+        where no administrative, postal or traditional county present.
+      example: London
+    AdministrativeCounty:
+      title: Administrative County
+      type: string
+      description: >-
+        The current administrative county to which the postcode has been
+        assigned. A Unitary Authority name, where one is present. If there is no
+        Unitary Authority, the County name is used. This information is not
+        static, because County boundaries may change due to administrative
+        changes. Data source: ONS. May be empty.
+      example: ''
+    PostalCounty:
+      title: Postal County
+      type: string
+      description: >-
+        Postal counties were used for the distribution of mail before the
+        Postcode system was introduced in the 1970s. The Former Postal County
+        was the Administrative County at the time. This data rarely changes.
+        Data source: Royal Mail. May be empty.
+      example: London
+    District:
+      title: District
+      type: string
+      description: >-
+        The current district/unitary authority to which the postcode has been
+        assigned. Data source: ONS
+      example: Westminster
+    Ward:
+      title: Ward
+      type: string
+      description: >-
+        The current administrative/electoral area to which the postcode has been
+        assigned. May be empty for a small number of addresses. Data source: ONS
+      example: St. James'
+    Longitude:
+      title: Longitude
+      description: >-
+        The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode
+        level Can be a positive or negative decimal. E.g. -0.1283983 Returns an
+        empty string if no location data is available.  Otherwise, a number is
+        returned
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+          enum:
+            - ''
+        - type: number
+          description: Represents longitude
+          example: 0.002823
+          minimum: -180
+          maximum: 180
+    Latitude:
+      title: Longitude
+      description: >-
+        The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode
+        level Can be a positive or negative decimal. E.g. 51.5083983 Returns an
+        empty string if no location data is available.  Otherwise a number is
+        returned.
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+          enum:
+            - ''
+        - type: number
+          description: Represents latitude
+          example: 52.938278
+          minimum: -180
+          maximum: 180
+    Eastings:
+      title: Eastings
+      description: >-
+        Eastings reference using the [Ordnance Survey National Grid reference
+        system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+        Northern Ireland Eastings uses the [Irish Grid Reference
+        System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)
+        Metres from origin. E.g. 550458 Returns an empty string if no location
+        data is available. Otherwise a number is returned
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+          enum:
+            - ''
+        - type: number
+          description: Metres offset east from origin
+          example: 9382
+          minimum: 0
+          maximum: 999999
+    Northings:
+      title: Eastings
+      description: >-
+        Northings reference using the [Ordnance Survey National Grid reference
+        system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+        Northern Ireland Northings uses the [Irish Grid Reference
+        System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)
+        Metres from origin. E.g. 180458 Returns an empty string if no location
+        data is available. Otherwise a number is returned  
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+          enum:
+            - ''
+        - type: number
+          description: Metres offset north from origin
+          example: 123932
+          minimum: 0
+          maximum: 999999
+    UPRN:
+      title: Unique Delivery Point Reference Number (UDPRN)
+      type: string
+      description: >-
+        UPRN stands for Unique Property Reference Number and is maintained by
+        the Ordnance Survey (OS). Local governments in the UK have allocated a
+        unique number for each land or property. See our UPRN guide for more
+        information. Up to 12 digits in length. Multiple Residence premises
+        currently share the same UPRN as the parent premise. May not be
+        available for a small number of Great Britain addresses due to longer
+        update cycles for Ordnance Survey's AddressBase datasets. Returns empty
+        string "" in these instances. Although UPRN takes an integer format, we
+        encode and transmit this data as strings. As a 12 digit number, the UPRN
+        can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most
+        browsers causing this datapoint to be corrupted. Take special care when
+        storing UPRN. As a 12 digit identifier, you will need 64 bits to encode
+        every possible UPRN value.
+    PafAddress:
+      title: PAF Address
+      type: object
+      required:
+        - postcode
+        - postcode_outward
+        - postcode_inward
+        - post_town
+        - dependent_locality
+        - double_dependent_locality
+        - thoroughfare
+        - dependent_thoroughfare
+        - building_number
+        - building_name
+        - sub_building_name
+        - po_box
+        - department_name
+        - organisation_name
+        - udprn
+        - umprn
+        - postcode_type
+        - su_organisation_indicator
+        - delivery_point_suffix
+        - line_1
+        - line_2
+        - line_3
+        - premise
+        - country
+        - county
+        - administrative_county
+        - postal_county
+        - traditional_county
+        - district
+        - ward
+        - longitude
+        - latitude
+        - eastings
+        - northings
+      properties:
+        postcode:
+          $ref: '#/components/schemas/Postcode'
+        postcode_outward:
+          $ref: '#/components/schemas/PostcodeOutward'
+        postcode_inward:
+          $ref: '#/components/schemas/PostcodeInward'
+        post_town:
+          $ref: '#/components/schemas/PostTown'
+        dependent_locality:
+          $ref: '#/components/schemas/DependentLocality'
+        double_dependent_locality:
+          $ref: '#/components/schemas/DoubleDependantLocality'
+        thoroughfare:
+          $ref: '#/components/schemas/Thoroughfare'
+        dependent_thoroughfare:
+          $ref: '#/components/schemas/DependentThoroughfare'
+        building_number:
+          $ref: '#/components/schemas/BuildingNumber'
+        building_name:
+          $ref: '#/components/schemas/BuildingName'
+        sub_building_name:
+          $ref: '#/components/schemas/SubBuildingName'
+        po_box:
+          $ref: '#/components/schemas/POBox'
+        department_name:
+          $ref: '#/components/schemas/DepartmentName'
+        organisation_name:
+          $ref: '#/components/schemas/OrganisationName'
+        udprn:
+          $ref: '#/components/schemas/UMPRN'
+        umprn:
+          $ref: '#/components/schemas/UMPRN'
+        postcode_type:
+          $ref: '#/components/schemas/PostcodeType'
+        su_organisation_indicator:
+          $ref: '#/components/schemas/SuOrganisationIndicator'
+        delivery_point_suffix:
+          $ref: '#/components/schemas/DeliveryPointSuffix'
+        line_1:
+          $ref: '#/components/schemas/Line1'
+        line_2:
+          $ref: '#/components/schemas/Line2'
+        line_3:
+          $ref: '#/components/schemas/Line3'
+        premise:
+          $ref: '#/components/schemas/Premise'
+        country:
+          $ref: '#/components/schemas/Country'
+        county:
+          $ref: '#/components/schemas/County'
+        administrative_county:
+          $ref: '#/components/schemas/AdministrativeCounty'
+        postal_county:
+          $ref: '#/components/schemas/PostalCounty'
+        traditional_county:
+          $ref: '#/components/schemas/PostalCounty'
+        district:
+          $ref: '#/components/schemas/District'
+        ward:
+          $ref: '#/components/schemas/Ward'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        eastings:
+          $ref: '#/components/schemas/Eastings'
+        northings:
+          $ref: '#/components/schemas/Northings'
+        uprn:
+          $ref: '#/components/schemas/UPRN'
+    MrAddress:
+      title: Multiple Residence Address
+      allOf:
+        - $ref: '#/components/schemas/PafAddress'
+        - type: object
+          required:
+            - umprn
+          properties:
+            umprn:
+              type: number
+              example: 883293
+    NybAddress:
+      title: Not Yet Built Address
+      allOf:
+        - $ref: '#/components/schemas/PafAddress'
+    PostcodeResponse:
+      title: Postcode Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/PafAddress'
+              - $ref: '#/components/schemas/MrAddress'
+              - $ref: '#/components/schemas/NybAddress'
+          description: All addresses listed at the postcode
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    PostcodeNotFoundResponse:
+      title: Postcode Not Found
+      type: object
+      required:
+        - message
+        - code
+        - suggestions
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 4040
+        message:
+          type: string
+          enum:
+            - Postcode not found
+        suggestions:
+          description: A list of alternate nearest matching postcodes you can try
+          type: array
+          items:
+            type: string
+            example: SN13 0SF
+    UDPRNResponse:
+      title: UDPRN Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/PafAddress'
+            - $ref: '#/components/schemas/NybAddress'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    ErrorResponse:
+      title: Basic Error Response
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: >-
+            API Response Code. Non `2xxx` code indicates a failure. This code
+            will provide a more specific reason when a failure occurs and
+            facilitates debugging.
+          format: int32
+        message:
+          type: string
+          description: Human readable error message supplied with every error response.
+    UMPRNResponse:
+      title: UDPRN Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/MrAddress'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    ApiKey:
+      title: Key
+      type: object
+      required:
+        - availabie
+      properties:
+        available:
+          description: |
+            Determines whether the key can be used by the requesting agent. 
+
+            Returns false if one of the following conditions are met:
+              - Key has no lookups remaining
+              - Daily limit has been reached on the key
+              - Daily individual limit has been reached
+              - Key is not being used via an authorised URL
+              - (Sublicensed key only) Key has a valid licensee attached
+              - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
+          type: boolean
+          example: true
+    ApiKeyResponse:
+      title: API Key Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          $ref: '#/components/schemas/ApiKey'
+        message:
+          type: string
+          enum:
+            - Success
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+    UserTokenParam:
+      title: User Token
+      type: string
+      description: >
+        A secret key used for sensitive operations on your account and API Keys.
+
+
+        Your user token can be retrieved and managed from your [accounts
+        page](https://ideal-postcodes.co.uk/account).
+
+
+        Typically beings `uk_...`
+      example: uk_B59ScW1p1HHouf1VqclEPZUx
+    ApiKeyDailyLimit:
+      title: API Key Daily Limit
+      type: object
+      required:
+        - limit
+        - consumed
+      properties:
+        limit:
+          x-nullable: true
+          minimum: 0
+          example: 1000
+          type: integer
+          description: >-
+            `number` or `null`. The daily lookup limit currently set on your
+            key. 
+
+            `null` means the limit is currently disabled.
+          format: int32
+        consumed:
+          minimum: 0
+          example: 288
+          type: integer
+          description: >-
+            Number of lookups performed today which count towards your daily
+            limit.
+          format: int32
+    ApiKeyIndividualLimit:
+      title: API Key Individual Limit
+      type: object
+      required:
+        - limit
+      properties:
+        limit:
+          minimum: 0
+          example: 30
+          x-nullable: true
+          type: integer
+          description: >-
+            `number` or `null` Limit set on the number of lookups that can be 
+
+            performed from a single IP address. `null` means the limit is
+            currently 
+
+            disabled.
+          format: int32
+    ApiKeyNotifications:
+      title: API Key Notifications
+      type: object
+      required:
+        - emails
+        - enabled
+      properties:
+        emails:
+          type: array
+          description: >-
+            A list of email addresses designated by you to receive notifications
+            about this key.
+          items:
+            type: string
+            example: person@example.com
+        enabled:
+          description: Indicates whether email notifications are enabled.
+          type: boolean
+    ApiKeyAutomatedTopup:
+      title: API Key Automated Topup
+      description: Automated topup status
+      type: object
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+          description: Indicates whether automated top-ups are enabled
+          example: true
+    ApiKeyCurrentPurchase:
+      title: API Key Batch Purchase
+      type: object
+      required:
+        - expires
+        - purchased
+        - consumed
+      properties:
+        expires:
+          x-nullable: true
+          type: string
+          example: '2022-01-06T11:41:27.092Z'
+          description: >-
+            `string` or `null` The date when this purchase will expire in
+            simplified 
+
+            extended ISO format (ISO 8601). This is typically 365 days from the
+            time 
+
+            of first use. This field will be `null` if the purchase has not yet
+            been 
+
+            used.
+        purchased:
+          minimum: 0
+          type: integer
+          description: Number of procured lookups from this purchase.
+          example: 20000
+          format: int32
+        consumed:
+          minimum: 0
+          type: integer
+          description: Number of consumed lookups off this purchase.
+          format: int32
+          example: 121
+    ApiKeyDetails:
+      title: API Key Details
+      type: object
+      required:
+        - lookups_remaining
+        - daily_limit
+        - individual_limit
+        - allowed_urls
+        - notificatinos
+        - automated_topups
+        - current_purchases
+      properties:
+        lookups_remaining:
+          minimum: 0
+          example: 19889
+          type: integer
+          format: int32
+        daily_limit:
+          $ref: '#/components/schemas/ApiKeyDailyLimit'
+        individual_limit:
+          $ref: '#/components/schemas/ApiKeyIndividualLimit'
+        allowed_urls:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of allowed URLs. An empty list means that allowed URLs are
+            disabled.
+        notifications:
+          $ref: '#/components/schemas/ApiKeyNotifications'
+        automated_topups:
+          $ref: '#/components/schemas/ApiKeyAutomatedTopup'
+        current_purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiKeyCurrentPurchase'
+          description: Current balance purchases attached to key.
+    ApiKeyDetailsResponse:
+      title: API Key Details Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          $ref: '#/components/schemas/ApiKeyDetails'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    StartParam:
+      title: Start Time
+      type: integer
+      format: int32
+      description: >
+        A start date/time in the form of a UNIX Timestamp in milliseconds, e.g. 
+        `1418556452651`.
+      example: 1418556452651
+    EndParam:
+      title: End Time
+      type: integer
+      format: int32
+      description: >
+        An start date/time in the form of a UNIX Timestamp in milliseconds,
+        e.g.  `1418556477882`.
+      example: 1418556477882
+    TagsParam:
+      title: Tags
+      type: string
+      description: >
+        A comma separated list of tags to query over. 
+
+
+        Useful if you want to specify the circumstances in which the request was
+        made.
+
+
+        If multiple tags are specified, the response will only comprise of
+        requests for which all the tags are satisfied - i.e. searching
+        `"foo,bar"` will only query requests which tagged both `"foo"` and
+        `"bar"`.
+      example: 'foo,bar'
+    LicenseeParam:
+      title: Licensee Key
+      type: string
+      description: |
+        Uniquely identifies a licensee
+      example: sk_hk71kco54zGSGvF9eXXrvvnMOLLNh
+    KeyUsageResult:
+      title: Key Usage
+      type: object
+      required:
+        - start
+        - end
+        - total
+        - dailyCount
+      properties:
+        start:
+          type: string
+          description: Start date in ISO 8601 format.
+          example: '2015-01-22T15:08:06.609Z'
+        end:
+          type: string
+          description: End date in ISO 8601 format.
+          example: '2015-01-23T15:08:06.609Z'
+        total:
+          type: integer
+          description: Total of paid lookups performed in specified period.
+          format: int32
+          example: 132
+        dailyCount:
+          type: array
+          description: >
+            An array of objects representing number of paid lookups made on
+            specific days, ordered by date. Each object contains a `date`
+            attribute, which represents the day and a `count` attribute, which
+            represents the number of paid lookups made on that day.
+          items:
+            type: object
+            required:
+              - date
+              - count
+            properties:
+              date:
+                type: string
+                example: '2015-01-22T00:00:00.000Z'
+              count:
+                type: integer
+                format: int32
+                example: 132
+    ApiKeyUsageResponse:
+      title: Key Usage Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          $ref: '#/components/schemas/KeyUsageResult'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    LimitParam:
+      title: Limit
+      description: >
+        Specifies the maximum number of suggestions to retrieve.
+
+
+        By default the limit is 10, unless a postcode is queried (then all
+        addresses at that postcode will be returned). Limit can be shortened to
+        `l=`
+      minimum: 1
+      maximum: 100
+      default: 10
+      example: 5
+      type: integer
+      format: int32
+    PostcodeOutwardParam:
+      title: Postcode Outward
+      type: string
+      description: Filter by outward code.
+      example: 1AA
+    PostcodeParam:
+      title: Postcode
+      type: string
+      description: >-
+        Filter by postcode. Can be combined with query to perform a postcode +
+        building number/name search.
+      example: SW1A 2AA
+    PostcodeAreaParam:
+      title: Postcode Area
+      type: string
+      description: >-
+        Filter by postcode. Can be combined with query to perform a postcode +
+        building number/name search.
+      example: SW
+    PostcodeSectorParam:
+      title: Postcode Sector
+      type: string
+      description: >-
+        Filter by postcode sector, the outward code plus first numeric of the
+        inward code. 
+      example: SW1A 2
+    PostTownParam:
+      title: Post Town
+      type: string
+      description: 'Filter by town. '
+      example: London
+    UPRNParam:
+      title: UPRN
+      type: integer
+      description: >-
+        Filters by UPRN. Does not accept comma separated terms. Only a single
+        term is permitted
+      example: '100023336956'
+    CountryParam:
+      title: Country
+      type: string
+      description: >-
+        Filter by country. Possible values are England, Scotland, Wales,
+        Northern Ireland, Jersey, Guernsey and Isle of Man.
+      example: England
+    PostcodeTypeParam:
+      title: Country
+      type: string
+      description: >-
+        Filter by Postcode Type. Useful for separating organisational and
+        residential addresses
+      example: L
+    SmallUserParam:
+      title: SU Organisation Indicator
+      type: string
+      description: >-
+        Filter by Organisation Indicator. Useful for separating organisational
+        and residential addresses
+      example: 'Y'
+    BoxParam:
+      title: Box
+      type: string
+      description: >-
+        Restrict search to a geospatial box determined by the "top-left" and
+        "bottom-right" gelocations.   Only one geospatial box can be provided.
+      example: '2.095,57.15,-2.096,57.14'
+    BiasPostcodeOutwardParam:
+      title: Bias Postcode Outward
+      type: string
+      description: Bias by outward code
+    BiasPostcodeParam:
+      title: Bias Postcode
+      type: string
+      description: >-
+        Bias by postcode. Can be combined with query to perform a postcode +
+        building number/name search.
+      example: /addresses?postcode=SW1A2AA&q=10
+    BiasPostcodeAreaParam:
+      title: Bias Postcode Area
+      type: string
+      description: >-
+        Bias by postcode area, the first one or two non-numeric characters of a
+        postcode.
+      example: The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+    BiasPostcodeSectorParam:
+      title: Bias Postcode Sector
+      type: string
+      description: >-
+        Bias by postcode sector, the outward code plus first numeric of the
+        inward code.
+      example: SW1A 2AA is SW1A 2
+    BiasPosttownParam:
+      title: Bias Post Town
+      type: string
+      description: Bias by town.
+    BiasThoroughfareParam:
+      title: Bias Thoroughfare
+      type: string
+      description: Bias by street name.
+    BiasCountryParam:
+      title: Bias County
+      type: string
+      description: >-
+        Bias by country. Possible values are England, Scotland, Wales, Northern
+        Ireland, Jersey, Guernsey and Isle of Man.
+    BiasLonLatParam:
+      title: Bias Lon/Lat
+      type: string
+      description: >-
+        Bias search to a geospatial circle determined by an origin and radius in
+        meters. Max radius is `50000`.  Uses the format
+        bias_lonlat=[longitude],[latitude],[radius in metres] Only one
+        geospatial bias may be provided
+      example: '-2.095,57.15,100'
+    PafSuggestion:
+      title: Address Autocompletion Hit
+      description: Can represent a PAF or Not Yet Built address
+      type: object
+      required:
+        - suggestion
+        - urls
+        - udprn
+      properties:
+        suggestion:
+          type: string
+          description: Address suggestion for your given query.
+          example: 'Flat 6, 12 Roskear, Camborne, TR14'
+        urls:
+          required:
+            - udprn
+          type: object
+          properties:
+            udprn:
+              type: string
+              description: >-
+                URL to retrieve the entire details for a given address
+                suggestion
+              example: /v1/udprn/50985827
+        udprn:
+          type: number
+          format: int32
+          description: Represents the UDPRN of a premise
+          example: 50985827
+    MrSuggestion:
+      title: Multiple Residence Address Autocompletion Hit
+      allOf:
+        - $ref: '#/components/schemas/PafSuggestion'
+        - type: object
+          required:
+            - urls
+            - umprn
+          properties:
+            urls:
+              type: object
+              required:
+                - umprn
+              properties:
+                umprn:
+                  type: string
+                  description: >-
+                    Optionally returned field, to retrieve the entire details
+                    for a suggested Multiple Residence household
+                  example: /v1/umprn/51103417
+            umprn:
+              type: number
+              format: int32
+              description: >-
+                Optionally returned field, representing the UMPRN of a Multiple
+                Residence household
+              example: 51103417
+    NybSuggestion:
+      title: Not Yet Built Address Autocompletion Hit
+      allOf:
+        - $ref: '#/components/schemas/PafSuggestion'
+    AutocompleteResponse:
+      title: Address Autocomplete Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/PafSuggestion'
+              - $ref: '#/components/schemas/MrSuggestion'
+              - $ref: '#/components/schemas/NybSuggestion'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    AddressResponse:
+      title: Address Search Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          type: object
+          required:
+            - hits
+            - total
+            - limit
+            - page
+          properties:
+            hits:
+              type: array
+              description: |
+                List of matching addresses
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/PafAddress'
+                  - $ref: '#/components/schemas/MrAddress'
+                  - $ref: '#/components/schemas/NybAddress'
+            total:
+              minimum: 0
+              maximum: 10000
+              type: integer
+              format: int32
+            limit:
+              maximum: 100
+              minimum: 0
+              default: 10
+              example: 10
+              type: integer
+              format: int32
+            page:
+              minimum: 0
+              default: 0
+              example: 0
+              maximum: 10
+              type: integer
+              format: int32
+    LicenseeEditable:
+      title: Licensee
+      description: Licensee object which can be defined by user
+      type: object
+      properties:
+        name:
+          type: string
+          example: Qwerty Widgets Limited
+          description: Licensee individual or organisation name
+        address:
+          example: '12 High Street, Manchester'
+          type: string
+          description: >-
+            Licensee's first, second and third line address as well as post town
+            concatenated by commas
+        postcode:
+          example: ID1 1QD
+          type: string
+          description: Licensee's postcode
+        whitelist:
+          type: array
+          items:
+            type: string
+            example: 'https://www.example.com'
+          description: >-
+            A list of allowed URLs. An empty list means that whitelisting is
+            disabled
+        daily:
+          type: object
+          properties:
+            limit:
+              example: 10000
+              x-nullable: true
+              minimum: 0
+              format: int32
+              type: number
+              description: >-
+                The maximum number of lookups this licensee can perform in a
+                day. `null` indicates the limit is not active
+    Licensee:
+      title: Licensee
+      allOf:
+        - $ref: '#/components/schemas/LicenseeEditable'
+        - type: object
+          required:
+            - id
+            - key
+            - createdAt
+            - name
+            - address
+            - postcode
+            - whitelist
+            - daily
+          properties:
+            id:
+              type: string
+              example: 56a11209ebe230380bf104c3
+              description: >
+                An immutable ID provided for every licensee. Primarily used for
+                paginated list requests.
+            key:
+              type: string
+              example: sl_ijoiqsxeQgXW2gkiE0X94
+              description: >
+                Uniquely identifies a licensee for a key. 
+
+
+                Required to perform paid lookups for a specific licensee.
+                Typically begins `sk_`.
+            createdAt:
+              type: string
+              example: '2016-01-21T17:14:49.971Z'
+              description: Timestamp for when the licensee was created
+            daily:
+              required:
+                - count
+                - updatedAt
+              type: object
+              properties:
+                count:
+                  example: 232
+                  minimum: 0
+                  type: number
+                  format: int32
+                  description: >-
+                    The number lookups performed by the licensee on the day
+                    represented b `licesees.daily.updatedAt`
+                updatedAt:
+                  type: string
+                  example: '2016-08-05T16:43:28.865Z'
+                  description: The timestamp when the limit was last used.
+    LicenseesResponse:
+      title: Licensee List Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          description: List of licensees
+          type: object
+          properties:
+            licensees:
+              type: array
+              items:
+                $ref: '#/components/schemas/Licensee'
+            hasMore:
+              type: boolean
+              description: >-
+                Returns true if there are more licensees listed after the
+                maximum number of results as implied by `limit`
+        message:
+          type: string
+          enum:
+            - Success
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+    LicenseeResponse:
+      title: Licensee Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          $ref: '#/components/schemas/Licensee'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    Config:
+      title: Config Object
+      type: object
+      required:
+        - updatedAt
+        - createdAt
+        - name
+        - payload
+      properties:
+        updatedAt:
+          type: string
+          example: '2016-01-21T17:14:49.971Z'
+          description: Timestamp for when the config was created
+        createdAt:
+          type: string
+          example: '2016-01-21T17:14:49.971Z'
+          description: Timestamp for when the config was updated
+        name:
+          type: string
+          example: woocommerce
+          description: A unique name to identify the configuration payload
+          minimum: 0
+          maximum: 32
+        payload:
+          example: |
+            {
+              "removeOrganisation": false
+            }
+          type: string
+          minimum: 0
+          maximum: 4096
+          description: A serialised payload of up to `4096` characters
+    ConfigsResponse:
+      title: Config List Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          description: List of configurations
+          type: object
+          required:
+            - configs
+          properties:
+            configs:
+              type: array
+              items:
+                $ref: '#/components/schemas/Config'
+        message:
+          type: string
+          enum:
+            - Success
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+    BadRequestResponse:
+      title: Bad Request Error Response
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: integer
+              description: '`400X` type error response code'
+              format: int32
+            message:
+              type: string
+              description: Bad request error description
+            errors:
+              type: array
+              items:
+                type: object
+                required:
+                  - path
+                  - message
+                properties:
+                  message:
+                    type: string
+                    example: should have required property 'type'
+                    description: >-
+                      Indicates location of error in request query or URL
+                      parameter
+                  path:
+                    type: string
+                    example: .query.type
+                    description: >-
+                      Indicates location of error in request query or URL
+                      parameter
+                  errorCode:
+                    type: string
+                    example: required.openapi.validation
+    UnauthorizedResponse:
+      title: Unauthorized Request Error Response
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: integer
+              description: '`401X` type error response code'
+              format: int32
+            message:
+              type: string
+              description: Unauthorized request error description
+    ConfigNewParam:
+      title: New Config Object
+      description: Required configuration object parameters
+      type: object
+      required:
+        - name
+        - payload
+      properties:
+        name:
+          type: string
+          example: woocommerce
+          description: A unique name to identify the configuration payload
+          minimum: 0
+          maximum: 32
+        payload:
+          example: |
+            {
+              "removeOrganisation": false
+            }
+          type: string
+          minimum: 0
+          maximum: 4096
+          description: A serialised payload of up to `4096` characters
+    ConfigResponse:
+      title: Config Response
+      type: object
+      required:
+        - result
+        - code
+        - message
+      properties:
+        result:
+          $ref: '#/components/schemas/Config'
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+    ConfigParam:
+      title: Configuration Name
+      type: string
+      description: User provided configuration object name
+      example: idpc-be
+    NotFoundResponse:
+      title: Not Found Response
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: integer
+              description: '`404X` type error response code'
+              format: int32
+            message:
+              type: string
+              description: Resource not found error description
+    ConfigUpdateParam:
+      title: Update Config Object
+      description: Config object update parameters
+      type: object
+      properties:
+        payload:
+          example: |
+            {
+              "removeOrganisation": false
+            }
+          type: string
+          minimum: 0
+          maximum: 4096
+          description: A serialised payload of up to `4096` characters

@@ -1,5 +1,0 @@
-title: DeleteLicenseeResponseSchema
-type: object
-properties:
-  result:
-    $ref: '#/components/schemas/DeleteLicenseeResult'
