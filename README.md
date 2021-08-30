@@ -6,34 +6,28 @@
 
 [![CircleCI](https://circleci.com/gh/ideal-postcodes/openapi.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/openapi)
 
-OpenAPI Specification is an API description format for REST APIs. Our OpenAPI files describes the entire API including available endpoints, operation parameters and request outputs.
-
-A number of [Open Source Tools](https://swagger.io/tools/open-source/open-source-integrations/) are available for you to consume our API specifications.
-
 ## Features
 
 - OpenAPI v3 specification for api.ideal-postcodes.co.uk
-- Automated documentation generator
-- OpenAPI specification testing and linting
-- Automated deploys to [openapi.ideal-postcodes.dev](https://openapi.ideal-postcodes.dev)
+- Exports API Typings
 
 ## Links
 
 - [Github Repository](https://github.com/ideal-postcodes/openapi)
-- [OpenAPI Automated Reference Documentation](https://openapi.ideal-postcodes.dev)
+- [API Reference](https://openapi.ideal-postcodes.dev)
 - OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.dev/openapi.json)
 - OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.dev/openapi.yaml)
 - [NPM Package](https://www.npmjs.com/package/@ideal-postcodes/openapi)
 
 ## Getting Started
 
-### Build specifications
+### Build Typings
 
 ```
 npm run build
 ```
 
-### Run spec validation
+### Validate Spec
 
 ```
 npm test
@@ -49,9 +43,7 @@ npm install @ideal-postcodes/openapi
 
 #### Require specs
 
-```javascript
-const { spec } = require("@ideal-postcodes/openapi");
-```
+JSON and YAML specs can be accessed at `node_modules/@ideal-postcodes/openapi/dist/openapi.[json|yaml]`
 
 ## Licence
 
