@@ -9,6 +9,7 @@
     "typescript": "~4.4.2"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "start": "openapi preview-docs",
     "build": "tsc",
     "test": "openapi lint dist/openapi.yaml && openapi lint dist/openapi.json"
