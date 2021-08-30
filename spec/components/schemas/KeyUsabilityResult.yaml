@@ -1,5 +1,0 @@
-title: KeyUsabilityResult
-type: object
-properties:
-  available:
-    type: boolean

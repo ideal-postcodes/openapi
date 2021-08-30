@@ -1,7 +1,0 @@
-title: DeleteLicenseeResult
-type: object
-properties:
-  deleted:
-    minimum: 0
-    type: number
-    description: Number of licensees deleted.
