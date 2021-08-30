@@ -4,7 +4,7 @@
 
 > Ideal Postcodes OpenAPI (v3) Specification (api.ideal-postcodes.co.uk)
 
-[![CircleCI](https://circleci.com/gh/ideal-postcodes/openapi.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/openapi)
+[![CI](https://github.com/ideal-postcodes/openapi/actions/workflows/ci.yml/badge.svg)](https://github.com/ideal-postcodes/openapi/actions/workflows/ci.yml)
 
 ## Features
 
