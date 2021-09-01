@@ -50,7 +50,7 @@ export interface paths {
      *
      * ## Multiple Residence
      *
-     * A small number of Multiple Residence postcodes will return more than 100 premises and may require pagination. Use `page` to paginate the result set.
+     * A small number of  postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
      *
      * ```javascript
      * const { lookupPostcode, Client } = require("@ideal-postcodes/core-node");
@@ -62,14 +62,14 @@ export interface paths {
      *
      * ## Testing
      *
-     * To test your implementation of our API we have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
+     * We have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
      *
      * - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
      * - `ID1 KFA` Returns "postcode not found", error `4040`
      * - `ID1 CLIP` Returns "no lookups remaining", error `4020`
      * - `ID1 CHOP` Returns "daily (or individual) lookup limit breached", error `4021`
      *
-     * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a lookup on your key.
+     * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
      */
     get: operations["Postcodes"];
   };
@@ -94,13 +94,13 @@ export interface paths {
      * - `-3` Returns "daily (or individual) lookup limit breached",
      *   error `4021`
      *
-     * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+     * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
      */
     get: operations["UDPRN"];
   };
   "/umprn/{umprn}": {
     /**
-     * Returns a multiple occupancy address identified as identifited via its UMPRN (Multiple Residence Unique ID).
+     * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
      *
      * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
      *
@@ -113,7 +113,7 @@ export interface paths {
      * - `-2` Returns "no lookups remaining", error `4020`
      * - `-3` Returns "daily (or individual) lookup limit breached", error `4021`
      *
-     * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+     * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
      *
      * ### Pricing
      *
@@ -125,8 +125,7 @@ export interface paths {
     /**
      * Returns public information on key. Currently only returns whether the key is currently useable via the `available` property. Use this to discover if the key is useable before making further requests.
      *
-     * You may pass both API Keys (beginning `ak_`) and Sublicensed Keys (beginning `sl_`).
-     *
+     * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
      * ## Testing
      *
      * To test your implementation of our API, you may use the following test keys.
@@ -238,11 +237,12 @@ export interface paths {
      *
      * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
      *
-     * Biased searches, unlike filtered searches, also allow unmatched addresses to appear - although they will rank lower.
+     * Biased searches, unlike filtered searches, also allow unmatched addresses to appear. These will rank lower.
      *
-     * For instance, can boost addreses the postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
+     * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
      *
-     * If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect is applied.
+     * No bias effect applies to bias terms that are invalid.
+     * e.g. `bias_postcode=SW1A2AAA`
      *
      * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
      *
@@ -263,7 +263,10 @@ export interface paths {
      *
      * ## Querying Multiple Residence
      *
-     * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id, which can be retrieved with the `/umprn/:id` endpoint. Note that Multiple Residence households will always have a parent premise with a UDPRN, and a single UDPRN premise may have many Multiple Residence households with different UMPRNs. For instance:
+     * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id. This can be retrieved with the `/umprn/:id` endpoint.
+     * Note that Multiple Residence households will always have:
+     * - A parent premise with a UDPRN
+     * - A single UDPRN premise may have many Multiple Residence households with different UMPRNs.
      *
      * ## Rate Limiting
      *
@@ -289,13 +292,13 @@ export interface paths {
   };
   "/addresses": {
     /**
-     * Extract a list of comlpete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
-     *
-     * If a valid postcode is passed as the query string, the entire address list for that postcode is returned as the result. Note, in these cases, limit parameter is ignored and fixed at 100.
-     *
-     * This API designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters. For address autocomplete, see our autocomplete API - which is designed for speed and ergonomics.
+     * Extract a list of complete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
      *
      * If a valid postcode is passed as the query string, the entire address list for that postcode is passed as a result. Note, in these cases, limit and page parameters are ignored.
+     *
+     * This API is designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters.
+     *
+     * For address finder, see our address finder API - which is designed for speed and ergonomics.
      *
      * ### JavaScript Example
      *
@@ -329,9 +332,9 @@ export interface paths {
      *
      * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
      *
-     * Biased searches, unlike filtered searches, also allow unmatched addresses to appear - although they will rank lower.
+     * Biased searches, unlike filtered searches, also allow unmatched addresses to appear . These will rank lower.
      *
-     * For instance, you can boost addreses the postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
+     * For instance, you can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
      *
      * If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect is applied.
      *
@@ -358,7 +361,7 @@ export interface paths {
      * - **ID1 CLIP** Returns "no lookups remaining" error `4020`
      * - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
      *
-     * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+     * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
      */
     get: operations["Addresses"];
   };
@@ -918,7 +921,7 @@ export interface operations {
    *
    * ## Multiple Residence
    *
-   * A small number of Multiple Residence postcodes will return more than 100 premises and may require pagination. Use `page` to paginate the result set.
+   * A small number of  postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
    *
    * ```javascript
    * const { lookupPostcode, Client } = require("@ideal-postcodes/core-node");
@@ -930,14 +933,14 @@ export interface operations {
    *
    * ## Testing
    *
-   * To test your implementation of our API we have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
+   * We have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
    *
    * - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
    * - `ID1 KFA` Returns "postcode not found", error `4040`
    * - `ID1 CLIP` Returns "no lookups remaining", error `4020`
    * - `ID1 CHOP` Returns "daily (or individual) lookup limit breached", error `4021`
    *
-   * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a lookup on your key.
+   * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
    */
   Postcodes: {
     parameters: {
@@ -986,7 +989,7 @@ export interface operations {
    * - `-3` Returns "daily (or individual) lookup limit breached",
    *   error `4021`
    *
-   * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+   * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
    */
   UDPRN: {
     parameters: {
@@ -1015,7 +1018,7 @@ export interface operations {
     };
   };
   /**
-   * Returns a multiple occupancy address identified as identifited via its UMPRN (Multiple Residence Unique ID).
+   * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
    *
    * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
    *
@@ -1028,7 +1031,7 @@ export interface operations {
    * - `-2` Returns "no lookups remaining", error `4020`
    * - `-3` Returns "daily (or individual) lookup limit breached", error `4021`
    *
-   * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+   * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
    *
    * ### Pricing
    *
@@ -1041,7 +1044,7 @@ export interface operations {
         umprn: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
+        api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
       };
     };
@@ -1063,8 +1066,7 @@ export interface operations {
   /**
    * Returns public information on key. Currently only returns whether the key is currently useable via the `available` property. Use this to discover if the key is useable before making further requests.
    *
-   * You may pass both API Keys (beginning `ak_`) and Sublicensed Keys (beginning `sl_`).
-   *
+   * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
    * ## Testing
    *
    * To test your implementation of our API, you may use the following test keys.
@@ -1256,11 +1258,12 @@ export interface operations {
    *
    * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
    *
-   * Biased searches, unlike filtered searches, also allow unmatched addresses to appear - although they will rank lower.
+   * Biased searches, unlike filtered searches, also allow unmatched addresses to appear. These will rank lower.
    *
-   * For instance, can boost addreses the postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
+   * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
    *
-   * If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect is applied.
+   * No bias effect applies to bias terms that are invalid.
+   * e.g. `bias_postcode=SW1A2AAA`
    *
    * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
    *
@@ -1281,7 +1284,10 @@ export interface operations {
    *
    * ## Querying Multiple Residence
    *
-   * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id, which can be retrieved with the `/umprn/:id` endpoint. Note that Multiple Residence households will always have a parent premise with a UDPRN, and a single UDPRN premise may have many Multiple Residence households with different UMPRNs. For instance:
+   * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id. This can be retrieved with the `/umprn/:id` endpoint.
+   * Note that Multiple Residence households will always have:
+   * - A parent premise with a UDPRN
+   * - A single UDPRN premise may have many Multiple Residence households with different UMPRNs.
    *
    * ## Rate Limiting
    *
@@ -1306,9 +1312,9 @@ export interface operations {
   AddressAutocomplete: {
     parameters: {
       query: {
+        api_key: components["schemas"]["ApiKeyParam"];
         /** Specifies the address you wish to query. Query can be shortened to `q=` */
         query?: string;
-        api_key: components["schemas"]["ApiKeyParam"];
         /** Limits number of address suggestions unless a postcode is detected. In this instance entire list of addreses for that postcode is returned. */
         limit?: components["schemas"]["LimitParam"];
         postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
@@ -1349,13 +1355,13 @@ export interface operations {
     };
   };
   /**
-   * Extract a list of comlpete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
-   *
-   * If a valid postcode is passed as the query string, the entire address list for that postcode is returned as the result. Note, in these cases, limit parameter is ignored and fixed at 100.
-   *
-   * This API designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters. For address autocomplete, see our autocomplete API - which is designed for speed and ergonomics.
+   * Extract a list of complete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
    *
    * If a valid postcode is passed as the query string, the entire address list for that postcode is passed as a result. Note, in these cases, limit and page parameters are ignored.
+   *
+   * This API is designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters.
+   *
+   * For address finder, see our address finder API - which is designed for speed and ergonomics.
    *
    * ### JavaScript Example
    *
@@ -1389,9 +1395,9 @@ export interface operations {
    *
    * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
    *
-   * Biased searches, unlike filtered searches, also allow unmatched addresses to appear - although they will rank lower.
+   * Biased searches, unlike filtered searches, also allow unmatched addresses to appear . These will rank lower.
    *
-   * For instance, you can boost addreses the postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
+   * For instance, you can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
    *
    * If a bias term is invalid, e.g. `bias_postcode=SW1A2AAA` no bias effect is applied.
    *
@@ -1418,7 +1424,7 @@ export interface operations {
    * - **ID1 CLIP** Returns "no lookups remaining" error `4020`
    * - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
    *
-   * Test requests will undergo usual authentication and restriction rules (individual and daily lookup limits) to surface any problems you may have during implementation. However, it will not count towards a postcode lookup on your key.
+   * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
    */
   Addresses: {
     parameters: {
@@ -1434,7 +1440,7 @@ export interface operations {
         postcode_area?: components["schemas"]["PostcodeAreaParam"];
         postcode_sector?: components["schemas"]["PostcodeSectorParam"];
         post_town?: components["schemas"]["PostTownParam"];
-        uprn: components["schemas"]["UPRNParam"];
+        uprn?: components["schemas"]["UPRNParam"];
         country?: components["schemas"]["CountryParam"];
         postcode_type?: components["schemas"]["PostcodeTypeParam"];
         su_organisation_indicator?: components["schemas"]["SmallUserParam"];
