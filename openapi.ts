@@ -424,13 +424,13 @@ export interface components {
     /** A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present. */
     PostTown: string;
     /** When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three. */
-    DependentLocality: string;
+    DependantLocality: string;
     /** Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality. */
     DoubleDependantLocality: string;
     /** Also known as the street or road name. In general each Thoroughfare Name will have a separate Postcode. Longer Thoroughfares with high number ranges often have multiple Postcodes covering the entire length of the road, with breaks at suitable points e.g. junctions or natural breaks in the road. */
     Thoroughfare: string;
     /** Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point. */
-    DependentThoroughfare: string;
+    DependantThoroughfare: string;
     /** Number to identify premise on a thoroughfare or dependant thoroughfare. */
     BuildingNumber: string;
     /** Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A, K, Victoria House */
@@ -486,10 +486,10 @@ export interface components {
       postcode_outward: components["schemas"]["PostcodeOutward"];
       postcode_inward: components["schemas"]["PostcodeInward"];
       post_town: components["schemas"]["PostTown"];
-      dependent_locality: components["schemas"]["DependentLocality"];
-      double_dependent_locality: components["schemas"]["DoubleDependantLocality"];
+      dependant_locality: components["schemas"]["DependantLocality"];
+      double_dependant_locality: components["schemas"]["DoubleDependantLocality"];
       thoroughfare: components["schemas"]["Thoroughfare"];
-      dependent_thoroughfare: components["schemas"]["DependentThoroughfare"];
+      dependant_thoroughfare: components["schemas"]["DependantThoroughfare"];
       building_number: components["schemas"]["BuildingNumber"];
       building_name: components["schemas"]["BuildingName"];
       sub_building_name: components["schemas"]["SubBuildingName"];
