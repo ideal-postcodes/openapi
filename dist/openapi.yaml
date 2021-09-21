@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.0.1
+  version: 1.0.1
   license:
     name: AGPLv3
     url: 'https://opensource.org/licenses/AGPL-3.0'
@@ -2291,7 +2291,7 @@ components:
         present.
       maxLength: 30
       example: London
-    DependentLocality:
+    DependantLocality:
       title: Dependant Locality
       type: string
       description: >-
@@ -2321,8 +2321,8 @@ components:
         the road.
       maxLength: 80
       example: Downing Street
-    DependentThoroughfare:
-      title: Dependent Thoroughfare
+    DependantThoroughfare:
+      title: Dependant Thoroughfare
       type: string
       description: >-
         Used to supplement thoroughfare. When a thoroughfare name is used twice
@@ -2618,10 +2618,10 @@ components:
         - postcode_outward
         - postcode_inward
         - post_town
-        - dependent_locality
-        - double_dependent_locality
+        - dependant_locality
+        - double_dependant_locality
         - thoroughfare
-        - dependent_thoroughfare
+        - dependant_thoroughfare
         - building_number
         - building_name
         - sub_building_name
@@ -2657,14 +2657,14 @@ components:
           $ref: '#/components/schemas/PostcodeInward'
         post_town:
           $ref: '#/components/schemas/PostTown'
-        dependent_locality:
-          $ref: '#/components/schemas/DependentLocality'
-        double_dependent_locality:
+        dependant_locality:
+          $ref: '#/components/schemas/DependantLocality'
+        double_dependant_locality:
           $ref: '#/components/schemas/DoubleDependantLocality'
         thoroughfare:
           $ref: '#/components/schemas/Thoroughfare'
-        dependent_thoroughfare:
-          $ref: '#/components/schemas/DependentThoroughfare'
+        dependant_thoroughfare:
+          $ref: '#/components/schemas/DependantThoroughfare'
         building_number:
           $ref: '#/components/schemas/BuildingNumber'
         building_name:
