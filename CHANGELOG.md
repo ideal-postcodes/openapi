@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/ideal-postcodes/openapi/compare/1.0.0...1.0.1) (2021-09-21)
+
+
+### Bug Fixes
+
+* **Dependant:** Dependent => Dependant ([98bc5b7](https://github.com/ideal-postcodes/openapi/commit/98bc5b7bf1e48293d0b69635ead4b5542785e4e9)), closes [#24](https://github.com/ideal-postcodes/openapi/issues/24)
+
 # [1.0.0](https://github.com/ideal-postcodes/openapi/compare/0.0.1...1.0.0) (2021-08-30)
 
 
