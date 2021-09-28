@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/ideal-postcodes/openapi/compare/1.0.1...1.0.2) (2021-09-28)
+
+
+### Bug Fixes
+
+* **Params:** tags, datasets ([514e9d9](https://github.com/ideal-postcodes/openapi/commit/514e9d981d676c144263300f9d5807774d1b31b8))
+
 ## [1.0.1](https://github.com/ideal-postcodes/openapi/compare/1.0.0...1.0.1) (2021-09-21)
 
 
