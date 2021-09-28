@@ -417,6 +417,14 @@ export interface components {
      * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
      */
     PageParam: number;
+    /**
+     * A comma separated list of tags to query over.
+     *
+     * Useful if you want to specify the circumstances in which the request was made.
+     *
+     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+     */
+    TagsParam: string;
     /** The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or ‘B23’. */
     PostcodeOutward: string;
     /** The second part of a postcode is known as the inward Code. e.g.  The inward code of ID1 1QD is 1QD. This part is one number followed by two letters.  The number identifies the sector in the postal district.  The letters then define one or more properties in that sector. */
@@ -606,6 +614,15 @@ export interface components {
       /** Indicates whether email notifications are enabled. */
       enabled: boolean;
     };
+    /** Indicates which datasets are available and added by default to the address responses */
+    ApiKeyDatasets: {
+      /** UK Postcode Address File enabled */
+      paf: boolean;
+      /** UK Multiple Residence Dataset enabled */
+      mr: boolean;
+      /** UK Not Yet Built Dataset enabled */
+      nyb: boolean;
+    };
     /** Automated topup status */
     ApiKeyAutomatedTopup: {
       /** Indicates whether automated top-ups are enabled */
@@ -631,6 +648,7 @@ export interface components {
       /** A list of allowed URLs. An empty list means that allowed URLs are disabled. */
       allowed_urls: string[];
       notifications?: components["schemas"]["ApiKeyNotifications"];
+      datasets?: components["schemas"]["ApiKeyDatasets"];
       automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
       /** Current balance purchases attached to key. */
       current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
@@ -646,14 +664,6 @@ export interface components {
     StartParam: number;
     /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
     EndParam: number;
-    /**
-     * A comma separated list of tags to query over.
-     *
-     * Useful if you want to specify the circumstances in which the request was made.
-     *
-     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
-     */
-    TagsParam: string;
     /** Uniquely identifies a licensee */
     LicenseeParam: string;
     KeyUsageResult: {
@@ -716,6 +726,11 @@ export interface components {
     BiasCountryParam: string;
     /** Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided */
     BiasLonLatParam: string;
+    /**
+     * Biases search based on approximate geolocation of IP address.
+     * Set `bias_ip=true` to enable.
+     */
+    BiasIpParam: "true";
     /** Can represent a PAF or Not Yet Built address */
     PafSuggestion: {
       /** Address suggestion for your given query. */
@@ -952,6 +967,7 @@ export interface operations {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
         page?: components["schemas"]["PageParam"];
+        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1000,6 +1016,7 @@ export interface operations {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
+        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1046,6 +1063,7 @@ export interface operations {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
+        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1335,6 +1353,7 @@ export interface operations {
         bias_thoroughfare?: components["schemas"]["BiasThoroughfareParam"];
         bias_country?: components["schemas"]["BiasCountryParam"];
         bias_lonlat?: components["schemas"]["BiasLonLatParam"];
+        bias_ip?: components["schemas"]["BiasIpParam"];
       };
     };
     responses: {
@@ -1434,6 +1453,7 @@ export interface operations {
         query?: string;
         limit?: components["schemas"]["LimitParam"];
         page?: components["schemas"]["PageParam"];
+        tags?: components["schemas"]["TagsParam"];
         filter?: components["schemas"]["FilterParam"];
         postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
         postcode?: components["schemas"]["PostcodeParam"];

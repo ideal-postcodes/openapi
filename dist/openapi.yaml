@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.0.1
+  version: 1.0.2
   license:
     name: AGPLv3
     url: 'https://opensource.org/licenses/AGPL-3.0'
@@ -547,6 +547,12 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/PageParam'
+        - name: tags
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -637,6 +643,12 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/FilterParam'
+        - name: tags
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -725,6 +737,12 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/FilterParam'
+        - name: tags
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -1377,6 +1395,12 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/BiasLonLatParam'
+        - name: bias_ip
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasIpParam'
       responses:
         '200':
           description: Success
@@ -1588,6 +1612,12 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/PageParam'
+        - name: tags
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/TagsParam'
         - name: filter
           in: query
           style: form
@@ -2256,6 +2286,22 @@ components:
       minimum: 0
       default: 0
       example: 0
+    TagsParam:
+      title: Tags
+      type: string
+      description: >
+        A comma separated list of tags to query over. 
+
+
+        Useful if you want to specify the circumstances in which the request was
+        made.
+
+
+        If multiple tags are specified, the response will only comprise of
+        requests for which all the tags are satisfied - i.e. searching
+        `"foo,bar"` will only query requests which tagged both `"foo"` and
+        `"bar"`.
+      example: 'foo,bar'
     PostcodeOutward:
       title: Postcode Outward
       type: string
@@ -2954,6 +3000,29 @@ components:
         enabled:
           description: Indicates whether email notifications are enabled.
           type: boolean
+    ApiKeyDatasets:
+      title: API Key Dataset Availability
+      description: >-
+        Indicates which datasets are available and added by default to the
+        address responses
+      type: object
+      required:
+        - paf
+        - mr
+        - nyb
+      properties:
+        paf:
+          type: boolean
+          description: UK Postcode Address File enabled
+          example: true
+        mr:
+          type: boolean
+          description: UK Multiple Residence Dataset enabled
+          example: true
+        nyb:
+          type: boolean
+          description: UK Not Yet Built Dataset enabled
+          example: false
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
       description: Automated topup status
@@ -3030,6 +3099,8 @@ components:
             disabled.
         notifications:
           $ref: '#/components/schemas/ApiKeyNotifications'
+        datasets:
+          $ref: '#/components/schemas/ApiKeyDatasets'
         automated_topups:
           $ref: '#/components/schemas/ApiKeyAutomatedTopup'
         current_purchases:
@@ -3072,22 +3143,6 @@ components:
         An start date/time in the form of a UNIX Timestamp in milliseconds,
         e.g.  `1418556477882`.
       example: 1418556477882
-    TagsParam:
-      title: Tags
-      type: string
-      description: >
-        A comma separated list of tags to query over. 
-
-
-        Useful if you want to specify the circumstances in which the request was
-        made.
-
-
-        If multiple tags are specified, the response will only comprise of
-        requests for which all the tags are satisfied - i.e. searching
-        `"foo,bar"` will only query requests which tagged both `"foo"` and
-        `"bar"`.
-      example: 'foo,bar'
     LicenseeParam:
       title: Licensee Key
       type: string
@@ -3284,6 +3339,15 @@ components:
         bias_lonlat=[longitude],[latitude],[radius in metres] Only one
         geospatial bias may be provided
       example: '-2.095,57.15,100'
+    BiasIpParam:
+      title: Bias query by Geolocation of IP
+      type: string
+      enum:
+        - 'true'
+      description: |-
+        Biases search based on approximate geolocation of IP address.
+        Set `bias_ip=true` to enable.
+      example: bias_ip=true
     PafSuggestion:
       title: Address Autocompletion Hit
       description: Can represent a PAF or Not Yet Built address
