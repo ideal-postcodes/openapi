@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": {
       "name": "AGPLv3",
       "url": "https://opensource.org/licenses/AGPL-3.0"
@@ -110,6 +110,15 @@
             "schema": {
               "$ref": "#/components/schemas/PageParam"
             }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagsParam"
+            }
           }
         ],
         "responses": {
@@ -185,6 +194,15 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/FilterParam"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagsParam"
             }
           }
         ],
@@ -262,6 +280,15 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/FilterParam"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagsParam"
             }
           }
         ],
@@ -764,6 +791,15 @@
             "schema": {
               "$ref": "#/components/schemas/BiasLonLatParam"
             }
+          },
+          {
+            "name": "bias_ip",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/BiasIpParam"
+            }
           }
         ],
         "responses": {
@@ -860,6 +896,15 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/PageParam"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagsParam"
             }
           },
           {
@@ -1833,6 +1878,12 @@
         "default": 0,
         "example": 0
       },
+      "TagsParam": {
+        "title": "Tags",
+        "type": "string",
+        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
+        "example": "foo,bar"
+      },
       "PostcodeOutward": {
         "title": "Postcode Outward",
         "type": "string",
@@ -2557,6 +2608,33 @@
           }
         }
       },
+      "ApiKeyDatasets": {
+        "title": "API Key Dataset Availability",
+        "description": "Indicates which datasets are available and added by default to the address responses",
+        "type": "object",
+        "required": [
+          "paf",
+          "mr",
+          "nyb"
+        ],
+        "properties": {
+          "paf": {
+            "type": "boolean",
+            "description": "UK Postcode Address File enabled",
+            "example": true
+          },
+          "mr": {
+            "type": "boolean",
+            "description": "UK Multiple Residence Dataset enabled",
+            "example": true
+          },
+          "nyb": {
+            "type": "boolean",
+            "description": "UK Not Yet Built Dataset enabled",
+            "example": false
+          }
+        }
+      },
       "ApiKeyAutomatedTopup": {
         "title": "API Key Automated Topup",
         "description": "Automated topup status",
@@ -2638,6 +2716,9 @@
           "notifications": {
             "$ref": "#/components/schemas/ApiKeyNotifications"
           },
+          "datasets": {
+            "$ref": "#/components/schemas/ApiKeyDatasets"
+          },
           "automated_topups": {
             "$ref": "#/components/schemas/ApiKeyAutomatedTopup"
           },
@@ -2690,12 +2771,6 @@
         "format": "int32",
         "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
         "example": 1418556477882
-      },
-      "TagsParam": {
-        "title": "Tags",
-        "type": "string",
-        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
-        "example": "foo,bar"
       },
       "LicenseeParam": {
         "title": "Licensee Key",
@@ -2893,6 +2968,15 @@
         "type": "string",
         "description": "Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided",
         "example": "-2.095,57.15,100"
+      },
+      "BiasIpParam": {
+        "title": "Bias query by Geolocation of IP",
+        "type": "string",
+        "enum": [
+          "true"
+        ],
+        "description": "Biases search based on approximate geolocation of IP address.\nSet `bias_ip=true` to enable.",
+        "example": "bias_ip=true"
       },
       "PafSuggestion": {
         "title": "Address Autocompletion Hit",
