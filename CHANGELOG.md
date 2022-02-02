@@ -1,3 +1,10 @@
+# [1.1.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.1...1.1.0-beta.2) (2022-02-02)
+
+
+### Features
+
+* **USPS:** Add USPS typings ([bbc7981](https://github.com/ideal-postcodes/openapi/commit/bbc798126b9bdc17328a5f2bd534aa7d37365d9f))
+
 # [1.1.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/1.0.2...1.1.0-beta.1) (2022-02-02)
 
 
