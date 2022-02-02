@@ -1,3 +1,10 @@
+# [1.1.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.2...1.1.0-beta.3) (2022-02-02)
+
+
+### Bug Fixes
+
+* **Keys API:** Fix typo ([0536732](https://github.com/ideal-postcodes/openapi/commit/053673201d70e2b52d5795464b94ab7aedf1ae99))
+
 # [1.1.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.1...1.1.0-beta.2) (2022-02-02)
 
 
