@@ -1,3 +1,10 @@
+# [1.1.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/1.0.2...1.1.0-beta.1) (2022-02-02)
+
+
+### Features
+
+* **Version:** Release beta branch ([7f13388](https://github.com/ideal-postcodes/openapi/commit/7f133887f8c81274b141c58e204d2fe002ec02b5))
+
 ## [1.0.2](https://github.com/ideal-postcodes/openapi/compare/1.0.1...1.0.2) (2021-09-28)
 
 
