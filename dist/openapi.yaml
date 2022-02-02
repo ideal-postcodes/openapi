@@ -2878,7 +2878,7 @@ components:
         result:
           type: array
           items:
-            anyOf:
+            oneOf:
               - $ref: '#/components/schemas/PafAddress'
               - $ref: '#/components/schemas/MrAddress'
               - $ref: '#/components/schemas/NybAddress'
