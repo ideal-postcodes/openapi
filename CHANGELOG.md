@@ -1,3 +1,10 @@
+# [1.1.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.3...1.1.0-beta.4) (2022-02-02)
+
+
+### Bug Fixes
+
+* **Postcodes:** Enforce union type for postcodes response ([770576d](https://github.com/ideal-postcodes/openapi/commit/770576d6ce25eb2097ef7b820687acfae9b18601))
+
 # [1.1.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.2...1.1.0-beta.3) (2022-02-02)
 
 
