@@ -781,9 +781,7 @@ export interface components {
        *
        * @example true
        */
-      available?: boolean;
-    } & {
-      availabie: unknown;
+      available: boolean;
     };
     /** API Key Response */
     ApiKeyResponse: {
