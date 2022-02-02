@@ -2614,7 +2614,7 @@
         "title": "Key",
         "type": "object",
         "required": [
-          "availabie"
+          "available"
         ],
         "properties": {
           "available": {
