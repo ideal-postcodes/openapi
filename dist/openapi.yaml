@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  version: 1.0.2
+  version: 1.0.1
   license:
     name: AGPLv3
-    url: 'https://opensource.org/licenses/AGPL-3.0'
+    url: https://opensource.org/licenses/AGPL-3.0
   title: API Reference - Ideal Postcodes
-  termsOfService: 'https://terms.ideal-postcodes.co.uk'
+  termsOfService: https://terms.ideal-postcodes.co.uk
   description: >
     # Getting Started
 
@@ -345,17 +345,17 @@ info:
   contact:
     email: support@ideal-postcodes.co.uk
     name: Ideal Postcodes Support
-    url: 'https://ideal-postcodes.co.uk/support'
+    url: https://ideal-postcodes.co.uk/support
 externalDocs:
-  description: 'More on our APIs, libraries with guides and examples'
-  url: 'https://docs.ideal-postcodes.co.uk'
+  description: More on our APIs, libraries with guides and examples
+  url: https://docs.ideal-postcodes.co.uk
 servers:
-  - url: 'https://api.ideal-postcodes.co.uk/v1'
+  - url: https://api.ideal-postcodes.co.uk/v1
     description: Ideal Postcodes API Server
     variables: {}
 tags:
   - name: Autocomplete
-    description: 'Autocomplete addresses, for search-as-you-type'
+    description: Autocomplete addresses, for search-as-you-type
   - name: Postcodes
     description: UK Postcode Search
   - name: Addresses
@@ -389,7 +389,7 @@ tags:
       Useful if you need to configure your integration remotely rather than
       editing code in situ.
 paths:
-  '/postcodes/{postcode}':
+  /postcodes/{postcode}:
     get:
       tags:
         - Postcodes
@@ -547,12 +547,6 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/PageParam'
-        - name: tags
-          in: query
-          style: form
-          explode: false
-          schema:
-            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -577,7 +571,7 @@ paths:
             curl -G -k \
             --url 'https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA' \
             --d "api_key=iddqd"
-  '/udprn/{udprn}':
+  /udprn/{udprn}:
     get:
       tags:
         - UDPRN
@@ -643,12 +637,6 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/FilterParam'
-        - name: tags
-          in: query
-          style: form
-          explode: false
-          schema:
-            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -673,7 +661,7 @@ paths:
           source: |
             curl -k -G https://api.ideal-postcodes.co.uk/v1/udprn/0 \
               -d "api_key=iddqd"
-  '/umprn/{umprn}':
+  /umprn/{umprn}:
     get:
       tags:
         - UMPRN
@@ -737,12 +725,6 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/FilterParam'
-        - name: tags
-          in: query
-          style: form
-          explode: false
-          schema:
-            $ref: '#/components/schemas/TagsParam'
       responses:
         '200':
           description: Success
@@ -767,7 +749,7 @@ paths:
           source: |
             curl -k -G https://api.ideal-postcodes.co.uk/v1/umprn/0 \
               -d "api_key=iddqdmr"
-  '/keys/{key}':
+  /keys/{key}:
     get:
       tags:
         - Keys
@@ -814,7 +796,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/keys/{key}/details':
+  /keys/{key}/details:
     get:
       tags:
         - Keys
@@ -852,7 +834,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       deprecated: false
-  '/keys/{key}/usage':
+  /keys/{key}/usage:
     get:
       tags:
         - Keys
@@ -925,7 +907,7 @@ paths:
           source: |
             curl -k -G https://api.ideal-postcodes.co.uk/v1/keys/iddqd/usage \
               -d "user_token=my_secret_token"
-  '/keys/{key}/lookups':
+  /keys/{key}/lookups:
     get:
       tags:
         - Keys
@@ -1277,6 +1259,12 @@ paths:
           explode: false
           schema:
             type: string
+        - name: context
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/Context'
         - name: limit
           in: query
           style: form
@@ -1438,6 +1426,56 @@ paths:
             'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses' \
               -d 'api_key=iddqd' \
               --data-urlencode 'query=10 downing'
+  /autocomplete/addresses/{address}/gbr:
+    get:
+      tags:
+        - Autocomplete
+      summary: Resolve Address
+      operationId: Resolve
+      description: |
+        Resolves an address autocompletion by its address ID.
+      parameters:
+        - name: address
+          in: path
+          description: ID of address suggestion
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GbrResolveAddressResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd
+        - lang: cURL
+          label: CLI
+          source: >
+            curl -k -G
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd
+            \
+              -d "api_key=iddqd"
   /addresses:
     get:
       tags:
@@ -1612,12 +1650,6 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/PageParam'
-        - name: tags
-          in: query
-          style: form
-          explode: false
-          schema:
-            $ref: '#/components/schemas/TagsParam'
         - name: filter
           in: query
           style: form
@@ -1750,7 +1782,7 @@ paths:
             curl -k -G 'https://api.ideal-postcodes.co.uk/v1/addresses' \
               -d 'api_key=iddqd' \
               --data-urlencode 'query=10 downing street london'
-  '/keys/{key}/licensees':
+  /keys/{key}/licensees:
     get:
       tags:
         - Licensees
@@ -1839,7 +1871,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseeResponse'
-  '/keys/{key}/licensees/{licensee}':
+  /keys/{key}/licensees/{licensee}:
     get:
       tags:
         - Licensees
@@ -1979,7 +2011,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseeResponse'
-  '/keys/{key}/configs':
+  /keys/{key}/configs:
     get:
       tags:
         - Configs
@@ -2066,7 +2098,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
-  '/keys/{key}/configs/{config}':
+  /keys/{key}/configs/{config}:
     get:
       tags:
         - Configs
@@ -2271,7 +2303,7 @@ components:
 
         E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and
         `line_3` address elements in your response
-      example: 'line_1,line_2,line_3'
+      example: line_1,line_2,line_3
     PageParam:
       title: Page
       type: integer
@@ -2286,22 +2318,6 @@ components:
       minimum: 0
       default: 0
       example: 0
-    TagsParam:
-      title: Tags
-      type: string
-      description: >
-        A comma separated list of tags to query over. 
-
-
-        Useful if you want to specify the circumstances in which the request was
-        made.
-
-
-        If multiple tags are specified, the response will only comprise of
-        requests for which all the tags are satisfied - i.e. searching
-        `"foo,bar"` will only query requests which tagged both `"foo"` and
-        `"bar"`.
-      example: 'foo,bar'
     PostcodeOutward:
       title: Postcode Outward
       type: string
@@ -2425,6 +2441,17 @@ components:
         organisation.
       maxLength: 60
       example: Prime Minister &amp; First Lord Of The Treasury
+    UDPRN:
+      title: Unique Delivery Point Reference Number (UDPRN)
+      type: integer
+      format: int32
+      description: >-
+        UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail
+        assigns a unique UDPRN code for each premise on PAF. Simple, unique
+        reference number for each Delivery Point. Unlikely to be reused when an
+        address expires. Up to 8-digit numeric code. A new UDPRN is
+        automatically assigned to each new Delivery Point added to PAF.
+      example: 23747771
     UMPRN:
       title: UMPRN
       description: >-
@@ -2436,11 +2463,11 @@ components:
         empty string `""` when not used for legacy reasons
       oneOf:
         - type: string
-          description: 'If premise is not multiple occupancy, this will be an empty string'
+          description: If premise is not multiple occupancy, this will be an empty string
           enum:
             - ''
         - type: number
-          description: 'If premise is multiple occupancy, this will be an integer'
+          description: If premise is multiple occupancy, this will be an integer
           example: 983729
           minimum: 0
           maximum: 99999999
@@ -2553,6 +2580,14 @@ components:
         was the Administrative County at the time. This data rarely changes.
         Data source: Royal Mail. May be empty.
       example: London
+    TraditionalCounty:
+      title: Traditional County
+      type: string
+      description: >-
+        Traditional counties are provided by the Association of British
+        Counties. It’s historical data, and can date from the 1800s. Data
+        source: Royal Mail. May be empty.
+      example: Greater London
     District:
       title: District
       type: string
@@ -2656,9 +2691,35 @@ components:
         browsers causing this datapoint to be corrupted. Take special care when
         storing UPRN. As a 12 digit identifier, you will need 64 bits to encode
         every possible UPRN value.
+    ID:
+      title: ID
+      type: string
+      description: Global unique internally generated identifier for an address.
+      example: paf_8387729
+    Dataset:
+      title: Dataset
+      type: string
+      description: Indicates the provenance of an address
+      example: paf
+      enum:
+        - paf
+        - mr
+        - nyb
+        - usps
+    CountryISO:
+      title: ISO Country Code
+      type: string
+      description: 3 letter ISO country code
+      example: GBR
+      enum:
+        - GBR
+        - IMN
+        - JEY
+        - GGY
+        - USA
     PafAddress:
-      title: PAF Address
-      type: object
+      title: Postcode Address File Address
+      description: Standard UK Address.
       required:
         - postcode
         - postcode_outward
@@ -2684,7 +2745,6 @@ components:
         - line_3
         - premise
         - country
-        - county
         - administrative_county
         - postal_county
         - traditional_county
@@ -2694,6 +2754,11 @@ components:
         - latitude
         - eastings
         - northings
+        - uprn
+        - county
+        - id
+        - dataset
+        - country_iso
       properties:
         postcode:
           $ref: '#/components/schemas/Postcode'
@@ -2724,7 +2789,7 @@ components:
         organisation_name:
           $ref: '#/components/schemas/OrganisationName'
         udprn:
-          $ref: '#/components/schemas/UMPRN'
+          $ref: '#/components/schemas/UDPRN'
         umprn:
           $ref: '#/components/schemas/UMPRN'
         postcode_type:
@@ -2750,7 +2815,7 @@ components:
         postal_county:
           $ref: '#/components/schemas/PostalCounty'
         traditional_county:
-          $ref: '#/components/schemas/PostalCounty'
+          $ref: '#/components/schemas/TraditionalCounty'
         district:
           $ref: '#/components/schemas/District'
         ward:
@@ -2765,21 +2830,43 @@ components:
           $ref: '#/components/schemas/Northings'
         uprn:
           $ref: '#/components/schemas/UPRN'
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+          enum:
+            - paf
+        country_iso:
+          $ref: '#/components/schemas/CountryISO'
+          enum:
+            - GBR
+            - IMN
+            - JEY
+            - GGY
     MrAddress:
       title: Multiple Residence Address
+      description: >-
+        Subdivision of a Postcode Address File address. Does not have its own
+        delivery point.
       allOf:
         - $ref: '#/components/schemas/PafAddress'
         - type: object
-          required:
-            - umprn
           properties:
-            umprn:
-              type: number
-              example: 883293
+            dataset:
+              $ref: '#/components/schemas/Dataset'
+              enum:
+                - mr
     NybAddress:
       title: Not Yet Built Address
+      description: UK premise under construction
       allOf:
         - $ref: '#/components/schemas/PafAddress'
+        - type: object
+          properties:
+            dataset:
+              $ref: '#/components/schemas/Dataset'
+              enum:
+                - mr
     PostcodeResponse:
       title: Postcode Response
       type: object
@@ -3045,7 +3132,7 @@ components:
         expires:
           x-nullable: true
           type: string
-          example: '2022-01-06T11:41:27.092Z'
+          example: 2022-01-06T11:41:27.092Z
           description: >-
             `string` or `null` The date when this purchase will expire in
             simplified 
@@ -3143,6 +3230,22 @@ components:
         An start date/time in the form of a UNIX Timestamp in milliseconds,
         e.g.  `1418556477882`.
       example: 1418556477882
+    TagsParam:
+      title: Tags
+      type: string
+      description: >
+        A comma separated list of tags to query over. 
+
+
+        Useful if you want to specify the circumstances in which the request was
+        made.
+
+
+        If multiple tags are specified, the response will only comprise of
+        requests for which all the tags are satisfied - i.e. searching
+        `"foo,bar"` will only query requests which tagged both `"foo"` and
+        `"bar"`.
+      example: foo,bar
     LicenseeParam:
       title: Licensee Key
       type: string
@@ -3161,11 +3264,11 @@ components:
         start:
           type: string
           description: Start date in ISO 8601 format.
-          example: '2015-01-22T15:08:06.609Z'
+          example: 2015-01-22T15:08:06.609Z
         end:
           type: string
           description: End date in ISO 8601 format.
-          example: '2015-01-23T15:08:06.609Z'
+          example: 2015-01-23T15:08:06.609Z
         total:
           type: integer
           description: Total of paid lookups performed in specified period.
@@ -3186,7 +3289,7 @@ components:
             properties:
               date:
                 type: string
-                example: '2015-01-22T00:00:00.000Z'
+                example: 2015-01-22T00:00:00.000Z
               count:
                 type: integer
                 format: int32
@@ -3210,6 +3313,13 @@ components:
           type: string
           enum:
             - Success
+    Context:
+      title: Context
+      type: string
+      enum:
+        - gbr
+        - usa
+      description: Limits search results within a geographical boundary or country.
     LimitParam:
       title: Limit
       description: >
@@ -3290,7 +3400,7 @@ components:
       description: >-
         Restrict search to a geospatial box determined by the "top-left" and
         "bottom-right" gelocations.   Only one geospatial box can be provided.
-      example: '2.095,57.15,-2.096,57.14'
+      example: 2.095,57.15,-2.096,57.14
     BiasPostcodeOutwardParam:
       title: Bias Postcode Outward
       type: string
@@ -3349,18 +3459,23 @@ components:
         Set `bias_ip=true` to enable.
       example: bias_ip=true
     PafSuggestion:
-      title: Address Autocompletion Hit
-      description: Can represent a PAF or Not Yet Built address
+      title: UK Postcode Address File Address Autocompletion Hit
+      description: Represents an address suggestion from the UK Postcode Address File.
       type: object
       required:
+        - id
         - suggestion
-        - urls
         - udprn
+        - urls
       properties:
+        id:
+          $ref: '#/components/schemas/ID'
         suggestion:
           type: string
           description: Address suggestion for your given query.
-          example: 'Flat 6, 12 Roskear, Camborne, TR14'
+          example: Flat 6, 12 Roskear, Camborne, TR14
+        udprn:
+          $ref: '#/components/schemas/UDPRN'
         urls:
           required:
             - udprn
@@ -3370,44 +3485,79 @@ components:
               type: string
               description: >-
                 URL to retrieve the entire details for a given address
-                suggestion
+                suggestion by the UDPRN
               example: /v1/udprn/50985827
-        udprn:
-          type: number
-          format: int32
-          description: Represents the UDPRN of a premise
-          example: 50985827
     MrSuggestion:
       title: Multiple Residence Address Autocompletion Hit
-      allOf:
-        - $ref: '#/components/schemas/PafSuggestion'
-        - type: object
+      type: object
+      required:
+        - id
+        - suggestion
+        - udprn
+        - umprn
+        - urls
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        suggestion:
+          type: string
+          description: Address suggestion for your given query.
+          example: Flat 6, 12 Roskear, Camborne, TR14
+        udprn:
+          $ref: '#/components/schemas/UDPRN'
+        umprn:
+          type: number
+          format: int32
+          description: >-
+            Optionally returned field, representing the UMPRN of a Multiple
+            Residence household
+          example: 51103417
+        urls:
+          type: object
           required:
-            - urls
+            - udprn
             - umprn
           properties:
-            urls:
-              type: object
-              required:
-                - umprn
-              properties:
-                umprn:
-                  type: string
-                  description: >-
-                    Optionally returned field, to retrieve the entire details
-                    for a suggested Multiple Residence household
-                  example: /v1/umprn/51103417
-            umprn:
-              type: number
-              format: int32
+            udprn:
+              type: string
               description: >-
-                Optionally returned field, representing the UMPRN of a Multiple
-                Residence household
-              example: 51103417
+                URL to retrieve the entire details for a given address
+                suggestion by the UDPRN
+              example: /v1/udprn/50985827
+            umprn:
+              type: string
+              description: >-
+                Optionally returned field, to retrieve the entire details for a
+                suggested Multiple Residence household
+              example: /v1/umprn/51103417
     NybSuggestion:
       title: Not Yet Built Address Autocompletion Hit
       allOf:
         - $ref: '#/components/schemas/PafSuggestion'
+    GlobalAddressSuggestion:
+      title: Global Address Autocompletion Suggestion
+      description: Represents an address suggestion for any address in the world
+      type: object
+      required:
+        - id
+        - suggestion
+        - urls
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        suggestion:
+          type: string
+          description: Address Suggestion to be displayed to the user
+          example: Flat 6, 12 Roskear, Camborne, TR14
+        urls:
+          type: object
+          properties:
+            id:
+              type: string
+              description: >-
+                URL to retrieve the entire details for a given address
+                suggestion by the UDPRN
+              example: /v1/udprn/50985827
     AutocompleteResponse:
       title: Address Autocomplete Response
       type: object
@@ -3417,12 +3567,18 @@ components:
         - result
       properties:
         result:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/PafSuggestion'
-              - $ref: '#/components/schemas/MrSuggestion'
-              - $ref: '#/components/schemas/NybSuggestion'
+          type: object
+          required:
+            - hits
+          properties:
+            hits:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/PafSuggestion'
+                  - $ref: '#/components/schemas/MrSuggestion'
+                  - $ref: '#/components/schemas/NybSuggestion'
+                  - $ref: '#/components/schemas/GlobalAddressSuggestion'
         code:
           type: integer
           format: int32
@@ -3432,6 +3588,193 @@ components:
           type: string
           enum:
             - Success
+    GbrGlobalAddress:
+      title: Global Address
+      description: Global (non-UK) address in the UK address format
+      required:
+        - postcode
+        - postcode_outward
+        - postcode_inward
+        - post_town
+        - dependant_locality
+        - double_dependant_locality
+        - thoroughfare
+        - dependant_thoroughfare
+        - building_number
+        - building_name
+        - sub_building_name
+        - po_box
+        - department_name
+        - organisation_name
+        - udprn
+        - umprn
+        - postcode_type
+        - su_organisation_indicator
+        - delivery_point_suffix
+        - line_1
+        - line_2
+        - line_3
+        - premise
+        - country
+        - administrative_county
+        - postal_county
+        - traditional_county
+        - district
+        - ward
+        - longitude
+        - latitude
+        - eastings
+        - northings
+        - uprn
+        - county
+        - id
+        - dataset
+        - country_iso
+      properties:
+        postcode:
+          type: string
+          description: Postal or Zip Code
+        postcode_outward:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        postcode_inward:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        post_town:
+          type: string
+          description: Town or City
+        dependant_locality:
+          $ref: '#/components/schemas/DependantLocality'
+        double_dependant_locality:
+          $ref: '#/components/schemas/DoubleDependantLocality'
+        thoroughfare:
+          $ref: '#/components/schemas/Thoroughfare'
+        dependant_thoroughfare:
+          $ref: '#/components/schemas/DependantThoroughfare'
+        building_number:
+          $ref: '#/components/schemas/BuildingNumber'
+        building_name:
+          $ref: '#/components/schemas/BuildingName'
+        sub_building_name:
+          $ref: '#/components/schemas/SubBuildingName'
+        po_box:
+          type: string
+          description: PO Box
+        department_name:
+          type: string
+          description: Department name at premise
+        organisation_name:
+          type: string
+          description: Name of organisation at premise
+        udprn:
+          type: string
+          description: Not available for non-UK addresses. See id for address identifier
+          enum:
+            - ''
+        umprn:
+          type: string
+          description: Not available for non-UK addresses. See id for address identifier
+          enum:
+            - ''
+        postcode_type:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        su_organisation_indicator:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        delivery_point_suffix:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        line_1:
+          $ref: '#/components/schemas/Line1'
+        line_2:
+          $ref: '#/components/schemas/Line2'
+        line_3:
+          $ref: '#/components/schemas/Line3'
+        premise:
+          $ref: '#/components/schemas/Premise'
+        country:
+          $ref: '#/components/schemas/Country'
+        county:
+          type: string
+          description: Province, state or county
+        administrative_county:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        postal_county:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        traditional_county:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        district:
+          $ref: '#/components/schemas/District'
+        ward:
+          $ref: '#/components/schemas/Ward'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        eastings:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        northings:
+          type: string
+          description: Not available for non-UK addresses
+          enum:
+            - ''
+        uprn:
+          type: string
+          description: Not available for non-UK addresses. See id for address identifier
+          enum:
+            - ''
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+        country_iso:
+          $ref: '#/components/schemas/CountryISO'
+    GbrResolveAddressResponse:
+      title: Address Resolution Response (GBR)
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/PafAddress'
+            - $ref: '#/components/schemas/MrAddress'
+            - $ref: '#/components/schemas/NybAddress'
+            - $ref: '#/components/schemas/GbrGlobalAddress'
     AddressResponse:
       title: Address Search Response
       type: object
@@ -3462,7 +3805,7 @@ components:
               description: |
                 List of matching addresses
               items:
-                anyOf:
+                oneOf:
                   - $ref: '#/components/schemas/PafAddress'
                   - $ref: '#/components/schemas/MrAddress'
                   - $ref: '#/components/schemas/NybAddress'
@@ -3495,7 +3838,7 @@ components:
           example: Qwerty Widgets Limited
           description: Licensee individual or organisation name
         address:
-          example: '12 High Street, Manchester'
+          example: 12 High Street, Manchester
           type: string
           description: >-
             Licensee's first, second and third line address as well as post town
@@ -3508,7 +3851,7 @@ components:
           type: array
           items:
             type: string
-            example: 'https://www.example.com'
+            example: https://www.example.com
           description: >-
             A list of allowed URLs. An empty list means that whitelisting is
             disabled
@@ -3556,7 +3899,7 @@ components:
                 Typically begins `sk_`.
             createdAt:
               type: string
-              example: '2016-01-21T17:14:49.971Z'
+              example: 2016-01-21T17:14:49.971Z
               description: Timestamp for when the licensee was created
             daily:
               required:
@@ -3574,7 +3917,7 @@ components:
                     represented b `licesees.daily.updatedAt`
                 updatedAt:
                   type: string
-                  example: '2016-08-05T16:43:28.865Z'
+                  example: 2016-08-05T16:43:28.865Z
                   description: The timestamp when the limit was last used.
     LicenseesResponse:
       title: Licensee List Response
@@ -3636,11 +3979,11 @@ components:
       properties:
         updatedAt:
           type: string
-          example: '2016-01-21T17:14:49.971Z'
+          example: 2016-01-21T17:14:49.971Z
           description: Timestamp for when the config was created
         createdAt:
           type: string
-          example: '2016-01-21T17:14:49.971Z'
+          example: 2016-01-21T17:14:49.971Z
           description: Timestamp for when the config was updated
         name:
           type: string

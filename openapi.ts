@@ -290,6 +290,10 @@ export interface paths {
      */
     get: operations["AddressAutocomplete"];
   };
+  "/autocomplete/addresses/{address}/gbr": {
+    /** Resolves an address autocompletion by its address ID. */
+    get: operations["Resolve"];
+  };
   "/addresses": {
     /**
      * Extract a list of complete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
@@ -397,98 +401,253 @@ export interface paths {
 
 export interface components {
   schemas: {
-    /** Correctly formatted postcode. Capitalised and spaced. */
+    /**
+     * Postcode
+     * @description Correctly formatted postcode. Capitalised and spaced.
+     * @example SW1A 2AA
+     */
     Postcode: string;
     /**
-     * Your Ideal Postcodes API Key. Typically beings `ak_`.
+     * API Key
+     * @description Your Ideal Postcodes API Key. Typically beings `ak_`.
      *
      * Available from your dashboard
+     *
+     * @example ak_hk71kco54zGSGvF9eXXrvvnMOLLNh
      */
     ApiKeyParam: string;
     /**
-     * Comma separated whitelist of address elements to return.
+     * Filter
+     * @description Comma separated whitelist of address elements to return.
      *
      * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+     *
+     * @example line_1,line_2,line_3
      */
     FilterParam: string;
     /**
-     * 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
+     * Page
+     * Format: int32
+     * @description 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
      *
      * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
      */
     PageParam: number;
     /**
-     * A comma separated list of tags to query over.
-     *
-     * Useful if you want to specify the circumstances in which the request was made.
-     *
-     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+     * Postcode Outward
+     * @description The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or ‘B23’.
+     * @example SW1A
      */
-    TagsParam: string;
-    /** The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or ‘B23’. */
     PostcodeOutward: string;
-    /** The second part of a postcode is known as the inward Code. e.g.  The inward code of ID1 1QD is 1QD. This part is one number followed by two letters.  The number identifies the sector in the postal district.  The letters then define one or more properties in that sector. */
+    /**
+     * Postcode Inward
+     * @description The second part of a postcode is known as the inward Code. e.g.  The inward code of ID1 1QD is 1QD. This part is one number followed by two letters.  The number identifies the sector in the postal district.  The letters then define one or more properties in that sector.
+     * @example 2AA
+     */
     PostcodeInward: string;
-    /** A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present. */
+    /**
+     * Post Town
+     * @description A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.
+     * @example London
+     */
     PostTown: string;
-    /** When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three. */
+    /**
+     * Dependant Locality
+     * @description When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three.
+     */
     DependantLocality: string;
-    /** Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality. */
+    /**
+     * Double Dependant Locality
+     * @description Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality.
+     */
     DoubleDependantLocality: string;
-    /** Also known as the street or road name. In general each Thoroughfare Name will have a separate Postcode. Longer Thoroughfares with high number ranges often have multiple Postcodes covering the entire length of the road, with breaks at suitable points e.g. junctions or natural breaks in the road. */
+    /**
+     * Thoroughfare
+     * @description Also known as the street or road name. In general each Thoroughfare Name will have a separate Postcode. Longer Thoroughfares with high number ranges often have multiple Postcodes covering the entire length of the road, with breaks at suitable points e.g. junctions or natural breaks in the road.
+     * @example Downing Street
+     */
     Thoroughfare: string;
-    /** Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point. */
+    /**
+     * Dependant Thoroughfare
+     * @description Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point.
+     */
     DependantThoroughfare: string;
-    /** Number to identify premise on a thoroughfare or dependant thoroughfare. */
+    /**
+     * Building Number
+     * @description Number to identify premise on a thoroughfare or dependant thoroughfare.
+     * @example 10
+     */
     BuildingNumber: string;
-    /** Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A, K, Victoria House */
+    /**
+     * Building Name
+     * @description Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A, K, Victoria House
+     */
     BuildingName: string;
-    /** When a premise is split into individual units such as flats, apartments or business units. Cannot be present without either building_name or building_number. E.g. Flat 1, A, 10B */
+    /**
+     * Sub-Building Name
+     * @description When a premise is split into individual units such as flats, apartments or business units. Cannot be present without either building_name or building_number. E.g. Flat 1, A, 10B
+     */
     SubBuildingName: string;
-    /** When the PO Box Number field is populated it will contain PO BOX nnnnnn where n represents the PO Box number. Note that the PO Box details can occasionally consist of a combination of numbers and letters. PO Box Numbers are only allocated to Large Users. */
+    /**
+     * PO Box
+     * @description When the PO Box Number field is populated it will contain PO BOX nnnnnn where n represents the PO Box number. Note that the PO Box details can occasionally consist of a combination of numbers and letters. PO Box Numbers are only allocated to Large Users.
+     * @example HK860
+     */
     POBox: string;
-    /** Used to supplment Organisation Name to identify a deparment within the organisation. */
+    /**
+     * Department Name
+     * @description Used to supplment Organisation Name to identify a deparment within the organisation.
+     */
     DepartmentName: string;
-    /** Used to supplment Organisation Name to identify a deparment within the organisation. */
+    /**
+     * Organisation Name
+     * @description Used to supplment Organisation Name to identify a deparment within the organisation.
+     * @example Prime Minister &amp; First Lord Of The Treasury
+     */
     OrganisationName: string;
-    /** A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant. 8-character numeric code. Note: this will be an empty string `""` when not used for legacy reasons */
+    /**
+     * Unique Delivery Point Reference Number (UDPRN)
+     * Format: int32
+     * @description UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail assigns a unique UDPRN code for each premise on PAF. Simple, unique reference number for each Delivery Point. Unlikely to be reused when an address expires. Up to 8-digit numeric code. A new UDPRN is automatically assigned to each new Delivery Point added to PAF.
+     * @example 23747771
+     */
+    UDPRN: number;
+    /**
+     * UMPRN
+     * @description A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant. 8-character numeric code. Note: this will be an empty string `""` when not used for legacy reasons
+     */
     UMPRN: "" | number;
-    /** This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points. On average there are 15 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode. */
+    /**
+     * Postcode Type
+     * @description This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points. On average there are 15 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode.
+     * @example S
+     * @enum {string}
+     */
     PostcodeType: "S" | "L";
-    /** Small User Organisation Indicator can have the values 'Y' or space. A value of 'Y' indicates that a Small User Organisation is present at this address. */
+    /**
+     * Small User Organisation Indicator
+     * @description Small User Organisation Indicator can have the values 'Y' or space. A value of 'Y' indicates that a Small User Organisation is present at this address.
+     */
     SuOrganisationIndicator: string;
-    /** A unique Royal Mail 2-character code (the first numeric & the second alphabetical), which, when added to the Postcode, enables each live Delivery Point to be uniquely identified. Once the Delivery Point is deleted from PAF the DPS may be reused (although they aren’t reused until all remaining Delivery Points in the range have been allocated). The DPS for a Large User is always '1A' as each Large User has its own Postcode. E.g. 2B */
+    /**
+     * Delivery Point Suffix
+     * @description A unique Royal Mail 2-character code (the first numeric & the second alphabetical), which, when added to the Postcode, enables each live Delivery Point to be uniquely identified. Once the Delivery Point is deleted from PAF the DPS may be reused (although they aren’t reused until all remaining Delivery Points in the range have been allocated). The DPS for a Large User is always '1A' as each Large User has its own Postcode. E.g. 2B
+     * @example 1A
+     */
     DeliveryPointSuffix: string;
-    /** First Address Line. Often contains premise and thoroughfare information. In the case of a commercial premise, the first line is always the full name of the registered organisation. Never empty. */
+    /**
+     * Line 1
+     * @description First Address Line. Often contains premise and thoroughfare information. In the case of a commercial premise, the first line is always the full name of the registered organisation. Never empty.
+     * @example Prime Minister &amp; First Lord of Treasury
+     */
     Line1: string;
-    /** Second Address Line. Often contains thoroughfare and locality information. May be empty. */
+    /**
+     * Line 2
+     * @description Second Address Line. Often contains thoroughfare and locality information. May be empty.
+     * @example 10 Downing Street
+     */
     Line2: string;
-    /** Third address line. May be empty. */
+    /**
+     * Line 3
+     * @description Third address line. May be empty.
+     */
     Line3: string;
-    /** A pre-computed string which sensibly combines building_number, building_name and sub_building_name. building_number, building_name and sub_building_name represent raw data from Royal Mail's and can be difficult to parse if you are unaware of how the Postcode Address File premise fields work together. For this reason, we also provide a pre-computed premise field which intelligently gathers these points into a single, simple premise string. This field is ideal if you want to pull premise information and thoroughfare information separately instead of using our address lines data. */
+    /**
+     * Premise
+     * @description A pre-computed string which sensibly combines building_number, building_name and sub_building_name. building_number, building_name and sub_building_name represent raw data from Royal Mail's and can be difficult to parse if you are unaware of how the Postcode Address File premise fields work together. For this reason, we also provide a pre-computed premise field which intelligently gathers these points into a single, simple premise string. This field is ideal if you want to pull premise information and thoroughfare information separately instead of using our address lines data.
+     * @example 10
+     */
     Premise: string;
-    /** The country for which the postcode belongs to. May be empty for a small number of addresses. Data source: ONS */
+    /**
+     * Country
+     * @description The country for which the postcode belongs to. May be empty for a small number of addresses. Data source: ONS
+     * @example England
+     */
     Country: string;
-    /** Since postal, administrative or traditional counties may not apply to some addresses, the county field is designed to return whatever county data is available. Normally, the postal county is returned. If this is not present, the county field will fall back to the administrative county. If the administrative county is also not present, the county field will fall back to the traditional county. May be empty in cases where no administrative, postal or traditional county present. */
+    /**
+     * County
+     * @description Since postal, administrative or traditional counties may not apply to some addresses, the county field is designed to return whatever county data is available. Normally, the postal county is returned. If this is not present, the county field will fall back to the administrative county. If the administrative county is also not present, the county field will fall back to the traditional county. May be empty in cases where no administrative, postal or traditional county present.
+     * @example London
+     */
     County: string;
-    /** The current administrative county to which the postcode has been assigned. A Unitary Authority name, where one is present. If there is no Unitary Authority, the County name is used. This information is not static, because County boundaries may change due to administrative changes. Data source: ONS. May be empty. */
+    /**
+     * Administrative County
+     * @description The current administrative county to which the postcode has been assigned. A Unitary Authority name, where one is present. If there is no Unitary Authority, the County name is used. This information is not static, because County boundaries may change due to administrative changes. Data source: ONS. May be empty.
+     */
     AdministrativeCounty: string;
-    /** Postal counties were used for the distribution of mail before the Postcode system was introduced in the 1970s. The Former Postal County was the Administrative County at the time. This data rarely changes. Data source: Royal Mail. May be empty. */
+    /**
+     * Postal County
+     * @description Postal counties were used for the distribution of mail before the Postcode system was introduced in the 1970s. The Former Postal County was the Administrative County at the time. This data rarely changes. Data source: Royal Mail. May be empty.
+     * @example London
+     */
     PostalCounty: string;
-    /** The current district/unitary authority to which the postcode has been assigned. Data source: ONS */
+    /**
+     * Traditional County
+     * @description Traditional counties are provided by the Association of British Counties. It’s historical data, and can date from the 1800s. Data source: Royal Mail. May be empty.
+     * @example Greater London
+     */
+    TraditionalCounty: string;
+    /**
+     * District
+     * @description The current district/unitary authority to which the postcode has been assigned. Data source: ONS
+     * @example Westminster
+     */
     District: string;
-    /** The current administrative/electoral area to which the postcode has been assigned. May be empty for a small number of addresses. Data source: ONS */
+    /**
+     * Ward
+     * @description The current administrative/electoral area to which the postcode has been assigned. May be empty for a small number of addresses. Data source: ONS
+     * @example St. James'
+     */
     Ward: string;
-    /** The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. -0.1283983 Returns an empty string if no location data is available.  Otherwise, a number is returned */
+    /**
+     * Longitude
+     * @description The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. -0.1283983 Returns an empty string if no location data is available.  Otherwise, a number is returned
+     */
     Longitude: "" | number;
-    /** The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. 51.5083983 Returns an empty string if no location data is available.  Otherwise a number is returned. */
+    /**
+     * Longitude
+     * @description The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. 51.5083983 Returns an empty string if no location data is available.  Otherwise a number is returned.
+     */
     Latitude: "" | number;
-    /** Eastings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Eastings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 550458 Returns an empty string if no location data is available. Otherwise a number is returned */
+    /**
+     * Eastings
+     * @description Eastings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Eastings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 550458 Returns an empty string if no location data is available. Otherwise a number is returned
+     */
     Eastings: "" | number;
-    /** Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 180458 Returns an empty string if no location data is available. Otherwise a number is returned */
+    /**
+     * Eastings
+     * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 180458 Returns an empty string if no location data is available. Otherwise a number is returned
+     */
     Northings: "" | number;
-    /** UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property. See our UPRN guide for more information. Up to 12 digits in length. Multiple Residence premises currently share the same UPRN as the parent premise. May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string "" in these instances. Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most browsers causing this datapoint to be corrupted. Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value. */
+    /**
+     * Unique Delivery Point Reference Number (UDPRN)
+     * @description UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property. See our UPRN guide for more information. Up to 12 digits in length. Multiple Residence premises currently share the same UPRN as the parent premise. May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string "" in these instances. Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most browsers causing this datapoint to be corrupted. Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value.
+     */
     UPRN: string;
+    /**
+     * ID
+     * @description Global unique internally generated identifier for an address.
+     * @example paf_8387729
+     */
+    ID: string;
+    /**
+     * Dataset
+     * @description Indicates the provenance of an address
+     * @example paf
+     * @enum {string}
+     */
+    Dataset: "paf" | "mr" | "nyb" | "usps";
+    /**
+     * ISO Country Code
+     * @description 3 letter ISO country code
+     * @example GBR
+     * @enum {string}
+     */
+    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA";
+    /**
+     * Postcode Address File Address
+     * @description Standard UK Address.
+     */
     PafAddress: {
       postcode: components["schemas"]["Postcode"];
       postcode_outward: components["schemas"]["PostcodeOutward"];
@@ -504,7 +663,7 @@ export interface components {
       po_box: components["schemas"]["POBox"];
       department_name: components["schemas"]["DepartmentName"];
       organisation_name: components["schemas"]["OrganisationName"];
-      udprn: components["schemas"]["UMPRN"];
+      udprn: components["schemas"]["UDPRN"];
       umprn: components["schemas"]["UMPRN"];
       postcode_type: components["schemas"]["PostcodeType"];
       su_organisation_indicator: components["schemas"]["SuOrganisationIndicator"];
@@ -517,54 +676,100 @@ export interface components {
       county: components["schemas"]["County"];
       administrative_county: components["schemas"]["AdministrativeCounty"];
       postal_county: components["schemas"]["PostalCounty"];
-      traditional_county: components["schemas"]["PostalCounty"];
+      traditional_county: components["schemas"]["TraditionalCounty"];
       district: components["schemas"]["District"];
       ward: components["schemas"]["Ward"];
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
       eastings: components["schemas"]["Eastings"];
       northings: components["schemas"]["Northings"];
-      uprn?: components["schemas"]["UPRN"];
+      uprn: components["schemas"]["UPRN"];
+      id: components["schemas"]["ID"];
+      /** @enum {undefined} */
+      dataset: components["schemas"]["Dataset"];
+      /** @enum {undefined} */
+      country_iso: components["schemas"]["CountryISO"];
     };
+    /**
+     * Multiple Residence Address
+     * @description Subdivision of a Postcode Address File address. Does not have its own delivery point.
+     */
     MrAddress: components["schemas"]["PafAddress"] & {
-      umprn: number;
+      /** @enum {undefined} */
+      dataset?: components["schemas"]["Dataset"];
     };
-    NybAddress: components["schemas"]["PafAddress"];
+    /**
+     * Not Yet Built Address
+     * @description UK premise under construction
+     */
+    NybAddress: components["schemas"]["PafAddress"] & {
+      /** @enum {undefined} */
+      dataset?: components["schemas"]["Dataset"];
+    };
+    /** Postcode Response */
     PostcodeResponse: {
-      /** All addresses listed at the postcode */
+      /** @description All addresses listed at the postcode */
       result: (Partial<components["schemas"]["PafAddress"]> &
         Partial<components["schemas"]["MrAddress"]> &
         Partial<components["schemas"]["NybAddress"]>)[];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
+    /** Postcode Not Found */
     PostcodeNotFoundResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 4040;
+      /** @enum {string} */
       message: "Postcode not found";
-      /** A list of alternate nearest matching postcodes you can try */
+      /** @description A list of alternate nearest matching postcodes you can try */
       suggestions: string[];
     };
+    /** UDPRN Response */
     UDPRNResponse: {
       result:
         | components["schemas"]["PafAddress"]
         | components["schemas"]["NybAddress"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
+    /** Basic Error Response */
     ErrorResponse: {
-      /** API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging. */
+      /**
+       * Format: int32
+       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
+       */
       code: number;
-      /** Human readable error message supplied with every error response. */
+      /** @description Human readable error message supplied with every error response. */
       message: string;
     };
+    /** UDPRN Response */
     UMPRNResponse: {
       result: components["schemas"]["MrAddress"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
+    /** Key */
     ApiKey: {
       /**
-       * Determines whether the key can be used by the requesting agent.
+       * @description Determines whether the key can be used by the requesting agent.
        *
        * Returns false if one of the following conditions are met:
        *   - Key has no lookups remaining
@@ -573,235 +778,650 @@ export interface components {
        *   - Key is not being used via an authorised URL
        *   - (Sublicensed key only) Key has a valid licensee attached
        *   - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
+       *
+       * @example true
        */
       available?: boolean;
     } & {
       availabie: unknown;
     };
+    /** API Key Response */
     ApiKeyResponse: {
       result: components["schemas"]["ApiKey"];
+      /** @enum {string} */
       message: "Success";
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
     };
     /**
-     * A secret key used for sensitive operations on your account and API Keys.
+     * User Token
+     * @description A secret key used for sensitive operations on your account and API Keys.
      *
      * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
      *
      * Typically beings `uk_...`
+     *
+     * @example uk_B59ScW1p1HHouf1VqclEPZUx
      */
     UserTokenParam: string;
+    /** API Key Daily Limit */
     ApiKeyDailyLimit: {
       /**
-       * `number` or `null`. The daily lookup limit currently set on your key.
+       * Format: int32
+       * @description `number` or `null`. The daily lookup limit currently set on your key.
        * `null` means the limit is currently disabled.
+       * @example 1000
        */
       limit: number;
-      /** Number of lookups performed today which count towards your daily limit. */
+      /**
+       * Format: int32
+       * @description Number of lookups performed today which count towards your daily limit.
+       * @example 288
+       */
       consumed: number;
     };
+    /** API Key Individual Limit */
     ApiKeyIndividualLimit: {
       /**
-       * `number` or `null` Limit set on the number of lookups that can be
+       * Format: int32
+       * @description `number` or `null` Limit set on the number of lookups that can be
        * performed from a single IP address. `null` means the limit is currently
        * disabled.
+       * @example 30
        */
       limit: number;
     };
+    /** API Key Notifications */
     ApiKeyNotifications: {
-      /** A list of email addresses designated by you to receive notifications about this key. */
+      /** @description A list of email addresses designated by you to receive notifications about this key. */
       emails: string[];
-      /** Indicates whether email notifications are enabled. */
+      /** @description Indicates whether email notifications are enabled. */
       enabled: boolean;
     };
-    /** Indicates which datasets are available and added by default to the address responses */
+    /**
+     * API Key Dataset Availability
+     * @description Indicates which datasets are available and added by default to the address responses
+     */
     ApiKeyDatasets: {
-      /** UK Postcode Address File enabled */
+      /**
+       * @description UK Postcode Address File enabled
+       * @example true
+       */
       paf: boolean;
-      /** UK Multiple Residence Dataset enabled */
+      /**
+       * @description UK Multiple Residence Dataset enabled
+       * @example true
+       */
       mr: boolean;
-      /** UK Not Yet Built Dataset enabled */
+      /** @description UK Not Yet Built Dataset enabled */
       nyb: boolean;
     };
-    /** Automated topup status */
+    /**
+     * API Key Automated Topup
+     * @description Automated topup status
+     */
     ApiKeyAutomatedTopup: {
-      /** Indicates whether automated top-ups are enabled */
+      /**
+       * @description Indicates whether automated top-ups are enabled
+       * @example true
+       */
       enabled: boolean;
     };
+    /** API Key Batch Purchase */
     ApiKeyCurrentPurchase: {
       /**
-       * `string` or `null` The date when this purchase will expire in simplified
+       * @description `string` or `null` The date when this purchase will expire in simplified
        * extended ISO format (ISO 8601). This is typically 365 days from the time
        * of first use. This field will be `null` if the purchase has not yet been
        * used.
+       * @example 2022-01-06T11:41:27.092Z
        */
       expires: string;
-      /** Number of procured lookups from this purchase. */
+      /**
+       * Format: int32
+       * @description Number of procured lookups from this purchase.
+       * @example 20000
+       */
       purchased: number;
-      /** Number of consumed lookups off this purchase. */
+      /**
+       * Format: int32
+       * @description Number of consumed lookups off this purchase.
+       * @example 121
+       */
       consumed: number;
     };
+    /** API Key Details */
     ApiKeyDetails: {
+      /**
+       * Format: int32
+       * @example 19889
+       */
       lookups_remaining: number;
       daily_limit: components["schemas"]["ApiKeyDailyLimit"];
       individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
-      /** A list of allowed URLs. An empty list means that allowed URLs are disabled. */
+      /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
       allowed_urls: string[];
       notifications?: components["schemas"]["ApiKeyNotifications"];
       datasets?: components["schemas"]["ApiKeyDatasets"];
       automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
-      /** Current balance purchases attached to key. */
+      /** @description Current balance purchases attached to key. */
       current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
     } & {
       notificatinos: unknown;
     };
+    /** API Key Details Response */
     ApiKeyDetailsResponse: {
       result: components["schemas"]["ApiKeyDetails"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
-    /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`. */
+    /**
+     * Start Time
+     * Format: int32
+     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
+     *
+     * @example 1418556452651
+     */
     StartParam: number;
-    /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
+    /**
+     * End Time
+     * Format: int32
+     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
+     *
+     * @example 1418556477882
+     */
     EndParam: number;
-    /** Uniquely identifies a licensee */
+    /**
+     * Tags
+     * @description A comma separated list of tags to query over.
+     *
+     * Useful if you want to specify the circumstances in which the request was made.
+     *
+     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+     *
+     * @example foo,bar
+     */
+    TagsParam: string;
+    /**
+     * Licensee Key
+     * @description Uniquely identifies a licensee
+     *
+     * @example sk_hk71kco54zGSGvF9eXXrvvnMOLLNh
+     */
     LicenseeParam: string;
+    /** Key Usage */
     KeyUsageResult: {
-      /** Start date in ISO 8601 format. */
+      /**
+       * @description Start date in ISO 8601 format.
+       * @example 2015-01-22T15:08:06.609Z
+       */
       start: string;
-      /** End date in ISO 8601 format. */
+      /**
+       * @description End date in ISO 8601 format.
+       * @example 2015-01-23T15:08:06.609Z
+       */
       end: string;
-      /** Total of paid lookups performed in specified period. */
+      /**
+       * Format: int32
+       * @description Total of paid lookups performed in specified period.
+       * @example 132
+       */
       total: number;
-      /** An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day. */
+      /** @description An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day. */
       dailyCount: {
+        /** @example 2015-01-22T00:00:00.000Z */
         date: string;
+        /**
+         * Format: int32
+         * @example 132
+         */
         count: number;
       }[];
     };
+    /** Key Usage Response */
     ApiKeyUsageResponse: {
       result: components["schemas"]["KeyUsageResult"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
     /**
-     * Specifies the maximum number of suggestions to retrieve.
+     * Context
+     * @description Limits search results within a geographical boundary or country.
+     * @enum {string}
+     */
+    Context: "gbr" | "usa";
+    /**
+     * Limit
+     * Format: int32
+     * @description Specifies the maximum number of suggestions to retrieve.
      *
      * By default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`
+     *
+     * @default 10
+     * @example 5
      */
     LimitParam: number;
-    /** Filter by outward code. */
+    /**
+     * Postcode Outward
+     * @description Filter by outward code.
+     * @example 1AA
+     */
     PostcodeOutwardParam: string;
-    /** Filter by postcode. Can be combined with query to perform a postcode + building number/name search. */
+    /**
+     * Postcode
+     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example SW1A 2AA
+     */
     PostcodeParam: string;
-    /** Filter by postcode. Can be combined with query to perform a postcode + building number/name search. */
+    /**
+     * Postcode Area
+     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example SW
+     */
     PostcodeAreaParam: string;
-    /** Filter by postcode sector, the outward code plus first numeric of the inward code. */
+    /**
+     * Postcode Sector
+     * @description Filter by postcode sector, the outward code plus first numeric of the inward code.
+     * @example SW1A 2
+     */
     PostcodeSectorParam: string;
-    /** Filter by town. */
+    /**
+     * Post Town
+     * @description Filter by town.
+     * @example London
+     */
     PostTownParam: string;
-    /** Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted */
+    /**
+     * UPRN
+     * @description Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted
+     * @example 100023336956
+     */
     UPRNParam: number;
-    /** Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man. */
+    /**
+     * Country
+     * @description Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     * @example England
+     */
     CountryParam: string;
-    /** Filter by Postcode Type. Useful for separating organisational and residential addresses */
+    /**
+     * Country
+     * @description Filter by Postcode Type. Useful for separating organisational and residential addresses
+     * @example L
+     */
     PostcodeTypeParam: string;
-    /** Filter by Organisation Indicator. Useful for separating organisational and residential addresses */
+    /**
+     * SU Organisation Indicator
+     * @description Filter by Organisation Indicator. Useful for separating organisational and residential addresses
+     * @example Y
+     */
     SmallUserParam: string;
-    /** Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.   Only one geospatial box can be provided. */
+    /**
+     * Box
+     * @description Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.   Only one geospatial box can be provided.
+     * @example 2.095,57.15,-2.096,57.14
+     */
     BoxParam: string;
-    /** Bias by outward code */
+    /**
+     * Bias Postcode Outward
+     * @description Bias by outward code
+     */
     BiasPostcodeOutwardParam: string;
-    /** Bias by postcode. Can be combined with query to perform a postcode + building number/name search. */
+    /**
+     * Bias Postcode
+     * @description Bias by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example /addresses?postcode=SW1A2AA&q=10
+     */
     BiasPostcodeParam: string;
-    /** Bias by postcode area, the first one or two non-numeric characters of a postcode. */
+    /**
+     * Bias Postcode Area
+     * @description Bias by postcode area, the first one or two non-numeric characters of a postcode.
+     * @example The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+     */
     BiasPostcodeAreaParam: string;
-    /** Bias by postcode sector, the outward code plus first numeric of the inward code. */
+    /**
+     * Bias Postcode Sector
+     * @description Bias by postcode sector, the outward code plus first numeric of the inward code.
+     * @example SW1A 2AA is SW1A 2
+     */
     BiasPostcodeSectorParam: string;
-    /** Bias by town. */
+    /**
+     * Bias Post Town
+     * @description Bias by town.
+     */
     BiasPosttownParam: string;
-    /** Bias by street name. */
+    /**
+     * Bias Thoroughfare
+     * @description Bias by street name.
+     */
     BiasThoroughfareParam: string;
-    /** Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man. */
+    /**
+     * Bias County
+     * @description Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     */
     BiasCountryParam: string;
-    /** Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided */
+    /**
+     * Bias Lon/Lat
+     * @description Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided
+     * @example -2.095,57.15,100
+     */
     BiasLonLatParam: string;
     /**
-     * Biases search based on approximate geolocation of IP address.
+     * Bias query by Geolocation of IP
+     * @description Biases search based on approximate geolocation of IP address.
      * Set `bias_ip=true` to enable.
+     * @example bias_ip=true
+     * @enum {string}
      */
     BiasIpParam: "true";
-    /** Can represent a PAF or Not Yet Built address */
+    /**
+     * UK Postcode Address File Address Autocompletion Hit
+     * @description Represents an address suggestion from the UK Postcode Address File.
+     */
     PafSuggestion: {
-      /** Address suggestion for your given query. */
+      id: components["schemas"]["ID"];
+      /**
+       * @description Address suggestion for your given query.
+       * @example Flat 6, 12 Roskear, Camborne, TR14
+       */
       suggestion: string;
+      udprn: components["schemas"]["UDPRN"];
       urls: {
-        /** URL to retrieve the entire details for a given address suggestion */
+        /**
+         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
+         * @example /v1/udprn/50985827
+         */
         udprn: string;
       };
-      /** Represents the UDPRN of a premise */
-      udprn: number;
     };
-    MrSuggestion: components["schemas"]["PafSuggestion"] & {
+    /** Multiple Residence Address Autocompletion Hit */
+    MrSuggestion: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Address suggestion for your given query.
+       * @example Flat 6, 12 Roskear, Camborne, TR14
+       */
+      suggestion: string;
+      udprn: components["schemas"]["UDPRN"];
+      /**
+       * Format: int32
+       * @description Optionally returned field, representing the UMPRN of a Multiple Residence household
+       * @example 51103417
+       */
+      umprn: number;
       urls: {
-        /** Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household */
+        /**
+         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
+         * @example /v1/udprn/50985827
+         */
+        udprn: string;
+        /**
+         * @description Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household
+         * @example /v1/umprn/51103417
+         */
         umprn: string;
       };
-      /** Optionally returned field, representing the UMPRN of a Multiple Residence household */
-      umprn: number;
     };
+    /** Not Yet Built Address Autocompletion Hit */
     NybSuggestion: components["schemas"]["PafSuggestion"];
+    /**
+     * Global Address Autocompletion Suggestion
+     * @description Represents an address suggestion for any address in the world
+     */
+    GlobalAddressSuggestion: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Address Suggestion to be displayed to the user
+       * @example Flat 6, 12 Roskear, Camborne, TR14
+       */
+      suggestion: string;
+      urls: {
+        /**
+         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
+         * @example /v1/udprn/50985827
+         */
+        id?: string;
+      };
+    };
+    /** Address Autocomplete Response */
     AutocompleteResponse: {
-      result: (Partial<components["schemas"]["PafSuggestion"]> &
-        Partial<components["schemas"]["MrSuggestion"]> &
-        Partial<components["schemas"]["NybSuggestion"]>)[];
+      result: {
+        hits: (
+          | components["schemas"]["PafSuggestion"]
+          | components["schemas"]["MrSuggestion"]
+          | components["schemas"]["NybSuggestion"]
+          | components["schemas"]["GlobalAddressSuggestion"]
+        )[];
+      };
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
-    AddressResponse: {
+    /**
+     * Global Address
+     * @description Global (non-UK) address in the UK address format
+     */
+    GbrGlobalAddress: {
+      /** @description Postal or Zip Code */
+      postcode: string;
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      postcode_outward: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      postcode_inward: "";
+      /** @description Town or City */
+      post_town: string;
+      dependant_locality: components["schemas"]["DependantLocality"];
+      double_dependant_locality: components["schemas"]["DoubleDependantLocality"];
+      thoroughfare: components["schemas"]["Thoroughfare"];
+      dependant_thoroughfare: components["schemas"]["DependantThoroughfare"];
+      building_number: components["schemas"]["BuildingNumber"];
+      building_name: components["schemas"]["BuildingName"];
+      sub_building_name: components["schemas"]["SubBuildingName"];
+      /** @description PO Box */
+      po_box: string;
+      /** @description Department name at premise */
+      department_name: string;
+      /** @description Name of organisation at premise */
+      organisation_name: string;
+      /**
+       * @description Not available for non-UK addresses. See id for address identifier
+       * @enum {string}
+       */
+      udprn: "";
+      /**
+       * @description Not available for non-UK addresses. See id for address identifier
+       * @enum {string}
+       */
+      umprn: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      postcode_type: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      su_organisation_indicator: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      delivery_point_suffix: "";
+      line_1: components["schemas"]["Line1"];
+      line_2: components["schemas"]["Line2"];
+      line_3: components["schemas"]["Line3"];
+      premise: components["schemas"]["Premise"];
+      country: components["schemas"]["Country"];
+      /** @description Province, state or county */
+      county: string;
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      administrative_county: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      postal_county: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      traditional_county: "";
+      district: components["schemas"]["District"];
+      ward: components["schemas"]["Ward"];
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      eastings: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      northings: "";
+      /**
+       * @description Not available for non-UK addresses. See id for address identifier
+       * @enum {string}
+       */
+      uprn: "";
+      id: components["schemas"]["ID"];
+      dataset: components["schemas"]["Dataset"];
+      country_iso: components["schemas"]["CountryISO"];
+    };
+    /** Address Resolution Response (GBR) */
+    GbrResolveAddressResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["PafAddress"]
+        | components["schemas"]["MrAddress"]
+        | components["schemas"]["NybAddress"]
+        | components["schemas"]["GbrGlobalAddress"];
+    };
+    /** Address Search Response */
+    AddressResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
       message: "Success";
       result: {
-        /** List of matching addresses */
-        hits: (Partial<components["schemas"]["PafAddress"]> &
-          Partial<components["schemas"]["MrAddress"]> &
-          Partial<components["schemas"]["NybAddress"]>)[];
+        /** @description List of matching addresses */
+        hits: (
+          | components["schemas"]["PafAddress"]
+          | components["schemas"]["MrAddress"]
+          | components["schemas"]["NybAddress"]
+        )[];
+        /** Format: int32 */
         total: number;
+        /**
+         * Format: int32
+         * @default 10
+         * @example 10
+         */
         limit: number;
+        /** Format: int32 */
         page: number;
       };
     };
-    /** Licensee object which can be defined by user */
+    /**
+     * Licensee
+     * @description Licensee object which can be defined by user
+     */
     LicenseeEditable: {
-      /** Licensee individual or organisation name */
+      /**
+       * @description Licensee individual or organisation name
+       * @example Qwerty Widgets Limited
+       */
       name?: string;
-      /** Licensee's first, second and third line address as well as post town concatenated by commas */
+      /**
+       * @description Licensee's first, second and third line address as well as post town concatenated by commas
+       * @example 12 High Street, Manchester
+       */
       address?: string;
-      /** Licensee's postcode */
+      /**
+       * @description Licensee's postcode
+       * @example ID1 1QD
+       */
       postcode?: string;
-      /** A list of allowed URLs. An empty list means that whitelisting is disabled */
+      /** @description A list of allowed URLs. An empty list means that whitelisting is disabled */
       whitelist?: string[];
       daily?: {
-        /** The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active */
+        /**
+         * Format: int32
+         * @description The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active
+         * @example 10000
+         */
         limit?: number;
       };
     };
+    /** Licensee */
     Licensee: components["schemas"]["LicenseeEditable"] &
       ({
-        /** An immutable ID provided for every licensee. Primarily used for paginated list requests. */
+        /**
+         * @description An immutable ID provided for every licensee. Primarily used for paginated list requests.
+         *
+         * @example 56a11209ebe230380bf104c3
+         */
         id: string;
         /**
-         * Uniquely identifies a licensee for a key.
+         * @description Uniquely identifies a licensee for a key.
          *
          * Required to perform paid lookups for a specific licensee. Typically begins `sk_`.
+         *
+         * @example sl_ijoiqsxeQgXW2gkiE0X94
          */
         key: string;
-        /** Timestamp for when the licensee was created */
+        /**
+         * @description Timestamp for when the licensee was created
+         * @example 2016-01-21T17:14:49.971Z
+         */
         createdAt: string;
         daily: {
-          /** The number lookups performed by the licensee on the day represented b `licesees.daily.updatedAt` */
+          /**
+           * Format: int32
+           * @description The number lookups performed by the licensee on the day represented b `licesees.daily.updatedAt`
+           * @example 232
+           */
           count: number;
-          /** The timestamp when the limit was last used. */
+          /**
+           * @description The timestamp when the limit was last used.
+           * @example 2016-08-05T16:43:28.865Z
+           */
           updatedAt: string;
         };
       } & {
@@ -810,81 +1430,162 @@ export interface components {
         postcode: unknown;
         whitelist: unknown;
       });
+    /** Licensee List Response */
     LicenseesResponse: {
-      /** List of licensees */
+      /** @description List of licensees */
       result: {
         licensees?: components["schemas"]["Licensee"][];
-        /** Returns true if there are more licensees listed after the maximum number of results as implied by `limit` */
+        /** @description Returns true if there are more licensees listed after the maximum number of results as implied by `limit` */
         hasMore?: boolean;
       };
+      /** @enum {string} */
       message: "Success";
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
     };
+    /** Licensee Response */
     LicenseeResponse: {
       result: components["schemas"]["Licensee"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
+    /** Config Object */
     Config: {
-      /** Timestamp for when the config was created */
+      /**
+       * @description Timestamp for when the config was created
+       * @example 2016-01-21T17:14:49.971Z
+       */
       updatedAt: string;
-      /** Timestamp for when the config was updated */
+      /**
+       * @description Timestamp for when the config was updated
+       * @example 2016-01-21T17:14:49.971Z
+       */
       createdAt: string;
-      /** A unique name to identify the configuration payload */
+      /**
+       * @description A unique name to identify the configuration payload
+       * @example woocommerce
+       */
       name: string;
-      /** A serialised payload of up to `4096` characters */
+      /**
+       * @description A serialised payload of up to `4096` characters
+       * @example {
+       *   "removeOrganisation": false
+       * }
+       */
       payload: string;
     };
+    /** Config List Response */
     ConfigsResponse: {
-      /** List of configurations */
+      /** @description List of configurations */
       result: {
         configs: components["schemas"]["Config"][];
       };
+      /** @enum {string} */
       message: "Success";
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
     };
+    /** Bad Request Error Response */
     BadRequestResponse: components["schemas"]["ErrorResponse"] & {
-      /** `400X` type error response code */
+      /**
+       * Format: int32
+       * @description `400X` type error response code
+       */
       code: number;
-      /** Bad request error description */
+      /** @description Bad request error description */
       message: string;
       errors?: {
-        /** Indicates location of error in request query or URL parameter */
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example should have required property 'type'
+         */
         message: string;
-        /** Indicates location of error in request query or URL parameter */
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example .query.type
+         */
         path: string;
+        /** @example required.openapi.validation */
         errorCode?: string;
       }[];
     };
+    /** Unauthorized Request Error Response */
     UnauthorizedResponse: components["schemas"]["ErrorResponse"] & {
-      /** `401X` type error response code */
+      /**
+       * Format: int32
+       * @description `401X` type error response code
+       */
       code: number;
-      /** Unauthorized request error description */
+      /** @description Unauthorized request error description */
       message: string;
     };
-    /** Required configuration object parameters */
+    /**
+     * New Config Object
+     * @description Required configuration object parameters
+     */
     ConfigNewParam: {
-      /** A unique name to identify the configuration payload */
+      /**
+       * @description A unique name to identify the configuration payload
+       * @example woocommerce
+       */
       name: string;
-      /** A serialised payload of up to `4096` characters */
+      /**
+       * @description A serialised payload of up to `4096` characters
+       * @example {
+       *   "removeOrganisation": false
+       * }
+       */
       payload: string;
     };
+    /** Config Response */
     ConfigResponse: {
       result: components["schemas"]["Config"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
       code: 2000;
+      /** @enum {string} */
       message: "Success";
     };
-    /** User provided configuration object name */
+    /**
+     * Configuration Name
+     * @description User provided configuration object name
+     * @example idpc-be
+     */
     ConfigParam: string;
+    /** Not Found Response */
     NotFoundResponse: components["schemas"]["ErrorResponse"] & {
-      /** `404X` type error response code */
+      /**
+       * Format: int32
+       * @description `404X` type error response code
+       */
       code: number;
-      /** Resource not found error description */
+      /** @description Resource not found error description */
       message: string;
     };
-    /** Config object update parameters */
+    /**
+     * Update Config Object
+     * @description Config object update parameters
+     */
     ConfigUpdateParam: {
-      /** A serialised payload of up to `4096` characters */
+      /**
+       * @description A serialised payload of up to `4096` characters
+       * @example {
+       *   "removeOrganisation": false
+       * }
+       */
       payload?: string;
     };
   };
@@ -967,7 +1668,6 @@ export interface operations {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
         page?: components["schemas"]["PageParam"];
-        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1016,7 +1716,6 @@ export interface operations {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
-        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1063,7 +1762,6 @@ export interface operations {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
-        tags?: components["schemas"]["TagsParam"];
       };
     };
     responses: {
@@ -1333,6 +2031,7 @@ export interface operations {
         api_key: components["schemas"]["ApiKeyParam"];
         /** Specifies the address you wish to query. Query can be shortened to `q=` */
         query?: string;
+        context?: components["schemas"]["Context"];
         /** Limits number of address suggestions unless a postcode is detected. In this instance entire list of addreses for that postcode is returned. */
         limit?: components["schemas"]["LimitParam"];
         postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
@@ -1369,6 +2068,32 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AutocompleteResponse"];
+        };
+      };
+    };
+  };
+  /** Resolves an address autocompletion by its address ID. */
+  Resolve: {
+    parameters: {
+      path: {
+        /** ID of address suggestion */
+        address: string;
+      };
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GbrResolveAddressResponse"];
+        };
+      };
+      /** Resource not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
         };
       };
     };
@@ -1453,7 +2178,6 @@ export interface operations {
         query?: string;
         limit?: components["schemas"]["LimitParam"];
         page?: components["schemas"]["PageParam"];
-        tags?: components["schemas"]["TagsParam"];
         filter?: components["schemas"]["FilterParam"];
         postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
         postcode?: components["schemas"]["PostcodeParam"];
@@ -1595,9 +2319,18 @@ export interface operations {
         content: {
           "application/json": {
             result: {
+              /**
+               * Format: int32
+               * @example 1
+               */
               deleted: number;
             };
+            /**
+             * Format: int32
+             * @enum {integer}
+             */
             code: 2000;
+            /** @enum {string} */
             message: "Success";
           };
         };
@@ -1760,9 +2493,18 @@ export interface operations {
         content: {
           "application/json": {
             result: {
+              /**
+               * Format: int32
+               * @example 1
+               */
               deleted: number;
             };
+            /**
+             * Format: int32
+             * @enum {integer}
+             */
             code: 2000;
+            /** @enum {string} */
             message: "Success";
           };
         };

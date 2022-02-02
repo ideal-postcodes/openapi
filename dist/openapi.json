@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.2",
+    "version": "1.0.1",
     "license": {
       "name": "AGPLv3",
       "url": "https://opensource.org/licenses/AGPL-3.0"
@@ -110,15 +110,6 @@
             "schema": {
               "$ref": "#/components/schemas/PageParam"
             }
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/TagsParam"
-            }
           }
         ],
         "responses": {
@@ -194,15 +185,6 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/FilterParam"
-            }
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/TagsParam"
             }
           }
         ],
@@ -280,15 +262,6 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/FilterParam"
-            }
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/TagsParam"
             }
           }
         ],
@@ -621,6 +594,15 @@
             }
           },
           {
+            "name": "context",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/Context"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "style": "form",
@@ -851,6 +833,74 @@
         ]
       }
     },
+    "/autocomplete/addresses/{address}/gbr": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "Resolve Address",
+        "operationId": "Resolve",
+        "description": "Resolves an address autocompletion by its address ID.\n",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "ID of address suggestion",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GbrResolveAddressResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "http",
+            "label": "URL",
+            "source": "https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd\n"
+          },
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl -k -G https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd \\\n  -d \"api_key=iddqd\"\n"
+          }
+        ]
+      }
+    },
     "/addresses": {
       "get": {
         "tags": [
@@ -896,15 +946,6 @@
             "explode": false,
             "schema": {
               "$ref": "#/components/schemas/PageParam"
-            }
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/TagsParam"
             }
           },
           {
@@ -1878,12 +1919,6 @@
         "default": 0,
         "example": 0
       },
-      "TagsParam": {
-        "title": "Tags",
-        "type": "string",
-        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
-        "example": "foo,bar"
-      },
       "PostcodeOutward": {
         "title": "Postcode Outward",
         "type": "string",
@@ -1977,6 +2012,13 @@
         "maxLength": 60,
         "example": "Prime Minister &amp; First Lord Of The Treasury"
       },
+      "UDPRN": {
+        "title": "Unique Delivery Point Reference Number (UDPRN)",
+        "type": "integer",
+        "format": "int32",
+        "description": "UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail assigns a unique UDPRN code for each premise on PAF. Simple, unique reference number for each Delivery Point. Unlikely to be reused when an address expires. Up to 8-digit numeric code. A new UDPRN is automatically assigned to each new Delivery Point added to PAF.",
+        "example": 23747771
+      },
       "UMPRN": {
         "title": "UMPRN",
         "description": "A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant. 8-character numeric code. Note: this will be an empty string `\"\"` when not used for legacy reasons",
@@ -2067,6 +2109,12 @@
         "type": "string",
         "description": "Postal counties were used for the distribution of mail before the Postcode system was introduced in the 1970s. The Former Postal County was the Administrative County at the time. This data rarely changes. Data source: Royal Mail. May be empty.",
         "example": "London"
+      },
+      "TraditionalCounty": {
+        "title": "Traditional County",
+        "type": "string",
+        "description": "Traditional counties are provided by the Association of British Counties. It’s historical data, and can date from the 1800s. Data source: Royal Mail. May be empty.",
+        "example": "Greater London"
       },
       "District": {
         "title": "District",
@@ -2165,9 +2213,40 @@
         "type": "string",
         "description": "UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property. See our UPRN guide for more information. Up to 12 digits in length. Multiple Residence premises currently share the same UPRN as the parent premise. May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string \"\" in these instances. Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most browsers causing this datapoint to be corrupted. Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value."
       },
+      "ID": {
+        "title": "ID",
+        "type": "string",
+        "description": "Global unique internally generated identifier for an address.",
+        "example": "paf_8387729"
+      },
+      "Dataset": {
+        "title": "Dataset",
+        "type": "string",
+        "description": "Indicates the provenance of an address",
+        "example": "paf",
+        "enum": [
+          "paf",
+          "mr",
+          "nyb",
+          "usps"
+        ]
+      },
+      "CountryISO": {
+        "title": "ISO Country Code",
+        "type": "string",
+        "description": "3 letter ISO country code",
+        "example": "GBR",
+        "enum": [
+          "GBR",
+          "IMN",
+          "JEY",
+          "GGY",
+          "USA"
+        ]
+      },
       "PafAddress": {
-        "title": "PAF Address",
-        "type": "object",
+        "title": "Postcode Address File Address",
+        "description": "Standard UK Address.",
         "required": [
           "postcode",
           "postcode_outward",
@@ -2193,7 +2272,6 @@
           "line_3",
           "premise",
           "country",
-          "county",
           "administrative_county",
           "postal_county",
           "traditional_county",
@@ -2202,7 +2280,12 @@
           "longitude",
           "latitude",
           "eastings",
-          "northings"
+          "northings",
+          "uprn",
+          "county",
+          "id",
+          "dataset",
+          "country_iso"
         ],
         "properties": {
           "postcode": {
@@ -2248,7 +2331,7 @@
             "$ref": "#/components/schemas/OrganisationName"
           },
           "udprn": {
-            "$ref": "#/components/schemas/UMPRN"
+            "$ref": "#/components/schemas/UDPRN"
           },
           "umprn": {
             "$ref": "#/components/schemas/UMPRN"
@@ -2287,7 +2370,7 @@
             "$ref": "#/components/schemas/PostalCounty"
           },
           "traditional_county": {
-            "$ref": "#/components/schemas/PostalCounty"
+            "$ref": "#/components/schemas/TraditionalCounty"
           },
           "district": {
             "$ref": "#/components/schemas/District"
@@ -2309,24 +2392,42 @@
           },
           "uprn": {
             "$ref": "#/components/schemas/UPRN"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "$ref": "#/components/schemas/Dataset",
+            "enum": [
+              "paf"
+            ]
+          },
+          "country_iso": {
+            "$ref": "#/components/schemas/CountryISO",
+            "enum": [
+              "GBR",
+              "IMN",
+              "JEY",
+              "GGY"
+            ]
           }
         }
       },
       "MrAddress": {
         "title": "Multiple Residence Address",
+        "description": "Subdivision of a Postcode Address File address. Does not have its own delivery point.",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafAddress"
           },
           {
             "type": "object",
-            "required": [
-              "umprn"
-            ],
             "properties": {
-              "umprn": {
-                "type": "number",
-                "example": 883293
+              "dataset": {
+                "$ref": "#/components/schemas/Dataset",
+                "enum": [
+                  "mr"
+                ]
               }
             }
           }
@@ -2334,9 +2435,21 @@
       },
       "NybAddress": {
         "title": "Not Yet Built Address",
+        "description": "UK premise under construction",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafAddress"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "$ref": "#/components/schemas/Dataset",
+                "enum": [
+                  "mr"
+                ]
+              }
+            }
           }
         ]
       },
@@ -2772,6 +2885,12 @@
         "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
         "example": 1418556477882
       },
+      "TagsParam": {
+        "title": "Tags",
+        "type": "string",
+        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
+        "example": "foo,bar"
+      },
       "LicenseeParam": {
         "title": "Licensee Key",
         "type": "string",
@@ -2854,6 +2973,15 @@
             ]
           }
         }
+      },
+      "Context": {
+        "title": "Context",
+        "type": "string",
+        "enum": [
+          "gbr",
+          "usa"
+        ],
+        "description": "Limits search results within a geographical boundary or country."
       },
       "LimitParam": {
         "title": "Limit",
@@ -2979,19 +3107,26 @@
         "example": "bias_ip=true"
       },
       "PafSuggestion": {
-        "title": "Address Autocompletion Hit",
-        "description": "Can represent a PAF or Not Yet Built address",
+        "title": "UK Postcode Address File Address Autocompletion Hit",
+        "description": "Represents an address suggestion from the UK Postcode Address File.",
         "type": "object",
         "required": [
+          "id",
           "suggestion",
-          "urls",
-          "udprn"
+          "udprn",
+          "urls"
         ],
         "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
           "suggestion": {
             "type": "string",
             "description": "Address suggestion for your given query.",
             "example": "Flat 6, 12 Roskear, Camborne, TR14"
+          },
+          "udprn": {
+            "$ref": "#/components/schemas/UDPRN"
           },
           "urls": {
             "required": [
@@ -3001,54 +3136,61 @@
             "properties": {
               "udprn": {
                 "type": "string",
-                "description": "URL to retrieve the entire details for a given address suggestion",
+                "description": "URL to retrieve the entire details for a given address suggestion by the UDPRN",
                 "example": "/v1/udprn/50985827"
               }
             }
-          },
-          "udprn": {
-            "type": "number",
-            "format": "int32",
-            "description": "Represents the UDPRN of a premise",
-            "example": 50985827
           }
         }
       },
       "MrSuggestion": {
         "title": "Multiple Residence Address Autocompletion Hit",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PafSuggestion"
+        "type": "object",
+        "required": [
+          "id",
+          "suggestion",
+          "udprn",
+          "umprn",
+          "urls"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
           },
-          {
+          "suggestion": {
+            "type": "string",
+            "description": "Address suggestion for your given query.",
+            "example": "Flat 6, 12 Roskear, Camborne, TR14"
+          },
+          "udprn": {
+            "$ref": "#/components/schemas/UDPRN"
+          },
+          "umprn": {
+            "type": "number",
+            "format": "int32",
+            "description": "Optionally returned field, representing the UMPRN of a Multiple Residence household",
+            "example": 51103417
+          },
+          "urls": {
             "type": "object",
             "required": [
-              "urls",
+              "udprn",
               "umprn"
             ],
             "properties": {
-              "urls": {
-                "type": "object",
-                "required": [
-                  "umprn"
-                ],
-                "properties": {
-                  "umprn": {
-                    "type": "string",
-                    "description": "Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household",
-                    "example": "/v1/umprn/51103417"
-                  }
-                }
+              "udprn": {
+                "type": "string",
+                "description": "URL to retrieve the entire details for a given address suggestion by the UDPRN",
+                "example": "/v1/udprn/50985827"
               },
               "umprn": {
-                "type": "number",
-                "format": "int32",
-                "description": "Optionally returned field, representing the UMPRN of a Multiple Residence household",
-                "example": 51103417
+                "type": "string",
+                "description": "Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household",
+                "example": "/v1/umprn/51103417"
               }
             }
           }
-        ]
+        }
       },
       "NybSuggestion": {
         "title": "Not Yet Built Address Autocompletion Hit",
@@ -3057,6 +3199,36 @@
             "$ref": "#/components/schemas/PafSuggestion"
           }
         ]
+      },
+      "GlobalAddressSuggestion": {
+        "title": "Global Address Autocompletion Suggestion",
+        "description": "Represents an address suggestion for any address in the world",
+        "type": "object",
+        "required": [
+          "id",
+          "suggestion",
+          "urls"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "Address Suggestion to be displayed to the user",
+            "example": "Flat 6, 12 Roskear, Camborne, TR14"
+          },
+          "urls": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "URL to retrieve the entire details for a given address suggestion by the UDPRN",
+                "example": "/v1/udprn/50985827"
+              }
+            }
+          }
+        }
       },
       "AutocompleteResponse": {
         "title": "Address Autocomplete Response",
@@ -3068,19 +3240,30 @@
         ],
         "properties": {
           "result": {
-            "type": "array",
-            "items": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/PafSuggestion"
-                },
-                {
-                  "$ref": "#/components/schemas/MrSuggestion"
-                },
-                {
-                  "$ref": "#/components/schemas/NybSuggestion"
+            "type": "object",
+            "required": [
+              "hits"
+            ],
+            "properties": {
+              "hits": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PafSuggestion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MrSuggestion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NybSuggestion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/GlobalAddressSuggestion"
+                    }
+                  ]
                 }
-              ]
+              }
             }
           },
           "code": {
@@ -3094,6 +3277,264 @@
             "type": "string",
             "enum": [
               "Success"
+            ]
+          }
+        }
+      },
+      "GbrGlobalAddress": {
+        "title": "Global Address",
+        "description": "Global (non-UK) address in the UK address format",
+        "required": [
+          "postcode",
+          "postcode_outward",
+          "postcode_inward",
+          "post_town",
+          "dependant_locality",
+          "double_dependant_locality",
+          "thoroughfare",
+          "dependant_thoroughfare",
+          "building_number",
+          "building_name",
+          "sub_building_name",
+          "po_box",
+          "department_name",
+          "organisation_name",
+          "udprn",
+          "umprn",
+          "postcode_type",
+          "su_organisation_indicator",
+          "delivery_point_suffix",
+          "line_1",
+          "line_2",
+          "line_3",
+          "premise",
+          "country",
+          "administrative_county",
+          "postal_county",
+          "traditional_county",
+          "district",
+          "ward",
+          "longitude",
+          "latitude",
+          "eastings",
+          "northings",
+          "uprn",
+          "county",
+          "id",
+          "dataset",
+          "country_iso"
+        ],
+        "properties": {
+          "postcode": {
+            "type": "string",
+            "description": "Postal or Zip Code"
+          },
+          "postcode_outward": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "postcode_inward": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "post_town": {
+            "type": "string",
+            "description": "Town or City"
+          },
+          "dependant_locality": {
+            "$ref": "#/components/schemas/DependantLocality"
+          },
+          "double_dependant_locality": {
+            "$ref": "#/components/schemas/DoubleDependantLocality"
+          },
+          "thoroughfare": {
+            "$ref": "#/components/schemas/Thoroughfare"
+          },
+          "dependant_thoroughfare": {
+            "$ref": "#/components/schemas/DependantThoroughfare"
+          },
+          "building_number": {
+            "$ref": "#/components/schemas/BuildingNumber"
+          },
+          "building_name": {
+            "$ref": "#/components/schemas/BuildingName"
+          },
+          "sub_building_name": {
+            "$ref": "#/components/schemas/SubBuildingName"
+          },
+          "po_box": {
+            "type": "string",
+            "description": "PO Box"
+          },
+          "department_name": {
+            "type": "string",
+            "description": "Department name at premise"
+          },
+          "organisation_name": {
+            "type": "string",
+            "description": "Name of organisation at premise"
+          },
+          "udprn": {
+            "type": "string",
+            "description": "Not available for non-UK addresses. See id for address identifier",
+            "enum": [
+              ""
+            ]
+          },
+          "umprn": {
+            "type": "string",
+            "description": "Not available for non-UK addresses. See id for address identifier",
+            "enum": [
+              ""
+            ]
+          },
+          "postcode_type": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "su_organisation_indicator": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "delivery_point_suffix": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "line_1": {
+            "$ref": "#/components/schemas/Line1"
+          },
+          "line_2": {
+            "$ref": "#/components/schemas/Line2"
+          },
+          "line_3": {
+            "$ref": "#/components/schemas/Line3"
+          },
+          "premise": {
+            "$ref": "#/components/schemas/Premise"
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "county": {
+            "type": "string",
+            "description": "Province, state or county"
+          },
+          "administrative_county": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "postal_county": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "traditional_county": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "district": {
+            "$ref": "#/components/schemas/District"
+          },
+          "ward": {
+            "$ref": "#/components/schemas/Ward"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "eastings": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "northings": {
+            "type": "string",
+            "description": "Not available for non-UK addresses",
+            "enum": [
+              ""
+            ]
+          },
+          "uprn": {
+            "type": "string",
+            "description": "Not available for non-UK addresses. See id for address identifier",
+            "enum": [
+              ""
+            ]
+          },
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "$ref": "#/components/schemas/Dataset"
+          },
+          "country_iso": {
+            "$ref": "#/components/schemas/CountryISO"
+          }
+        }
+      },
+      "GbrResolveAddressResponse": {
+        "title": "Address Resolution Response (GBR)",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          },
+          "result": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/MrAddress"
+              },
+              {
+                "$ref": "#/components/schemas/NybAddress"
+              },
+              {
+                "$ref": "#/components/schemas/GbrGlobalAddress"
+              }
             ]
           }
         }
@@ -3133,7 +3574,7 @@
                 "type": "array",
                 "description": "List of matching addresses\n",
                 "items": {
-                  "anyOf": [
+                  "oneOf": [
                     {
                       "$ref": "#/components/schemas/PafAddress"
                     },
