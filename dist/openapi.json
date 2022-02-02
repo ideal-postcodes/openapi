@@ -2465,7 +2465,7 @@
           "result": {
             "type": "array",
             "items": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "$ref": "#/components/schemas/PafAddress"
                 },

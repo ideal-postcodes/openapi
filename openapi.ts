@@ -709,9 +709,11 @@ export interface components {
     /** Postcode Response */
     PostcodeResponse: {
       /** @description All addresses listed at the postcode */
-      result: (Partial<components["schemas"]["PafAddress"]> &
-        Partial<components["schemas"]["MrAddress"]> &
-        Partial<components["schemas"]["NybAddress"]>)[];
+      result: (
+        | components["schemas"]["PafAddress"]
+        | components["schemas"]["MrAddress"]
+        | components["schemas"]["NybAddress"]
+      )[];
       /**
        * Format: int32
        * @enum {integer}
