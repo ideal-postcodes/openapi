@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/ideal-postcodes/openapi/compare/1.0.2...1.1.0) (2022-02-08)
+
+
+### Bug Fixes
+
+* **Keys API:** Fix typo ([8a04adf](https://github.com/ideal-postcodes/openapi/commit/8a04adfe7bf393db3c221a6e6b98a089336a9b2f))
+* **Postcodes:** Enforce union type for postcodes response ([78ae451](https://github.com/ideal-postcodes/openapi/commit/78ae451ec54a1a266c45ec431cbc8e04957f21a7))
+
+
+### Features
+
+* **USPS:** Add USPS typings ([887bd40](https://github.com/ideal-postcodes/openapi/commit/887bd40a5745b93f11a3dd676236663a056ed426))
+* **Version:** Release beta branch ([d21166e](https://github.com/ideal-postcodes/openapi/commit/d21166e1ac0b2d9d97e829ad559bcbe10cadac7e))
+
 # [1.1.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.3...1.1.0-beta.4) (2022-02-02)
 
 
