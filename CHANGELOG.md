@@ -1,3 +1,11 @@
+# [1.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.4...1.1.0-beta.5) (2022-03-28)
+
+
+### Features
+
+* **Mocks:** Embed mock server ([5e65331](https://github.com/ideal-postcodes/openapi/commit/5e65331683d68cfb5d2f0728a46729206c9def93))
+* **USPS:** Resolve addresses formated to US spec ([4a2d71d](https://github.com/ideal-postcodes/openapi/commit/4a2d71db3db88b8406d42b56ad04be816f968c9f))
+
 # [1.1.0](https://github.com/ideal-postcodes/openapi/compare/1.0.2...1.1.0) (2022-02-08)
 
 
