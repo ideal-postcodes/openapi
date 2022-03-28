@@ -291,7 +291,11 @@ export interface paths {
     get: operations["AddressAutocomplete"];
   };
   "/autocomplete/addresses/{address}/gbr": {
-    /** Resolves an address autocompletion by its address ID. */
+    /**
+     * Resolves an address autocompletion by its address ID.
+     *
+     * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
+     */
     get: operations["Resolve"];
   };
   "/addresses": {
@@ -633,17 +637,15 @@ export interface components {
     /**
      * Dataset
      * @description Indicates the provenance of an address
-     * @example paf
      * @enum {string}
      */
     Dataset: "paf" | "mr" | "nyb" | "usps";
     /**
      * ISO Country Code
      * @description 3 letter ISO country code
-     * @example GBR
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA";
+    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM";
     /**
      * Postcode Address File Address
      * @description Standard UK Address.
@@ -2072,7 +2074,11 @@ export interface operations {
       };
     };
   };
-  /** Resolves an address autocompletion by its address ID. */
+  /**
+   * Resolves an address autocompletion by its address ID.
+   *
+   * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
+   */
   Resolve: {
     parameters: {
       path: {

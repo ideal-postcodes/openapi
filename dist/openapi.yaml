@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.0.1
+  version: 1.1.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -1430,10 +1430,15 @@ paths:
     get:
       tags:
         - Autocomplete
-      summary: Resolve Address
+      summary: Resolve Address (GBR)
       operationId: Resolve
-      description: |
+      description: >
         Resolves an address autocompletion by its address ID.
+
+
+        Resolved addresses (including global addresses) are returned in a UK
+        format (up to 3 address lines) using UK nomenclature (like postcode and
+        county).
       parameters:
         - name: address
           in: path
@@ -2700,7 +2705,6 @@ components:
       title: Dataset
       type: string
       description: Indicates the provenance of an address
-      example: paf
       enum:
         - paf
         - mr
@@ -2710,13 +2714,14 @@ components:
       title: ISO Country Code
       type: string
       description: 3 letter ISO country code
-      example: GBR
       enum:
         - GBR
         - IMN
         - JEY
         - GGY
         - USA
+        - PRI
+        - GUM
     PafAddress:
       title: Postcode Address File Address
       description: Standard UK Address.
