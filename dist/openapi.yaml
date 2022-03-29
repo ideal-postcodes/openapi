@@ -1481,6 +1481,61 @@ paths:
             https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd
             \
               -d "api_key=iddqd"
+  /autocomplete/addresses/{address}/usa:
+    get:
+      tags:
+        - Autocomplete
+      summary: Resolve Address (USA)
+      operationId: ResolveUsa
+      description: >
+        Resolves an address autocompletion by its address ID.
+
+
+        Resolved addresses (including global addresses) are returned in a US
+        format (up to 2 address lines) using US nomenclature (like zipcode,
+        state and city).
+      parameters:
+        - name: address
+          in: path
+          description: ID of address suggestion
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsaResolveAddressResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/usps_Z222446599|1||1101/usa?api_key=iddqd
+        - lang: cURL
+          label: CLI
+          source: >
+            curl -k -G
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/usps_Z222446599|1||1101/usa?api_key=iddqd
+            \
+              -d "api_key=iddqd"
   /addresses:
     get:
       tags:
@@ -3780,6 +3835,732 @@ components:
             - $ref: '#/components/schemas/MrAddress'
             - $ref: '#/components/schemas/NybAddress'
             - $ref: '#/components/schemas/GbrGlobalAddress'
+    primary_number:
+      title: Primary Number
+      type: string
+      description: >-
+        A house, rural route, contract box, or Post Office Box number. The
+        numeric or alphanumeric component of an address preceding the street
+        name. Often referred to as house number.
+      example:
+        - '198'
+        - '199'
+        - A298
+        - 124-88
+        - '120'
+        - 22B
+    secondary_number:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    plus_4_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    line_1:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    line_2:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    last_line:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    zip_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    zip_plus_4_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    update_key_number:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    record_type_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    carrier_route_id:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    street_pre_directional_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    street_name:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    street_suffix_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    street_post_directional_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    building_or_firm_name:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    address_secondary_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    base_alternate_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    lacs_status_indicator:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    government_building_indicator:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    state_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    state:
+      title: State
+      type: string
+      description: Name of a state, U.S. territory, or armed forces ZIP Code designation.
+      example:
+        - New York
+        - Texas
+        - Washington
+        - Puerto Rico
+    municipality_city_state_key:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    urbanization_city_state_key:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    preferred_last_line_city_state_key:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    county:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    city:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    city_abbreviation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    preferred_city:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    city_state_name_facility_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    zip_classification_code:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    city_state_mailing_name_indicator:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    carrier_route_rate_sortation:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    finance_number:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    congressional_district_number:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    county_number:
+      title: TITLE
+      type: string
+      description: |-
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+        A MULTIPLE PARAGRAPH DESCRIPTION
+      example:
+        - EXAMPLE1
+        - EXAMPLE2
+    UspsAddress:
+      title: United States Postal Service Address
+      description: Standard USA Address
+      required:
+        - id
+        - dataset
+        - country_iso
+        - primary_number
+        - secondary_number
+        - plus_4_code
+        - line_1
+        - line_2
+        - last_line
+        - zip_code
+        - zip_plus_4_code
+        - update_key_number
+        - record_type_code
+        - carrier_route_id
+        - street_pre_directional_abbreviation
+        - street_name
+        - street_suffix_abbreviation
+        - street_post_directional_abbreviation
+        - building_or_firm_name
+        - address_secondary_abbreviation
+        - base_alternate_code
+        - lacs_status_indicator
+        - government_building_indicator
+        - state_abbreviation
+        - state
+        - municipality_city_state_key
+        - urbanization_city_state_key
+        - preferred_last_line_city_state_key
+        - county
+        - city
+        - city_abbreviation
+        - preferred_city
+        - city_state_name_facility_code
+        - zip_classification_code
+        - city_state_mailing_name_indicator
+        - carrier_route_rate_sortation
+        - finance_number
+        - congressional_district_number
+        - county_number
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+          enum:
+            - usps
+        country_iso:
+          $ref: '#/components/schemas/CountryISO'
+          enum:
+            - USA
+            - PRI
+            - GUM
+        primary_number:
+          $ref: '#/components/schemas/primary_number'
+        secondary_number:
+          $ref: '#/components/schemas/secondary_number'
+        plus_4_code:
+          $ref: '#/components/schemas/plus_4_code'
+        line_1:
+          $ref: '#/components/schemas/line_1'
+        line_2:
+          $ref: '#/components/schemas/line_2'
+        last_line:
+          $ref: '#/components/schemas/last_line'
+        zip_code:
+          $ref: '#/components/schemas/zip_code'
+        zip_plus_4_code:
+          $ref: '#/components/schemas/zip_plus_4_code'
+        update_key_number:
+          $ref: '#/components/schemas/update_key_number'
+        record_type_code:
+          $ref: '#/components/schemas/record_type_code'
+        carrier_route_id:
+          $ref: '#/components/schemas/carrier_route_id'
+        street_pre_directional_abbreviation:
+          $ref: '#/components/schemas/street_pre_directional_abbreviation'
+        street_name:
+          $ref: '#/components/schemas/street_name'
+        street_suffix_abbreviation:
+          $ref: '#/components/schemas/street_suffix_abbreviation'
+        street_post_directional_abbreviation:
+          $ref: '#/components/schemas/street_post_directional_abbreviation'
+        building_or_firm_name:
+          $ref: '#/components/schemas/building_or_firm_name'
+        address_secondary_abbreviation:
+          $ref: '#/components/schemas/address_secondary_abbreviation'
+        base_alternate_code:
+          $ref: '#/components/schemas/base_alternate_code'
+        lacs_status_indicator:
+          $ref: '#/components/schemas/lacs_status_indicator'
+        government_building_indicator:
+          $ref: '#/components/schemas/government_building_indicator'
+        state_abbreviation:
+          $ref: '#/components/schemas/state_abbreviation'
+        state:
+          $ref: '#/components/schemas/state'
+        municipality_city_state_key:
+          $ref: '#/components/schemas/municipality_city_state_key'
+        urbanization_city_state_key:
+          $ref: '#/components/schemas/urbanization_city_state_key'
+        preferred_last_line_city_state_key:
+          $ref: '#/components/schemas/preferred_last_line_city_state_key'
+        county:
+          $ref: '#/components/schemas/county'
+        city:
+          $ref: '#/components/schemas/city'
+        city_abbreviation:
+          $ref: '#/components/schemas/city_abbreviation'
+        preferred_city:
+          $ref: '#/components/schemas/preferred_city'
+        city_state_name_facility_code:
+          $ref: '#/components/schemas/city_state_name_facility_code'
+        zip_classification_code:
+          $ref: '#/components/schemas/zip_classification_code'
+        city_state_mailing_name_indicator:
+          $ref: '#/components/schemas/city_state_mailing_name_indicator'
+        carrier_route_rate_sortation:
+          $ref: '#/components/schemas/carrier_route_rate_sortation'
+        finance_number:
+          $ref: '#/components/schemas/finance_number'
+        congressional_district_number:
+          $ref: '#/components/schemas/congressional_district_number'
+        county_number:
+          $ref: '#/components/schemas/county_number'
+    UsaGlobalAddress:
+      title: Global Address
+      description: Global (non-US) Address in the US address format
+      required:
+        - id
+        - dataset
+        - country_iso
+        - primary_number
+        - secondary_number
+        - plus_4_code
+        - line_1
+        - line_2
+        - last_line
+        - zip_code
+        - zip_plus_4_code
+        - update_key_number
+        - record_type_code
+        - carrier_route_id
+        - street_pre_directional_abbreviation
+        - street_name
+        - street_suffix_abbreviation
+        - street_post_directional_abbreviation
+        - building_or_firm_name
+        - address_secondary_abbreviation
+        - base_alternate_code
+        - lacs_status_indicator
+        - government_building_indicator
+        - state_abbreviation
+        - state
+        - municipality_city_state_key
+        - urbanization_city_state_key
+        - preferred_last_line_city_state_key
+        - county
+        - city
+        - city_abbreviation
+        - preferred_city
+        - city_state_name_facility_code
+        - zip_classification_code
+        - city_state_mailing_name_indicator
+        - carrier_route_rate_sortation
+        - finance_number
+        - congressional_district_number
+        - county_number
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+          enum:
+            - paf
+        country_iso:
+          $ref: '#/components/schemas/CountryISO'
+        primary_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        secondary_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        plus_4_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        line_1:
+          type: string
+          description: First line of address
+        line_2:
+          type: string
+          description: Second line of address
+        last_line:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        zip_code:
+          type: string
+          description: Partial postcode of address
+        zip_plus_4_code:
+          type: string
+          description: Full postal code of address
+        update_key_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        record_type_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        carrier_route_id:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_pre_directional_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_name:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_suffix_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_post_directional_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        building_or_firm_name:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        address_secondary_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        base_alternate_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        lacs_status_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        government_building_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        state:
+          type: string
+          description: State or province
+        state_abbreviation:
+          type: string
+          description: Code of state or province (if available)
+        municipality_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        urbanization_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        preferred_last_line_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        county:
+          type: string
+          description: County name
+        city:
+          type: string
+          description: City name
+        city_abbreviation:
+          type: string
+          description: City name abbreviation (if available)
+        preferred_city:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        city_state_name_facility_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        zip_classification_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        city_state_mailing_name_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        carrier_route_rate_sortation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        finance_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        congressional_district_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        county_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+    UsaResolveAddressResponse:
+      title: Address Resolution Response (USA)
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/UspsAddress'
+            - $ref: '#/components/schemas/UsaGlobalAddress'
     AddressResponse:
       title: Address Search Response
       type: object

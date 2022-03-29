@@ -298,6 +298,14 @@ export interface paths {
      */
     get: operations["Resolve"];
   };
+  "/autocomplete/addresses/{address}/usa": {
+    /**
+     * Resolves an address autocompletion by its address ID.
+     *
+     * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
+     */
+    get: operations["ResolveUsa"];
+  };
   "/addresses": {
     /**
      * Extract a list of complete addresses that match the query ordered by relevance score. This query accepts an optional limit and page query (defaults to 10 and 0 respectively).
@@ -1332,6 +1340,513 @@ export interface components {
         | components["schemas"]["NybAddress"]
         | components["schemas"]["GbrGlobalAddress"];
     };
+    /**
+     * Primary Number
+     * @description A house, rural route, contract box, or Post Office Box number. The numeric or alphanumeric component of an address preceding the street name. Often referred to as house number.
+     * @example 198,199,A298,124-88,120,22B
+     */
+    primary_number: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    secondary_number: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    plus_4_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    line_1: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    line_2: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    last_line: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    zip_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    zip_plus_4_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    update_key_number: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    record_type_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    carrier_route_id: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    street_pre_directional_abbreviation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    street_name: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    street_suffix_abbreviation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    street_post_directional_abbreviation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    building_or_firm_name: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    address_secondary_abbreviation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    base_alternate_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    lacs_status_indicator: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    government_building_indicator: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    state_abbreviation: string;
+    /**
+     * State
+     * @description Name of a state, U.S. territory, or armed forces ZIP Code designation.
+     * @example New York,Texas,Washington,Puerto Rico
+     */
+    state: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    municipality_city_state_key: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    urbanization_city_state_key: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    preferred_last_line_city_state_key: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    county: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    city: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    city_abbreviation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    preferred_city: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    city_state_name_facility_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    zip_classification_code: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    city_state_mailing_name_indicator: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    carrier_route_rate_sortation: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    finance_number: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    congressional_district_number: string;
+    /**
+     * TITLE
+     * @description A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * A MULTIPLE PARAGRAPH DESCRIPTION
+     * @example EXAMPLE1,EXAMPLE2
+     */
+    county_number: string;
+    /**
+     * United States Postal Service Address
+     * @description Standard USA Address
+     */
+    UspsAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {undefined} */
+      dataset: components["schemas"]["Dataset"];
+      /** @enum {undefined} */
+      country_iso: components["schemas"]["CountryISO"];
+      primary_number: components["schemas"]["primary_number"];
+      secondary_number: components["schemas"]["secondary_number"];
+      plus_4_code: components["schemas"]["plus_4_code"];
+      line_1: components["schemas"]["line_1"];
+      line_2: components["schemas"]["line_2"];
+      last_line: components["schemas"]["last_line"];
+      zip_code: components["schemas"]["zip_code"];
+      zip_plus_4_code: components["schemas"]["zip_plus_4_code"];
+      update_key_number: components["schemas"]["update_key_number"];
+      record_type_code: components["schemas"]["record_type_code"];
+      carrier_route_id: components["schemas"]["carrier_route_id"];
+      street_pre_directional_abbreviation: components["schemas"]["street_pre_directional_abbreviation"];
+      street_name: components["schemas"]["street_name"];
+      street_suffix_abbreviation: components["schemas"]["street_suffix_abbreviation"];
+      street_post_directional_abbreviation: components["schemas"]["street_post_directional_abbreviation"];
+      building_or_firm_name: components["schemas"]["building_or_firm_name"];
+      address_secondary_abbreviation: components["schemas"]["address_secondary_abbreviation"];
+      base_alternate_code: components["schemas"]["base_alternate_code"];
+      lacs_status_indicator: components["schemas"]["lacs_status_indicator"];
+      government_building_indicator: components["schemas"]["government_building_indicator"];
+      state_abbreviation: components["schemas"]["state_abbreviation"];
+      state: components["schemas"]["state"];
+      municipality_city_state_key: components["schemas"]["municipality_city_state_key"];
+      urbanization_city_state_key: components["schemas"]["urbanization_city_state_key"];
+      preferred_last_line_city_state_key: components["schemas"]["preferred_last_line_city_state_key"];
+      county: components["schemas"]["county"];
+      city: components["schemas"]["city"];
+      city_abbreviation: components["schemas"]["city_abbreviation"];
+      preferred_city: components["schemas"]["preferred_city"];
+      city_state_name_facility_code: components["schemas"]["city_state_name_facility_code"];
+      zip_classification_code: components["schemas"]["zip_classification_code"];
+      city_state_mailing_name_indicator: components["schemas"]["city_state_mailing_name_indicator"];
+      carrier_route_rate_sortation: components["schemas"]["carrier_route_rate_sortation"];
+      finance_number: components["schemas"]["finance_number"];
+      congressional_district_number: components["schemas"]["congressional_district_number"];
+      county_number: components["schemas"]["county_number"];
+    };
+    /**
+     * Global Address
+     * @description Global (non-US) Address in the US address format
+     */
+    UsaGlobalAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {undefined} */
+      dataset: components["schemas"]["Dataset"];
+      country_iso: components["schemas"]["CountryISO"];
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      primary_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      secondary_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      plus_4_code: "";
+      /** @description First line of address */
+      line_1: string;
+      /** @description Second line of address */
+      line_2: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      last_line: "";
+      /** @description Partial postcode of address */
+      zip_code: string;
+      /** @description Full postal code of address */
+      zip_plus_4_code: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      update_key_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      record_type_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      carrier_route_id: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_pre_directional_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_name: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_suffix_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_post_directional_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      building_or_firm_name: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      address_secondary_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      base_alternate_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      lacs_status_indicator: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      government_building_indicator: "";
+      /** @description State or province */
+      state: string;
+      /** @description Code of state or province (if available) */
+      state_abbreviation: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      municipality_city_state_key: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      urbanization_city_state_key: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      preferred_last_line_city_state_key: "";
+      /** @description County name */
+      county: string;
+      /** @description City name */
+      city: string;
+      /** @description City name abbreviation (if available) */
+      city_abbreviation: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      preferred_city: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      city_state_name_facility_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      zip_classification_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      city_state_mailing_name_indicator: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      carrier_route_rate_sortation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      finance_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      congressional_district_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      county_number: "";
+    };
+    /** Address Resolution Response (USA) */
+    UsaResolveAddressResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["UsaGlobalAddress"];
+    };
     /** Address Search Response */
     AddressResponse: {
       /**
@@ -2094,6 +2609,36 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["GbrResolveAddressResponse"];
+        };
+      };
+      /** Resource not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Resolves an address autocompletion by its address ID.
+   *
+   * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
+   */
+  ResolveUsa: {
+    parameters: {
+      path: {
+        /** ID of address suggestion */
+        address: string;
+      };
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UsaResolveAddressResponse"];
         };
       };
       /** Resource not found */
