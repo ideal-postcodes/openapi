@@ -1,3 +1,10 @@
+# [1.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.5...1.1.0-beta.6) (2022-03-29)
+
+
+### Bug Fixes
+
+* **USPS:** Add USPS schema definitions ([e9d07bf](https://github.com/ideal-postcodes/openapi/commit/e9d07bf675f73ca9b0fb3c58f2b54e4017f8a964))
+
 # [1.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.4...1.1.0-beta.5) (2022-03-28)
 
 
