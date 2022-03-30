@@ -1343,285 +1343,267 @@ export interface components {
     /**
      * Primary Number
      * @description A house, rural route, contract box, or Post Office Box number. The numeric or alphanumeric component of an address preceding the street name. Often referred to as house number.
-     * @example 198,199,A298,124-88,120,22B
+     * @example A298
      */
     primary_number: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Secondary Number
+     * @description Number of the sub unit, apartment, suite etc
+     * @example 123A
      */
     secondary_number: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Plus 4 Code
+     * @description 4 digit ZIP add-on code.
+     * @example 1234
      */
     plus_4_code: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * First Address Line
+     * @description The primary delivery line (usually the street address) of the address.
+     * @example 12 Armstrong Ct Apt 12
      */
     line_1: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Second Address Line
+     * @description Secondary delivery line of the address. Typically populated if the first line is the firm or building name.
+     * @example 9450 Pinecroft Dr
      */
     line_2: string;
     /**
      * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * @description Last line of the address comprising of city, state, zip code and zip+4
+     * @example GREENWICH, CT, 06830-1234
      */
     last_line: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * ZIP Code
+     * @description A 5-digit code that identifies a specific geographic delivery area. ZIP Codes can represent an area within a state, or a single building or company that has a very high mail volume.
+     * @example 1234
      */
     zip_code: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * ZIP + 4 Code
+     * @description Nine-digit code that identifies a small geographic delivery area that is serviceable by a single carrier; appears in the last line of the address on a mail piece.
+     * @example 12345-6789
      */
     zip_plus_4_code: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Update Key Number
+     * @description Field that contains a number that uniquely identifies a record; used to identify the base record to which an add or delete transaction is being directed. The Update Key Number field is used only when applying transactions to the base file; it is not used in address matching and remains fixed for the life of the record. The field is alphanumeric and consists of the database segment code (V1, V2, W1, W2, X1, X2, Y1, Y2, Z1, or Z2) and eight characters containing an alphanumeric value ranging from 00000001 to AAAAAAAA.
+     * @example 00000001
      */
     update_key_number: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Record Type Code
+     * @description An alphabetic value that identifies the type of data in the record. - G = General delivery (5-Digit ZIP, ZIP + 4, and Carrier Route products) - H = High-rise (ZIP + 4 only) - F = Firm (ZIP + 4 only) - S = Street (5-Digit ZIP, ZIP + 4, and Carrier Route products) - P = PO Box (5-Digit ZIP, ZIP + 4, and Carrier Route products) - R = Rural route/contract (5-Digit ZIP, ZIP + 4, and Carrier Route products) - M = Multi-carrier (Carrier Route product only)
+     * @enum {string}
      */
-    record_type_code: string;
+    record_type_code: "G" | "H" | "F" | "S" | "P" | "R" | "M";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Carrier Route ID
+     * @description A 4 character ID identifying the postal route for the address.
+     * The first character indicates the route type. Specifically: - "B" indicates PO Box - "H" indicates highway - "C" indicates city - "G" indicates general - "R" indicates rural
+     * @example R012
      */
     carrier_route_id: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Street Pre-Directional Abbreviation
+     * @description A geographic direction that precedes the street name.
+     * @enum {string}
      */
-    street_pre_directional_abbreviation: string;
+    street_pre_directional_abbreviation:
+      | ""
+      | "N"
+      | "E"
+      | "S"
+      | "W"
+      | "NE"
+      | "NW"
+      | "SE"
+      | "SW";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Street Name
+     * @description The official name of a street as assigned by a local governing authority. The Street Name field contains only the street name and does not include directionals (EAST, WEST, etc.) or suffixes (ST, DR, BLVD, etc.). This element may also contain literals, such as PO BOX, GENERAL DELIVERY, USS, PSC, or UNIT.
+     * @example GOSHEN
      */
     street_name: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Street Suffix Abbreviation
+     * @description Code that is the standard USPS abbreviation for the trailing designator in a street address.
+     * @example ST
      */
     street_suffix_abbreviation: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Street Post Directional Abbreviation
+     * @description A geographic direction that follows the street name.
+     * @enum {string}
      */
-    street_post_directional_abbreviation: string;
+    street_post_directional_abbreviation:
+      | ""
+      | "N"
+      | "E"
+      | "S"
+      | "W"
+      | "NE"
+      | "NW"
+      | "SE"
+      | "SW";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Building or Firm Name
+     * @description The name of a company, building, apartment complex, shopping center, or other distinguishing secondary address information.
+     * This field is normally used with firm and highrise records but may also contain literals such as “Postmaster” or “United States Postal Service.”
+     * @example POSTMASTER
      */
     building_or_firm_name: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Address Secondary Abbreviation
+     * @description A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field.
+     * This code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers.
+     * @enum {string}
      */
-    address_secondary_abbreviation: string;
+    address_secondary_abbreviation:
+      | "APT"
+      | "BLDG"
+      | "BSMT"
+      | "DEPT"
+      | "FL"
+      | "FRNT"
+      | "HNGR"
+      | "KEY"
+      | "LBBY"
+      | "LOT"
+      | "LOWR"
+      | "OFC"
+      | "PH"
+      | "PIER"
+      | "REAR"
+      | "RM"
+      | "SIDE"
+      | "SLIP"
+      | "SPC"
+      | "STE"
+      | "STOP"
+      | "TRLR"
+      | "UNIT"
+      | "UPPR";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Base Alternate Code
+     * @description Code that specifies whether a record is a base (preferred) or alternate record.
+     * Base records (represented as "B") can represent a range of addresses or an individual address, such as a firm record, while alternate records (represented as "A") are individual delivery points. Base records are generally preferred over alternate records.
+     * Government deliveries will only be listed on alternate records with the appropriate government building indicator (federal, state, or city) set.
+     * @enum {string}
      */
-    base_alternate_code: string;
+    base_alternate_code: "A" | "B";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * LACS Status Indicator
+     * @description The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently. - L = LACS address: The old (usually rural-route) address that has been converted for the LACS system. - Blank = Not applicable
+     * @enum {string}
      */
-    lacs_status_indicator: string;
+    lacs_status_indicator: "" | "L";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Government Building Indicator
+     * @description An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, "address" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number). - A = City government building—alternates only - B = Federal government building—alternates only - C = State government building—alternates only - D = Firm only—base and alternates - E = City government building and firm only—alternates only - F = Federal government building and firm only—alternates only - G = State government building and firm only—alternates only
+     * @enum {string}
      */
-    government_building_indicator: string;
+    government_building_indicator: "" | "A" | "B" | "C" | "D" | "E" | "F" | "G";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * State Abbreviation
+     * @description A 2-character abbreviation for the name of a state, U.S. territory, or armed forces ZIP Code designation. If APO/FPO/DPO, then the state abbreviation will be “AA,” “AE,” or “AP.”
+     * @example NY
      */
     state_abbreviation: string;
     /**
      * State
-     * @description Name of a state, U.S. territory, or armed forces ZIP Code designation.
-     * @example New York,Texas,Washington,Puerto Rico
+     * @description Full name of a state, U.S. territory, or armed forces ZIP Code designation.
+     * @example New York
      */
     state: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Municipality City State Key
+     * @description Municipality City State Key. Currently blank.
+     * @enum {string}
      */
-    municipality_city_state_key: string;
+    municipality_city_state_key: "";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Urbanization City State Key
+     * @description An index to the City State file that provides the urbanization name for this delivery range.
+     * @example V18475
      */
     urbanization_city_state_key: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Preferred Last Line City State Key
+     * @description In the Carrier Route, Five-Digit ZIP Code, Delivery Statistics, and ZIP + 4 products, an index to the City State product record that provides the preferred last-line name for this address range. In the City State product, the preferred last line city/state key contains the key value of a City State product record that has the default preferred or alternate preferred last-line key for a given ZIP Code.
+     * @example V13916
      */
     preferred_last_line_city_state_key: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * County Name
+     * @description The name of the county or parish in which the 5-digit ZIP Code resides. If APO/FPO/DPO, then the county name will be blank.
+     * @example SUFFOLK
      */
     county: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * City Name
+     * @description A valid city name for mailing purposes; appears in the last line of an address on a mail piece.
+     * @example HOLTSVILLE
      */
     city: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * City State Name Abbreviation
+     * @description A standard 13-character abbreviation for a city/state name. This field is only used for names that are greater than 13 characters in length and have a city/state mailing name indicator of "Y." If the field is longer than 13 characters and the city/state mailing name indicator is "N," the field will be blank.
+     * @example W TOWNSHEND
      */
     city_abbreviation: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Preferred Last Line City State Name
+     * @description Field that contains the default preferred or alternate preferred last-line name for a ZIP Code.
+     * @example AGUADA
      */
     preferred_city: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * City State Name Facility Code
+     * @description The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following: - B = Branch - C = Community post office (CPO) - N = Non-postal community name, former USPS facility, or place name - P = Post Office - S = Station - U = Urbanization
+     * @enum {string}
      */
-    city_state_name_facility_code: string;
+    city_state_name_facility_code: "B" | "C" | "N" | "P" | "S" | "U";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * ZIP Classification Code
+     * @description A field that describes the type of ZIP area that a 5-digit ZIP Code serves, e.g., a single educational institution, post office boxes only, or a single address that has unusually high mail volume or many different addresses.
+     *  - M = Military ZIP Code
+     *  - P = ZIP Code having only Post Office Boxes
+     *  - U = Unique ZIP Code (ZIP assigned to a single organization)
+     *  - Blank = Standard ZIP with many addresses assigned to it
+     * @enum {string}
      */
-    zip_classification_code: string;
+    zip_classification_code: "" | "M" | "P" | "U";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * City State Mailing Name Indicator
+     * @description Specifies whether or not the city state name can be used as a last line of address on a mail piece. - "Y = City/state name is a USPS-approved mailing name." - "N = City/state name is not approved for mailing purposes."
+     * @enum {string}
      */
-    city_state_mailing_name_indicator: string;
+    city_state_mailing_name_indicator: "Y" | "N";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Carrier Route Rate Sortation and Merged 5-Digit Indicator
+     * @description Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed.
+     * @enum {string}
      */
-    carrier_route_rate_sortation: string;
+    carrier_route_rate_sortation: "A" | "B" | "C" | "D";
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Finance Number
+     * @description A code assigned to Postal Service facilities (primarily Post Offices) to collect cost and statistical data and compile revenue and expense data.
+     * @example 351560
      */
     finance_number: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * Congressional District Number
+     * @description A standard value identifying a geographic area within the United States served by a member of the U.S. House of Representatives. If Army/Air Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office (DPO), this field will be blank. If there is only one member of Congress within a state, the code will be "AL" (at large).
+     * @example 37
      */
     congressional_district_number: string;
     /**
-     * TITLE
-     * @description A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * A MULTIPLE PARAGRAPH DESCRIPTION
-     * @example EXAMPLE1,EXAMPLE2
+     * County Number
+     * @description The Federal Information Processing Standard (FIPS) code assigned to a given county or parish within a state. In Alaska, it identifies a region within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or “F,” the county number will be blank.
      */
     county_number: string;
     /**
