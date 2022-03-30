@@ -1,3 +1,17 @@
+# [1.2.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/1.1.0...1.2.0-beta.1) (2022-03-30)
+
+
+### Bug Fixes
+
+* **USPS:** Add USPS schema definitions ([eae2cf5](https://github.com/ideal-postcodes/openapi/commit/eae2cf53b6e67e187bb0e6f52fc15a689abe8d77))
+* **USPS:** Update definitions ([22d1023](https://github.com/ideal-postcodes/openapi/commit/22d102310ce34eb5257687467cae36cacf628649))
+
+
+### Features
+
+* **Mocks:** Embed mock server ([b7bb5b9](https://github.com/ideal-postcodes/openapi/commit/b7bb5b9b9c10fb1d12af06e0e55f16147e4a0e26))
+* **USPS:** Resolve addresses formated to US spec ([e67e728](https://github.com/ideal-postcodes/openapi/commit/e67e728ac6be11dab467a508fdc6fceacfd49364))
+
 # [1.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.5...1.1.0-beta.6) (2022-03-29)
 
 
