@@ -4204,30 +4204,44 @@ components:
         - D
     finance_number:
       title: Finance Number
-      type: string
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: Finance Number
+          example: 351560
+      type: number
       description: >-
         A code assigned to Postal Service facilities (primarily Post Offices) to
         collect cost and statistical data and compile revenue and expense data.
-      example: '351560'
     congressional_district_number:
       title: Congressional District Number
-      type: string
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: Congressional district number
+          example: 6
       description: >-
         A standard value identifying a geographic area within the United States
         served by a member of the U.S. House of Representatives. If Army/Air
         Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office
         (DPO), this field will be blank. If there is only one member of Congress
         within a state, the code will be "AL" (at large).
-      example: '37'
     county_number:
       title: County Number
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: FIPS code
+          example: 53
       type: string
       description: >-
         The Federal Information Processing Standard (FIPS) code assigned to a
         given county or parish within a state. In Alaska, it identifies a region
         within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or
         “F,” the county number will be blank.
-      example: null
     UspsAddress:
       title: United States Postal Service Address
       description: Standard USA Address

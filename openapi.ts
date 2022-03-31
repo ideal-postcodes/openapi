@@ -1592,15 +1592,13 @@ export interface components {
     /**
      * Finance Number
      * @description A code assigned to Postal Service facilities (primarily Post Offices) to collect cost and statistical data and compile revenue and expense data.
-     * @example 351560
      */
-    finance_number: string;
+    finance_number: number;
     /**
      * Congressional District Number
      * @description A standard value identifying a geographic area within the United States served by a member of the U.S. House of Representatives. If Army/Air Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office (DPO), this field will be blank. If there is only one member of Congress within a state, the code will be "AL" (at large).
-     * @example 37
      */
-    congressional_district_number: string;
+    congressional_district_number: string | number;
     /**
      * County Number
      * @description The Federal Information Processing Standard (FIPS) code assigned to a given county or parish within a state. In Alaska, it identifies a region within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or “F,” the county number will be blank.
