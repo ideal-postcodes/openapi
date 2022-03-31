@@ -1,3 +1,10 @@
+# [1.2.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.1...1.2.0-beta.2) (2022-03-31)
+
+
+### Bug Fixes
+
+* **USPS:** Add dual data types ([9491cae](https://github.com/ideal-postcodes/openapi/commit/9491caeaaf4079bf6e8c5bba37da907e5ff86667))
+
 # [1.2.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/1.1.0...1.2.0-beta.1) (2022-03-30)
 
 
