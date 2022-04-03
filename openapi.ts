@@ -572,7 +572,7 @@ export interface components {
     Premise: string;
     /**
      * Country
-     * @description The country for which the postcode belongs to. May be empty for a small number of addresses. Data source: ONS
+     * @description The country for which the postcode belongs to. May be empty for a small number of addresses.
      * @example England
      */
     Country: string;
@@ -1347,6 +1347,12 @@ export interface components {
      */
     usps_dataset: "usps";
     /**
+     * Country
+     * @description Full country name associated with address
+     * @enum {string}
+     */
+    usps_country: "United States" | "Guam" | "Puerto Rico";
+    /**
      * USPS ISO Country Codes
      * @description 3 letter ISO country code associated with USA
      * @enum {string}
@@ -1597,6 +1603,7 @@ export interface components {
     UspsAddress: {
       id: components["schemas"]["ID"];
       dataset: components["schemas"]["usps_dataset"];
+      country?: components["schemas"]["usps_country"];
       country_iso: components["schemas"]["usps_country_iso"];
       primary_number: components["schemas"]["primary_number"];
       secondary_number: components["schemas"]["secondary_number"];
@@ -1643,6 +1650,7 @@ export interface components {
       id: components["schemas"]["ID"];
       /** @enum {undefined} */
       dataset: components["schemas"]["Dataset"];
+      country?: components["schemas"]["Country"];
       country_iso: components["schemas"]["CountryISO"];
       /**
        * @description Not available for non-US addresses

@@ -2607,7 +2607,7 @@ components:
       type: string
       description: >-
         The country for which the postcode belongs to. May be empty for a small
-        number of addresses. Data source: ONS
+        number of addresses.
       example: England
     County:
       title: County
@@ -3841,6 +3841,14 @@ components:
       description: Identifies the address as sourced from USPS
       enum:
         - usps
+    usps_country:
+      title: Country
+      type: string
+      description: Full country name associated with address
+      enum:
+        - United States
+        - Guam
+        - Puerto Rico
     usps_country_iso:
       title: USPS ISO Country Codes
       type: string
@@ -4276,6 +4284,8 @@ components:
           $ref: '#/components/schemas/ID'
         dataset:
           $ref: '#/components/schemas/usps_dataset'
+        country:
+          $ref: '#/components/schemas/usps_country'
         country_iso:
           $ref: '#/components/schemas/usps_country_iso'
         primary_number:
@@ -4400,6 +4410,8 @@ components:
           $ref: '#/components/schemas/Dataset'
           enum:
             - paf
+        country:
+          $ref: '#/components/schemas/Country'
         country_iso:
           $ref: '#/components/schemas/CountryISO'
         primary_number:

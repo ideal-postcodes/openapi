@@ -2157,7 +2157,7 @@
       "Country": {
         "title": "Country",
         "type": "string",
-        "description": "The country for which the postcode belongs to. May be empty for a small number of addresses. Data source: ONS",
+        "description": "The country for which the postcode belongs to. May be empty for a small number of addresses.",
         "example": "England"
       },
       "County": {
@@ -3615,6 +3615,16 @@
           "usps"
         ]
       },
+      "usps_country": {
+        "title": "Country",
+        "type": "string",
+        "description": "Full country name associated with address",
+        "enum": [
+          "United States",
+          "Guam",
+          "Puerto Rico"
+        ]
+      },
       "usps_country_iso": {
         "title": "USPS ISO Country Codes",
         "type": "string",
@@ -3952,6 +3962,9 @@
           "dataset": {
             "$ref": "#/components/schemas/usps_dataset"
           },
+          "country": {
+            "$ref": "#/components/schemas/usps_country"
+          },
           "country_iso": {
             "$ref": "#/components/schemas/usps_country_iso"
           },
@@ -4118,6 +4131,9 @@
             "enum": [
               "paf"
             ]
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
           },
           "country_iso": {
             "$ref": "#/components/schemas/CountryISO"
