@@ -3835,6 +3835,20 @@ components:
             - $ref: '#/components/schemas/MrAddress'
             - $ref: '#/components/schemas/NybAddress'
             - $ref: '#/components/schemas/GbrGlobalAddress'
+    usps_dataset:
+      title: USA Dataset
+      type: string
+      description: Identifies the address as sourced from USPS
+      enum:
+        - usps
+    usps_country_iso:
+      title: USPS ISO Country Codes
+      type: string
+      description: 3 letter ISO country code associated with USA
+      enum:
+        - USA
+        - PRI
+        - GUM
     primary_number:
       title: Primary Number
       type: string
@@ -3918,30 +3932,23 @@ components:
         - P
         - R
         - M
+        - ''
     carrier_route_id:
       title: Carrier Route ID
       type: string
-      description: >-
+      description: |-
         A 4 character ID identifying the postal route for the address.
-
-        The first character indicates the route type. Specifically: - "B"
-        indicates PO Box - "H" indicates highway - "C" indicates city - "G"
-        indicates general - "R" indicates rural
+        The first character indicates the route type. Specifically:
+        - "B" indicates PO Box
+        - "H" indicates highway
+        - "C" indicates city
+        - "G" indicates general
+        - "R" indicates rural
       example: R012
     street_pre_directional_abbreviation:
       title: Street Pre-Directional Abbreviation
       type: string
       description: A geographic direction that precedes the street name.
-      enum:
-        - ''
-        - 'N'
-        - E
-        - S
-        - W
-        - NE
-        - NW
-        - SE
-        - SW
     street_name:
       title: Street Name
       type: string
@@ -3963,16 +3970,6 @@ components:
       title: Street Post Directional Abbreviation
       type: string
       description: A geographic direction that follows the street name.
-      enum:
-        - ''
-        - 'N'
-        - E
-        - S
-        - W
-        - NE
-        - NW
-        - SE
-        - SW
     building_or_firm_name:
       title: Building or Firm Name
       type: string
@@ -3992,31 +3989,6 @@ components:
 
         This code may be useful in address matching, e.g., the secondary address
         numbers may indicate apartment, suite, or trailer numbers.
-      enum:
-        - APT
-        - BLDG
-        - BSMT
-        - DEPT
-        - FL
-        - FRNT
-        - HNGR
-        - KEY
-        - LBBY
-        - LOT
-        - LOWR
-        - OFC
-        - PH
-        - PIER
-        - REAR
-        - RM
-        - SIDE
-        - SLIP
-        - SPC
-        - STE
-        - STOP
-        - TRLR
-        - UNIT
-        - UPPR
     base_alternate_code:
       title: Base Alternate Code
       type: string
@@ -4034,6 +4006,7 @@ components:
       enum:
         - A
         - B
+        - ''
     lacs_status_indicator:
       title: LACS Status Indicator
       type: string
@@ -4044,9 +4017,12 @@ components:
         convert a rural route address to a city-style address). Rural route and
         some city addresses are being modified to city-style addresses so that
         emergency services (e.g., ambulances, police) can find these addresses
-        more efficiently. - L = LACS address: The old (usually rural-route)
-        address that has been converted for the LACS system. - Blank = Not
-        applicable
+        more efficiently.
+
+        - L = LACS address: The old (usually rural-route) address that has been
+        converted for the LACS system.
+
+        - Blank = Not applicable
       enum:
         - ''
         - L
@@ -4058,13 +4034,21 @@ components:
         delivery point and/or whether a firm is the only delivery at an address.
         For this purpose, "address" is defined as the complete delivery line
         (e.g., complete street address and, if included as part of the firm
-        record, the secondary abbreviation and/or address secondary number). - A
-        = City government building—alternates only - B = Federal government
-        building—alternates only - C = State government building—alternates only
-        - D = Firm only—base and alternates - E = City government building and
-        firm only—alternates only - F = Federal government building and firm
-        only—alternates only - G = State government building and firm
-        only—alternates only
+        record, the secondary abbreviation and/or address secondary number).
+
+        - A = City government building—alternates only
+
+        - B = Federal government building—alternates only
+
+        - C = State government building—alternates only
+
+        - D = Firm only—base and alternates
+
+        - E = City government building and firm only—alternates only
+
+        - F = Federal government building and firm only—alternates only
+
+        - G = State government building and firm only—alternates only
       enum:
         - ''
         - A
@@ -4093,8 +4077,6 @@ components:
       title: Municipality City State Key
       type: string
       description: Municipality City State Key. Currently blank.
-      enum:
-        - ''
     urbanization_city_state_key:
       title: Urbanization City State Key
       type: string
@@ -4151,9 +4133,19 @@ components:
         The type of locale identified in the city/state name. The facility may
         be a USPS facility, such as a post office, station, or branch, or it may
         be a non-postal place name. City/state name facility codes include the
-        following: - B = Branch - C = Community post office (CPO) - N =
-        Non-postal community name, former USPS facility, or place name - P =
-        Post Office - S = Station - U = Urbanization
+        following:
+
+        - B = Branch
+
+        - C = Community post office (CPO)
+
+        - N = Non-postal community name, former USPS facility, or place name
+
+        - P = Post Office
+
+        - S = Station
+
+        - U = Urbanization
       enum:
         - B
         - C
@@ -4161,6 +4153,8 @@ components:
         - P
         - S
         - U
+        - 'Y'
+        - ''
     zip_classification_code:
       title: ZIP Classification Code
       type: string
@@ -4183,12 +4177,11 @@ components:
       type: string
       description: >-
         Specifies whether or not the city state name can be used as a last line
-        of address on a mail piece. - "Y = City/state name is a USPS-approved
-        mailing name." - "N = City/state name is not approved for mailing
-        purposes."
-      enum:
-        - 'Y'
-        - 'N'
+        of address on a mail piece.
+
+        - "Y = City/state name is a USPS-approved mailing name."
+
+        - "N = City/state name is not approved for mailing purposes."
     carrier_route_rate_sortation:
       title: Carrier Route Rate Sortation and Merged 5-Digit Indicator
       type: string
@@ -4197,11 +4190,6 @@ components:
         the commingling of automation and non-automation mail, including
         Enhanced Carrier Routes and 5-digit presort, on the same pallet or in
         the same container is allowed.
-      enum:
-        - A
-        - B
-        - C
-        - D
     finance_number:
       title: Finance Number
       oneOf:
@@ -4210,7 +4198,6 @@ components:
         - type: number
           description: Finance Number
           example: 351560
-      type: number
       description: >-
         A code assigned to Postal Service facilities (primarily Post Offices) to
         collect cost and statistical data and compile revenue and expense data.
@@ -4236,7 +4223,6 @@ components:
         - type: number
           description: FIPS code
           example: 53
-      type: string
       description: >-
         The Federal Information Processing Standard (FIPS) code assigned to a
         given county or parish within a state. In Alaska, it identifies a region
@@ -4289,15 +4275,9 @@ components:
         id:
           $ref: '#/components/schemas/ID'
         dataset:
-          $ref: '#/components/schemas/Dataset'
-          enum:
-            - usps
+          $ref: '#/components/schemas/usps_dataset'
         country_iso:
-          $ref: '#/components/schemas/CountryISO'
-          enum:
-            - USA
-            - PRI
-            - GUM
+          $ref: '#/components/schemas/usps_country_iso'
         primary_number:
           $ref: '#/components/schemas/primary_number'
         secondary_number:

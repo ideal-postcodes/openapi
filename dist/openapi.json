@@ -3607,6 +3607,24 @@
           }
         }
       },
+      "usps_dataset": {
+        "title": "USA Dataset",
+        "type": "string",
+        "description": "Identifies the address as sourced from USPS",
+        "enum": [
+          "usps"
+        ]
+      },
+      "usps_country_iso": {
+        "title": "USPS ISO Country Codes",
+        "type": "string",
+        "description": "3 letter ISO country code associated with USA",
+        "enum": [
+          "USA",
+          "PRI",
+          "GUM"
+        ]
+      },
       "primary_number": {
         "title": "Primary Number",
         "type": "string",
@@ -3672,30 +3690,20 @@
           "S",
           "P",
           "R",
-          "M"
+          "M",
+          ""
         ]
       },
       "carrier_route_id": {
         "title": "Carrier Route ID",
         "type": "string",
-        "description": "A 4 character ID identifying the postal route for the address.\nThe first character indicates the route type. Specifically: - \"B\" indicates PO Box - \"H\" indicates highway - \"C\" indicates city - \"G\" indicates general - \"R\" indicates rural",
+        "description": "A 4 character ID identifying the postal route for the address.\nThe first character indicates the route type. Specifically:\n- \"B\" indicates PO Box\n- \"H\" indicates highway\n- \"C\" indicates city\n- \"G\" indicates general\n- \"R\" indicates rural",
         "example": "R012"
       },
       "street_pre_directional_abbreviation": {
         "title": "Street Pre-Directional Abbreviation",
         "type": "string",
-        "description": "A geographic direction that precedes the street name.",
-        "enum": [
-          "",
-          "N",
-          "E",
-          "S",
-          "W",
-          "NE",
-          "NW",
-          "SE",
-          "SW"
-        ]
+        "description": "A geographic direction that precedes the street name."
       },
       "street_name": {
         "title": "Street Name",
@@ -3712,18 +3720,7 @@
       "street_post_directional_abbreviation": {
         "title": "Street Post Directional Abbreviation",
         "type": "string",
-        "description": "A geographic direction that follows the street name.",
-        "enum": [
-          "",
-          "N",
-          "E",
-          "S",
-          "W",
-          "NE",
-          "NW",
-          "SE",
-          "SW"
-        ]
+        "description": "A geographic direction that follows the street name."
       },
       "building_or_firm_name": {
         "title": "Building or Firm Name",
@@ -3734,33 +3731,7 @@
       "address_secondary_abbreviation": {
         "title": "Address Secondary Abbreviation",
         "type": "string",
-        "description": "A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field. \nThis code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers.",
-        "enum": [
-          "APT",
-          "BLDG",
-          "BSMT",
-          "DEPT",
-          "FL",
-          "FRNT",
-          "HNGR",
-          "KEY",
-          "LBBY",
-          "LOT",
-          "LOWR",
-          "OFC",
-          "PH",
-          "PIER",
-          "REAR",
-          "RM",
-          "SIDE",
-          "SLIP",
-          "SPC",
-          "STE",
-          "STOP",
-          "TRLR",
-          "UNIT",
-          "UPPR"
-        ]
+        "description": "A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field. \nThis code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers."
       },
       "base_alternate_code": {
         "title": "Base Alternate Code",
@@ -3768,13 +3739,14 @@
         "description": "Code that specifies whether a record is a base (preferred) or alternate record. \nBase records (represented as \"B\") can represent a range of addresses or an individual address, such as a firm record, while alternate records (represented as \"A\") are individual delivery points. Base records are generally preferred over alternate records.\nGovernment deliveries will only be listed on alternate records with the appropriate government building indicator (federal, state, or city) set.",
         "enum": [
           "A",
-          "B"
+          "B",
+          ""
         ]
       },
       "lacs_status_indicator": {
         "title": "LACS Status Indicator",
         "type": "string",
-        "description": "The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently. - L = LACS address: The old (usually rural-route) address that has been converted for the LACS system. - Blank = Not applicable",
+        "description": "The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently.\n- L = LACS address: The old (usually rural-route) address that has been converted for the LACS system.\n- Blank = Not applicable",
         "enum": [
           "",
           "L"
@@ -3783,7 +3755,7 @@
       "government_building_indicator": {
         "title": "Government Building Indicator",
         "type": "string",
-        "description": "An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, \"address\" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number). - A = City government building—alternates only - B = Federal government building—alternates only - C = State government building—alternates only - D = Firm only—base and alternates - E = City government building and firm only—alternates only - F = Federal government building and firm only—alternates only - G = State government building and firm only—alternates only",
+        "description": "An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, \"address\" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number).\n- A = City government building—alternates only\n- B = Federal government building—alternates only\n- C = State government building—alternates only\n- D = Firm only—base and alternates\n- E = City government building and firm only—alternates only\n- F = Federal government building and firm only—alternates only\n- G = State government building and firm only—alternates only",
         "enum": [
           "",
           "A",
@@ -3810,10 +3782,7 @@
       "municipality_city_state_key": {
         "title": "Municipality City State Key",
         "type": "string",
-        "description": "Municipality City State Key. Currently blank.",
-        "enum": [
-          ""
-        ]
+        "description": "Municipality City State Key. Currently blank."
       },
       "urbanization_city_state_key": {
         "title": "Urbanization City State Key",
@@ -3854,14 +3823,16 @@
       "city_state_name_facility_code": {
         "title": "City State Name Facility Code",
         "type": "string",
-        "description": "The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following: - B = Branch - C = Community post office (CPO) - N = Non-postal community name, former USPS facility, or place name - P = Post Office - S = Station - U = Urbanization",
+        "description": "The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following:\n- B = Branch\n- C = Community post office (CPO)\n- N = Non-postal community name, former USPS facility, or place name\n- P = Post Office\n- S = Station\n- U = Urbanization",
         "enum": [
           "B",
           "C",
           "N",
           "P",
           "S",
-          "U"
+          "U",
+          "Y",
+          ""
         ]
       },
       "zip_classification_code": {
@@ -3878,22 +3849,12 @@
       "city_state_mailing_name_indicator": {
         "title": "City State Mailing Name Indicator",
         "type": "string",
-        "description": "Specifies whether or not the city state name can be used as a last line of address on a mail piece. - \"Y = City/state name is a USPS-approved mailing name.\" - \"N = City/state name is not approved for mailing purposes.\"",
-        "enum": [
-          "Y",
-          "N"
-        ]
+        "description": "Specifies whether or not the city state name can be used as a last line of address on a mail piece.\n- \"Y = City/state name is a USPS-approved mailing name.\"\n- \"N = City/state name is not approved for mailing purposes.\""
       },
       "carrier_route_rate_sortation": {
         "title": "Carrier Route Rate Sortation and Merged 5-Digit Indicator",
         "type": "string",
-        "description": "Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed.",
-        "enum": [
-          "A",
-          "B",
-          "C",
-          "D"
-        ]
+        "description": "Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed."
       },
       "finance_number": {
         "title": "Finance Number",
@@ -3908,7 +3869,6 @@
             "example": 351560
           }
         ],
-        "type": "number",
         "description": "A code assigned to Postal Service facilities (primarily Post Offices) to collect cost and statistical data and compile revenue and expense data."
       },
       "congressional_district_number": {
@@ -3939,7 +3899,6 @@
             "example": 53
           }
         ],
-        "type": "string",
         "description": "The Federal Information Processing Standard (FIPS) code assigned to a given county or parish within a state. In Alaska, it identifies a region within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or “F,” the county number will be blank."
       },
       "UspsAddress": {
@@ -3991,18 +3950,10 @@
             "$ref": "#/components/schemas/ID"
           },
           "dataset": {
-            "$ref": "#/components/schemas/Dataset",
-            "enum": [
-              "usps"
-            ]
+            "$ref": "#/components/schemas/usps_dataset"
           },
           "country_iso": {
-            "$ref": "#/components/schemas/CountryISO",
-            "enum": [
-              "USA",
-              "PRI",
-              "GUM"
-            ]
+            "$ref": "#/components/schemas/usps_country_iso"
           },
           "primary_number": {
             "$ref": "#/components/schemas/primary_number"

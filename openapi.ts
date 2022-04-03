@@ -1341,6 +1341,18 @@ export interface components {
         | components["schemas"]["GbrGlobalAddress"];
     };
     /**
+     * USA Dataset
+     * @description Identifies the address as sourced from USPS
+     * @enum {string}
+     */
+    usps_dataset: "usps";
+    /**
+     * USPS ISO Country Codes
+     * @description 3 letter ISO country code associated with USA
+     * @enum {string}
+     */
+    usps_country_iso: "USA" | "PRI" | "GUM";
+    /**
      * Primary Number
      * @description A house, rural route, contract box, or Post Office Box number. The numeric or alphanumeric component of an address preceding the street name. Often referred to as house number.
      * @example A298
@@ -1399,29 +1411,24 @@ export interface components {
      * @description An alphabetic value that identifies the type of data in the record. - G = General delivery (5-Digit ZIP, ZIP + 4, and Carrier Route products) - H = High-rise (ZIP + 4 only) - F = Firm (ZIP + 4 only) - S = Street (5-Digit ZIP, ZIP + 4, and Carrier Route products) - P = PO Box (5-Digit ZIP, ZIP + 4, and Carrier Route products) - R = Rural route/contract (5-Digit ZIP, ZIP + 4, and Carrier Route products) - M = Multi-carrier (Carrier Route product only)
      * @enum {string}
      */
-    record_type_code: "G" | "H" | "F" | "S" | "P" | "R" | "M";
+    record_type_code: "G" | "H" | "F" | "S" | "P" | "R" | "M" | "";
     /**
      * Carrier Route ID
      * @description A 4 character ID identifying the postal route for the address.
-     * The first character indicates the route type. Specifically: - "B" indicates PO Box - "H" indicates highway - "C" indicates city - "G" indicates general - "R" indicates rural
+     * The first character indicates the route type. Specifically:
+     * - "B" indicates PO Box
+     * - "H" indicates highway
+     * - "C" indicates city
+     * - "G" indicates general
+     * - "R" indicates rural
      * @example R012
      */
     carrier_route_id: string;
     /**
      * Street Pre-Directional Abbreviation
      * @description A geographic direction that precedes the street name.
-     * @enum {string}
      */
-    street_pre_directional_abbreviation:
-      | ""
-      | "N"
-      | "E"
-      | "S"
-      | "W"
-      | "NE"
-      | "NW"
-      | "SE"
-      | "SW";
+    street_pre_directional_abbreviation: string;
     /**
      * Street Name
      * @description The official name of a street as assigned by a local governing authority. The Street Name field contains only the street name and does not include directionals (EAST, WEST, etc.) or suffixes (ST, DR, BLVD, etc.). This element may also contain literals, such as PO BOX, GENERAL DELIVERY, USS, PSC, or UNIT.
@@ -1437,18 +1444,8 @@ export interface components {
     /**
      * Street Post Directional Abbreviation
      * @description A geographic direction that follows the street name.
-     * @enum {string}
      */
-    street_post_directional_abbreviation:
-      | ""
-      | "N"
-      | "E"
-      | "S"
-      | "W"
-      | "NE"
-      | "NW"
-      | "SE"
-      | "SW";
+    street_post_directional_abbreviation: string;
     /**
      * Building or Firm Name
      * @description The name of a company, building, apartment complex, shopping center, or other distinguishing secondary address information.
@@ -1460,33 +1457,8 @@ export interface components {
      * Address Secondary Abbreviation
      * @description A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field.
      * This code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers.
-     * @enum {string}
      */
-    address_secondary_abbreviation:
-      | "APT"
-      | "BLDG"
-      | "BSMT"
-      | "DEPT"
-      | "FL"
-      | "FRNT"
-      | "HNGR"
-      | "KEY"
-      | "LBBY"
-      | "LOT"
-      | "LOWR"
-      | "OFC"
-      | "PH"
-      | "PIER"
-      | "REAR"
-      | "RM"
-      | "SIDE"
-      | "SLIP"
-      | "SPC"
-      | "STE"
-      | "STOP"
-      | "TRLR"
-      | "UNIT"
-      | "UPPR";
+    address_secondary_abbreviation: string;
     /**
      * Base Alternate Code
      * @description Code that specifies whether a record is a base (preferred) or alternate record.
@@ -1494,16 +1466,25 @@ export interface components {
      * Government deliveries will only be listed on alternate records with the appropriate government building indicator (federal, state, or city) set.
      * @enum {string}
      */
-    base_alternate_code: "A" | "B";
+    base_alternate_code: "A" | "B" | "";
     /**
      * LACS Status Indicator
-     * @description The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently. - L = LACS address: The old (usually rural-route) address that has been converted for the LACS system. - Blank = Not applicable
+     * @description The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently.
+     * - L = LACS address: The old (usually rural-route) address that has been converted for the LACS system.
+     * - Blank = Not applicable
      * @enum {string}
      */
     lacs_status_indicator: "" | "L";
     /**
      * Government Building Indicator
-     * @description An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, "address" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number). - A = City government building—alternates only - B = Federal government building—alternates only - C = State government building—alternates only - D = Firm only—base and alternates - E = City government building and firm only—alternates only - F = Federal government building and firm only—alternates only - G = State government building and firm only—alternates only
+     * @description An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, "address" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number).
+     * - A = City government building—alternates only
+     * - B = Federal government building—alternates only
+     * - C = State government building—alternates only
+     * - D = Firm only—base and alternates
+     * - E = City government building and firm only—alternates only
+     * - F = Federal government building and firm only—alternates only
+     * - G = State government building and firm only—alternates only
      * @enum {string}
      */
     government_building_indicator: "" | "A" | "B" | "C" | "D" | "E" | "F" | "G";
@@ -1522,9 +1503,8 @@ export interface components {
     /**
      * Municipality City State Key
      * @description Municipality City State Key. Currently blank.
-     * @enum {string}
      */
-    municipality_city_state_key: "";
+    municipality_city_state_key: string;
     /**
      * Urbanization City State Key
      * @description An index to the City State file that provides the urbanization name for this delivery range.
@@ -1563,10 +1543,16 @@ export interface components {
     preferred_city: string;
     /**
      * City State Name Facility Code
-     * @description The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following: - B = Branch - C = Community post office (CPO) - N = Non-postal community name, former USPS facility, or place name - P = Post Office - S = Station - U = Urbanization
+     * @description The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following:
+     * - B = Branch
+     * - C = Community post office (CPO)
+     * - N = Non-postal community name, former USPS facility, or place name
+     * - P = Post Office
+     * - S = Station
+     * - U = Urbanization
      * @enum {string}
      */
-    city_state_name_facility_code: "B" | "C" | "N" | "P" | "S" | "U";
+    city_state_name_facility_code: "B" | "C" | "N" | "P" | "S" | "U" | "Y" | "";
     /**
      * ZIP Classification Code
      * @description A field that describes the type of ZIP area that a 5-digit ZIP Code serves, e.g., a single educational institution, post office boxes only, or a single address that has unusually high mail volume or many different addresses.
@@ -1579,21 +1565,21 @@ export interface components {
     zip_classification_code: "" | "M" | "P" | "U";
     /**
      * City State Mailing Name Indicator
-     * @description Specifies whether or not the city state name can be used as a last line of address on a mail piece. - "Y = City/state name is a USPS-approved mailing name." - "N = City/state name is not approved for mailing purposes."
-     * @enum {string}
+     * @description Specifies whether or not the city state name can be used as a last line of address on a mail piece.
+     * - "Y = City/state name is a USPS-approved mailing name."
+     * - "N = City/state name is not approved for mailing purposes."
      */
-    city_state_mailing_name_indicator: "Y" | "N";
+    city_state_mailing_name_indicator: string;
     /**
      * Carrier Route Rate Sortation and Merged 5-Digit Indicator
      * @description Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed.
-     * @enum {string}
      */
-    carrier_route_rate_sortation: "A" | "B" | "C" | "D";
+    carrier_route_rate_sortation: string;
     /**
      * Finance Number
      * @description A code assigned to Postal Service facilities (primarily Post Offices) to collect cost and statistical data and compile revenue and expense data.
      */
-    finance_number: number;
+    finance_number: string | number;
     /**
      * Congressional District Number
      * @description A standard value identifying a geographic area within the United States served by a member of the U.S. House of Representatives. If Army/Air Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office (DPO), this field will be blank. If there is only one member of Congress within a state, the code will be "AL" (at large).
@@ -1603,17 +1589,15 @@ export interface components {
      * County Number
      * @description The Federal Information Processing Standard (FIPS) code assigned to a given county or parish within a state. In Alaska, it identifies a region within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or “F,” the county number will be blank.
      */
-    county_number: string;
+    county_number: string | number;
     /**
      * United States Postal Service Address
      * @description Standard USA Address
      */
     UspsAddress: {
       id: components["schemas"]["ID"];
-      /** @enum {undefined} */
-      dataset: components["schemas"]["Dataset"];
-      /** @enum {undefined} */
-      country_iso: components["schemas"]["CountryISO"];
+      dataset: components["schemas"]["usps_dataset"];
+      country_iso: components["schemas"]["usps_country_iso"];
       primary_number: components["schemas"]["primary_number"];
       secondary_number: components["schemas"]["secondary_number"];
       plus_4_code: components["schemas"]["plus_4_code"];
