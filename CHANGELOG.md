@@ -1,3 +1,10 @@
+# [1.2.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.2...1.2.0-beta.3) (2022-04-03)
+
+
+### Bug Fixes
+
+* **USPS:** Narrow USPS typings ([c29aeaa](https://github.com/ideal-postcodes/openapi/commit/c29aeaacf8c9cde03f136d3a715ebb2a6c98a1e3))
+
 # [1.2.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.1...1.2.0-beta.2) (2022-03-31)
 
 
