@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.0.1
+  version: 1.1.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -1430,10 +1430,15 @@ paths:
     get:
       tags:
         - Autocomplete
-      summary: Resolve Address
+      summary: Resolve Address (GBR)
       operationId: Resolve
-      description: |
+      description: >
         Resolves an address autocompletion by its address ID.
+
+
+        Resolved addresses (including global addresses) are returned in a UK
+        format (up to 3 address lines) using UK nomenclature (like postcode and
+        county).
       parameters:
         - name: address
           in: path
@@ -1474,6 +1479,61 @@ paths:
           source: >
             curl -k -G
             https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?api_key=iddqd
+            \
+              -d "api_key=iddqd"
+  /autocomplete/addresses/{address}/usa:
+    get:
+      tags:
+        - Autocomplete
+      summary: Resolve Address (USA)
+      operationId: ResolveUsa
+      description: >
+        Resolves an address autocompletion by its address ID.
+
+
+        Resolved addresses (including global addresses) are returned in a US
+        format (up to 2 address lines) using US nomenclature (like zipcode,
+        state and city).
+      parameters:
+        - name: address
+          in: path
+          description: ID of address suggestion
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsaResolveAddressResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/usps_Z222446599|1||1101/usa?api_key=iddqd
+        - lang: cURL
+          label: CLI
+          source: >
+            curl -k -G
+            https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/usps_Z222446599|1||1101/usa?api_key=iddqd
             \
               -d "api_key=iddqd"
   /addresses:
@@ -2547,7 +2607,7 @@ components:
       type: string
       description: >-
         The country for which the postcode belongs to. May be empty for a small
-        number of addresses. Data source: ONS
+        number of addresses.
       example: England
     County:
       title: County
@@ -2700,7 +2760,6 @@ components:
       title: Dataset
       type: string
       description: Indicates the provenance of an address
-      example: paf
       enum:
         - paf
         - mr
@@ -2710,13 +2769,14 @@ components:
       title: ISO Country Code
       type: string
       description: 3 letter ISO country code
-      example: GBR
       enum:
         - GBR
         - IMN
         - JEY
         - GGY
         - USA
+        - PRI
+        - GUM
     PafAddress:
       title: Postcode Address File Address
       description: Standard UK Address.
@@ -3775,6 +3835,768 @@ components:
             - $ref: '#/components/schemas/MrAddress'
             - $ref: '#/components/schemas/NybAddress'
             - $ref: '#/components/schemas/GbrGlobalAddress'
+    usps_dataset:
+      title: USA Dataset
+      type: string
+      description: Identifies the address as sourced from USPS
+      enum:
+        - usps
+    usps_country:
+      title: Country
+      type: string
+      description: Full country name associated with address
+      enum:
+        - United States
+        - Guam
+        - Puerto Rico
+    usps_country_iso:
+      title: USPS ISO Country Codes
+      type: string
+      description: 3 letter ISO country code associated with USA
+      enum:
+        - USA
+        - PRI
+        - GUM
+    primary_number:
+      title: Primary Number
+      type: string
+      description: >-
+        A house, rural route, contract box, or Post Office Box number. The
+        numeric or alphanumeric component of an address preceding the street
+        name. Often referred to as house number.
+      example: A298
+    secondary_number:
+      title: Secondary Number
+      type: string
+      description: Number of the sub unit, apartment, suite etc
+      example: 123A
+    plus_4_code:
+      title: Plus 4 Code
+      type: string
+      description: 4 digit ZIP add-on code.
+      example: '1234'
+    line_1:
+      title: First Address Line
+      type: string
+      description: The primary delivery line (usually the street address) of the address.
+      example: 12 Armstrong Ct Apt 12
+    line_2:
+      title: Second Address Line
+      type: string
+      description: >-
+        Secondary delivery line of the address. Typically populated if the first
+        line is the firm or building name.
+      example: 9450 Pinecroft Dr
+    last_line:
+      title: TITLE
+      type: string
+      description: Last line of the address comprising of city, state, zip code and zip+4
+      example: GREENWICH, CT, 06830-1234
+    zip_code:
+      title: ZIP Code
+      type: string
+      description: >-
+        A 5-digit code that identifies a specific geographic delivery area. ZIP
+        Codes can represent an area within a state, or a single building or
+        company that has a very high mail volume. 
+      example: '1234'
+    zip_plus_4_code:
+      title: ZIP + 4 Code
+      type: string
+      description: >-
+        Nine-digit code that identifies a small geographic delivery area that is
+        serviceable by a single carrier; appears in the last line of the address
+        on a mail piece.
+      example: 12345-6789
+    update_key_number:
+      title: Update Key Number
+      type: string
+      description: >-
+        Field that contains a number that uniquely identifies a record; used to
+        identify the base record to which an add or delete transaction is being
+        directed. The Update Key Number field is used only when applying
+        transactions to the base file; it is not used in address matching and
+        remains fixed for the life of the record. The field is alphanumeric and
+        consists of the database segment code (V1, V2, W1, W2, X1, X2, Y1, Y2,
+        Z1, or Z2) and eight characters containing an alphanumeric value ranging
+        from 00000001 to AAAAAAAA.
+      example: '00000001'
+    record_type_code:
+      title: Record Type Code
+      type: string
+      description: >-
+        An alphabetic value that identifies the type of data in the record. - G
+        = General delivery (5-Digit ZIP, ZIP + 4, and Carrier Route products) -
+        H = High-rise (ZIP + 4 only) - F = Firm (ZIP + 4 only) - S = Street
+        (5-Digit ZIP, ZIP + 4, and Carrier Route products) - P = PO Box (5-Digit
+        ZIP, ZIP + 4, and Carrier Route products) - R = Rural route/contract
+        (5-Digit ZIP, ZIP + 4, and Carrier Route products) - M = Multi-carrier
+        (Carrier Route product only)
+      enum:
+        - G
+        - H
+        - F
+        - S
+        - P
+        - R
+        - M
+        - ''
+    carrier_route_id:
+      title: Carrier Route ID
+      type: string
+      description: |-
+        A 4 character ID identifying the postal route for the address.
+        The first character indicates the route type. Specifically:
+        - "B" indicates PO Box
+        - "H" indicates highway
+        - "C" indicates city
+        - "G" indicates general
+        - "R" indicates rural
+      example: R012
+    street_pre_directional_abbreviation:
+      title: Street Pre-Directional Abbreviation
+      type: string
+      description: A geographic direction that precedes the street name.
+    street_name:
+      title: Street Name
+      type: string
+      description: >-
+        The official name of a street as assigned by a local governing
+        authority. The Street Name field contains only the street name and does
+        not include directionals (EAST, WEST, etc.) or suffixes (ST, DR, BLVD,
+        etc.). This element may also contain literals, such as PO BOX, GENERAL
+        DELIVERY, USS, PSC, or UNIT.
+      example: GOSHEN
+    street_suffix_abbreviation:
+      title: Street Suffix Abbreviation
+      type: string
+      description: >-
+        Code that is the standard USPS abbreviation for the trailing designator
+        in a street address. 
+      example: ST
+    street_post_directional_abbreviation:
+      title: Street Post Directional Abbreviation
+      type: string
+      description: A geographic direction that follows the street name.
+    building_or_firm_name:
+      title: Building or Firm Name
+      type: string
+      description: >-
+        The name of a company, building, apartment complex, shopping center, or
+        other distinguishing secondary address information.
+
+        This field is normally used with firm and highrise records but may also
+        contain literals such as “Postmaster” or “United States Postal Service.”
+      example: POSTMASTER
+    address_secondary_abbreviation:
+      title: Address Secondary Abbreviation
+      type: string
+      description: >-
+        A descriptive code used to identify the type of address secondary range
+        information in the Address Secondary Range field. 
+
+        This code may be useful in address matching, e.g., the secondary address
+        numbers may indicate apartment, suite, or trailer numbers.
+    base_alternate_code:
+      title: Base Alternate Code
+      type: string
+      description: >-
+        Code that specifies whether a record is a base (preferred) or alternate
+        record. 
+
+        Base records (represented as "B") can represent a range of addresses or
+        an individual address, such as a firm record, while alternate records
+        (represented as "A") are individual delivery points. Base records are
+        generally preferred over alternate records.
+
+        Government deliveries will only be listed on alternate records with the
+        appropriate government building indicator (federal, state, or city) set.
+      enum:
+        - A
+        - B
+        - ''
+    lacs_status_indicator:
+      title: LACS Status Indicator
+      type: string
+      description: >-
+        The Locatable Address Conversion Service (LACS) indicator describes
+        records that have been converted to the LACS system (a product/system in
+        a different USPS® product line that allows mailers to identify and
+        convert a rural route address to a city-style address). Rural route and
+        some city addresses are being modified to city-style addresses so that
+        emergency services (e.g., ambulances, police) can find these addresses
+        more efficiently.
+
+        - L = LACS address: The old (usually rural-route) address that has been
+        converted for the LACS system.
+
+        - Blank = Not applicable
+      enum:
+        - ''
+        - L
+    government_building_indicator:
+      title: Government Building Indicator
+      type: string
+      description: >-
+        An alphabetic value that identifies the type of government agency at the
+        delivery point and/or whether a firm is the only delivery at an address.
+        For this purpose, "address" is defined as the complete delivery line
+        (e.g., complete street address and, if included as part of the firm
+        record, the secondary abbreviation and/or address secondary number).
+
+        - A = City government building—alternates only
+
+        - B = Federal government building—alternates only
+
+        - C = State government building—alternates only
+
+        - D = Firm only—base and alternates
+
+        - E = City government building and firm only—alternates only
+
+        - F = Federal government building and firm only—alternates only
+
+        - G = State government building and firm only—alternates only
+      enum:
+        - ''
+        - A
+        - B
+        - C
+        - D
+        - E
+        - F
+        - G
+    state_abbreviation:
+      title: State Abbreviation
+      type: string
+      description: >-
+        A 2-character abbreviation for the name of a state, U.S. territory, or
+        armed forces ZIP Code designation. If APO/FPO/DPO, then the state
+        abbreviation will be “AA,” “AE,” or “AP.”
+      example: NY
+    state:
+      title: State
+      type: string
+      description: >-
+        Full name of a state, U.S. territory, or armed forces ZIP Code
+        designation.
+      example: New York
+    municipality_city_state_key:
+      title: Municipality City State Key
+      type: string
+      description: Municipality City State Key. Currently blank.
+    urbanization_city_state_key:
+      title: Urbanization City State Key
+      type: string
+      description: >-
+        An index to the City State file that provides the urbanization name for
+        this delivery range.
+      example: V18475
+    preferred_last_line_city_state_key:
+      title: Preferred Last Line City State Key
+      type: string
+      description: >-
+        In the Carrier Route, Five-Digit ZIP Code, Delivery Statistics, and ZIP
+        + 4 products, an index to the City State product record that provides
+        the preferred last-line name for this address range. In the City State
+        product, the preferred last line city/state key contains the key value
+        of a City State product record that has the default preferred or
+        alternate preferred last-line key for a given ZIP Code.
+      example: V13916
+    county:
+      title: County Name
+      type: string
+      description: >-
+        The name of the county or parish in which the 5-digit ZIP Code resides.
+        If APO/FPO/DPO, then the county name will be blank.
+      example: SUFFOLK
+    city:
+      title: City Name
+      type: string
+      description: >-
+        A valid city name for mailing purposes; appears in the last line of an
+        address on a mail piece.
+      example: HOLTSVILLE
+    city_abbreviation:
+      title: City State Name Abbreviation
+      type: string
+      description: >-
+        A standard 13-character abbreviation for a city/state name. This field
+        is only used for names that are greater than 13 characters in length and
+        have a city/state mailing name indicator of "Y." If the field is longer
+        than 13 characters and the city/state mailing name indicator is "N," the
+        field will be blank.
+      example: W TOWNSHEND
+    preferred_city:
+      title: Preferred Last Line City State Name
+      type: string
+      description: >-
+        Field that contains the default preferred or alternate preferred
+        last-line name for a ZIP Code.
+      example: AGUADA
+    city_state_name_facility_code:
+      title: City State Name Facility Code
+      type: string
+      description: >-
+        The type of locale identified in the city/state name. The facility may
+        be a USPS facility, such as a post office, station, or branch, or it may
+        be a non-postal place name. City/state name facility codes include the
+        following:
+
+        - B = Branch
+
+        - C = Community post office (CPO)
+
+        - N = Non-postal community name, former USPS facility, or place name
+
+        - P = Post Office
+
+        - S = Station
+
+        - U = Urbanization
+      enum:
+        - B
+        - C
+        - 'N'
+        - P
+        - S
+        - U
+        - 'Y'
+        - ''
+    zip_classification_code:
+      title: ZIP Classification Code
+      type: string
+      description: >-
+        A field that describes the type of ZIP area that a 5-digit ZIP Code
+        serves, e.g., a single educational institution, post office boxes only,
+        or a single address that has unusually high mail volume or many
+        different addresses.
+         - M = Military ZIP Code
+         - P = ZIP Code having only Post Office Boxes
+         - U = Unique ZIP Code (ZIP assigned to a single organization)
+         - Blank = Standard ZIP with many addresses assigned to it
+      enum:
+        - ''
+        - M
+        - P
+        - U
+    city_state_mailing_name_indicator:
+      title: City State Mailing Name Indicator
+      type: string
+      description: >-
+        Specifies whether or not the city state name can be used as a last line
+        of address on a mail piece.
+
+        - "Y = City/state name is a USPS-approved mailing name."
+
+        - "N = City/state name is not approved for mailing purposes."
+    carrier_route_rate_sortation:
+      title: Carrier Route Rate Sortation and Merged 5-Digit Indicator
+      type: string
+      description: >-
+        Identifies where automation Carrier Route rates are available and where
+        the commingling of automation and non-automation mail, including
+        Enhanced Carrier Routes and 5-digit presort, on the same pallet or in
+        the same container is allowed.
+    finance_number:
+      title: Finance Number
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: Finance Number
+          example: 351560
+      description: >-
+        A code assigned to Postal Service facilities (primarily Post Offices) to
+        collect cost and statistical data and compile revenue and expense data.
+    congressional_district_number:
+      title: Congressional District Number
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: Congressional district number
+          example: 6
+      description: >-
+        A standard value identifying a geographic area within the United States
+        served by a member of the U.S. House of Representatives. If Army/Air
+        Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office
+        (DPO), this field will be blank. If there is only one member of Congress
+        within a state, the code will be "AL" (at large).
+    county_number:
+      title: County Number
+      oneOf:
+        - type: string
+          description: Empty string `""` if not available
+        - type: number
+          description: FIPS code
+          example: 53
+      description: >-
+        The Federal Information Processing Standard (FIPS) code assigned to a
+        given county or parish within a state. In Alaska, it identifies a region
+        within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or
+        “F,” the county number will be blank.
+    UspsAddress:
+      title: United States Postal Service Address
+      description: Standard USA Address
+      required:
+        - id
+        - dataset
+        - country_iso
+        - primary_number
+        - secondary_number
+        - plus_4_code
+        - line_1
+        - line_2
+        - last_line
+        - zip_code
+        - zip_plus_4_code
+        - update_key_number
+        - record_type_code
+        - carrier_route_id
+        - street_pre_directional_abbreviation
+        - street_name
+        - street_suffix_abbreviation
+        - street_post_directional_abbreviation
+        - building_or_firm_name
+        - address_secondary_abbreviation
+        - base_alternate_code
+        - lacs_status_indicator
+        - government_building_indicator
+        - state_abbreviation
+        - state
+        - municipality_city_state_key
+        - urbanization_city_state_key
+        - preferred_last_line_city_state_key
+        - county
+        - city
+        - city_abbreviation
+        - preferred_city
+        - city_state_name_facility_code
+        - zip_classification_code
+        - city_state_mailing_name_indicator
+        - carrier_route_rate_sortation
+        - finance_number
+        - congressional_district_number
+        - county_number
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/usps_dataset'
+        country:
+          $ref: '#/components/schemas/usps_country'
+        country_iso:
+          $ref: '#/components/schemas/usps_country_iso'
+        primary_number:
+          $ref: '#/components/schemas/primary_number'
+        secondary_number:
+          $ref: '#/components/schemas/secondary_number'
+        plus_4_code:
+          $ref: '#/components/schemas/plus_4_code'
+        line_1:
+          $ref: '#/components/schemas/line_1'
+        line_2:
+          $ref: '#/components/schemas/line_2'
+        last_line:
+          $ref: '#/components/schemas/last_line'
+        zip_code:
+          $ref: '#/components/schemas/zip_code'
+        zip_plus_4_code:
+          $ref: '#/components/schemas/zip_plus_4_code'
+        update_key_number:
+          $ref: '#/components/schemas/update_key_number'
+        record_type_code:
+          $ref: '#/components/schemas/record_type_code'
+        carrier_route_id:
+          $ref: '#/components/schemas/carrier_route_id'
+        street_pre_directional_abbreviation:
+          $ref: '#/components/schemas/street_pre_directional_abbreviation'
+        street_name:
+          $ref: '#/components/schemas/street_name'
+        street_suffix_abbreviation:
+          $ref: '#/components/schemas/street_suffix_abbreviation'
+        street_post_directional_abbreviation:
+          $ref: '#/components/schemas/street_post_directional_abbreviation'
+        building_or_firm_name:
+          $ref: '#/components/schemas/building_or_firm_name'
+        address_secondary_abbreviation:
+          $ref: '#/components/schemas/address_secondary_abbreviation'
+        base_alternate_code:
+          $ref: '#/components/schemas/base_alternate_code'
+        lacs_status_indicator:
+          $ref: '#/components/schemas/lacs_status_indicator'
+        government_building_indicator:
+          $ref: '#/components/schemas/government_building_indicator'
+        state_abbreviation:
+          $ref: '#/components/schemas/state_abbreviation'
+        state:
+          $ref: '#/components/schemas/state'
+        municipality_city_state_key:
+          $ref: '#/components/schemas/municipality_city_state_key'
+        urbanization_city_state_key:
+          $ref: '#/components/schemas/urbanization_city_state_key'
+        preferred_last_line_city_state_key:
+          $ref: '#/components/schemas/preferred_last_line_city_state_key'
+        county:
+          $ref: '#/components/schemas/county'
+        city:
+          $ref: '#/components/schemas/city'
+        city_abbreviation:
+          $ref: '#/components/schemas/city_abbreviation'
+        preferred_city:
+          $ref: '#/components/schemas/preferred_city'
+        city_state_name_facility_code:
+          $ref: '#/components/schemas/city_state_name_facility_code'
+        zip_classification_code:
+          $ref: '#/components/schemas/zip_classification_code'
+        city_state_mailing_name_indicator:
+          $ref: '#/components/schemas/city_state_mailing_name_indicator'
+        carrier_route_rate_sortation:
+          $ref: '#/components/schemas/carrier_route_rate_sortation'
+        finance_number:
+          $ref: '#/components/schemas/finance_number'
+        congressional_district_number:
+          $ref: '#/components/schemas/congressional_district_number'
+        county_number:
+          $ref: '#/components/schemas/county_number'
+    UsaGlobalAddress:
+      title: Global Address
+      description: Global (non-US) Address in the US address format
+      required:
+        - id
+        - dataset
+        - country_iso
+        - primary_number
+        - secondary_number
+        - plus_4_code
+        - line_1
+        - line_2
+        - last_line
+        - zip_code
+        - zip_plus_4_code
+        - update_key_number
+        - record_type_code
+        - carrier_route_id
+        - street_pre_directional_abbreviation
+        - street_name
+        - street_suffix_abbreviation
+        - street_post_directional_abbreviation
+        - building_or_firm_name
+        - address_secondary_abbreviation
+        - base_alternate_code
+        - lacs_status_indicator
+        - government_building_indicator
+        - state_abbreviation
+        - state
+        - municipality_city_state_key
+        - urbanization_city_state_key
+        - preferred_last_line_city_state_key
+        - county
+        - city
+        - city_abbreviation
+        - preferred_city
+        - city_state_name_facility_code
+        - zip_classification_code
+        - city_state_mailing_name_indicator
+        - carrier_route_rate_sortation
+        - finance_number
+        - congressional_district_number
+        - county_number
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+          enum:
+            - paf
+        country:
+          $ref: '#/components/schemas/Country'
+        country_iso:
+          $ref: '#/components/schemas/CountryISO'
+        primary_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        secondary_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        plus_4_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        line_1:
+          type: string
+          description: First line of address
+        line_2:
+          type: string
+          description: Second line of address
+        last_line:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        zip_code:
+          type: string
+          description: Partial postcode of address
+        zip_plus_4_code:
+          type: string
+          description: Full postal code of address
+        update_key_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        record_type_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        carrier_route_id:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_pre_directional_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_name:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_suffix_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        street_post_directional_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        building_or_firm_name:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        address_secondary_abbreviation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        base_alternate_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        lacs_status_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        government_building_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        state:
+          type: string
+          description: State or province
+        state_abbreviation:
+          type: string
+          description: Code of state or province (if available)
+        municipality_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        urbanization_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        preferred_last_line_city_state_key:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        county:
+          type: string
+          description: County name
+        city:
+          type: string
+          description: City name
+        city_abbreviation:
+          type: string
+          description: City name abbreviation (if available)
+        preferred_city:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        city_state_name_facility_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        zip_classification_code:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        city_state_mailing_name_indicator:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        carrier_route_rate_sortation:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        finance_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        congressional_district_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+        county_number:
+          type: string
+          description: Not available for non-US addresses
+          enum:
+            - ''
+    UsaResolveAddressResponse:
+      title: Address Resolution Response (USA)
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/UspsAddress'
+            - $ref: '#/components/schemas/UsaGlobalAddress'
     AddressResponse:
       title: Address Search Response
       type: object

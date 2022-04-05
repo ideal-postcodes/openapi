@@ -1,3 +1,53 @@
+# [1.2.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.3...1.2.0-beta.4) (2022-04-03)
+
+
+### Bug Fixes
+
+* **USPS:** Add country ([2c935dd](https://github.com/ideal-postcodes/openapi/commit/2c935dd65d0ffe57674569f1f8629566c4e4e846))
+
+# [1.2.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.2...1.2.0-beta.3) (2022-04-03)
+
+
+### Bug Fixes
+
+* **USPS:** Narrow USPS typings ([c29aeaa](https://github.com/ideal-postcodes/openapi/commit/c29aeaacf8c9cde03f136d3a715ebb2a6c98a1e3))
+
+# [1.2.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/1.2.0-beta.1...1.2.0-beta.2) (2022-03-31)
+
+
+### Bug Fixes
+
+* **USPS:** Add dual data types ([9491cae](https://github.com/ideal-postcodes/openapi/commit/9491caeaaf4079bf6e8c5bba37da907e5ff86667))
+
+# [1.2.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/1.1.0...1.2.0-beta.1) (2022-03-30)
+
+
+### Bug Fixes
+
+* **USPS:** Add USPS schema definitions ([eae2cf5](https://github.com/ideal-postcodes/openapi/commit/eae2cf53b6e67e187bb0e6f52fc15a689abe8d77))
+* **USPS:** Update definitions ([22d1023](https://github.com/ideal-postcodes/openapi/commit/22d102310ce34eb5257687467cae36cacf628649))
+
+
+### Features
+
+* **Mocks:** Embed mock server ([b7bb5b9](https://github.com/ideal-postcodes/openapi/commit/b7bb5b9b9c10fb1d12af06e0e55f16147e4a0e26))
+* **USPS:** Resolve addresses formated to US spec ([e67e728](https://github.com/ideal-postcodes/openapi/commit/e67e728ac6be11dab467a508fdc6fceacfd49364))
+
+# [1.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.5...1.1.0-beta.6) (2022-03-29)
+
+
+### Bug Fixes
+
+* **USPS:** Add USPS schema definitions ([e9d07bf](https://github.com/ideal-postcodes/openapi/commit/e9d07bf675f73ca9b0fb3c58f2b54e4017f8a964))
+
+# [1.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/1.1.0-beta.4...1.1.0-beta.5) (2022-03-28)
+
+
+### Features
+
+* **Mocks:** Embed mock server ([5e65331](https://github.com/ideal-postcodes/openapi/commit/5e65331683d68cfb5d2f0728a46729206c9def93))
+* **USPS:** Resolve addresses formated to US spec ([4a2d71d](https://github.com/ideal-postcodes/openapi/commit/4a2d71db3db88b8406d42b56ad04be816f968c9f))
+
 # [1.1.0](https://github.com/ideal-postcodes/openapi/compare/1.0.2...1.1.0) (2022-02-08)
 
 

@@ -291,8 +291,20 @@ export interface paths {
     get: operations["AddressAutocomplete"];
   };
   "/autocomplete/addresses/{address}/gbr": {
-    /** Resolves an address autocompletion by its address ID. */
+    /**
+     * Resolves an address autocompletion by its address ID.
+     *
+     * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
+     */
     get: operations["Resolve"];
+  };
+  "/autocomplete/addresses/{address}/usa": {
+    /**
+     * Resolves an address autocompletion by its address ID.
+     *
+     * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
+     */
+    get: operations["ResolveUsa"];
   };
   "/addresses": {
     /**
@@ -560,7 +572,7 @@ export interface components {
     Premise: string;
     /**
      * Country
-     * @description The country for which the postcode belongs to. May be empty for a small number of addresses. Data source: ONS
+     * @description The country for which the postcode belongs to. May be empty for a small number of addresses.
      * @example England
      */
     Country: string;
@@ -633,17 +645,15 @@ export interface components {
     /**
      * Dataset
      * @description Indicates the provenance of an address
-     * @example paf
      * @enum {string}
      */
     Dataset: "paf" | "mr" | "nyb" | "usps";
     /**
      * ISO Country Code
      * @description 3 letter ISO country code
-     * @example GBR
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA";
+    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM";
     /**
      * Postcode Address File Address
      * @description Standard UK Address.
@@ -1329,6 +1339,485 @@ export interface components {
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["GbrGlobalAddress"];
+    };
+    /**
+     * USA Dataset
+     * @description Identifies the address as sourced from USPS
+     * @enum {string}
+     */
+    usps_dataset: "usps";
+    /**
+     * Country
+     * @description Full country name associated with address
+     * @enum {string}
+     */
+    usps_country: "United States" | "Guam" | "Puerto Rico";
+    /**
+     * USPS ISO Country Codes
+     * @description 3 letter ISO country code associated with USA
+     * @enum {string}
+     */
+    usps_country_iso: "USA" | "PRI" | "GUM";
+    /**
+     * Primary Number
+     * @description A house, rural route, contract box, or Post Office Box number. The numeric or alphanumeric component of an address preceding the street name. Often referred to as house number.
+     * @example A298
+     */
+    primary_number: string;
+    /**
+     * Secondary Number
+     * @description Number of the sub unit, apartment, suite etc
+     * @example 123A
+     */
+    secondary_number: string;
+    /**
+     * Plus 4 Code
+     * @description 4 digit ZIP add-on code.
+     * @example 1234
+     */
+    plus_4_code: string;
+    /**
+     * First Address Line
+     * @description The primary delivery line (usually the street address) of the address.
+     * @example 12 Armstrong Ct Apt 12
+     */
+    line_1: string;
+    /**
+     * Second Address Line
+     * @description Secondary delivery line of the address. Typically populated if the first line is the firm or building name.
+     * @example 9450 Pinecroft Dr
+     */
+    line_2: string;
+    /**
+     * TITLE
+     * @description Last line of the address comprising of city, state, zip code and zip+4
+     * @example GREENWICH, CT, 06830-1234
+     */
+    last_line: string;
+    /**
+     * ZIP Code
+     * @description A 5-digit code that identifies a specific geographic delivery area. ZIP Codes can represent an area within a state, or a single building or company that has a very high mail volume.
+     * @example 1234
+     */
+    zip_code: string;
+    /**
+     * ZIP + 4 Code
+     * @description Nine-digit code that identifies a small geographic delivery area that is serviceable by a single carrier; appears in the last line of the address on a mail piece.
+     * @example 12345-6789
+     */
+    zip_plus_4_code: string;
+    /**
+     * Update Key Number
+     * @description Field that contains a number that uniquely identifies a record; used to identify the base record to which an add or delete transaction is being directed. The Update Key Number field is used only when applying transactions to the base file; it is not used in address matching and remains fixed for the life of the record. The field is alphanumeric and consists of the database segment code (V1, V2, W1, W2, X1, X2, Y1, Y2, Z1, or Z2) and eight characters containing an alphanumeric value ranging from 00000001 to AAAAAAAA.
+     * @example 00000001
+     */
+    update_key_number: string;
+    /**
+     * Record Type Code
+     * @description An alphabetic value that identifies the type of data in the record. - G = General delivery (5-Digit ZIP, ZIP + 4, and Carrier Route products) - H = High-rise (ZIP + 4 only) - F = Firm (ZIP + 4 only) - S = Street (5-Digit ZIP, ZIP + 4, and Carrier Route products) - P = PO Box (5-Digit ZIP, ZIP + 4, and Carrier Route products) - R = Rural route/contract (5-Digit ZIP, ZIP + 4, and Carrier Route products) - M = Multi-carrier (Carrier Route product only)
+     * @enum {string}
+     */
+    record_type_code: "G" | "H" | "F" | "S" | "P" | "R" | "M" | "";
+    /**
+     * Carrier Route ID
+     * @description A 4 character ID identifying the postal route for the address.
+     * The first character indicates the route type. Specifically:
+     * - "B" indicates PO Box
+     * - "H" indicates highway
+     * - "C" indicates city
+     * - "G" indicates general
+     * - "R" indicates rural
+     * @example R012
+     */
+    carrier_route_id: string;
+    /**
+     * Street Pre-Directional Abbreviation
+     * @description A geographic direction that precedes the street name.
+     */
+    street_pre_directional_abbreviation: string;
+    /**
+     * Street Name
+     * @description The official name of a street as assigned by a local governing authority. The Street Name field contains only the street name and does not include directionals (EAST, WEST, etc.) or suffixes (ST, DR, BLVD, etc.). This element may also contain literals, such as PO BOX, GENERAL DELIVERY, USS, PSC, or UNIT.
+     * @example GOSHEN
+     */
+    street_name: string;
+    /**
+     * Street Suffix Abbreviation
+     * @description Code that is the standard USPS abbreviation for the trailing designator in a street address.
+     * @example ST
+     */
+    street_suffix_abbreviation: string;
+    /**
+     * Street Post Directional Abbreviation
+     * @description A geographic direction that follows the street name.
+     */
+    street_post_directional_abbreviation: string;
+    /**
+     * Building or Firm Name
+     * @description The name of a company, building, apartment complex, shopping center, or other distinguishing secondary address information.
+     * This field is normally used with firm and highrise records but may also contain literals such as “Postmaster” or “United States Postal Service.”
+     * @example POSTMASTER
+     */
+    building_or_firm_name: string;
+    /**
+     * Address Secondary Abbreviation
+     * @description A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field.
+     * This code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers.
+     */
+    address_secondary_abbreviation: string;
+    /**
+     * Base Alternate Code
+     * @description Code that specifies whether a record is a base (preferred) or alternate record.
+     * Base records (represented as "B") can represent a range of addresses or an individual address, such as a firm record, while alternate records (represented as "A") are individual delivery points. Base records are generally preferred over alternate records.
+     * Government deliveries will only be listed on alternate records with the appropriate government building indicator (federal, state, or city) set.
+     * @enum {string}
+     */
+    base_alternate_code: "A" | "B" | "";
+    /**
+     * LACS Status Indicator
+     * @description The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently.
+     * - L = LACS address: The old (usually rural-route) address that has been converted for the LACS system.
+     * - Blank = Not applicable
+     * @enum {string}
+     */
+    lacs_status_indicator: "" | "L";
+    /**
+     * Government Building Indicator
+     * @description An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, "address" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number).
+     * - A = City government building—alternates only
+     * - B = Federal government building—alternates only
+     * - C = State government building—alternates only
+     * - D = Firm only—base and alternates
+     * - E = City government building and firm only—alternates only
+     * - F = Federal government building and firm only—alternates only
+     * - G = State government building and firm only—alternates only
+     * @enum {string}
+     */
+    government_building_indicator: "" | "A" | "B" | "C" | "D" | "E" | "F" | "G";
+    /**
+     * State Abbreviation
+     * @description A 2-character abbreviation for the name of a state, U.S. territory, or armed forces ZIP Code designation. If APO/FPO/DPO, then the state abbreviation will be “AA,” “AE,” or “AP.”
+     * @example NY
+     */
+    state_abbreviation: string;
+    /**
+     * State
+     * @description Full name of a state, U.S. territory, or armed forces ZIP Code designation.
+     * @example New York
+     */
+    state: string;
+    /**
+     * Municipality City State Key
+     * @description Municipality City State Key. Currently blank.
+     */
+    municipality_city_state_key: string;
+    /**
+     * Urbanization City State Key
+     * @description An index to the City State file that provides the urbanization name for this delivery range.
+     * @example V18475
+     */
+    urbanization_city_state_key: string;
+    /**
+     * Preferred Last Line City State Key
+     * @description In the Carrier Route, Five-Digit ZIP Code, Delivery Statistics, and ZIP + 4 products, an index to the City State product record that provides the preferred last-line name for this address range. In the City State product, the preferred last line city/state key contains the key value of a City State product record that has the default preferred or alternate preferred last-line key for a given ZIP Code.
+     * @example V13916
+     */
+    preferred_last_line_city_state_key: string;
+    /**
+     * County Name
+     * @description The name of the county or parish in which the 5-digit ZIP Code resides. If APO/FPO/DPO, then the county name will be blank.
+     * @example SUFFOLK
+     */
+    county: string;
+    /**
+     * City Name
+     * @description A valid city name for mailing purposes; appears in the last line of an address on a mail piece.
+     * @example HOLTSVILLE
+     */
+    city: string;
+    /**
+     * City State Name Abbreviation
+     * @description A standard 13-character abbreviation for a city/state name. This field is only used for names that are greater than 13 characters in length and have a city/state mailing name indicator of "Y." If the field is longer than 13 characters and the city/state mailing name indicator is "N," the field will be blank.
+     * @example W TOWNSHEND
+     */
+    city_abbreviation: string;
+    /**
+     * Preferred Last Line City State Name
+     * @description Field that contains the default preferred or alternate preferred last-line name for a ZIP Code.
+     * @example AGUADA
+     */
+    preferred_city: string;
+    /**
+     * City State Name Facility Code
+     * @description The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following:
+     * - B = Branch
+     * - C = Community post office (CPO)
+     * - N = Non-postal community name, former USPS facility, or place name
+     * - P = Post Office
+     * - S = Station
+     * - U = Urbanization
+     * @enum {string}
+     */
+    city_state_name_facility_code: "B" | "C" | "N" | "P" | "S" | "U" | "Y" | "";
+    /**
+     * ZIP Classification Code
+     * @description A field that describes the type of ZIP area that a 5-digit ZIP Code serves, e.g., a single educational institution, post office boxes only, or a single address that has unusually high mail volume or many different addresses.
+     *  - M = Military ZIP Code
+     *  - P = ZIP Code having only Post Office Boxes
+     *  - U = Unique ZIP Code (ZIP assigned to a single organization)
+     *  - Blank = Standard ZIP with many addresses assigned to it
+     * @enum {string}
+     */
+    zip_classification_code: "" | "M" | "P" | "U";
+    /**
+     * City State Mailing Name Indicator
+     * @description Specifies whether or not the city state name can be used as a last line of address on a mail piece.
+     * - "Y = City/state name is a USPS-approved mailing name."
+     * - "N = City/state name is not approved for mailing purposes."
+     */
+    city_state_mailing_name_indicator: string;
+    /**
+     * Carrier Route Rate Sortation and Merged 5-Digit Indicator
+     * @description Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed.
+     */
+    carrier_route_rate_sortation: string;
+    /**
+     * Finance Number
+     * @description A code assigned to Postal Service facilities (primarily Post Offices) to collect cost and statistical data and compile revenue and expense data.
+     */
+    finance_number: string | number;
+    /**
+     * Congressional District Number
+     * @description A standard value identifying a geographic area within the United States served by a member of the U.S. House of Representatives. If Army/Air Force (APO), Fleet Post Office (FPO), or Diplomatic/Defense Post Office (DPO), this field will be blank. If there is only one member of Congress within a state, the code will be "AL" (at large).
+     */
+    congressional_district_number: string | number;
+    /**
+     * County Number
+     * @description The Federal Information Processing Standard (FIPS) code assigned to a given county or parish within a state. In Alaska, it identifies a region within the state. If APO/FPO/DPO, and the record type is “S,” “H,” or “F,” the county number will be blank.
+     */
+    county_number: string | number;
+    /**
+     * United States Postal Service Address
+     * @description Standard USA Address
+     */
+    UspsAddress: {
+      id: components["schemas"]["ID"];
+      dataset: components["schemas"]["usps_dataset"];
+      country?: components["schemas"]["usps_country"];
+      country_iso: components["schemas"]["usps_country_iso"];
+      primary_number: components["schemas"]["primary_number"];
+      secondary_number: components["schemas"]["secondary_number"];
+      plus_4_code: components["schemas"]["plus_4_code"];
+      line_1: components["schemas"]["line_1"];
+      line_2: components["schemas"]["line_2"];
+      last_line: components["schemas"]["last_line"];
+      zip_code: components["schemas"]["zip_code"];
+      zip_plus_4_code: components["schemas"]["zip_plus_4_code"];
+      update_key_number: components["schemas"]["update_key_number"];
+      record_type_code: components["schemas"]["record_type_code"];
+      carrier_route_id: components["schemas"]["carrier_route_id"];
+      street_pre_directional_abbreviation: components["schemas"]["street_pre_directional_abbreviation"];
+      street_name: components["schemas"]["street_name"];
+      street_suffix_abbreviation: components["schemas"]["street_suffix_abbreviation"];
+      street_post_directional_abbreviation: components["schemas"]["street_post_directional_abbreviation"];
+      building_or_firm_name: components["schemas"]["building_or_firm_name"];
+      address_secondary_abbreviation: components["schemas"]["address_secondary_abbreviation"];
+      base_alternate_code: components["schemas"]["base_alternate_code"];
+      lacs_status_indicator: components["schemas"]["lacs_status_indicator"];
+      government_building_indicator: components["schemas"]["government_building_indicator"];
+      state_abbreviation: components["schemas"]["state_abbreviation"];
+      state: components["schemas"]["state"];
+      municipality_city_state_key: components["schemas"]["municipality_city_state_key"];
+      urbanization_city_state_key: components["schemas"]["urbanization_city_state_key"];
+      preferred_last_line_city_state_key: components["schemas"]["preferred_last_line_city_state_key"];
+      county: components["schemas"]["county"];
+      city: components["schemas"]["city"];
+      city_abbreviation: components["schemas"]["city_abbreviation"];
+      preferred_city: components["schemas"]["preferred_city"];
+      city_state_name_facility_code: components["schemas"]["city_state_name_facility_code"];
+      zip_classification_code: components["schemas"]["zip_classification_code"];
+      city_state_mailing_name_indicator: components["schemas"]["city_state_mailing_name_indicator"];
+      carrier_route_rate_sortation: components["schemas"]["carrier_route_rate_sortation"];
+      finance_number: components["schemas"]["finance_number"];
+      congressional_district_number: components["schemas"]["congressional_district_number"];
+      county_number: components["schemas"]["county_number"];
+    };
+    /**
+     * Global Address
+     * @description Global (non-US) Address in the US address format
+     */
+    UsaGlobalAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {undefined} */
+      dataset: components["schemas"]["Dataset"];
+      country?: components["schemas"]["Country"];
+      country_iso: components["schemas"]["CountryISO"];
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      primary_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      secondary_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      plus_4_code: "";
+      /** @description First line of address */
+      line_1: string;
+      /** @description Second line of address */
+      line_2: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      last_line: "";
+      /** @description Partial postcode of address */
+      zip_code: string;
+      /** @description Full postal code of address */
+      zip_plus_4_code: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      update_key_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      record_type_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      carrier_route_id: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_pre_directional_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_name: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_suffix_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      street_post_directional_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      building_or_firm_name: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      address_secondary_abbreviation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      base_alternate_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      lacs_status_indicator: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      government_building_indicator: "";
+      /** @description State or province */
+      state: string;
+      /** @description Code of state or province (if available) */
+      state_abbreviation: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      municipality_city_state_key: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      urbanization_city_state_key: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      preferred_last_line_city_state_key: "";
+      /** @description County name */
+      county: string;
+      /** @description City name */
+      city: string;
+      /** @description City name abbreviation (if available) */
+      city_abbreviation: string;
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      preferred_city: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      city_state_name_facility_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      zip_classification_code: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      city_state_mailing_name_indicator: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      carrier_route_rate_sortation: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      finance_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      congressional_district_number: "";
+      /**
+       * @description Not available for non-US addresses
+       * @enum {string}
+       */
+      county_number: "";
+    };
+    /** Address Resolution Response (USA) */
+    UsaResolveAddressResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["UsaGlobalAddress"];
     };
     /** Address Search Response */
     AddressResponse: {
@@ -2072,7 +2561,11 @@ export interface operations {
       };
     };
   };
-  /** Resolves an address autocompletion by its address ID. */
+  /**
+   * Resolves an address autocompletion by its address ID.
+   *
+   * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
+   */
   Resolve: {
     parameters: {
       path: {
@@ -2088,6 +2581,36 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["GbrResolveAddressResponse"];
+        };
+      };
+      /** Resource not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Resolves an address autocompletion by its address ID.
+   *
+   * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
+   */
+  ResolveUsa: {
+    parameters: {
+      path: {
+        /** ID of address suggestion */
+        address: string;
+      };
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UsaResolveAddressResponse"];
         };
       };
       /** Resource not found */
