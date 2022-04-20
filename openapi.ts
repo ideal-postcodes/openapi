@@ -10,24 +10,6 @@ export interface paths {
      *
      * The Postcode Lookup API provides a JSON interface to search UK addresses from a postcode. It can be used to power Postcode Lookup driven address searches, like [Postcode Lookup](/postcode-lookup).
      *
-     * ## JavaScript Example
-     *
-     * ```javascript
-     * const { Client, postcodes } = require("@ideal-postcodes/core-node");
-     *
-     * const api_key = "iddqd";
-     *
-     * const client = new Client({ api_key: "iddqd" });
-     *
-     * await postcodes.retrieve(client, "ID1 1QD", { query: { api_key } });
-     * ```
-     *
-     * This API models postcodes as a HTTP resource. The above example provides a thin JavaScript abstraction and more control over the HTTP request and response. The JavaScript client also provides a number of terser helper methods like [`client.lookupPostcode`](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-     *
-     * If you wish to quickly add Postcode Lookup driven address finder on your page, see our [Postcode Lookup plugin](/postcode-lookup) and [associated demos](/postcode-lookup-demo).
-     *
-     * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-     *
      * ## Postcode Not Found
      *
      * Lookup balance is unaffected by invalid postcodes. The API returns a `404` response with response body:
@@ -50,26 +32,7 @@ export interface paths {
      *
      * ## Multiple Residence
      *
-     * A small number of  postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
-     *
-     * ```javascript
-     * const { lookupPostcode, Client } = require("@ideal-postcodes/core-node");
-     *
-     * const client = new Client({ api_key: "iddqdmr" });
-     *
-     * await lookupPostcode({ client, postcode: "CV4 7AL", page: 1 });
-     * ```
-     *
-     * ## Testing
-     *
-     * We have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
-     *
-     * - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
-     * - `ID1 KFA` Returns "postcode not found", error `4040`
-     * - `ID1 CLIP` Returns "no lookups remaining", error `4020`
-     * - `ID1 CHOP` Returns "daily (or individual) lookup limit breached", error `4021`
-     *
-     * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
+     * A small number of postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
      */
     get: operations["Postcodes"];
   };
@@ -192,31 +155,6 @@ export interface paths {
      *
      * Please note, this API is not intended to be a free standalone resource.
      *
-     * ### JavaScript Example
-     *
-     * #### Step 1. Retrieve a list of suggestions
-     *
-     * ```javascript
-     * const { Client, autocomplete } = require("@ideal-postcodes/core-node");
-     *
-     * const response = await autocomplete.list(client, {
-     *   query: {
-     *     query: "221b bake",
-     *     api_key: "iddqd",
-     *   },
-     * });
-     * ```
-     *
-     * #### Step 2. Resolve a suggestion retrieved above for a full address
-     *
-     * ```javascript
-     * const { lookupUdprn } = require("@ideal-postcodes/core-node");
-     *
-     * const udprn = 17646242;
-     *
-     * await lookupUdprn({ client, udprn });
-     * ```
-     *
      * ## Filters
      *
      * You can strictly narrow your result by adding filters to your querystring which correspond with an address attribute.
@@ -250,23 +188,9 @@ export interface paths {
      *
      * A combined maximum of **5** terms are allowed across all biases.
      *
-     * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-     *
      * ## Suggestion Format
      *
      * The suggestion format is prone to change over time. Attempts to parse the suggestion may result in your integration breaking. Instead use the suggestion as-is.
-     *
-     * ## Querying with a Postcode
-     *
-     * - If a postcode is passed as a query, all addresses for that postcode will be listed as the result if the limit parameter is not supplied
-     * - If a postcode forms only part of the query, your autocomplete results will be filtered by that postcode
-     *
-     * ## Querying Multiple Residence
-     *
-     * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id. This can be retrieved with the `/umprn/:id` endpoint.
-     * Note that Multiple Residence households will always have:
-     * - A parent premise with a UDPRN
-     * - A single UDPRN premise may have many Multiple Residence households with different UMPRNs.
      *
      * ## Rate Limiting
      *
@@ -280,13 +204,9 @@ export interface paths {
      *
      * ## Pricing
      *
-     * This API currently does not affect your balance. However, subsequent searches require a paid request (e.g. a UDPRN search). This paid request, will yield the complete address.
+     * This API currently does not affect your balance. However, resolving a suggestion into a full address requires a paid request.
      *
      * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an address may be disrupted via tightened rate limits. Continued misuse will result in account suspension.
-     *
-     * ## Testing
-     *
-     * `ID1 1QD` will return address suggestions, that when retrieved via `/udprn/:id` will not affect your balance.
      */
     get: operations["AddressAutocomplete"];
   };
@@ -314,19 +234,7 @@ export interface paths {
      *
      * This API is designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters.
      *
-     * For address finder, see our address finder API - which is designed for speed and ergonomics.
-     *
-     * ### JavaScript Example
-     *
-     * ```javascript
-     * const { Client, lookupAddress } = require("@ideal-postcodes/core-node");
-     *
-     * const client = new Client({ api_key: "iddqd" });
-     *
-     * await lookupAddress({ client, query: "10 Brompton Rd" });
-     * ```
-     *
-     * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#search-for-an-address)
+     * For address autocomplete, see our address finder API - which is designed for speed and address completion.
      *
      * ## Filters
      *
@@ -421,7 +329,7 @@ export interface components {
     Postcode: string;
     /**
      * API Key
-     * @description Your Ideal Postcodes API Key. Typically beings `ak_`.
+     * @description Your API Key. Typically beings `ak_`.
      *
      * Available from your dashboard
      *
@@ -2086,24 +1994,6 @@ export interface operations {
    *
    * The Postcode Lookup API provides a JSON interface to search UK addresses from a postcode. It can be used to power Postcode Lookup driven address searches, like [Postcode Lookup](/postcode-lookup).
    *
-   * ## JavaScript Example
-   *
-   * ```javascript
-   * const { Client, postcodes } = require("@ideal-postcodes/core-node");
-   *
-   * const api_key = "iddqd";
-   *
-   * const client = new Client({ api_key: "iddqd" });
-   *
-   * await postcodes.retrieve(client, "ID1 1QD", { query: { api_key } });
-   * ```
-   *
-   * This API models postcodes as a HTTP resource. The above example provides a thin JavaScript abstraction and more control over the HTTP request and response. The JavaScript client also provides a number of terser helper methods like [`client.lookupPostcode`](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-   *
-   * If you wish to quickly add Postcode Lookup driven address finder on your page, see our [Postcode Lookup plugin](/postcode-lookup) and [associated demos](/postcode-lookup-demo).
-   *
-   * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-   *
    * ## Postcode Not Found
    *
    * Lookup balance is unaffected by invalid postcodes. The API returns a `404` response with response body:
@@ -2126,26 +2016,7 @@ export interface operations {
    *
    * ## Multiple Residence
    *
-   * A small number of  postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
-   *
-   * ```javascript
-   * const { lookupPostcode, Client } = require("@ideal-postcodes/core-node");
-   *
-   * const client = new Client({ api_key: "iddqdmr" });
-   *
-   * await lookupPostcode({ client, postcode: "CV4 7AL", page: 1 });
-   * ```
-   *
-   * ## Testing
-   *
-   * We have a range of test postcodes that yield both successful and unsuccessful responses to your request. They are the following
-   *
-   * - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
-   * - `ID1 KFA` Returns "postcode not found", error `4040`
-   * - `ID1 CLIP` Returns "no lookups remaining", error `4020`
-   * - `ID1 CHOP` Returns "daily (or individual) lookup limit breached", error `4021`
-   *
-   * Test request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.
+   * A small number of postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
    */
   Postcodes: {
     parameters: {
@@ -2418,31 +2289,6 @@ export interface operations {
    *
    * Please note, this API is not intended to be a free standalone resource.
    *
-   * ### JavaScript Example
-   *
-   * #### Step 1. Retrieve a list of suggestions
-   *
-   * ```javascript
-   * const { Client, autocomplete } = require("@ideal-postcodes/core-node");
-   *
-   * const response = await autocomplete.list(client, {
-   *   query: {
-   *     query: "221b bake",
-   *     api_key: "iddqd",
-   *   },
-   * });
-   * ```
-   *
-   * #### Step 2. Resolve a suggestion retrieved above for a full address
-   *
-   * ```javascript
-   * const { lookupUdprn } = require("@ideal-postcodes/core-node");
-   *
-   * const udprn = 17646242;
-   *
-   * await lookupUdprn({ client, udprn });
-   * ```
-   *
    * ## Filters
    *
    * You can strictly narrow your result by adding filters to your querystring which correspond with an address attribute.
@@ -2476,23 +2322,9 @@ export interface operations {
    *
    * A combined maximum of **5** terms are allowed across all biases.
    *
-   * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-   *
    * ## Suggestion Format
    *
    * The suggestion format is prone to change over time. Attempts to parse the suggestion may result in your integration breaking. Instead use the suggestion as-is.
-   *
-   * ## Querying with a Postcode
-   *
-   * - If a postcode is passed as a query, all addresses for that postcode will be listed as the result if the limit parameter is not supplied
-   * - If a postcode forms only part of the query, your autocomplete results will be filtered by that postcode
-   *
-   * ## Querying Multiple Residence
-   *
-   * For Multiple Residence enabled keys, any Multiple Residence households will also return a UMPRN id. This can be retrieved with the `/umprn/:id` endpoint.
-   * Note that Multiple Residence households will always have:
-   * - A parent premise with a UDPRN
-   * - A single UDPRN premise may have many Multiple Residence households with different UMPRNs.
    *
    * ## Rate Limiting
    *
@@ -2506,13 +2338,9 @@ export interface operations {
    *
    * ## Pricing
    *
-   * This API currently does not affect your balance. However, subsequent searches require a paid request (e.g. a UDPRN search). This paid request, will yield the complete address.
+   * This API currently does not affect your balance. However, resolving a suggestion into a full address requires a paid request.
    *
    * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an address may be disrupted via tightened rate limits. Continued misuse will result in account suspension.
-   *
-   * ## Testing
-   *
-   * `ID1 1QD` will return address suggestions, that when retrieved via `/udprn/:id` will not affect your balance.
    */
   AddressAutocomplete: {
     parameters: {
@@ -2628,19 +2456,7 @@ export interface operations {
    *
    * This API is designed as a multi-purpose tool for generating address lists, cleansing and wholesale data extraction according to specific parameters.
    *
-   * For address finder, see our address finder API - which is designed for speed and ergonomics.
-   *
-   * ### JavaScript Example
-   *
-   * ```javascript
-   * const { Client, lookupAddress } = require("@ideal-postcodes/core-node");
-   *
-   * const client = new Client({ api_key: "iddqd" });
-   *
-   * await lookupAddress({ client, query: "10 Brompton Rd" });
-   * ```
-   *
-   * [JavaScript client method documentation](https://github.com/ideal-postcodes/core-interface#search-for-an-address)
+   * For address autocomplete, see our address finder API - which is designed for speed and address completion.
    *
    * ## Filters
    *

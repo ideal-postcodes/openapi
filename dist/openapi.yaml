@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.1.0
+  version: 2.0.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -39,9 +39,8 @@ info:
     The autocomplete API also has an additional rate limit.
 
 
-    If you expect to breach the limit please [contact
-    us](https:ideal-postcodes.co.uk/support) and we can move you to an endpoint
-    with a higher limit.
+    If you expect to breach the limit please contact us and we can move you to
+    an endpoint with a higher limit.
 
 
     ### JSONP
@@ -61,7 +60,7 @@ info:
 
     ```
 
-    api.ideal-postcodes.co.uk/v1/postcodes/ID11QD?api_key=iddqd
+    api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=iddqd&q=parkside
 
     ```
 
@@ -114,9 +113,8 @@ info:
     ## Testing
 
 
-    Each method has a simple testing procedure available which does not affect
-    your account balance. You can find these methods
-    [here](https://ideal-postcodes.co.uk/documentation/testing).
+    Each new account comes with a free test balance. Contact us if you need more
+    for testing and integration.
 
 
     ### Community Key
@@ -143,7 +141,7 @@ info:
     Requests that affect your balance may be annotated with arbitrary metadata.
     This data is stored along with your lookup history and can be queried at a
     later date via the API or the dashboard. We call the ability to label your
-    requests [tagging](https://ideal-postcodes.co.uk/documentation/metadata).
+    requests [tagging](https://docs.ideal-postcodes.co.uk/docs/guides/tags).
 
 
     # Response Codes
@@ -323,53 +321,46 @@ info:
 
 
     | HTTP Code | API Code |
-    Description                                                                                                                                                                             
+    Description                                                                                                                                                       
     |
 
     | --------- | -------- |
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------
     |
 
     | 500       | 5000     | An error occurred on our end. These errors are
     logged and queued so we can understand what went wrong. However, if you need
-    speedy resolution please email support@ideal-postcodes.co.uk |
+    speedy resolution please email support |
 
     | 500       | 5001     | Akin to
-    5000.                                                                                                                                                                           
+    5000.                                                                                                                                                     
     |
 
     | 500       | 5002     | The server took too long to process on our end, so
     we aborted the request. You may retry the
-    request.                                                                                   
-    |
+    request.                                                              |
   contact:
     email: support@ideal-postcodes.co.uk
-    name: Ideal Postcodes Support
+    name: Support
     url: https://ideal-postcodes.co.uk/support
 externalDocs:
   description: More on our APIs, libraries with guides and examples
   url: https://docs.ideal-postcodes.co.uk
 servers:
   - url: https://api.ideal-postcodes.co.uk/v1
-    description: Ideal Postcodes API Server
+    description: API Server
     variables: {}
 tags:
-  - name: Autocomplete
-    description: Autocomplete addresses, for search-as-you-type
-  - name: Postcodes
-    description: UK Postcode Search
-  - name: Addresses
-    description: Query and retrieve addresses
-  - name: UDPRN
-    description: Retrieve a UK address by UDPRN
-  - name: UMPRN
-    description: Retrieve a UK multiple occupancy by UMPRN
+  - name: Address Search
+    description: Global address autocomplete, for search-as-you-type
+  - name: UK
+    description: UK Address and Postcode Search
   - name: Keys
     description: Monitor and manage API Keys
   - name: Licensees
     description: >
       The Licensee resource represents an alternate legal End User of our data
-      who may not be same entity as the owners of the Ideal Postcodes account.
+      who may not be same entity as the owners of the account.
 
 
       The concept of Licensees underpins our sublicensing platform, which allows
@@ -388,14 +379,42 @@ tags:
 
       Useful if you need to configure your integration remotely rather than
       editing code in situ.
+  - name: usps_address
+    x-displayName: US Address
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/UspsAddress" />
+  - name: uk_address
+    x-displayName: UK Address
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/PafAddress" />
+  - name: suggestion
+    x-displayName: Global Address Suggestion
+    description: >
+      <SchemaDefinition schemaRef="#/components/schemas/GlobalAddressSuggestion"
+      />
+x-tagGroups:
+  - name: Address Search
+    tags:
+      - Address Search
+      - UK
+  - name: Management
+    tags:
+      - Keys
+      - Licensees
+      - Configs
+  - name: Models
+    tags:
+      - usps_address
+      - uk_address
+      - suggestion
 paths:
   /postcodes/{postcode}:
     get:
       tags:
-        - Postcodes
-      summary: List Addresses
+        - UK
+      summary: Lookup Postcode
       operationId: Postcodes
-      description: >+
+      description: >
         Returns the complete list of addresses for a postcode. Postcode searches
         are space and case insensitive.
 
@@ -403,41 +422,6 @@ paths:
         The Postcode Lookup API provides a JSON interface to search UK addresses
         from a postcode. It can be used to power Postcode Lookup driven address
         searches, like [Postcode Lookup](/postcode-lookup).
-
-
-        ## JavaScript Example
-
-
-        ```javascript
-
-        const { Client, postcodes } = require("@ideal-postcodes/core-node");
-
-
-        const api_key = "iddqd";
-
-
-        const client = new Client({ api_key: "iddqd" });
-
-
-        await postcodes.retrieve(client, "ID1 1QD", { query: { api_key } });
-
-        ```
-
-
-        This API models postcodes as a HTTP resource. The above example provides
-        a thin JavaScript abstraction and more control over the HTTP request and
-        response. The JavaScript client also provides a number of terser helper
-        methods like
-        [`client.lookupPostcode`](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-
-
-        If you wish to quickly add Postcode Lookup driven address finder on your
-        page, see our [Postcode Lookup plugin](/postcode-lookup) and [associated
-        demos](/postcode-lookup-demo).
-
-
-        [JavaScript client method
-        documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
 
 
         ## Postcode Not Found
@@ -478,45 +462,8 @@ paths:
         ## Multiple Residence
 
 
-        A small number of  postcodes will return more than 100 premises. These
+        A small number of postcodes will return more than 100 premises. These
         may require pagination. Use `page` to paginate the result set.
-
-
-        ```javascript
-
-        const { lookupPostcode, Client } =
-        require("@ideal-postcodes/core-node");
-
-
-        const client = new Client({ api_key: "iddqdmr" });
-
-
-        await lookupPostcode({ client, postcode: "CV4 7AL", page: 1 });
-
-        ```
-
-
-        ## Testing
-
-
-        We have a range of test postcodes that yield both successful and
-        unsuccessful responses to your request. They are the following
-
-
-        - `ID1 1QD` Returns a successful Postcode Lookup response `2000`
-
-        - `ID1 KFA` Returns "postcode not found", error `4040`
-
-        - `ID1 CLIP` Returns "no lookups remaining", error `4020`
-
-        - `ID1 CHOP` Returns "daily (or individual) lookup limit breached",
-        error `4021`
-
-
-        Test request undergo the usual authentication and restriction rules.
-        This is to help surface any issues that occur during implementation and
-        does not cost you a lookup.
-
       parameters:
         - name: postcode
           in: path
@@ -574,8 +521,8 @@ paths:
   /udprn/{udprn}:
     get:
       tags:
-        - UDPRN
-      summary: Retrieve
+        - UK
+      summary: Retrieve by UDPRN
       operationId: UDPRN
       description: >-
         Returns an address as identified by its Unique Delivery Point Reference
@@ -664,8 +611,8 @@ paths:
   /umprn/{umprn}:
     get:
       tags:
-        - UMPRN
-      summary: Retrieve
+        - UK
+      summary: Retrieve by UMPRN
       operationId: UMPRN
       description: >
         Returns a multiple occupancy address identifited via its UMPRN (Multiple
@@ -1024,7 +971,7 @@ paths:
   /autocomplete/addresses:
     get:
       tags:
-        - Autocomplete
+        - Address Search
       summary: Find Address
       description: >
         The address autocomplete API returns a list of address suggestions that
@@ -1056,43 +1003,6 @@ paths:
 
 
         Please note, this API is not intended to be a free standalone resource.
-
-
-        ### JavaScript Example
-
-
-        #### Step 1. Retrieve a list of suggestions
-
-
-        ```javascript
-
-        const { Client, autocomplete } = require("@ideal-postcodes/core-node");
-
-
-        const response = await autocomplete.list(client, {
-          query: {
-            query: "221b bake",
-            api_key: "iddqd",
-          },
-        });
-
-        ```
-
-
-        #### Step 2. Resolve a suggestion retrieved above for a full address
-
-
-        ```javascript
-
-        const { lookupUdprn } = require("@ideal-postcodes/core-node");
-
-
-        const udprn = 17646242;
-
-
-        await lookupUdprn({ client, udprn });
-
-        ```
 
 
         ## Filters
@@ -1143,9 +1053,9 @@ paths:
         appending `bias_postcode_area=SW,SE`.
 
 
-        No bias effect applies to bias terms that are invalid. 
+        No bias effect applies to bias terms that are invalid.
 
-        e.g. `bias_postcode=SW1A2AAA` 
+        e.g. `bias_postcode=SW1A2AAA`
 
 
         You may scope using multiple terms for the same bias with a comma
@@ -1159,41 +1069,12 @@ paths:
         A combined maximum of **5** terms are allowed across all biases.
 
 
-        [JavaScript client method
-        documentation](https://github.com/ideal-postcodes/core-interface#lookup-a-postcode)
-
-
         ## Suggestion Format
 
 
         The suggestion format is prone to change over time. Attempts to parse
         the suggestion may result in your integration breaking. Instead use the
         suggestion as-is.
-
-
-        ## Querying with a Postcode
-
-
-        - If a postcode is passed as a query, all addresses for that postcode
-        will be listed as the result if the limit parameter is not supplied
-
-        - If a postcode forms only part of the query, your autocomplete results
-        will be filtered by that postcode
-
-
-        ## Querying Multiple Residence
-
-
-        For Multiple Residence enabled keys, any Multiple Residence households
-        will also return a UMPRN id. This can be retrieved with the `/umprn/:id`
-        endpoint. 
-
-        Note that Multiple Residence households will always have:
-
-        - A parent premise with a UDPRN
-
-        - A single UDPRN premise may have many Multiple Residence households
-        with different UMPRNs.
 
 
         ## Rate Limiting
@@ -1225,22 +1106,14 @@ paths:
         ## Pricing
 
 
-        This API currently does not affect your balance. However, subsequent
-        searches require a paid request (e.g. a UDPRN search). This paid
-        request, will yield the complete address.
+        This API currently does not affect your balance. However, resolving a
+        suggestion into a full address requires a paid request.
 
 
         Please note, this API is not intended as a standalone free resource.
         Integrations that consistently make autocomplete requests without a paid
         request to resolve an address may be disrupted via tightened rate
         limits. Continued misuse will result in account suspension.
-
-
-        ## Testing
-
-
-        `ID1 1QD` will return address suggestions, that when retrieved via
-        `/udprn/:id` will not affect your balance.
       operationId: AddressAutocomplete
       parameters:
         - name: api_key
@@ -1429,7 +1302,7 @@ paths:
   /autocomplete/addresses/{address}/gbr:
     get:
       tags:
-        - Autocomplete
+        - Address Search
       summary: Resolve Address (GBR)
       operationId: Resolve
       description: >
@@ -1484,7 +1357,7 @@ paths:
   /autocomplete/addresses/{address}/usa:
     get:
       tags:
-        - Autocomplete
+        - Address Search
       summary: Resolve Address (USA)
       operationId: ResolveUsa
       description: >
@@ -1539,9 +1412,9 @@ paths:
   /addresses:
     get:
       tags:
-        - Addresses
+        - UK
       summary: Extract Addresses
-      description: >+
+      description: >
         Extract a list of complete addresses that match the query ordered by
         relevance score. This query accepts an optional limit and page query
         (defaults to 10 and 0 respectively).
@@ -1554,31 +1427,11 @@ paths:
 
         This API is designed as a multi-purpose tool for generating address
         lists, cleansing and wholesale data extraction according to specific
-        parameters. 
+        parameters.
 
 
-        For address finder, see our address finder API - which is designed for
-        speed and ergonomics.
-
-
-        ### JavaScript Example
-
-
-        ```javascript
-
-        const { Client, lookupAddress } = require("@ideal-postcodes/core-node");
-
-
-        const client = new Client({ api_key: "iddqd" });
-
-
-        await lookupAddress({ client, query: "10 Brompton Rd" });
-
-        ```
-
-
-        [JavaScript client method
-        documentation](https://github.com/ideal-postcodes/core-interface#search-for-an-address)
+        For address autocomplete, see our address finder API - which is designed
+        for speed and address completion.
 
 
         ## Filters
@@ -1679,7 +1532,6 @@ paths:
         Test request undergo the usual authentication and restriction rules.
         This is to help surface any issues that occur during implementation and
         does not cost you a lookup.
-
       operationId: Addresses
       parameters:
         - name: api_key
@@ -2350,7 +2202,7 @@ components:
       title: API Key
       type: string
       description: |
-        Your Ideal Postcodes API Key. Typically beings `ak_`.
+        Your API Key. Typically beings `ak_`.
 
         Available from your dashboard
       example: ak_hk71kco54zGSGvF9eXXrvvnMOLLNh
@@ -3192,7 +3044,7 @@ components:
         expires:
           x-nullable: true
           type: string
-          example: 2022-01-06T11:41:27.092Z
+          example: '2022-01-06T11:41:27.092Z'
           description: >-
             `string` or `null` The date when this purchase will expire in
             simplified 
@@ -3324,11 +3176,11 @@ components:
         start:
           type: string
           description: Start date in ISO 8601 format.
-          example: 2015-01-22T15:08:06.609Z
+          example: '2015-01-22T15:08:06.609Z'
         end:
           type: string
           description: End date in ISO 8601 format.
-          example: 2015-01-23T15:08:06.609Z
+          example: '2015-01-23T15:08:06.609Z'
         total:
           type: integer
           description: Total of paid lookups performed in specified period.
@@ -3349,7 +3201,7 @@ components:
             properties:
               date:
                 type: string
-                example: 2015-01-22T00:00:00.000Z
+                example: '2015-01-22T00:00:00.000Z'
               count:
                 type: integer
                 format: int32
@@ -4721,7 +4573,7 @@ components:
                 Typically begins `sk_`.
             createdAt:
               type: string
-              example: 2016-01-21T17:14:49.971Z
+              example: '2016-01-21T17:14:49.971Z'
               description: Timestamp for when the licensee was created
             daily:
               required:
@@ -4739,7 +4591,7 @@ components:
                     represented b `licesees.daily.updatedAt`
                 updatedAt:
                   type: string
-                  example: 2016-08-05T16:43:28.865Z
+                  example: '2016-08-05T16:43:28.865Z'
                   description: The timestamp when the limit was last used.
     LicenseesResponse:
       title: Licensee List Response
@@ -4801,11 +4653,11 @@ components:
       properties:
         updatedAt:
           type: string
-          example: 2016-01-21T17:14:49.971Z
+          example: '2016-01-21T17:14:49.971Z'
           description: Timestamp for when the config was created
         createdAt:
           type: string
-          example: 2016-01-21T17:14:49.971Z
+          example: '2016-01-21T17:14:49.971Z'
           description: Timestamp for when the config was updated
         name:
           type: string
