@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/ideal-postcodes/openapi/compare/1.2.0...2.0.0) (2022-04-20)
+
+
+### Code Refactoring
+
+* **Intl Address:** Reorganise for international addresses ([ffabeb0](https://github.com/ideal-postcodes/openapi/commit/ffabeb06121a18edab5f558f210859b475a4a22f))
+
+
+### BREAKING CHANGES
+
+* **Intl Address:** Major version bump as a precaution
+
+API Paths have been retagged and reorganised. This should not cause a
+change in functionality but we have noticed changes of this type can
+sometimes produce a backwards incompatible change in API interface if
+this package is consumed by a code generator.
+
 # [1.2.0](https://github.com/ideal-postcodes/openapi/compare/1.1.0...1.2.0) (2022-04-05)
 
 
