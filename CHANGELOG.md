@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ideal-postcodes/openapi/compare/2.0.0...2.0.1) (2022-04-21)
+
+
+### Bug Fixes
+
+* **Exports:** Include TS file in package ([ac9bc2c](https://github.com/ideal-postcodes/openapi/commit/ac9bc2c177f11cdaca2f9cc9552492aec5a5aaf0))
+
 # [2.0.0](https://github.com/ideal-postcodes/openapi/compare/1.2.0...2.0.0) (2022-04-20)
 
 
