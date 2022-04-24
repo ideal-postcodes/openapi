@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 2.0.0
+  version: 1.2.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -379,34 +379,6 @@ tags:
 
       Useful if you need to configure your integration remotely rather than
       editing code in situ.
-  - name: usps_address
-    x-displayName: US Address
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/UspsAddress" />
-  - name: uk_address
-    x-displayName: UK Address
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/PafAddress" />
-  - name: suggestion
-    x-displayName: Global Address Suggestion
-    description: >
-      <SchemaDefinition schemaRef="#/components/schemas/GlobalAddressSuggestion"
-      />
-x-tagGroups:
-  - name: Address Search
-    tags:
-      - Address Search
-      - UK
-  - name: Management
-    tags:
-      - Keys
-      - Licensees
-      - Configs
-  - name: Models
-    tags:
-      - usps_address
-      - uk_address
-      - suggestion
 paths:
   /postcodes/{postcode}:
     get:
@@ -2614,6 +2586,7 @@ components:
       description: Indicates the provenance of an address
       enum:
         - paf
+        - pafw
         - mr
         - nyb
         - usps
@@ -2631,7 +2604,12 @@ components:
         - GUM
     PafAddress:
       title: Postcode Address File Address
-      description: Standard UK Address.
+      description: >
+        Standard UK Address. Also known as a Postcode Address File (PAF) address
+        is defined by Royal Mail and updated on a daily cadence.
+
+
+        A PAF Address represents a deliverable endpoint.
       required:
         - postcode
         - postcode_outward
@@ -2757,9 +2735,14 @@ components:
             - GGY
     MrAddress:
       title: Multiple Residence Address
-      description: >-
-        Subdivision of a Postcode Address File address. Does not have its own
-        delivery point.
+      description: >
+        Subdivision of a Postcode Address File address. Also known as a Multiple
+        Residence or Multiple Occupancy address.
+
+
+        A Multiple Residence address does not have its own deliverable endpoint.
+        Instead it relies on the deliverable endpoint of a parent address, where
+        the parent address can be found on the main Postcode Address File.
       allOf:
         - $ref: '#/components/schemas/PafAddress'
         - type: object
@@ -2770,7 +2753,10 @@ components:
                 - mr
     NybAddress:
       title: Not Yet Built Address
-      description: UK premise under construction
+      description: |
+        A UK premise under construction and currently not occupied.
+
+        This dataset is updated by Royal Mail on a monthly cadence.
       allOf:
         - $ref: '#/components/schemas/PafAddress'
         - type: object
@@ -2778,7 +2764,7 @@ components:
             dataset:
               $ref: '#/components/schemas/Dataset'
               enum:
-                - mr
+                - nyb
     PostcodeResponse:
       title: Postcode Response
       type: object
@@ -3044,7 +3030,7 @@ components:
         expires:
           x-nullable: true
           type: string
-          example: '2022-01-06T11:41:27.092Z'
+          example: 2022-01-06T11:41:27.092Z
           description: >-
             `string` or `null` The date when this purchase will expire in
             simplified 
@@ -3176,11 +3162,11 @@ components:
         start:
           type: string
           description: Start date in ISO 8601 format.
-          example: '2015-01-22T15:08:06.609Z'
+          example: 2015-01-22T15:08:06.609Z
         end:
           type: string
           description: End date in ISO 8601 format.
-          example: '2015-01-23T15:08:06.609Z'
+          example: 2015-01-23T15:08:06.609Z
         total:
           type: integer
           description: Total of paid lookups performed in specified period.
@@ -3201,7 +3187,7 @@ components:
             properties:
               date:
                 type: string
-                example: '2015-01-22T00:00:00.000Z'
+                example: 2015-01-22T00:00:00.000Z
               count:
                 type: integer
                 format: int32
@@ -3446,6 +3432,10 @@ components:
       title: Not Yet Built Address Autocompletion Hit
       allOf:
         - $ref: '#/components/schemas/PafSuggestion'
+    PafwSuggestion:
+      title: Welsh Postcode Address File Address Autocompletion Hit
+      allOf:
+        - $ref: '#/components/schemas/PafSuggestion'
     GlobalAddressSuggestion:
       title: Global Address Autocompletion Suggestion
       description: Represents an address suggestion for any address in the world
@@ -3490,6 +3480,7 @@ components:
                   - $ref: '#/components/schemas/PafSuggestion'
                   - $ref: '#/components/schemas/MrSuggestion'
                   - $ref: '#/components/schemas/NybSuggestion'
+                  - $ref: '#/components/schemas/PafwSuggestion'
                   - $ref: '#/components/schemas/GlobalAddressSuggestion'
         code:
           type: integer
@@ -3500,6 +3491,17 @@ components:
           type: string
           enum:
             - Success
+    WelshPafAddress:
+      title: Welsh PAF Address
+      description: Welsh language alternative for a PAF Address
+      allOf:
+        - $ref: '#/components/schemas/PafAddress'
+        - type: object
+          properties:
+            dataset:
+              $ref: '#/components/schemas/Dataset'
+              enum:
+                - pafw
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -3685,6 +3687,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/PafAddress'
             - $ref: '#/components/schemas/MrAddress'
+            - $ref: '#/components/schemas/WelshPafAddress'
             - $ref: '#/components/schemas/NybAddress'
             - $ref: '#/components/schemas/GbrGlobalAddress'
     usps_dataset:
@@ -4573,7 +4576,7 @@ components:
                 Typically begins `sk_`.
             createdAt:
               type: string
-              example: '2016-01-21T17:14:49.971Z'
+              example: 2016-01-21T17:14:49.971Z
               description: Timestamp for when the licensee was created
             daily:
               required:
@@ -4591,7 +4594,7 @@ components:
                     represented b `licesees.daily.updatedAt`
                 updatedAt:
                   type: string
-                  example: '2016-08-05T16:43:28.865Z'
+                  example: 2016-08-05T16:43:28.865Z
                   description: The timestamp when the limit was last used.
     LicenseesResponse:
       title: Licensee List Response
@@ -4653,11 +4656,11 @@ components:
       properties:
         updatedAt:
           type: string
-          example: '2016-01-21T17:14:49.971Z'
+          example: 2016-01-21T17:14:49.971Z
           description: Timestamp for when the config was created
         createdAt:
           type: string
-          example: '2016-01-21T17:14:49.971Z'
+          example: 2016-01-21T17:14:49.971Z
           description: Timestamp for when the config was updated
         name:
           type: string
