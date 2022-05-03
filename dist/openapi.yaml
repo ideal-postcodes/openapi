@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 1.2.0
+  version: 2.1.1
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -379,6 +379,34 @@ tags:
 
       Useful if you need to configure your integration remotely rather than
       editing code in situ.
+  - name: usps_address
+    x-displayName: US Address
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/UspsAddress" />
+  - name: uk_address
+    x-displayName: UK Address
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/PafAddress" />
+  - name: suggestion
+    x-displayName: Global Address Suggestion
+    description: >
+      <SchemaDefinition schemaRef="#/components/schemas/GlobalAddressSuggestion"
+      />
+x-tagGroups:
+  - name: Address Search
+    tags:
+      - Address Search
+      - UK
+  - name: Management
+    tags:
+      - Keys
+      - Licensees
+      - Configs
+  - name: Models
+    tags:
+      - usps_address
+      - uk_address
+      - suggestion
 paths:
   /postcodes/{postcode}:
     get:
