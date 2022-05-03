@@ -555,7 +555,7 @@ export interface components {
      * @description Indicates the provenance of an address
      * @enum {string}
      */
-    Dataset: "paf" | "mr" | "nyb" | "usps";
+    Dataset: "paf" | "pafw" | "mr" | "nyb" | "usps";
     /**
      * ISO Country Code
      * @description 3 letter ISO country code
@@ -564,7 +564,9 @@ export interface components {
     CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM";
     /**
      * Postcode Address File Address
-     * @description Standard UK Address.
+     * @description Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.
+     *
+     * A PAF Address represents a deliverable endpoint.
      */
     PafAddress: {
       postcode: components["schemas"]["Postcode"];
@@ -610,7 +612,9 @@ export interface components {
     };
     /**
      * Multiple Residence Address
-     * @description Subdivision of a Postcode Address File address. Does not have its own delivery point.
+     * @description Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.
+     *
+     * A Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.
      */
     MrAddress: components["schemas"]["PafAddress"] & {
       /** @enum {undefined} */
@@ -618,7 +622,9 @@ export interface components {
     };
     /**
      * Not Yet Built Address
-     * @description UK premise under construction
+     * @description A UK premise under construction and currently not occupied.
+     *
+     * This dataset is updated by Royal Mail on a monthly cadence.
      */
     NybAddress: components["schemas"]["PafAddress"] & {
       /** @enum {undefined} */
@@ -1094,6 +1100,8 @@ export interface components {
     };
     /** Not Yet Built Address Autocompletion Hit */
     NybSuggestion: components["schemas"]["PafSuggestion"];
+    /** Welsh Postcode Address File Address Autocompletion Hit */
+    PafwSuggestion: components["schemas"]["PafSuggestion"];
     /**
      * Global Address Autocompletion Suggestion
      * @description Represents an address suggestion for any address in the world
@@ -1120,6 +1128,7 @@ export interface components {
           | components["schemas"]["PafSuggestion"]
           | components["schemas"]["MrSuggestion"]
           | components["schemas"]["NybSuggestion"]
+          | components["schemas"]["PafwSuggestion"]
           | components["schemas"]["GlobalAddressSuggestion"]
         )[];
       };
@@ -1130,6 +1139,14 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
+    };
+    /**
+     * Welsh PAF Address
+     * @description Welsh language alternative for a PAF Address
+     */
+    WelshPafAddress: components["schemas"]["PafAddress"] & {
+      /** @enum {undefined} */
+      dataset?: components["schemas"]["Dataset"];
     };
     /**
      * Global Address
@@ -1245,6 +1262,7 @@ export interface components {
       result:
         | components["schemas"]["PafAddress"]
         | components["schemas"]["MrAddress"]
+        | components["schemas"]["WelshPafAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["GbrGlobalAddress"];
     };

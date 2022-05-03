@@ -1,3 +1,10 @@
+# [2.1.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/2.0.1...2.1.0-beta.1) (2022-04-24)
+
+
+### Features
+
+* **UK:** Add Welsh PAF responses ([39d7452](https://github.com/ideal-postcodes/openapi/commit/39d745297b56b081f30eec872e169d800abe0b5a))
+
 ## [2.0.1](https://github.com/ideal-postcodes/openapi/compare/2.0.0...2.0.1) (2022-04-21)
 
 

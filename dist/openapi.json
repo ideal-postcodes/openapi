@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "2.0.0",
+    "version": "1.2.0",
     "license": {
       "name": "AGPLv3",
       "url": "https://opensource.org/licenses/AGPL-3.0"
@@ -46,46 +46,6 @@
     {
       "name": "Configs",
       "description": "The Config resource allows users to assign serialised configuration data to API Keys. The payloads assigned to a Config object can later be retrieved to dynamically configure your integration.\n\nUseful if you need to configure your integration remotely rather than editing code in situ.\n"
-    },
-    {
-      "name": "usps_address",
-      "x-displayName": "US Address",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/UspsAddress\" />\n"
-    },
-    {
-      "name": "uk_address",
-      "x-displayName": "UK Address",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PafAddress\" />\n"
-    },
-    {
-      "name": "suggestion",
-      "x-displayName": "Global Address Suggestion",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GlobalAddressSuggestion\" />\n"
-    }
-  ],
-  "x-tagGroups": [
-    {
-      "name": "Address Search",
-      "tags": [
-        "Address Search",
-        "UK"
-      ]
-    },
-    {
-      "name": "Management",
-      "tags": [
-        "Keys",
-        "Licensees",
-        "Configs"
-      ]
-    },
-    {
-      "name": "Models",
-      "tags": [
-        "usps_address",
-        "uk_address",
-        "suggestion"
-      ]
     }
   ],
   "paths": {
@@ -2321,6 +2281,7 @@
         "description": "Indicates the provenance of an address",
         "enum": [
           "paf",
+          "pafw",
           "mr",
           "nyb",
           "usps"
@@ -2342,7 +2303,7 @@
       },
       "PafAddress": {
         "title": "Postcode Address File Address",
-        "description": "Standard UK Address.",
+        "description": "Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.\n\nA PAF Address represents a deliverable endpoint.\n",
         "required": [
           "postcode",
           "postcode_outward",
@@ -2511,7 +2472,7 @@
       },
       "MrAddress": {
         "title": "Multiple Residence Address",
-        "description": "Subdivision of a Postcode Address File address. Does not have its own delivery point.",
+        "description": "Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.\n\nA Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.\n",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafAddress"
@@ -2531,7 +2492,7 @@
       },
       "NybAddress": {
         "title": "Not Yet Built Address",
-        "description": "UK premise under construction",
+        "description": "A UK premise under construction and currently not occupied.\n\nThis dataset is updated by Royal Mail on a monthly cadence.\n",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafAddress"
@@ -2542,7 +2503,7 @@
               "dataset": {
                 "$ref": "#/components/schemas/Dataset",
                 "enum": [
-                  "mr"
+                  "nyb"
                 ]
               }
             }
@@ -3296,6 +3257,14 @@
           }
         ]
       },
+      "PafwSuggestion": {
+        "title": "Welsh Postcode Address File Address Autocompletion Hit",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafSuggestion"
+          }
+        ]
+      },
       "GlobalAddressSuggestion": {
         "title": "Global Address Autocompletion Suggestion",
         "description": "Represents an address suggestion for any address in the world",
@@ -3355,6 +3324,9 @@
                       "$ref": "#/components/schemas/NybSuggestion"
                     },
                     {
+                      "$ref": "#/components/schemas/PafwSuggestion"
+                    },
+                    {
                       "$ref": "#/components/schemas/GlobalAddressSuggestion"
                     }
                   ]
@@ -3376,6 +3348,26 @@
             ]
           }
         }
+      },
+      "WelshPafAddress": {
+        "title": "Welsh PAF Address",
+        "description": "Welsh language alternative for a PAF Address",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafAddress"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "$ref": "#/components/schemas/Dataset",
+                "enum": [
+                  "pafw"
+                ]
+              }
+            }
+          }
+        ]
       },
       "GbrGlobalAddress": {
         "title": "Global Address",
@@ -3624,6 +3616,9 @@
               },
               {
                 "$ref": "#/components/schemas/MrAddress"
+              },
+              {
+                "$ref": "#/components/schemas/WelshPafAddress"
               },
               {
                 "$ref": "#/components/schemas/NybAddress"
