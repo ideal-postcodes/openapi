@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/ideal-postcodes/openapi/compare/2.1.0...2.1.1) (2022-05-03)
+
+
+### Bug Fixes
+
+* **Spec:** Bump version ([2454a15](https://github.com/ideal-postcodes/openapi/commit/2454a1519ef994eb99df1ed36d780548c7c54a6b))
+
 # [2.1.0](https://github.com/ideal-postcodes/openapi/compare/2.0.1...2.1.0) (2022-05-03)
 
 
