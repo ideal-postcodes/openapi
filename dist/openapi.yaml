@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 2.1.1
+  version: 3.0.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -71,7 +71,7 @@ info:
 
     ```
 
-    Authorization: IDEALPOSTCODES api_key="iddqd" [other_key="foo"]
+    Authorization: api_key="iddqd" [other_key="foo"]
 
     ```
 
@@ -379,19 +379,35 @@ tags:
 
       Useful if you need to configure your integration remotely rather than
       editing code in situ.
+  - name: suggestion
+    x-displayName: Address Suggestion
+    description: >
+      Address Suggestions are simple, human readable representations of an
+      address. This format is sufficient tfor a user to determine an address
+      match in an address autocomplete interface. A second request must be made
+      to the API to gather fully validated address.
+
+
+      See our Address Search APIs for more information on address
+      autocompletion.
+
+
+      <SchemaDefinition schemaRef="#/components/schemas/AddressSuggestion" />
   - name: usps_address
     x-displayName: US Address
     description: |
+      Standard US Address format as reported by USPS.
+
       <SchemaDefinition schemaRef="#/components/schemas/UspsAddress" />
   - name: uk_address
     x-displayName: UK Address
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/PafAddress" />
-  - name: suggestion
-    x-displayName: Global Address Suggestion
     description: >
-      <SchemaDefinition schemaRef="#/components/schemas/GlobalAddressSuggestion"
-      />
+      Standard UK Address format as reported by Royal Mail's Postcode Address
+      File (PAF). PAF is the most complete and up-to-date address database in
+      the UK.
+
+
+      <SchemaDefinition schemaRef="#/components/schemas/PafAddress" />
 x-tagGroups:
   - name: Address Search
     tags:
@@ -476,7 +492,6 @@ paths:
         - name: api_key
           in: query
           style: form
-          required: true
           explode: false
           schema:
             $ref: '#/components/schemas/ApiKeyParam'
@@ -573,7 +588,6 @@ paths:
             type: string
         - name: api_key
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -660,7 +674,6 @@ paths:
           schema:
             type: string
         - name: api_key
-          required: true
           in: query
           style: form
           explode: false
@@ -763,7 +776,6 @@ paths:
         - name: user_token
           in: query
           style: form
-          required: true
           explode: false
           schema:
             $ref: '#/components/schemas/UserTokenParam'
@@ -975,28 +987,27 @@ paths:
       summary: Find Address
       description: >
         The address autocomplete API returns a list of address suggestions that
-        match the query ordered by relevance score.
+        match the query ordered by relevance.
 
 
         This API can be used to power realtime address finders, also known as
         address autofill or address autocomplete.
 
 
-        If you wish to quickly add address autocompletion to your address forms,
-        see [Address Finder](/address-finder) and [associated
-        demos](/address-finder-demo).
+        Consider using our Address Autocomplete JavaScript libraries to add
+        address lookup to a form in moments.
 
 
         ## Implementing Address Autocomplete
 
 
-        Retrieving addresses using Address Autocomplete is a 2 step process.
+        Rapid address autocompletion using our Address Autocomplete API is a 2
+        step process.
 
 
         1. Retrieve partial address suggestions via `/autocomplete/addresses`
 
-        2. Retrieve the entire address by following the URL provided by the
-        suggestion
+        2. Retrieve the entire address with the ID provided in the suggestion
 
 
         Step 2 will decrement your lookup balance.
@@ -1009,11 +1020,8 @@ paths:
 
 
         You can strictly narrow your result by adding filters to your
-        querystring which correspond with an address attribute.
-
-
-        For instance, you can restrict to postcode `SW1A 2AA` by appending
-        `postcode=sw1a2aa`.
+        querystring. For instance, you can restrict to postcode `SW1A 2AA` by
+        appending `postcode=sw1a2aa`.
 
 
         If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty
@@ -1022,17 +1030,17 @@ paths:
 
         You can also scope using multiple terms for the same filter with a comma
         separated list of terms. E.g. Restrict results to E1, E2 and E3 outward
-        codes: `postcode_outward=e1,e2,e3`. Multiple terms are
-        <code>OR</code>'ed, i.e. the matching result sets are combined.
+        codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the
+        matching result sets are combined.
 
 
         All filters can accept multiple terms unless stated otherwise below.
 
 
-        Multiple filters can also be combined. E.g. Restrict results to small
-        user organisations in the N postcode area:
+        Filters can also be combined. E.g. Restrict results to small user
+        organisations in the N postcode area:
         `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are
-        <code>AND</code>'ed, i.e. each additional filter narrows the result set.
+        `AND`'ed, i.e. each additional filter narrows the result set.
 
 
         A maximum of **10** terms are allowed across all filters.
@@ -1041,21 +1049,20 @@ paths:
         ## Biases
 
 
-        You can boost certain addresses results that correspond with a certain
-        address attribute. All bias searches are prefixed with `bias_`.
+        You can boost certain addresses results that match specific address
+        criteria. All bias searches are prefixed with `bias_`.
 
 
-        Biased searches, unlike filtered searches, also allow unmatched
-        addresses to appear. These will rank lower.
+        Biasing (unlike filtering) also allow unmatched addresses to appear with
+        lower precedence.
 
 
         For instance, can boost addresses with postcode areas `SW` and `SE` by
         appending `bias_postcode_area=SW,SE`.
 
 
-        No bias effect applies to bias terms that are invalid.
-
-        e.g. `bias_postcode=SW1A2AAA`
+        No bias effect applies to bias terms that are invalid. e.g.
+        `bias_postcode=SW1A2AAA`
 
 
         You may scope using multiple terms for the same bias with a comma
@@ -1119,7 +1126,6 @@ paths:
         - name: api_key
           in: query
           style: form
-          required: true
           explode: false
           schema:
             $ref: '#/components/schemas/ApiKeyParam'
@@ -1323,7 +1329,6 @@ paths:
             type: string
         - name: api_key
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1378,7 +1383,6 @@ paths:
             type: string
         - name: api_key
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1721,7 +1725,6 @@ paths:
             format: int32
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1765,7 +1768,6 @@ paths:
             $ref: '#/components/schemas/ApiKeyParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1807,7 +1809,6 @@ paths:
             $ref: '#/components/schemas/LicenseeParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1845,7 +1846,6 @@ paths:
             $ref: '#/components/schemas/LicenseeParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1905,7 +1905,6 @@ paths:
             $ref: '#/components/schemas/LicenseeParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1940,7 +1939,6 @@ paths:
             $ref: '#/components/schemas/ApiKeyParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -1980,7 +1978,6 @@ paths:
             $ref: '#/components/schemas/ApiKeyParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -2075,7 +2072,6 @@ paths:
             $ref: '#/components/schemas/ConfigParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -2153,7 +2149,6 @@ paths:
             $ref: '#/components/schemas/ConfigParam'
         - name: user_token
           in: query
-          required: true
           style: form
           explode: false
           schema:
@@ -2376,8 +2371,6 @@ components:
       oneOf:
         - type: string
           description: If premise is not multiple occupancy, this will be an empty string
-          enum:
-            - ''
         - type: number
           description: If premise is multiple occupancy, this will be an integer
           example: 983729
@@ -2524,8 +2517,6 @@ components:
       oneOf:
         - type: string
           description: Empty string `""` if not available
-          enum:
-            - ''
         - type: number
           description: Represents longitude
           example: 0.002823
@@ -2541,8 +2532,6 @@ components:
       oneOf:
         - type: string
           description: Empty string `""` if not available
-          enum:
-            - ''
         - type: number
           description: Represents latitude
           example: 52.938278
@@ -2560,8 +2549,6 @@ components:
       oneOf:
         - type: string
           description: Empty string `""` if not available
-          enum:
-            - ''
         - type: number
           description: Metres offset east from origin
           example: 9382
@@ -2579,8 +2566,6 @@ components:
       oneOf:
         - type: string
           description: Empty string `""` if not available
-          enum:
-            - ''
         - type: number
           description: Metres offset north from origin
           example: 123932
@@ -2615,6 +2600,7 @@ components:
       enum:
         - paf
         - pafw
+        - pafa
         - mr
         - nyb
         - usps
@@ -3384,88 +3370,8 @@ components:
         Biases search based on approximate geolocation of IP address.
         Set `bias_ip=true` to enable.
       example: bias_ip=true
-    PafSuggestion:
-      title: UK Postcode Address File Address Autocompletion Hit
-      description: Represents an address suggestion from the UK Postcode Address File.
-      type: object
-      required:
-        - id
-        - suggestion
-        - udprn
-        - urls
-      properties:
-        id:
-          $ref: '#/components/schemas/ID'
-        suggestion:
-          type: string
-          description: Address suggestion for your given query.
-          example: Flat 6, 12 Roskear, Camborne, TR14
-        udprn:
-          $ref: '#/components/schemas/UDPRN'
-        urls:
-          required:
-            - udprn
-          type: object
-          properties:
-            udprn:
-              type: string
-              description: >-
-                URL to retrieve the entire details for a given address
-                suggestion by the UDPRN
-              example: /v1/udprn/50985827
-    MrSuggestion:
-      title: Multiple Residence Address Autocompletion Hit
-      type: object
-      required:
-        - id
-        - suggestion
-        - udprn
-        - umprn
-        - urls
-      properties:
-        id:
-          $ref: '#/components/schemas/ID'
-        suggestion:
-          type: string
-          description: Address suggestion for your given query.
-          example: Flat 6, 12 Roskear, Camborne, TR14
-        udprn:
-          $ref: '#/components/schemas/UDPRN'
-        umprn:
-          type: number
-          format: int32
-          description: >-
-            Optionally returned field, representing the UMPRN of a Multiple
-            Residence household
-          example: 51103417
-        urls:
-          type: object
-          required:
-            - udprn
-            - umprn
-          properties:
-            udprn:
-              type: string
-              description: >-
-                URL to retrieve the entire details for a given address
-                suggestion by the UDPRN
-              example: /v1/udprn/50985827
-            umprn:
-              type: string
-              description: >-
-                Optionally returned field, to retrieve the entire details for a
-                suggested Multiple Residence household
-              example: /v1/umprn/51103417
-    NybSuggestion:
-      title: Not Yet Built Address Autocompletion Hit
-      allOf:
-        - $ref: '#/components/schemas/PafSuggestion'
-    PafwSuggestion:
-      title: Welsh Postcode Address File Address Autocompletion Hit
-      allOf:
-        - $ref: '#/components/schemas/PafSuggestion'
-    GlobalAddressSuggestion:
-      title: Global Address Autocompletion Suggestion
+    AddressSuggestion:
+      title: Address Suggestion
       description: Represents an address suggestion for any address in the world
       type: object
       required:
@@ -3481,13 +3387,58 @@ components:
           example: Flat 6, 12 Roskear, Camborne, TR14
         urls:
           type: object
+    UkAddressSuggestion:
+      title: UK Address Suggestion
+      description: >
+        Represents a possible address given an autocomplete query.
+
+
+        UK Address Suggestions will return a UDPRN attribute if it references a
+        deliverable endpoint found on Royal Mail's Postcode Address File
+        dataset.
+
+
+        UK Address Suggestion will return a UMPRN if it references a multiple
+        occupancy premise found on Royal Mail's Multiple Residence dataset.
+      type: object
+      required:
+        - id
+        - suggestion
+        - udprn
+        - urls
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        suggestion:
+          type: string
+          description: Address suggestion for a given query.
+          example: Flat 6, 12 Roskear, Camborne, TR14
+        udprn:
+          $ref: '#/components/schemas/UDPRN'
+        umprn:
+          type: number
+          format: int32
+          description: >-
+            Optionally returned field, representing the UMPRN of a Multiple
+            Residence household
+          example: 51103417
+        urls:
+          required:
+            - udprn
+          type: object
           properties:
-            id:
+            udprn:
               type: string
               description: >-
                 URL to retrieve the entire details for a given address
                 suggestion by the UDPRN
               example: /v1/udprn/50985827
+            umprn:
+              type: string
+              description: >-
+                Optionally returned field, to retrieve the entire details for a
+                suggested Multiple Residence household
+              example: /v1/umprn/51103417
     AutocompleteResponse:
       title: Address Autocomplete Response
       type: object
@@ -3505,11 +3456,8 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/PafSuggestion'
-                  - $ref: '#/components/schemas/MrSuggestion'
-                  - $ref: '#/components/schemas/NybSuggestion'
-                  - $ref: '#/components/schemas/PafwSuggestion'
-                  - $ref: '#/components/schemas/GlobalAddressSuggestion'
+                  - $ref: '#/components/schemas/AddressSuggestion'
+                  - $ref: '#/components/schemas/UkAddressSuggestion'
         code:
           type: integer
           format: int32
@@ -4514,6 +4462,7 @@ components:
                   - $ref: '#/components/schemas/PafAddress'
                   - $ref: '#/components/schemas/MrAddress'
                   - $ref: '#/components/schemas/NybAddress'
+                  - $ref: '#/components/schemas/WelshPafAddress'
             total:
               minimum: 0
               maximum: 10000

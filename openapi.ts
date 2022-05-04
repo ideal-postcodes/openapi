@@ -138,18 +138,18 @@ export interface paths {
   };
   "/autocomplete/addresses": {
     /**
-     * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance score.
+     * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.
      *
      * This API can be used to power realtime address finders, also known as address autofill or address autocomplete.
      *
-     * If you wish to quickly add address autocompletion to your address forms, see [Address Finder](/address-finder) and [associated demos](/address-finder-demo).
+     * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments.
      *
      * ## Implementing Address Autocomplete
      *
-     * Retrieving addresses using Address Autocomplete is a 2 step process.
+     * Rapid address autocompletion using our Address Autocomplete API is a 2 step process.
      *
      * 1. Retrieve partial address suggestions via `/autocomplete/addresses`
-     * 2. Retrieve the entire address by following the URL provided by the suggestion
+     * 2. Retrieve the entire address with the ID provided in the suggestion
      *
      * Step 2 will decrement your lookup balance.
      *
@@ -157,30 +157,27 @@ export interface paths {
      *
      * ## Filters
      *
-     * You can strictly narrow your result by adding filters to your querystring which correspond with an address attribute.
-     *
-     * For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
+     * You can strictly narrow your result by adding filters to your querystring. For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
      *
      * If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty result set is returned and no lookup is incurred.
      *
-     * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are <code>OR</code>'ed, i.e. the matching result sets are combined.
+     * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.
      *
      * All filters can accept multiple terms unless stated otherwise below.
      *
-     * Multiple filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are <code>AND</code>'ed, i.e. each additional filter narrows the result set.
+     * Filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.
      *
      * A maximum of **10** terms are allowed across all filters.
      *
      * ## Biases
      *
-     * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
+     * You can boost certain addresses results that match specific address criteria. All bias searches are prefixed with `bias_`.
      *
-     * Biased searches, unlike filtered searches, also allow unmatched addresses to appear. These will rank lower.
+     * Biasing (unlike filtering) also allow unmatched addresses to appear with lower precedence.
      *
      * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
      *
-     * No bias effect applies to bias terms that are invalid.
-     * e.g. `bias_postcode=SW1A2AAA`
+     * No bias effect applies to bias terms that are invalid. e.g. `bias_postcode=SW1A2AAA`
      *
      * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
      *
@@ -436,7 +433,7 @@ export interface components {
      * UMPRN
      * @description A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant. 8-character numeric code. Note: this will be an empty string `""` when not used for legacy reasons
      */
-    UMPRN: "" | number;
+    UMPRN: string | number;
     /**
      * Postcode Type
      * @description This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points. On average there are 15 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode.
@@ -523,22 +520,22 @@ export interface components {
      * Longitude
      * @description The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. -0.1283983 Returns an empty string if no location data is available.  Otherwise, a number is returned
      */
-    Longitude: "" | number;
+    Longitude: string | number;
     /**
      * Longitude
      * @description The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. 51.5083983 Returns an empty string if no location data is available.  Otherwise a number is returned.
      */
-    Latitude: "" | number;
+    Latitude: string | number;
     /**
      * Eastings
      * @description Eastings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Eastings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 550458 Returns an empty string if no location data is available. Otherwise a number is returned
      */
-    Eastings: "" | number;
+    Eastings: string | number;
     /**
      * Eastings
      * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 180458 Returns an empty string if no location data is available. Otherwise a number is returned
      */
-    Northings: "" | number;
+    Northings: string | number;
     /**
      * Unique Delivery Point Reference Number (UDPRN)
      * @description UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property. See our UPRN guide for more information. Up to 12 digits in length. Multiple Residence premises currently share the same UPRN as the parent premise. May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string "" in these instances. Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most browsers causing this datapoint to be corrupted. Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value.
@@ -555,7 +552,7 @@ export interface components {
      * @description Indicates the provenance of an address
      * @enum {string}
      */
-    Dataset: "paf" | "pafw" | "mr" | "nyb" | "usps";
+    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps";
     /**
      * ISO Country Code
      * @description 3 letter ISO country code
@@ -1051,30 +1048,30 @@ export interface components {
      */
     BiasIpParam: "true";
     /**
-     * UK Postcode Address File Address Autocompletion Hit
-     * @description Represents an address suggestion from the UK Postcode Address File.
+     * Address Suggestion
+     * @description Represents an address suggestion for any address in the world
      */
-    PafSuggestion: {
+    AddressSuggestion: {
       id: components["schemas"]["ID"];
       /**
-       * @description Address suggestion for your given query.
+       * @description Address Suggestion to be displayed to the user
        * @example Flat 6, 12 Roskear, Camborne, TR14
        */
       suggestion: string;
-      udprn: components["schemas"]["UDPRN"];
-      urls: {
-        /**
-         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
-         * @example /v1/udprn/50985827
-         */
-        udprn: string;
-      };
+      urls: { [key: string]: unknown };
     };
-    /** Multiple Residence Address Autocompletion Hit */
-    MrSuggestion: {
+    /**
+     * UK Address Suggestion
+     * @description Represents a possible address given an autocomplete query.
+     *
+     * UK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.
+     *
+     * UK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.
+     */
+    UkAddressSuggestion: {
       id: components["schemas"]["ID"];
       /**
-       * @description Address suggestion for your given query.
+       * @description Address suggestion for a given query.
        * @example Flat 6, 12 Roskear, Camborne, TR14
        */
       suggestion: string;
@@ -1084,7 +1081,7 @@ export interface components {
        * @description Optionally returned field, representing the UMPRN of a Multiple Residence household
        * @example 51103417
        */
-      umprn: number;
+      umprn?: number;
       urls: {
         /**
          * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
@@ -1095,41 +1092,15 @@ export interface components {
          * @description Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household
          * @example /v1/umprn/51103417
          */
-        umprn: string;
-      };
-    };
-    /** Not Yet Built Address Autocompletion Hit */
-    NybSuggestion: components["schemas"]["PafSuggestion"];
-    /** Welsh Postcode Address File Address Autocompletion Hit */
-    PafwSuggestion: components["schemas"]["PafSuggestion"];
-    /**
-     * Global Address Autocompletion Suggestion
-     * @description Represents an address suggestion for any address in the world
-     */
-    GlobalAddressSuggestion: {
-      id: components["schemas"]["ID"];
-      /**
-       * @description Address Suggestion to be displayed to the user
-       * @example Flat 6, 12 Roskear, Camborne, TR14
-       */
-      suggestion: string;
-      urls: {
-        /**
-         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
-         * @example /v1/udprn/50985827
-         */
-        id?: string;
+        umprn?: string;
       };
     };
     /** Address Autocomplete Response */
     AutocompleteResponse: {
       result: {
         hits: (
-          | components["schemas"]["PafSuggestion"]
-          | components["schemas"]["MrSuggestion"]
-          | components["schemas"]["NybSuggestion"]
-          | components["schemas"]["PafwSuggestion"]
-          | components["schemas"]["GlobalAddressSuggestion"]
+          | components["schemas"]["AddressSuggestion"]
+          | components["schemas"]["UkAddressSuggestion"]
         )[];
       };
       /**
@@ -1760,6 +1731,7 @@ export interface components {
           | components["schemas"]["PafAddress"]
           | components["schemas"]["MrAddress"]
           | components["schemas"]["NybAddress"]
+          | components["schemas"]["WelshPafAddress"]
         )[];
         /** Format: int32 */
         total: number;
@@ -2043,7 +2015,7 @@ export interface operations {
         postcode: components["schemas"]["Postcode"];
       };
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
         page?: components["schemas"]["PageParam"];
       };
@@ -2092,7 +2064,7 @@ export interface operations {
         udprn: string;
       };
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
       };
     };
@@ -2138,7 +2110,7 @@ export interface operations {
         umprn: string;
       };
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
         filter?: components["schemas"]["FilterParam"];
       };
     };
@@ -2196,7 +2168,7 @@ export interface operations {
         key: components["schemas"]["ApiKeyParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2290,18 +2262,18 @@ export interface operations {
     };
   };
   /**
-   * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance score.
+   * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.
    *
    * This API can be used to power realtime address finders, also known as address autofill or address autocomplete.
    *
-   * If you wish to quickly add address autocompletion to your address forms, see [Address Finder](/address-finder) and [associated demos](/address-finder-demo).
+   * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments.
    *
    * ## Implementing Address Autocomplete
    *
-   * Retrieving addresses using Address Autocomplete is a 2 step process.
+   * Rapid address autocompletion using our Address Autocomplete API is a 2 step process.
    *
    * 1. Retrieve partial address suggestions via `/autocomplete/addresses`
-   * 2. Retrieve the entire address by following the URL provided by the suggestion
+   * 2. Retrieve the entire address with the ID provided in the suggestion
    *
    * Step 2 will decrement your lookup balance.
    *
@@ -2309,30 +2281,27 @@ export interface operations {
    *
    * ## Filters
    *
-   * You can strictly narrow your result by adding filters to your querystring which correspond with an address attribute.
-   *
-   * For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
+   * You can strictly narrow your result by adding filters to your querystring. For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
    *
    * If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty result set is returned and no lookup is incurred.
    *
-   * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are <code>OR</code>'ed, i.e. the matching result sets are combined.
+   * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.
    *
    * All filters can accept multiple terms unless stated otherwise below.
    *
-   * Multiple filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are <code>AND</code>'ed, i.e. each additional filter narrows the result set.
+   * Filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.
    *
    * A maximum of **10** terms are allowed across all filters.
    *
    * ## Biases
    *
-   * You can boost certain addresses results that correspond with a certain address attribute. All bias searches are prefixed with `bias_`.
+   * You can boost certain addresses results that match specific address criteria. All bias searches are prefixed with `bias_`.
    *
-   * Biased searches, unlike filtered searches, also allow unmatched addresses to appear. These will rank lower.
+   * Biasing (unlike filtering) also allow unmatched addresses to appear with lower precedence.
    *
    * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
    *
-   * No bias effect applies to bias terms that are invalid.
-   * e.g. `bias_postcode=SW1A2AAA`
+   * No bias effect applies to bias terms that are invalid. e.g. `bias_postcode=SW1A2AAA`
    *
    * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
    *
@@ -2363,7 +2332,7 @@ export interface operations {
   AddressAutocomplete: {
     parameters: {
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
         /** Specifies the address you wish to query. Query can be shortened to `q=` */
         query?: string;
         context?: components["schemas"]["Context"];
@@ -2419,7 +2388,7 @@ export interface operations {
         address: string;
       };
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
       };
     };
     responses: {
@@ -2449,7 +2418,7 @@ export interface operations {
         address: string;
       };
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        api_key?: components["schemas"]["ApiKeyParam"];
       };
     };
     responses: {
@@ -2574,7 +2543,7 @@ export interface operations {
       query: {
         /** Specify ID of the licensee after which you would like to list results */
         starting_after?: number;
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
         /** Specify the maximum number of results to return per page. Default and maximum is `100`. */
         limit?: components["schemas"]["LimitParam"];
         /** Filter result by licensee name. Query can be shortened to `q=` */
@@ -2597,7 +2566,7 @@ export interface operations {
         key: components["schemas"]["ApiKeyParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2622,7 +2591,7 @@ export interface operations {
         licensee: components["schemas"]["LicenseeParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2642,7 +2611,7 @@ export interface operations {
         licensee: components["schemas"]["LicenseeParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2667,7 +2636,7 @@ export interface operations {
         licensee: components["schemas"]["LicenseeParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2701,7 +2670,7 @@ export interface operations {
         key: components["schemas"]["ApiKeyParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2732,7 +2701,7 @@ export interface operations {
         key: components["schemas"]["ApiKeyParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2798,7 +2767,7 @@ export interface operations {
         config: components["schemas"]["ConfigParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
@@ -2841,7 +2810,7 @@ export interface operations {
         config: components["schemas"]["ConfigParam"];
       };
       query: {
-        user_token: components["schemas"]["UserTokenParam"];
+        user_token?: components["schemas"]["UserTokenParam"];
       };
     };
     responses: {
