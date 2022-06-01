@@ -2677,13 +2677,42 @@
           }
         }
       },
+      "Context": {
+        "title": "Context",
+        "type": "string",
+        "enum": [
+          "GBR",
+          "USA"
+        ],
+        "description": "Limits search results within a geographical boundary or country."
+      },
+      "NoContext": {
+        "title": "No Context Provided",
+        "type": "string",
+        "enum": [
+          ""
+        ],
+        "description": "Empty string if no context is provided or key check has failed"
+      },
       "ApiKey": {
         "title": "Key",
         "type": "object",
         "required": [
-          "available"
+          "available",
+          "context"
         ],
         "properties": {
+          "context": {
+            "description": "Returns current context if it is in the list of available contexts for this key.\n",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Context"
+              },
+              {
+                "$ref": "#/components/schemas/NoContext"
+              }
+            ]
+          },
           "available": {
             "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions are met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
             "type": "boolean",
@@ -3041,15 +3070,6 @@
           }
         }
       },
-      "Context": {
-        "title": "Context",
-        "type": "string",
-        "enum": [
-          "gbr",
-          "usa"
-        ],
-        "description": "Limits search results within a geographical boundary or country."
-      },
       "LimitParam": {
         "title": "Limit",
         "description": "Specifies the maximum number of suggestions to retrieve.\n\nBy default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`\n",
@@ -3309,6 +3329,26 @@
           }
         ]
       },
+      "PafAliasAddress": {
+        "title": "PAF Alias Address",
+        "description": "PAF Aliases addresses are alternate ways to present an address already found on PAF.\n\nAlias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.\n",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafAddress"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "$ref": "#/components/schemas/Dataset",
+                "enum": [
+                  "pafa"
+                ]
+              }
+            }
+          }
+        ]
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -3559,6 +3599,9 @@
               },
               {
                 "$ref": "#/components/schemas/WelshPafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/PafAliasAddress"
               },
               {
                 "$ref": "#/components/schemas/NybAddress"
@@ -4409,6 +4452,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/WelshPafAddress"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PafAliasAddress"
                     }
                   ]
                 }

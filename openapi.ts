@@ -689,8 +689,24 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
+    /**
+     * Context
+     * @description Limits search results within a geographical boundary or country.
+     * @enum {string}
+     */
+    Context: "GBR" | "USA";
+    /**
+     * No Context Provided
+     * @description Empty string if no context is provided or key check has failed
+     * @enum {string}
+     */
+    NoContext: "";
     /** Key */
     ApiKey: {
+      /** @description Returns current context if it is in the list of available contexts for this key. */
+      context:
+        | components["schemas"]["Context"]
+        | components["schemas"]["NoContext"];
       /**
        * @description Determines whether the key can be used by the requesting agent.
        *
@@ -919,12 +935,6 @@ export interface components {
       message: "Success";
     };
     /**
-     * Context
-     * @description Limits search results within a geographical boundary or country.
-     * @enum {string}
-     */
-    Context: "gbr" | "usa";
-    /**
      * Limit
      * Format: int32
      * @description Specifies the maximum number of suggestions to retrieve.
@@ -1120,6 +1130,16 @@ export interface components {
       dataset?: components["schemas"]["Dataset"];
     };
     /**
+     * PAF Alias Address
+     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
+     *
+     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
+     */
+    PafAliasAddress: components["schemas"]["PafAddress"] & {
+      /** @enum {undefined} */
+      dataset?: components["schemas"]["Dataset"];
+    };
+    /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
      */
@@ -1234,6 +1254,7 @@ export interface components {
         | components["schemas"]["PafAddress"]
         | components["schemas"]["MrAddress"]
         | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["GbrGlobalAddress"];
     };
@@ -1732,6 +1753,7 @@ export interface components {
           | components["schemas"]["MrAddress"]
           | components["schemas"]["NybAddress"]
           | components["schemas"]["WelshPafAddress"]
+          | components["schemas"]["PafAliasAddress"]
         )[];
         /** Format: int32 */
         total: number;
