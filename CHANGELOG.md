@@ -1,3 +1,10 @@
+# [3.0.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.0.0-beta.1...3.0.0-beta.2) (2022-06-01)
+
+
+### Features
+
+* **PAF Alias:** Add PAF Alias ([8b42b86](https://github.com/ideal-postcodes/openapi/commit/8b42b86c4ec91aa9364ec8fc424437596575f324))
+
 # [3.0.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/2.1.1...3.0.0-beta.1) (2022-05-04)
 
 
