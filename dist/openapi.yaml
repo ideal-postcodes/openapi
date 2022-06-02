@@ -1438,6 +1438,14 @@ paths:
         for speed and address completion.
 
 
+        ## Reverse Geocoding
+
+
+        Return a list of addresses around a point using the lon= and lat=
+        querystring arguments. Addresses will be sorted in order of distance to
+        the point. The search radius is 100m.
+
+
         ## Filters
 
 
@@ -1572,6 +1580,18 @@ paths:
           explode: false
           schema:
             $ref: '#/components/schemas/FilterParam'
+        - name: lon
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/AddressLongitudeParam'
+        - name: lat
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/AddressLatitudeParam'
         - name: postcode_outward
           in: query
           style: form
@@ -4463,6 +4483,32 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UspsAddress'
             - $ref: '#/components/schemas/UsaGlobalAddress'
+    AddressLongitudeParam:
+      title: Longitude
+      type: number
+      format: float
+      description: >
+        Longitude query for reverse geocoding.
+
+
+        An accompanying latitude (lat=) query must be submitted for a valid
+        reverse geocode query.
+      minimum: -90
+      maximum: 90
+      example: -0.12767
+    AddressLatitudeParam:
+      title: Latitude
+      type: number
+      format: float
+      description: >
+        Latitude query for reverse geocoding.
+
+
+        An accompanying longitude (lon=) query must be submitted for a valid
+        reverse geocode query.
+      minimum: -90
+      maximum: 90
+      example: 51.503541
     AddressResponse:
       title: Address Search Response
       type: object

@@ -233,6 +233,10 @@ export interface paths {
      *
      * For address autocomplete, see our address finder API - which is designed for speed and address completion.
      *
+     * ## Reverse Geocoding
+     *
+     * Return a list of addresses around a point using the lon= and lat= querystring arguments. Addresses will be sorted in order of distance to the point. The search radius is 100m.
+     *
      * ## Filters
      *
      * You can strictly narrow your result by adding filters to your query string which correspond with an address attribute.
@@ -1737,6 +1741,26 @@ export interface components {
         | components["schemas"]["UspsAddress"]
         | components["schemas"]["UsaGlobalAddress"];
     };
+    /**
+     * Longitude
+     * Format: float
+     * @description Longitude query for reverse geocoding.
+     *
+     * An accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.
+     *
+     * @example -0.12767
+     */
+    AddressLongitudeParam: number;
+    /**
+     * Latitude
+     * Format: float
+     * @description Latitude query for reverse geocoding.
+     *
+     * An accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.
+     *
+     * @example 51.503541
+     */
+    AddressLatitudeParam: number;
     /** Address Search Response */
     AddressResponse: {
       /**
@@ -2467,6 +2491,10 @@ export interface operations {
    *
    * For address autocomplete, see our address finder API - which is designed for speed and address completion.
    *
+   * ## Reverse Geocoding
+   *
+   * Return a list of addresses around a point using the lon= and lat= querystring arguments. Addresses will be sorted in order of distance to the point. The search radius is 100m.
+   *
    * ## Filters
    *
    * You can strictly narrow your result by adding filters to your query string which correspond with an address attribute.
@@ -2527,6 +2555,8 @@ export interface operations {
         limit?: components["schemas"]["LimitParam"];
         page?: components["schemas"]["PageParam"];
         filter?: components["schemas"]["FilterParam"];
+        lon?: components["schemas"]["AddressLongitudeParam"];
+        lat?: components["schemas"]["AddressLatitudeParam"];
         postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
         postcode?: components["schemas"]["PostcodeParam"];
         postcode_area?: components["schemas"]["PostcodeAreaParam"];
