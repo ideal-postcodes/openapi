@@ -1,3 +1,19 @@
+# [3.0.0](https://github.com/ideal-postcodes/openapi/compare/2.1.1...3.0.0) (2022-06-07)
+
+
+### Features
+
+* **3.0.0:** API & Dataset Updates ([883abc7](https://github.com/ideal-postcodes/openapi/commit/883abc76d119f05310aca8f662c7b0221c8b3ceb))
+* **GBR:** Add reverse geocoding parameters ([3d5d273](https://github.com/ideal-postcodes/openapi/commit/3d5d2730404253924159847d3706d156b1bad4f2))
+* **PAF Alias:** Add PAF Alias ([8b42b86](https://github.com/ideal-postcodes/openapi/commit/8b42b86c4ec91aa9364ec8fc424437596575f324))
+
+
+### BREAKING CHANGES
+
+* **3.0.0:** - UK Address Suggestion formats for PAF, MR, NYB and PAFW have been
+  merged into one suggestion type for the UK
+- Rename GlobalAddressSuggestion to AddressSuggestion
+
 # [3.0.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.0.0-beta.2...3.0.0-beta.3) (2022-06-02)
 
 
