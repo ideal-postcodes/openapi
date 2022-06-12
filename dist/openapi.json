@@ -150,6 +150,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Postcode Not Found",
             "content": {
@@ -494,6 +504,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
@@ -569,6 +589,16 @@
                 "schema": {
                   "type": "string",
                   "description": "Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -837,6 +867,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutocompleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -1237,6 +1277,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Postcode Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostcodeNotFoundResponse"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
@@ -1323,6 +1383,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -1371,6 +1441,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LicenseeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -1425,6 +1505,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LicenseeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -1514,6 +1604,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -1572,6 +1672,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LicenseeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -2404,7 +2514,7 @@
           },
           "county_code": {
             "title": "County Code",
-            "types": "string",
+            "type": "string",
             "description": "Short code representing the county or province. May be empty (`\"\"`)"
           },
           "uprn": {
@@ -2689,6 +2799,77 @@
           }
         }
       },
+      "ErrorResponse": {
+        "title": "Basic Error Response",
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human readable error message supplied with every error response."
+          }
+        }
+      },
+      "BadRequestResponse": {
+        "title": "Bad Request Error Response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "`400X` type error response code",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string",
+                "description": "Bad request error description"
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "path",
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "should have required property 'type'",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": ".query.type",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "required.openapi.validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
       "PostcodeNotFoundResponse": {
         "title": "Postcode Not Found",
         "type": "object",
@@ -2752,25 +2933,6 @@
             "enum": [
               "Success"
             ]
-          }
-        }
-      },
-      "ErrorResponse": {
-        "title": "Basic Error Response",
-        "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "description": "API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "description": "Human readable error message supplied with every error response."
           }
         }
       },
@@ -5099,58 +5261,6 @@
             ]
           }
         }
-      },
-      "BadRequestResponse": {
-        "title": "Bad Request Error Response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ErrorResponse"
-          },
-          {
-            "type": "object",
-            "required": [
-              "code",
-              "message"
-            ],
-            "properties": {
-              "code": {
-                "type": "integer",
-                "description": "`400X` type error response code",
-                "format": "int32"
-              },
-              "message": {
-                "type": "string",
-                "description": "Bad request error description"
-              },
-              "errors": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "path",
-                    "message"
-                  ],
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "should have required property 'type'",
-                      "description": "Indicates location of error in request query or URL parameter"
-                    },
-                    "path": {
-                      "type": "string",
-                      "example": ".query.type",
-                      "description": "Indicates location of error in request query or URL parameter"
-                    },
-                    "errorCode": {
-                      "type": "string",
-                      "example": "required.openapi.validation"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ]
       },
       "UnauthorizedResponse": {
         "title": "Unauthorized Request Error Response",

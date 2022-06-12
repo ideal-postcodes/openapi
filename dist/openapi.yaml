@@ -516,6 +516,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostcodeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
         '404':
           description: Postcode Not Found
           content:
@@ -856,6 +862,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKeyUsageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
       x-codeSamples:
         - lang: http
           label: URL
@@ -970,6 +982,12 @@ paths:
               schema:
                 type: string
                 description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
       x-codeSamples:
         - lang: http
           label: URL
@@ -1293,6 +1311,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AutocompleteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
       x-codeSamples:
         - lang: http
           label: URL
@@ -1707,6 +1731,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddressResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '404':
+          description: Postcode Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostcodeNotFoundResponse'
       x-codeSamples:
         - lang: http
           label: URL
@@ -1772,6 +1808,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
     post:
       tags:
         - Licensees
@@ -1805,6 +1847,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
   /keys/{key}/licensees/{licensee}:
     get:
       tags:
@@ -1841,6 +1889,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
     delete:
       tags:
         - Licensees
@@ -1902,6 +1956,12 @@ paths:
                     type: string
                     enum:
                       - Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
     put:
       tags:
         - Licensees
@@ -1942,6 +2002,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LicenseeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
   /keys/{key}/configs:
     get:
       tags:
@@ -2755,7 +2821,7 @@ components:
           $ref: '#/components/schemas/paf_county'
         county_code:
           title: County Code
-          types: string
+          type: string
           description: Short code representing the county or province. May be empty (`""`)
         uprn:
           $ref: '#/components/schemas/paf_uprn'
@@ -2957,6 +3023,62 @@ components:
           type: string
           enum:
             - Success
+    ErrorResponse:
+      title: Basic Error Response
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: >-
+            API Response Code. Non `2xxx` code indicates a failure. This code
+            will provide a more specific reason when a failure occurs and
+            facilitates debugging.
+          format: int32
+        message:
+          type: string
+          description: Human readable error message supplied with every error response.
+    BadRequestResponse:
+      title: Bad Request Error Response
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: integer
+              description: '`400X` type error response code'
+              format: int32
+            message:
+              type: string
+              description: Bad request error description
+            errors:
+              type: array
+              items:
+                type: object
+                required:
+                  - path
+                  - message
+                properties:
+                  message:
+                    type: string
+                    example: should have required property 'type'
+                    description: >-
+                      Indicates location of error in request query or URL
+                      parameter
+                  path:
+                    type: string
+                    example: .query.type
+                    description: >-
+                      Indicates location of error in request query or URL
+                      parameter
+                  errorCode:
+                    type: string
+                    example: required.openapi.validation
     PostcodeNotFoundResponse:
       title: Postcode Not Found
       type: object
@@ -3001,23 +3123,6 @@ components:
           type: string
           enum:
             - Success
-    ErrorResponse:
-      title: Basic Error Response
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          description: >-
-            API Response Code. Non `2xxx` code indicates a failure. This code
-            will provide a more specific reason when a failure occurs and
-            facilitates debugging.
-          format: int32
-        message:
-          type: string
-          description: Human readable error message supplied with every error response.
     UMPRNResponse:
       title: UDPRN Response
       type: object
@@ -5088,45 +5193,6 @@ components:
           format: int32
           enum:
             - 2000
-    BadRequestResponse:
-      title: Bad Request Error Response
-      allOf:
-        - $ref: '#/components/schemas/ErrorResponse'
-        - type: object
-          required:
-            - code
-            - message
-          properties:
-            code:
-              type: integer
-              description: '`400X` type error response code'
-              format: int32
-            message:
-              type: string
-              description: Bad request error description
-            errors:
-              type: array
-              items:
-                type: object
-                required:
-                  - path
-                  - message
-                properties:
-                  message:
-                    type: string
-                    example: should have required property 'type'
-                    description: >-
-                      Indicates location of error in request query or URL
-                      parameter
-                  path:
-                    type: string
-                    example: .query.type
-                    description: >-
-                      Indicates location of error in request query or URL
-                      parameter
-                  errorCode:
-                    type: string
-                    example: required.openapi.validation
     UnauthorizedResponse:
       title: Unauthorized Request Error Response
       allOf:

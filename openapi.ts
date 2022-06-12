@@ -642,7 +642,7 @@ export interface components {
        * County Code
        * @description Short code representing the county or province. May be empty (`""`)
        */
-      county_code: unknown;
+      county_code: string;
       uprn: components["schemas"]["paf_uprn"];
       udprn: components["schemas"]["paf_udprn"];
       umprn: components["schemas"]["paf_umprn"];
@@ -766,6 +766,40 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
+    /** Basic Error Response */
+    ErrorResponse: {
+      /**
+       * Format: int32
+       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
+       */
+      code: number;
+      /** @description Human readable error message supplied with every error response. */
+      message: string;
+    };
+    /** Bad Request Error Response */
+    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `400X` type error response code
+       */
+      code: number;
+      /** @description Bad request error description */
+      message: string;
+      errors?: {
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example should have required property 'type'
+         */
+        message: string;
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example .query.type
+         */
+        path: string;
+        /** @example required.openapi.validation */
+        errorCode?: string;
+      }[];
+    };
     /** Postcode Not Found */
     PostcodeNotFoundResponse: {
       /**
@@ -790,16 +824,6 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
-    };
-    /** Basic Error Response */
-    ErrorResponse: {
-      /**
-       * Format: int32
-       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
-       */
-      code: number;
-      /** @description Human readable error message supplied with every error response. */
-      message: string;
     };
     /** UDPRN Response */
     UMPRNResponse: {
@@ -2204,30 +2228,6 @@ export interface components {
        */
       code: 2000;
     };
-    /** Bad Request Error Response */
-    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
-      /**
-       * Format: int32
-       * @description `400X` type error response code
-       */
-      code: number;
-      /** @description Bad request error description */
-      message: string;
-      errors?: {
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example should have required property 'type'
-         */
-        message: string;
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example .query.type
-         */
-        path: string;
-        /** @example required.openapi.validation */
-        errorCode?: string;
-      }[];
-    };
     /** Unauthorized Request Error Response */
     UnauthorizedResponse: components["schemas"]["ErrorResponse"] & {
       /**
@@ -2346,6 +2346,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["PostcodeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
       /** Postcode Not Found */
@@ -2534,6 +2540,12 @@ export interface operations {
           "application/json": components["schemas"]["ApiKeyUsageResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /**
@@ -2578,6 +2590,12 @@ export interface operations {
       200: {
         content: {
           "text/csv": string;
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2693,6 +2711,12 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AutocompleteResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2859,6 +2883,18 @@ export interface operations {
           "application/json": components["schemas"]["AddressResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Postcode Not Found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["PostcodeNotFoundResponse"];
+        };
+      };
     };
   };
   /** Returns a list of licensees for a key. */
@@ -2884,6 +2920,12 @@ export interface operations {
           "application/json": components["schemas"]["LicenseesResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /** Create a licensee for the specified API Key. */
@@ -2901,6 +2943,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LicenseeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2928,6 +2976,12 @@ export interface operations {
           "application/json": components["schemas"]["LicenseeResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /** Update Licensee */
@@ -2946,6 +3000,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LicenseeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2986,6 +3046,12 @@ export interface operations {
             /** @enum {string} */
             message: "Success";
           };
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
