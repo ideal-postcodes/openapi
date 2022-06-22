@@ -322,6 +322,8 @@ export interface paths {
 
 export interface components {
   schemas: {
+    ecaf: components["schemas"]["EcafAddress"];
+    ecad: components["schemas"]["EcadAddress"];
     /**
      * Postcode
      * @description Correctly formatted postcode. Capitalised and spaced.
@@ -681,10 +683,7 @@ export interface components {
     PafAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
       country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
-      /**
-       * Foo
-       * @enum {string}
-       */
+      /** @enum {string} */
       dataset?: "paf";
       /** @enum {undefined} */
       country_iso_2?: "GB" | "IM" | "JE" | "GG";
@@ -1318,11 +1317,12 @@ export interface components {
      *   - `nyb` (GBR) Not Yet Built File
      *   - `pafa` (GBR) Alias File
      *   - `pafw` (GBR) Welsh File
-     *   - `eirc` (IRE) Eircodes ECAF
+     *   - `ecaf` (IRE) Eircode ECAF
+     *   - `ecad` (IRE) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
      * @enum {string}
      */
-    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps" | "eirc";
+    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps" | "ecaf" | "ecad";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -2295,6 +2295,413 @@ export interface components {
        * }
        */
       payload?: string;
+    };
+    EircBase: {
+      id: components["schemas"]["ID"];
+      /** @description Source of address */
+      dataset: string;
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "IRL";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "IE";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Ireland";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "en" | "ga";
+      /** @description Address Line 1 */
+      line_1: string;
+      /** @description Address Line 2 */
+      line_2: unknown;
+      /** @description Address Line 3 */
+      line_3: string;
+      /** @description Address Line 4 */
+      line_4: string;
+      /** @description Address Line 5 */
+      line_5: string;
+      /** @description Address Line 6 */
+      line_6: string;
+      /** @description Address Line 7 */
+      line_7: string;
+      /** @description Address Line 8 */
+      line_8: string;
+      /** @description Address Line 9 */
+      line_9: string;
+      /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
+      ecaf_id: string;
+      /**
+       * @description The department or division within an organisation. If the department element exists, then the organisation must also exist.
+       * @example Accounts Department
+       */
+      department: string;
+      /**
+       * @description Organisation name
+       * @example Oak Tree Limited
+       */
+      organisation: string;
+      /**
+       * @description The sub-building refers to an apartment, flat or unit within a building.
+       * @example Flat 1
+       */
+      sub_building_name: string;
+      /**
+       * @description The name given to the building. Prepended by sub building, if any, when the sub building does not appear on a line to itself. The building name is omitted if it is the same as either the Organisation or Building Group.
+       * @example Rose Cottage
+       */
+      building_name: string;
+      /**
+       * @description A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.
+       * A complex building number may be one of the following:
+       *   - Dual. Two number separated by '/' e.g. 63/64 = 63, 64
+       *   - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6
+       *   - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 56, 66
+       * The building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality.
+       * @example 22
+       */
+      building_number: string;
+      /** @example Marrian Terrace */
+      building_group: string;
+      /**
+       * @description The name of the thoroughfare on which premises are located. It may appear on a line by itself or be appended to either a sub building or building number.
+       *
+       * Addresses with thoroughfares can sometimes have the thoroughfare excluded where a Building Group exists, such as a Retail Centre or Business Park, and the thoroughfare is not part of the Postal Address.
+       * @example Griffith Road
+       */
+      primary_thoroughfare: string;
+      /**
+       * @description It is never present without a primary thoroughfare. The primary thoroughfare is dependent on the secondary thoroughfare and appears before the secondary thoroughfare in any address.
+       *
+       * Secondary thoroughfare are generally used to assist locating a primary thoroughfare.
+       * @example Navan Road
+       */
+      secondary_thoroughfare: string;
+      /**
+       * @description First locality elements which can refer to areas, districts, industrial estates, towns, etc.
+       *
+       * The primary locality refers to the specific place the address is.
+       *
+       * In urban areas, the primary locality can be required to distinguish between two thoroughfares of the same name in the same district or town. Industrial estates with named thoroughfares are also held as localities. In rural areas the primary locality is generally a townland name.
+       * @example Cookstown Industrial Estate
+       */
+      primary_locality: string;
+      /**
+       * @description Never present without a primary locality. The secondary locality has a wider geographic scope than the primary locality.
+       *
+       * It is the secondary locality therefore which differentiates addresses with the same primary locality name within the same county.
+       *
+       * Secondary localities are more likely to be required for rural addresses.
+       *
+       * Second locality elements which can refer to areas, districts, industrial estates, towns, etc
+       *
+       * The secondary locality helps identify where the primary locality is located.
+       * @example Manorhamilton
+       */
+      secondary_locality: string;
+      /**
+       * @description Also known as the Post Town.
+       *
+       * The name of the post town associated with the premises for postal delivery purposes. This includes Dublin Postal Districts "Dublin 1" to "Dublin 24".
+       *
+       * The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist4, describes post towns in the following manner:
+       *
+       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as POST TOWNS, chosen because of their accessibility and convenience."
+       * @example Dublin 14
+       */
+      tertiary_locality: string;
+      /**
+       * @description One of the 26 Counties in the Republic of Ireland. These counties are sub-national divisions used for the purposes of administrative, geographical and political demarcation. Post County is the County associated with the Post Town, not the geographic county in which the building is located. The Post County is normally used as part of the Postal Address with some exceptions e.g. Dublin Postal Districts where the Post County is not used and some Post Towns (e.g. Tipperary, Kildare, etc.) that have the same name as the Post County.
+       * @example Cork
+       */
+      post_county: string;
+      /**
+       * @description The seven character Eircode has an A65 F4E2 format. The Eircode is a mandatory address element. The last line of a Postal Address will contain the Eircode, displayed with a space. e.g. `A65 F4E2`.
+       *
+       * The Eircode is always the last line of a Postal Address generated within the state, e.g. if an address has four lines then the Eircode will be on its own on Address Line 5. For inbound international mail the country name IRELAND should be appended as the last line of the Postal Address.
+       * @example A65 R2AF
+       */
+      eircode: string;
+      /** @description The address reference is the An Post GeoDirectory address reference identifier used by the Universal Service Provider. */
+      address_reference: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+    };
+    /**
+     * Ireland ECAF Address
+     * @description ECAF is the Eircode Address File which contains one record for each Postal Address. English language and Irish language versions are available. It is distributed as a flat file, details of data provision and updates are provided in section 2.
+     */
+    EcafAddress: components["schemas"]["EircBase"] & {
+      /** @enum {string} */
+      dataset?: "ecaf";
+    };
+    /**
+     * Ireland ECAD Address
+     * @description The ECAD contains additional data for each ECAF address.
+     */
+    EcadAddress: components["schemas"]["EircBase"] & {
+      /** @enum {string} */
+      dataset?: "ecad";
+      /**
+       * @description Organisation ID
+       * @example 10098783
+       */
+      organisation_id?: string;
+      /**
+       * @description Address Point ID
+       * @example 10098783
+       */
+      address_point_id?: string;
+      /**
+       * @description Building ID
+       * @example 10098783
+       */
+      building_id?: string;
+      /**
+       * @description Building Group ID
+       * @example 10098783
+       */
+      building_group_id?: string;
+      /**
+       * @description Primary Thoroughfare ID
+       * @example 10098783
+       */
+      primary_thoroughfare_id?: string;
+      /**
+       * @description Secondary Thoroughfare ID
+       * @example 10098783
+       */
+      secondary_thoroughfare_id?: string;
+      /**
+       * @description Primary Locality ID
+       * @example 10098783
+       */
+      primary_locality_id?: string;
+      /**
+       * @description Secondary Locality ID
+       * @example 10098783
+       */
+      secondary_locality_id?: string;
+      /**
+       * @description The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:
+       *
+       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience."
+       */
+      post_town?: string;
+      /**
+       * @description Post Town ID
+       * @example 10098783
+       */
+      post_town_id?: string;
+      /**
+       * @description Post County ID
+       * @example 10098783
+       */
+      post_county_id?: string;
+      /**
+       * @description NUA means "non-unique address".
+       *
+       * The NUA field contains `true` when the address is a non-unique address, and `false` when it is a unique address.
+       *
+       * Ireland has a very high level of non-unique addresses (NUA), i.e. the address does not contain a unique building number or name. Approximately 35% of all Irish addresses are non-unique which equates to 600,000 addresses.
+       *
+       * The typical example of NUA addressing is where every address in a townland is the same. The way that post is delivered is by local knowledge of postal delivery personnel of which addressee lives in which house.
+       *
+       * N.B. For a NUA address, it is impossible to match to a unique record in the ECAD and assign an Eircode.
+       */
+      nua?: boolean;
+      /**
+       * @description Gaeltact refers to a district where the Irish government recognises that the Irish language is the predominant language.
+       *
+       * Returns `true` if address is in a Gaeltacht area and `false` if not.
+       */
+      gaeltacht?: boolean;
+      /**
+       * @description Addresses points can assume one of the following values:
+       *
+       * - Residential Address Point. This type of address point has one residential addresses associated with it.
+       * - Non-Residential Address Point. This type of address point has one or more non-residential address (business, club or other organisation) associated with it.
+       * - Mixed Address Point. This is a special case where the residential and non residential addresses in the building are essentially the same address. The typical example is a farm house on an active farm. It is important to note that this is a special case. In general a building with both residential and non-residential addresses (e.g. an apartment over a shop) will receive two address points, one commercial and one residential, and hence two Eircodes.
+       *
+       * Buildings can contain multiple address points of type Residential and/or Non-Residential.
+       */
+      address_type?: string;
+      /**
+       * @description The building type can assume one of the following values:
+       *
+       * - Single Occupancy Residential Building. This type of building contains one residential address.
+       * - Multi Occupancy Residential Building. This type of building contains multiple residential addresses.
+       * - Single Occupancy Non-Residential Building. This type of building contains one non-residential address (business, club or other organisation).
+       * - Multi Occupancy Non-Residential Building. This type of building contains multiple non-residential addresses (business, club or other organisation).
+       * - Multi Occupancy Mixed Use Building. This type of building contains multiple residential and non- residential addresses.
+       *
+       * Buildings can also have a more specific address types such as a Hospital, School, Shopping Centre, etc.
+       */
+      building_address_type?: string;
+      /**
+       * @description The building group type can be:
+       *
+       * - Residential Building Group. This type of building group contains buildings with residential addresses only.
+       * - Non-Residential Building Group This type of building group contains buildings with non-residential addresses (business, club or other organisation) only.
+       * - Mixed Building Group. This type of building group contains buildings with residential and non-residential addresses. Can also have a more specific address type such as a Hospital, School, Shopping Centre, etc.
+       *
+       * Building groups can also have a more specific address type such as a Hospital, School, Shopping Centre, etc.
+       */
+      building_group_address_type?: string;
+      /**
+       * @description The locality type can be:
+       *   - Rural Locality. This is generally a townland.
+       *   - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.
+       *   - Shopping District. Shopping Centre.
+       *   - Housing Estate. Residential Housing Estate.
+       *   - Village. Based on Census 2011 population < 1,500.
+       *   - Town. Based on Census 2011 population > 1,500.
+       *   - Urban Area. Wholly within a village/town/city e.g. Rathmines.
+       *   - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.
+       *
+       * Where the locality is also the post town, the type can be:
+       *   - Village. Based on Census 2011 population < 1,500
+       *   - Town. Based on Census 2011 population > 1,500
+       *   - Postal District. Dublin 1 to 24
+       *   - City. Dublin, Cork, Limerick, Galway or Waterford
+       */
+      locality_address_type?: string;
+      /** @description Describes the type of building, e.g. detached, semi-detached, bungalow. */
+      building_type?: string;
+      /**
+       * @description A Yes/No field, indicating whether or not the building is a holiday home.
+       * @enum {undefined}
+       */
+      holiday_home?: "N" | "Y" | "";
+      /**
+       * @description A Yes/No field, indicating whether or not the building is under construction.
+       * @enum {undefined}
+       */
+      under_construction?: "N" | "Y" | "";
+      /**
+       * @description Can be one of:
+       *
+       * - `R` Residential
+       * - `C` Commercial
+       * - `B` Both
+       * - `U` Unknown
+       * @enum {undefined}
+       */
+      building_use?: "R" | "C" | "B" | "U";
+      /**
+       * @description A Yes/No field, indicating whether the building is vacant.
+       * @enum {undefined}
+       */
+      vacant?: "Y" | "N" | "";
+      /**
+       * @description A Yes/No field, indicating whether the organisation is vacant.
+       * @enum {undefined}
+       */
+      org_vacant?: "Y" | "N" | "";
+      /** @description The NACE Code for the Category. */
+      nace_code?: string;
+      /** @description Name of the NACE Category */
+      nace_category?: string;
+      /** @description Name of local authority */
+      local_authority?: string;
+      /**
+       * @description Name of electoral division.
+       *
+       * Electoral Divisions are legally defined administrative areas in Ireland. There are 3,441 Electoral Divisions. Electoral Divisions are sub-divisions of Counties.
+       */
+      ded?: string;
+      /**
+       * @description Unique Identifier for Electoral Divisions 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      ded_id?: string;
+      /**
+       * @description Name of small area.
+       *
+       * Small Area boundaries are sub-divisions of Electoral Divisions and offer a much greater level of detail in terms of analysing data spatially. A normal Small Area is comprised of approximately 80-120 dwellings created by the National Institute of Regional and Spatial Analysis (NIRSA) on behalf of the Ordnance Survey Ireland (OSi) in consultation with the Central Statistics Office (CSO). CSO’s Census 2016 publishes SAPS at the Small Area level. There are 18,641 Small Areas in the ECAD.
+       */
+      small_area?: string;
+      /**
+       * @description Unique Identifier for the Small Area 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      small_area_id?: string;
+      /**
+       * @description Unique Identifier for townland 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      townland_id?: string;
+      /**
+       * @description Name of townland.
+       *
+       * A townland is a small geographical division of land commonly used in Ireland and form the building blocks for higher-level Electoral Divisions. Townland names may not be unique within a County.
+       */
+      townland?: string;
+      /**
+       * @description Unique Identifier for the 7 Gaeltacht areas 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      gaeltacht_id?: string;
+      /** @description An Post sorting information. */
+      postaim_presort_61?: string;
+      /** @description An Post sorting information. */
+      postaim_presort_152?: string;
+      /** @description An Post publicity post zone information. */
+      publicity_post_zone?: string;
+    } & {
+      organisation_id: unknown;
+      address_point_id: unknown;
+      building_id: unknown;
+      building_group_id: unknown;
+      primary_thoroughfare_id: unknown;
+      secondary_thoroughfare_id: unknown;
+      primary_locality_id: unknown;
+      secondary_locality_id: unknown;
+      post_town: unknown;
+      post_town_id: unknown;
+      post_county_id: unknown;
+      nua: unknown;
+      gaeltacht: unknown;
+      address_type: unknown;
+      building_address_type: unknown;
+      building_group_address_type: unknown;
+      locality_address_type: unknown;
+      building_type: unknown;
+      holiday_home: unknown;
+      under_construction: unknown;
+      building_use: unknown;
+      vacant: unknown;
+      org_vacant: unknown;
+      nace_code: unknown;
+      nace_category: unknown;
+      local_authority: unknown;
+      ded: unknown;
+      ded_id: unknown;
+      small_area: unknown;
+      small_area_id: unknown;
+      townland_id: unknown;
+      townland: unknown;
+      gaeltacht_id: unknown;
+      postaim_presort_61: unknown;
+      postaim_presort_152: unknown;
+      publicity_post_zone: unknown;
     };
   };
 }
