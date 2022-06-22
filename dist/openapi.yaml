@@ -5481,7 +5481,9 @@ components:
           type: string
           maxLength: 60
           minLength: 0
-          description: null
+          description: >-
+            A building group is a collection of buildings with a collective
+            name, located on or near the same thoroughfare.
           example: Marrian Terrace
         primary_thoroughfare:
           type: string

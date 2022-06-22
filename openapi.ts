@@ -2374,7 +2374,10 @@ export interface components {
        * @example 22
        */
       building_number: string;
-      /** @example Marrian Terrace */
+      /**
+       * @description A building group is a collection of buildings with a collective name, located on or near the same thoroughfare.
+       * @example Marrian Terrace
+       */
       building_group: string;
       /**
        * @description The name of the thoroughfare on which premises are located. It may appear on a line by itself or be appended to either a sub building or building number.
