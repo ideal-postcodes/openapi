@@ -1,3 +1,10 @@
+# [3.1.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.1...3.1.0-beta.2) (2022-06-22)
+
+
+### Features
+
+* **Ireland:** Add Eircode Address ([1c7e992](https://github.com/ideal-postcodes/openapi/commit/1c7e992bea123e435042394f6b96e6cccad3f088))
+
 # [3.1.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.0.0...3.1.0-beta.1) (2022-06-12)
 
 
