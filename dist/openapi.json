@@ -5483,6 +5483,7 @@
           },
           "line_2": {
             "description": "Address Line 2",
+            "type": "string",
             "maxLength": 200,
             "minLength": 0
           },

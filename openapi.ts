@@ -2327,7 +2327,7 @@ export interface components {
       /** @description Address Line 1 */
       line_1: string;
       /** @description Address Line 2 */
-      line_2: unknown;
+      line_2: string;
       /** @description Address Line 3 */
       line_3: string;
       /** @description Address Line 4 */
