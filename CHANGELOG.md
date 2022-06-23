@@ -1,3 +1,10 @@
+# [3.1.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.2...3.1.0-beta.3) (2022-06-23)
+
+
+### Bug Fixes
+
+* **Eircode:** Add missing type to Eircbase ([0983e6a](https://github.com/ideal-postcodes/openapi/commit/0983e6a2150c4bf1eddafc03658282c308c0999f))
+
 # [3.1.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.1...3.1.0-beta.2) (2022-06-22)
 
 
