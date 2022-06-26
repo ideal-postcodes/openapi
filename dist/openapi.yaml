@@ -5693,51 +5693,51 @@ components:
             ecad_id:
               type: string
               description: Unique 10 digit ECAD ID
-              example: 17000000
+              example: '17000000'
               minLength: 1
-              maxLenth: 10
+              maxLength: 10
             organisation_id:
               type: string
               description: Organisation ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             address_point_id:
               type: string
               description: Address Point ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             building_id:
               type: string
               description: Building ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             building_group_id:
               type: string
               description: Building Group ID
-              example: 10098783
+              example: '10098783'
             primary_thoroughfare_id:
               type: string
               description: Primary Thoroughfare ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             secondary_thoroughfare_id:
               type: string
               description: Secondary Thoroughfare ID
-              example: 10098783
+              example: '10098783'
             primary_locality_id:
               type: string
               description: Primary Locality ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             secondary_locality_id:
               type: string
               description: Secondary Locality ID
-              example: 10098783
+              example: '10098783'
             post_town:
               type: string
               minLength: 0
@@ -5760,13 +5760,13 @@ components:
             post_town_id:
               type: string
               description: Post Town ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             post_county_id:
               type: string
               description: Post County ID
-              example: 10098783
+              example: '10098783'
               maxLength: 10
               minLength: 1
             nua:
