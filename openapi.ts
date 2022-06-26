@@ -2342,8 +2342,6 @@ export interface components {
       line_8: string;
       /** @description Address Line 9 */
       line_9: string;
-      /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
-      ecaf_id: string;
       /**
        * @description The department or division within an organisation. If the department element exists, then the organisation must also exist.
        * @example Accounts Department
@@ -2450,6 +2448,10 @@ export interface components {
     EcafAddress: components["schemas"]["EircBase"] & {
       /** @enum {string} */
       dataset?: "ecaf";
+      /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
+      ecaf_id?: string;
+    } & {
+      ecaf_id: unknown;
     };
     /**
      * Ireland ECAD Address

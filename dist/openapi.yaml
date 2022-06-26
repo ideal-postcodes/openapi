@@ -5318,7 +5318,6 @@ components:
         - language
         - longitude
         - latitude
-        - ecaf_id
         - department
         - organisation
         - sub_building_name
@@ -5416,18 +5415,6 @@ components:
           type: string
           maxLength: 200
           minLength: 0
-        ecaf_id:
-          type: string
-          maxLength: 10
-          minLength: 0
-          description: >-
-            The unique identifier in the ECAF is the `ecaf_id`. This unique
-            identifier allows each address in the ECAF to be uniquely
-            identified. It can also be used as index once the data has been
-            imported into a relational database. This is a numeric field that
-            can store values from 0 to 2,147,483,647. It is represented as a
-            number up to 10 digits long. All other fields in ECAF are
-            alphanumeric.
         department:
           type: string
           maxLength: 60
@@ -5634,6 +5621,8 @@ components:
         Postal Address. English language and Irish language versions are
         available. It is distributed as a flat file, details of data provision
         and updates are provided in section 2.
+      required:
+        - ecaf_id
       allOf:
         - $ref: '#/components/schemas/EircBase'
         - type: object
@@ -5642,6 +5631,18 @@ components:
               type: string
               enum:
                 - ecaf
+            ecaf_id:
+              type: string
+              maxLength: 10
+              minLength: 0
+              description: >-
+                The unique identifier in the ECAF is the `ecaf_id`. This unique
+                identifier allows each address in the ECAF to be uniquely
+                identified. It can also be used as index once the data has been
+                imported into a relational database. This is a numeric field
+                that can store values from 0 to 2,147,483,647. It is represented
+                as a number up to 10 digits long. All other fields in ECAF are
+                alphanumeric.
     EcadAddress:
       title: Ireland ECAD Address
       description: The ECAD contains additional data for each ECAF address.
