@@ -1,3 +1,10 @@
+# [3.1.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.3...3.1.0-beta.4) (2022-06-26)
+
+
+### Bug Fixes
+
+* **ECAD:** Include ID ([4f2a05e](https://github.com/ideal-postcodes/openapi/commit/4f2a05e693a5c30820c032d1c97db819ebdf4018))
+
 # [3.1.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.2...3.1.0-beta.3) (2022-06-23)
 
 
