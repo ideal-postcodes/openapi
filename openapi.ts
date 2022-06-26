@@ -2459,6 +2459,11 @@ export interface components {
       /** @enum {string} */
       dataset?: "ecad";
       /**
+       * @description Unique 10 digit ECAD ID
+       * @example 17000000
+       */
+      ecad_id?: string;
+      /**
        * @description Organisation ID
        * @example 10098783
        */

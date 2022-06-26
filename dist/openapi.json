@@ -5714,6 +5714,13 @@
                   "ecad"
                 ]
               },
+              "ecad_id": {
+                "type": "string",
+                "description": "Unique 10 digit ECAD ID",
+                "example": 17000000,
+                "minLength": 1,
+                "maxLenth": 10
+              },
               "organisation_id": {
                 "type": "string",
                 "description": "Organisation ID",
