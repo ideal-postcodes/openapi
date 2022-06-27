@@ -1,3 +1,11 @@
+# [3.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.4...3.1.0-beta.5) (2022-06-27)
+
+
+### Bug Fixes
+
+* **ECAD:** Remove ECAF ID from ECAD ([2605bee](https://github.com/ideal-postcodes/openapi/commit/2605beefd7eb7d88fa1bda4c32083e4f33dea31e))
+* **ECAD:** Split locality address type ([c3efa32](https://github.com/ideal-postcodes/openapi/commit/c3efa32d850b0759f0d6597873259b81259e9b33))
+
 # [3.1.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.3...3.1.0-beta.4) (2022-06-26)
 
 
