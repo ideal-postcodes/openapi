@@ -5682,7 +5682,8 @@
           "address_type",
           "building_address_type",
           "building_group_address_type",
-          "locality_address_type",
+          "primary_locality_address_type",
+          "secondary_locality_address_type",
           "building_type",
           "holiday_home",
           "under_construction",
@@ -5815,7 +5816,12 @@
                 "minLength": 0,
                 "description": "The building group type can be:\n\n- Residential Building Group. This type of building group contains buildings with residential addresses only.\n- Non-Residential Building Group This type of building group contains buildings with non-residential addresses (business, club or other organisation) only.\n- Mixed Building Group. This type of building group contains buildings with residential and non-residential addresses. Can also have a more specific address type such as a Hospital, School, Shopping Centre, etc.\n\nBuilding groups can also have a more specific address type such as a Hospital, School, Shopping Centre, etc."
               },
-              "locality_address_type": {
+              "primary_locality_address_type": {
+                "type": "string",
+                "minLength": 0,
+                "description": "The locality type can be:\n  - Rural Locality. This is generally a townland.\n  - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.\n  - Shopping District. Shopping Centre.\n  - Housing Estate. Residential Housing Estate.\n  - Village. Based on Census 2011 population < 1,500.\n  - Town. Based on Census 2011 population > 1,500.\n  - Urban Area. Wholly within a village/town/city e.g. Rathmines.\n  - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.\n\nWhere the locality is also the post town, the type can be:\n  - Village. Based on Census 2011 population < 1,500\n  - Town. Based on Census 2011 population > 1,500\n  - Postal District. Dublin 1 to 24\n  - City. Dublin, Cork, Limerick, Galway or Waterford"
+              },
+              "secondary_locality_address_type": {
                 "type": "string",
                 "minLength": 0,
                 "description": "The locality type can be:\n  - Rural Locality. This is generally a townland.\n  - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.\n  - Shopping District. Shopping Centre.\n  - Housing Estate. Residential Housing Estate.\n  - Village. Based on Census 2011 population < 1,500.\n  - Town. Based on Census 2011 population > 1,500.\n  - Urban Area. Wholly within a village/town/city e.g. Rathmines.\n  - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.\n\nWhere the locality is also the post town, the type can be:\n  - Village. Based on Census 2011 population < 1,500\n  - Town. Based on Census 2011 population > 1,500\n  - Postal District. Dublin 1 to 24\n  - City. Dublin, Cork, Limerick, Galway or Waterford"

@@ -5663,7 +5663,8 @@ components:
         - address_type
         - building_address_type
         - building_group_address_type
-        - locality_address_type
+        - primary_locality_address_type
+        - secondary_locality_address_type
         - building_type
         - holiday_home
         - under_construction
@@ -5878,7 +5879,26 @@ components:
 
                 Building groups can also have a more specific address type such
                 as a Hospital, School, Shopping Centre, etc.
-            locality_address_type:
+            primary_locality_address_type:
+              type: string
+              minLength: 0
+              description: |-
+                The locality type can be:
+                  - Rural Locality. This is generally a townland.
+                  - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.
+                  - Shopping District. Shopping Centre.
+                  - Housing Estate. Residential Housing Estate.
+                  - Village. Based on Census 2011 population < 1,500.
+                  - Town. Based on Census 2011 population > 1,500.
+                  - Urban Area. Wholly within a village/town/city e.g. Rathmines.
+                  - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.
+
+                Where the locality is also the post town, the type can be:
+                  - Village. Based on Census 2011 population < 1,500
+                  - Town. Based on Census 2011 population > 1,500
+                  - Postal District. Dublin 1 to 24
+                  - City. Dublin, Cork, Limerick, Galway or Waterford
+            secondary_locality_address_type:
               type: string
               minLength: 0
               description: |-

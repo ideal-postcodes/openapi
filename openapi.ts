@@ -2588,7 +2588,25 @@ export interface components {
        *   - Postal District. Dublin 1 to 24
        *   - City. Dublin, Cork, Limerick, Galway or Waterford
        */
-      locality_address_type?: string;
+      primary_locality_address_type?: string;
+      /**
+       * @description The locality type can be:
+       *   - Rural Locality. This is generally a townland.
+       *   - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.
+       *   - Shopping District. Shopping Centre.
+       *   - Housing Estate. Residential Housing Estate.
+       *   - Village. Based on Census 2011 population < 1,500.
+       *   - Town. Based on Census 2011 population > 1,500.
+       *   - Urban Area. Wholly within a village/town/city e.g. Rathmines.
+       *   - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.
+       *
+       * Where the locality is also the post town, the type can be:
+       *   - Village. Based on Census 2011 population < 1,500
+       *   - Town. Based on Census 2011 population > 1,500
+       *   - Postal District. Dublin 1 to 24
+       *   - City. Dublin, Cork, Limerick, Galway or Waterford
+       */
+      secondary_locality_address_type?: string;
       /** @description Describes the type of building, e.g. detached, semi-detached, bungalow. */
       building_type?: string;
       /**
@@ -2692,7 +2710,8 @@ export interface components {
       address_type: unknown;
       building_address_type: unknown;
       building_group_address_type: unknown;
-      locality_address_type: unknown;
+      primary_locality_address_type: unknown;
+      secondary_locality_address_type: unknown;
       building_type: unknown;
       holiday_home: unknown;
       under_construction: unknown;
