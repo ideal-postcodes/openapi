@@ -1,3 +1,10 @@
+# [3.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.5...3.1.0-beta.6) (2022-06-30)
+
+
+### Bug Fixes
+
+* **Bump:** Increment version ([40d7a02](https://github.com/ideal-postcodes/openapi/commit/40d7a0260be4394f147eaeaca1df93679c3714f4))
+
 # [3.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.4...3.1.0-beta.5) (2022-06-27)
 
 
