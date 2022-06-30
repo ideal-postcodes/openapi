@@ -2646,23 +2646,11 @@ export interface components {
       /** @description Name of local authority */
       local_authority?: string;
       /**
-       * @description Name of electoral division.
-       *
-       * Electoral Divisions are legally defined administrative areas in Ireland. There are 3,441 Electoral Divisions. Electoral Divisions are sub-divisions of Counties.
-       */
-      ded?: string;
-      /**
        * @description Unique Identifier for Electoral Divisions 2017 data.
        *
        * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
        */
       ded_id?: string;
-      /**
-       * @description Name of small area.
-       *
-       * Small Area boundaries are sub-divisions of Electoral Divisions and offer a much greater level of detail in terms of analysing data spatially. A normal Small Area is comprised of approximately 80-120 dwellings created by the National Institute of Regional and Spatial Analysis (NIRSA) on behalf of the Ordnance Survey Ireland (OSi) in consultation with the Central Statistics Office (CSO). CSO’s Census 2016 publishes SAPS at the Small Area level. There are 18,641 Small Areas in the ECAD.
-       */
-      small_area?: string;
       /**
        * @description Unique Identifier for the Small Area 2017 data.
        *
@@ -2675,12 +2663,6 @@ export interface components {
        * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
        */
       townland_id?: string;
-      /**
-       * @description Name of townland.
-       *
-       * A townland is a small geographical division of land commonly used in Ireland and form the building blocks for higher-level Electoral Divisions. Townland names may not be unique within a County.
-       */
-      townland?: string;
       /**
        * @description Unique Identifier for the 7 Gaeltacht areas 2017 data.
        *
@@ -2721,12 +2703,9 @@ export interface components {
       nace_code: unknown;
       nace_category: unknown;
       local_authority: unknown;
-      ded: unknown;
       ded_id: unknown;
-      small_area: unknown;
       small_area_id: unknown;
       townland_id: unknown;
-      townland: unknown;
       gaeltacht_id: unknown;
       postaim_presort_61: unknown;
       postaim_presort_152: unknown;
