@@ -1,3 +1,10 @@
+# [3.1.0-beta.7](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.6...3.1.0-beta.7) (2022-07-10)
+
+
+### Features
+
+* **Keys:** Update to keys API ([cc37080](https://github.com/ideal-postcodes/openapi/commit/cc37080fb7654d0cd9eab3583e3b34f9fed9435c))
+
 # [3.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.5...3.1.0-beta.6) (2022-06-30)
 
 
