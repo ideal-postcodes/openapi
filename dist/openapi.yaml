@@ -3018,6 +3018,71 @@ components:
                 - Jersey
                 - Guernsey
                 - Isle of Man
+    PafAliasAddress:
+      title: PAF Alias Address
+      description: >-
+        PAF Aliases addresses are alternate ways to present an address already
+        found on PAF.
+
+
+        Alias data is information the public chooses to use when addressing
+        mail, but which isn’t actually required for delivery purposes.  The
+        Alias data contains records of alternative address details that are
+        included in the address but not necessarily needed for delivery
+        purposes.
+      allOf:
+        - $ref: '#/components/schemas/PafBase'
+        - type: object
+          properties:
+            dataset:
+              enum:
+                - pafa
+            country_iso:
+              enum:
+                - GBR
+                - IMN
+                - JEY
+                - GGY
+            country_iso_2:
+              enum:
+                - GB
+                - IM
+                - JE
+                - GG
+            language:
+              enum:
+                - en
+            country:
+              enum:
+                - England
+                - Scotland
+                - Wales
+                - Northern Ireland
+                - Jersey
+                - Guernsey
+                - Isle of Man
+    WelshPafAddress:
+      title: Welsh PAF Address
+      description: Welsh language alternative for a PAF Address
+      allOf:
+        - $ref: '#/components/schemas/PafBase'
+        - type: object
+          properties:
+            dataset:
+              enum:
+                - pafw
+            country_iso:
+              enum:
+                - GBR
+            country_iso_2:
+              enum:
+                - GB
+            language:
+              enum:
+                - cy
+            country:
+              enum:
+                - Wales
     PostcodeResponse:
       title: Postcode Response
       type: object
@@ -3033,6 +3098,8 @@ components:
               - $ref: '#/components/schemas/PafAddress'
               - $ref: '#/components/schemas/MrAddress'
               - $ref: '#/components/schemas/NybAddress'
+              - $ref: '#/components/schemas/PafAliasAddress'
+              - $ref: '#/components/schemas/WelshPafAddress'
           description: All addresses listed at the postcode
         code:
           type: integer
@@ -3163,12 +3230,38 @@ components:
           type: string
           enum:
             - Success
+    AvailableContexts:
+      title: Available Contexts
+      type: array
+      description: A list of available contexts for a key
+      items:
+        type: object
+        properties:
+          iso_3:
+            type: string
+            example: USA
+            description: 3 letter ISO code
+          iso_2:
+            type: string
+            example: US
+            description: 2 letter ISO code
+          description:
+            type: string
+            example: United States
+            description: |
+              Country descriptor to show in Address Finder
+          emoji:
+            type: string
+            description: Emoji text icon
+            example: 🇺🇸
+          rgeo:
+            type: boolean
+            example: true
+            description: |
+              Indicates availability of reverse geolocation search
     Context:
       title: Context
       type: string
-      enum:
-        - GBR
-        - USA
       description: Limits search results within a geographical boundary or country.
     NoContext:
       title: No Context Provided
@@ -3182,7 +3275,10 @@ components:
       required:
         - available
         - context
+        - contexts
       properties:
+        contexts:
+          $ref: '#/components/schemas/AvailableContexts'
         context:
           description: >
             Returns current context if it is in the list of available contexts
@@ -3759,71 +3855,6 @@ components:
           type: string
           enum:
             - Success
-    WelshPafAddress:
-      title: Welsh PAF Address
-      description: Welsh language alternative for a PAF Address
-      allOf:
-        - $ref: '#/components/schemas/PafBase'
-        - type: object
-          properties:
-            dataset:
-              enum:
-                - pafw
-            country_iso:
-              enum:
-                - GBR
-            country_iso_2:
-              enum:
-                - GB
-            language:
-              enum:
-                - cy
-            country:
-              enum:
-                - Wales
-    PafAliasAddress:
-      title: PAF Alias Address
-      description: >-
-        PAF Aliases addresses are alternate ways to present an address already
-        found on PAF.
-
-
-        Alias data is information the public chooses to use when addressing
-        mail, but which isn’t actually required for delivery purposes.  The
-        Alias data contains records of alternative address details that are
-        included in the address but not necessarily needed for delivery
-        purposes.
-      allOf:
-        - $ref: '#/components/schemas/PafBase'
-        - type: object
-          properties:
-            dataset:
-              enum:
-                - pafa
-            country_iso:
-              enum:
-                - GBR
-                - IMN
-                - JEY
-                - GGY
-            country_iso_2:
-              enum:
-                - GB
-                - IM
-                - JE
-                - GG
-            language:
-              enum:
-                - en
-            country:
-              enum:
-                - England
-                - Scotland
-                - Wales
-                - Northern Ireland
-                - Jersey
-                - Guernsey
-                - Isle of Man
     Dataset:
       title: Dataset
       type: string

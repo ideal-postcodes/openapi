@@ -749,6 +749,47 @@ export interface components {
         | "Guernsey"
         | "Isle of Man";
     };
+    /**
+     * PAF Alias Address
+     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
+     *
+     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
+     */
+    PafAliasAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafa";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * Welsh PAF Address
+     * @description Welsh language alternative for a PAF Address
+     */
+    WelshPafAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafw";
+      /** @enum {undefined} */
+      country_iso?: "GBR";
+      /** @enum {undefined} */
+      country_iso_2?: "GB";
+      /** @enum {undefined} */
+      language?: "cy";
+      /** @enum {undefined} */
+      country?: "Wales";
+    };
     /** Postcode Response */
     PostcodeResponse: {
       /** @description All addresses listed at the postcode */
@@ -756,6 +797,8 @@ export interface components {
         | components["schemas"]["PafAddress"]
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
+        | components["schemas"]["PafAliasAddress"]
+        | components["schemas"]["WelshPafAddress"]
       )[];
       /**
        * Format: int32
@@ -836,11 +879,43 @@ export interface components {
       message: "Success";
     };
     /**
+     * Available Contexts
+     * @description A list of available contexts for a key
+     */
+    AvailableContexts: {
+      /**
+       * @description 3 letter ISO code
+       * @example USA
+       */
+      iso_3?: string;
+      /**
+       * @description 2 letter ISO code
+       * @example US
+       */
+      iso_2?: string;
+      /**
+       * @description Country descriptor to show in Address Finder
+       *
+       * @example United States
+       */
+      description?: string;
+      /**
+       * @description Emoji text icon
+       * @example 🇺🇸
+       */
+      emoji?: string;
+      /**
+       * @description Indicates availability of reverse geolocation search
+       *
+       * @example true
+       */
+      rgeo?: boolean;
+    }[];
+    /**
      * Context
      * @description Limits search results within a geographical boundary or country.
-     * @enum {string}
      */
-    Context: "GBR" | "USA";
+    Context: string;
     /**
      * No Context Provided
      * @description Empty string if no context is provided or key check has failed
@@ -849,6 +924,7 @@ export interface components {
     NoContext: "";
     /** Key */
     ApiKey: {
+      contexts: components["schemas"]["AvailableContexts"];
       /** @description Returns current context if it is in the list of available contexts for this key. */
       context:
         | components["schemas"]["Context"]
@@ -1266,47 +1342,6 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
-    };
-    /**
-     * Welsh PAF Address
-     * @description Welsh language alternative for a PAF Address
-     */
-    WelshPafAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "pafw";
-      /** @enum {undefined} */
-      country_iso?: "GBR";
-      /** @enum {undefined} */
-      country_iso_2?: "GB";
-      /** @enum {undefined} */
-      language?: "cy";
-      /** @enum {undefined} */
-      country?: "Wales";
-    };
-    /**
-     * PAF Alias Address
-     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
-     *
-     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
-     */
-    PafAliasAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "pafa";
-      /** @enum {undefined} */
-      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
-      /** @enum {undefined} */
-      country_iso_2?: "GB" | "IM" | "JE" | "GG";
-      /** @enum {undefined} */
-      language?: "en";
-      /** @enum {undefined} */
-      country?:
-        | "England"
-        | "Scotland"
-        | "Wales"
-        | "Northern Ireland"
-        | "Jersey"
-        | "Guernsey"
-        | "Isle of Man";
     };
     /**
      * Dataset
