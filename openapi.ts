@@ -1352,8 +1352,8 @@ export interface components {
      *   - `nyb` (GBR) Not Yet Built File
      *   - `pafa` (GBR) Alias File
      *   - `pafw` (GBR) Welsh File
-     *   - `ecaf` (IRE) Eircode ECAF
-     *   - `ecad` (IRE) Eircode ECAD
+     *   - `ecaf` (IRL) Eircode ECAF
+     *   - `ecad` (IRL) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
      * @enum {string}
      */
