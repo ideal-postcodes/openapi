@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/ideal-postcodes/openapi/compare/3.0.0...3.1.0) (2022-07-19)
+
+
+### Features
+
+* **Attributes:** Add Language, Country and County Codes ([#90](https://github.com/ideal-postcodes/openapi/issues/90)) ([842547e](https://github.com/ideal-postcodes/openapi/commit/842547e13419385cb4a4100567ea32b71d28c789))
+
 # [3.1.0-beta.7](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.6...3.1.0-beta.7) (2022-07-10)
 
 
