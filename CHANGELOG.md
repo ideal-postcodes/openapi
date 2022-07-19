@@ -1,3 +1,53 @@
+# [3.1.0-beta.7](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.6...3.1.0-beta.7) (2022-07-10)
+
+
+### Features
+
+* **Keys:** Update to keys API ([cc37080](https://github.com/ideal-postcodes/openapi/commit/cc37080fb7654d0cd9eab3583e3b34f9fed9435c))
+
+# [3.1.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.5...3.1.0-beta.6) (2022-06-30)
+
+
+### Bug Fixes
+
+* **Bump:** Increment version ([40d7a02](https://github.com/ideal-postcodes/openapi/commit/40d7a0260be4394f147eaeaca1df93679c3714f4))
+
+# [3.1.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.4...3.1.0-beta.5) (2022-06-27)
+
+
+### Bug Fixes
+
+* **ECAD:** Remove ECAF ID from ECAD ([2605bee](https://github.com/ideal-postcodes/openapi/commit/2605beefd7eb7d88fa1bda4c32083e4f33dea31e))
+* **ECAD:** Split locality address type ([c3efa32](https://github.com/ideal-postcodes/openapi/commit/c3efa32d850b0759f0d6597873259b81259e9b33))
+
+# [3.1.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.3...3.1.0-beta.4) (2022-06-26)
+
+
+### Bug Fixes
+
+* **ECAD:** Include ID ([4f2a05e](https://github.com/ideal-postcodes/openapi/commit/4f2a05e693a5c30820c032d1c97db819ebdf4018))
+
+# [3.1.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.2...3.1.0-beta.3) (2022-06-23)
+
+
+### Bug Fixes
+
+* **Eircode:** Add missing type to Eircbase ([0983e6a](https://github.com/ideal-postcodes/openapi/commit/0983e6a2150c4bf1eddafc03658282c308c0999f))
+
+# [3.1.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.1.0-beta.1...3.1.0-beta.2) (2022-06-22)
+
+
+### Features
+
+* **Ireland:** Add Eircode Address ([1c7e992](https://github.com/ideal-postcodes/openapi/commit/1c7e992bea123e435042394f6b96e6cccad3f088))
+
+# [3.1.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.0.0...3.1.0-beta.1) (2022-06-12)
+
+
+### Features
+
+* **Attributes:** Add Language, Country and County Codes ([3185f34](https://github.com/ideal-postcodes/openapi/commit/3185f343235c45929e7a28fc68437285dcf696bc))
+
 # [3.0.0](https://github.com/ideal-postcodes/openapi/compare/2.1.1...3.0.0) (2022-06-07)
 
 

@@ -322,12 +322,14 @@ export interface paths {
 
 export interface components {
   schemas: {
+    ecaf: components["schemas"]["EcafAddress"];
+    ecad: components["schemas"]["EcadAddress"];
     /**
      * Postcode
      * @description Correctly formatted postcode. Capitalised and spaced.
      * @example SW1A 2AA
      */
-    Postcode: string;
+    paf_postcode: string;
     /**
      * API Key
      * @description Your API Key. Typically beings `ak_`.
@@ -355,261 +357,347 @@ export interface components {
      */
     PageParam: number;
     /**
-     * Postcode Outward
-     * @description The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or ‘B23’.
-     * @example SW1A
-     */
-    PostcodeOutward: string;
-    /**
-     * Postcode Inward
-     * @description The second part of a postcode is known as the inward Code. e.g.  The inward code of ID1 1QD is 1QD. This part is one number followed by two letters.  The number identifies the sector in the postal district.  The letters then define one or more properties in that sector.
-     * @example 2AA
-     */
-    PostcodeInward: string;
-    /**
-     * Post Town
-     * @description A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.
-     * @example London
-     */
-    PostTown: string;
-    /**
-     * Dependant Locality
-     * @description When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three.
-     */
-    DependantLocality: string;
-    /**
-     * Double Dependant Locality
-     * @description Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality.
-     */
-    DoubleDependantLocality: string;
-    /**
-     * Thoroughfare
-     * @description Also known as the street or road name. In general each Thoroughfare Name will have a separate Postcode. Longer Thoroughfares with high number ranges often have multiple Postcodes covering the entire length of the road, with breaks at suitable points e.g. junctions or natural breaks in the road.
-     * @example Downing Street
-     */
-    Thoroughfare: string;
-    /**
-     * Dependant Thoroughfare
-     * @description Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point.
-     */
-    DependantThoroughfare: string;
-    /**
-     * Building Number
-     * @description Number to identify premise on a thoroughfare or dependant thoroughfare.
-     * @example 10
-     */
-    BuildingNumber: string;
-    /**
-     * Building Name
-     * @description Name of residential or commercial premise. E.g. The Manor, 1-2, A, 12A, K, Victoria House
-     */
-    BuildingName: string;
-    /**
-     * Sub-Building Name
-     * @description When a premise is split into individual units such as flats, apartments or business units. Cannot be present without either building_name or building_number. E.g. Flat 1, A, 10B
-     */
-    SubBuildingName: string;
-    /**
-     * PO Box
-     * @description When the PO Box Number field is populated it will contain PO BOX nnnnnn where n represents the PO Box number. Note that the PO Box details can occasionally consist of a combination of numbers and letters. PO Box Numbers are only allocated to Large Users.
-     * @example HK860
-     */
-    POBox: string;
-    /**
-     * Department Name
-     * @description Used to supplment Organisation Name to identify a deparment within the organisation.
-     */
-    DepartmentName: string;
-    /**
-     * Organisation Name
-     * @description Used to supplment Organisation Name to identify a deparment within the organisation.
-     * @example Prime Minister &amp; First Lord Of The Treasury
-     */
-    OrganisationName: string;
-    /**
-     * Unique Delivery Point Reference Number (UDPRN)
-     * Format: int32
-     * @description UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail assigns a unique UDPRN code for each premise on PAF. Simple, unique reference number for each Delivery Point. Unlikely to be reused when an address expires. Up to 8-digit numeric code. A new UDPRN is automatically assigned to each new Delivery Point added to PAF.
-     * @example 23747771
-     */
-    UDPRN: number;
-    /**
-     * UMPRN
-     * @description A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant. 8-character numeric code. Note: this will be an empty string `""` when not used for legacy reasons
-     */
-    UMPRN: string | number;
-    /**
-     * Postcode Type
-     * @description This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points. On average there are 15 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode.
-     * @example S
-     * @enum {string}
-     */
-    PostcodeType: "S" | "L";
-    /**
-     * Small User Organisation Indicator
-     * @description Small User Organisation Indicator can have the values 'Y' or space. A value of 'Y' indicates that a Small User Organisation is present at this address.
-     */
-    SuOrganisationIndicator: string;
-    /**
-     * Delivery Point Suffix
-     * @description A unique Royal Mail 2-character code (the first numeric & the second alphabetical), which, when added to the Postcode, enables each live Delivery Point to be uniquely identified. Once the Delivery Point is deleted from PAF the DPS may be reused (although they aren’t reused until all remaining Delivery Points in the range have been allocated). The DPS for a Large User is always '1A' as each Large User has its own Postcode. E.g. 2B
-     * @example 1A
-     */
-    DeliveryPointSuffix: string;
-    /**
-     * Line 1
-     * @description First Address Line. Often contains premise and thoroughfare information. In the case of a commercial premise, the first line is always the full name of the registered organisation. Never empty.
-     * @example Prime Minister &amp; First Lord of Treasury
-     */
-    Line1: string;
-    /**
-     * Line 2
-     * @description Second Address Line. Often contains thoroughfare and locality information. May be empty.
-     * @example 10 Downing Street
-     */
-    Line2: string;
-    /**
-     * Line 3
-     * @description Third address line. May be empty.
-     */
-    Line3: string;
-    /**
-     * Premise
-     * @description A pre-computed string which sensibly combines building_number, building_name and sub_building_name. building_number, building_name and sub_building_name represent raw data from Royal Mail's and can be difficult to parse if you are unaware of how the Postcode Address File premise fields work together. For this reason, we also provide a pre-computed premise field which intelligently gathers these points into a single, simple premise string. This field is ideal if you want to pull premise information and thoroughfare information separately instead of using our address lines data.
-     * @example 10
-     */
-    Premise: string;
-    /**
-     * Country
-     * @description The country for which the postcode belongs to. May be empty for a small number of addresses.
-     * @example England
-     */
-    Country: string;
-    /**
-     * County
-     * @description Since postal, administrative or traditional counties may not apply to some addresses, the county field is designed to return whatever county data is available. Normally, the postal county is returned. If this is not present, the county field will fall back to the administrative county. If the administrative county is also not present, the county field will fall back to the traditional county. May be empty in cases where no administrative, postal or traditional county present.
-     * @example London
-     */
-    County: string;
-    /**
-     * Administrative County
-     * @description The current administrative county to which the postcode has been assigned. A Unitary Authority name, where one is present. If there is no Unitary Authority, the County name is used. This information is not static, because County boundaries may change due to administrative changes. Data source: ONS. May be empty.
-     */
-    AdministrativeCounty: string;
-    /**
-     * Postal County
-     * @description Postal counties were used for the distribution of mail before the Postcode system was introduced in the 1970s. The Former Postal County was the Administrative County at the time. This data rarely changes. Data source: Royal Mail. May be empty.
-     * @example London
-     */
-    PostalCounty: string;
-    /**
-     * Traditional County
-     * @description Traditional counties are provided by the Association of British Counties. It’s historical data, and can date from the 1800s. Data source: Royal Mail. May be empty.
-     * @example Greater London
-     */
-    TraditionalCounty: string;
-    /**
-     * District
-     * @description The current district/unitary authority to which the postcode has been assigned. Data source: ONS
-     * @example Westminster
-     */
-    District: string;
-    /**
-     * Ward
-     * @description The current administrative/electoral area to which the postcode has been assigned. May be empty for a small number of addresses. Data source: ONS
-     * @example St. James'
-     */
-    Ward: string;
-    /**
-     * Longitude
-     * @description The longitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. -0.1283983 Returns an empty string if no location data is available.  Otherwise, a number is returned
-     */
-    Longitude: string | number;
-    /**
-     * Longitude
-     * @description The latitude of the postcode (WGS84/ETRS89). Accurate at the postcode level Can be a positive or negative decimal. E.g. 51.5083983 Returns an empty string if no location data is available.  Otherwise a number is returned.
-     */
-    Latitude: string | number;
-    /**
-     * Eastings
-     * @description Eastings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Eastings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 550458 Returns an empty string if no location data is available. Otherwise a number is returned
-     */
-    Eastings: string | number;
-    /**
-     * Eastings
-     * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid) Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system) Metres from origin. E.g. 180458 Returns an empty string if no location data is available. Otherwise a number is returned
-     */
-    Northings: string | number;
-    /**
-     * Unique Delivery Point Reference Number (UDPRN)
-     * @description UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property. See our UPRN guide for more information. Up to 12 digits in length. Multiple Residence premises currently share the same UPRN as the parent premise. May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string "" in these instances. Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer (Number.MAX_SAFE_INTEGER) in most browsers causing this datapoint to be corrupted. Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value.
-     */
-    UPRN: string;
-    /**
      * ID
-     * @description Global unique internally generated identifier for an address.
+     * @description Global unique internally generated identifier for an address
      * @example paf_8387729
      */
     ID: string;
     /**
      * Dataset
      * @description Indicates the provenance of an address
-     * @enum {string}
      */
-    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps";
+    paf_dataset: string;
     /**
-     * ISO Country Code
-     * @description 3 letter ISO country code
+     * ISO Country Code (3)
+     * @description   3 letter country code (ISO 3166-1)
+     */
+    paf_country_iso: string;
+    /**
+     * ISO Country Code (2)
+     * @description  2 letter country code (ISO 3166-1)
+     */
+    paf_country_iso_2: string;
+    /**
+     * Country
+     * @description   Full country names (ISO 3166)
+     *
+     * @example England
+     */
+    paf_country: string;
+    /**
+     * Language
+     * @description Language represented by 2 letter ISO Code (639-1)
+     */
+    paf_language: string;
+    /**
+     * Line 1
+     * @description First Address Line. Often contains premise and thoroughfare information. In the case of a commercial premise, the first line is always the full name of the registered organisation. Never empty.
+     * @example Prime Minister &amp; First Lord of Treasury
+     */
+    paf_line1: string;
+    /**
+     * Line 2
+     * @description Second Address Line. Often contains thoroughfare and locality information. May be empty
+     * @example 10 Downing Street
+     */
+    paf_line2: string;
+    /**
+     * Line 3
+     * @description Third address line. May be empty.
+     */
+    paf_line3: string;
+    /**
+     * Post Town
+     * @description A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.
+     * @example London
+     */
+    paf_post_town: string;
+    /**
+     * County
+     * @description Since postal, administrative or traditional counties may not apply to some addresses, the county field is designed to return whatever county data is available. Normally, the postal county is returned. If this is not present, the county field will fall back to the administrative county. If the administrative county is also not present, the county field will fall back to the traditional county. May be empty in cases where no administrative, postal or traditional county present.
+     * @example London
+     */
+    paf_county: string;
+    /**
+     * Unique Property Reference Number
+     * @description UPRN stands for Unique Property Reference Number and is maintained by the Ordnance Survey (OS). Local governments in the UK have allocated a unique number for each land or property.
+     *
+     * Up to 12 digits in length.
+     *
+     * Multiple Residence premises currently share the same UPRN as the parent premise.
+     *
+     * May not be available for a small number of Great Britain addresses due to longer update cycles for Ordnance Survey's AddressBase datasets. Returns empty string "" in these instances.
+     *
+     * Although UPRN takes an integer format, we encode and transmit this data as strings. As a 12 digit number, the UPRN can exceed the maximum safe integer `Number.MAX_SAFE_INTEGER` in most browsers causing this datapoint to be corrupted.
+     *
+     * Take special care when storing UPRN. As a 12 digit identifier, you will need 64 bits to encode every possible UPRN value. This means applications like Excel will corrupt cells containing UPRN values.
+     */
+    paf_uprn: string;
+    /**
+     * Unique Delivery Point Reference Number (UDPRN)
+     * Format: int32
+     * @description UDPRN stands for ‘Unique Delivery Point Reference Number’. Royal Mail assigns a unique UDPRN code for each premise on PAF. Simple, unique reference number for each Delivery Point. Unlikely to be reused when an address expires.
+     *
+     * Up to 8-digit numeric code.
+     *
+     * A new UDPRN is automatically assigned to each new Delivery Point added to PAF.
+     * @example 23747771
+     */
+    paf_udprn: number;
+    /**
+     * UMPRN
+     * @description A small minority of individual premises (as identified by a UDPRN) may have multiple occupants behind the same letterbox. These are known as Multiple Residence occupants and can be queried via the Multiple Residence dataset. Simple, unique reference number for each Multiple Residence occupant.
+     *
+     * Note: this will be an empty string `""` when not used.
+     */
+    paf_umprn: string | number;
+    /**
+     * Postcode Outward
+     * @description The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. ‘PO1’, ‘SW1A’ or ‘B23’.
+     * @example SW1A
+     */
+    paf_postcode_outward: string;
+    /**
+     * Postcode Inward
+     * @description The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.
+     *
+     * The number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.
+     * @example 2AA
+     */
+    paf_postcode_inward: string;
+    /**
+     * Dependant Locality
+     * @description When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three.
+     */
+    paf_dependant_locality: string;
+    /**
+     * Double Dependant Locality
+     * @description Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality.
+     */
+    paf_double_dependant_locality: string;
+    /**
+     * Thoroughfare
+     * @description Also known as the street or road name. In general each Thoroughfare Name will have a separate Postcode. Longer Thoroughfares with high number ranges often have multiple Postcodes covering the entire length of the road, with breaks at suitable points e.g. junctions or natural breaks in the road.
+     * @example Downing Street
+     */
+    paf_thoroughfare: string;
+    /**
+     * Dependant Thoroughfare
+     * @description Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point.
+     */
+    paf_dependant_thoroughfare: string;
+    /**
+     * Building Number
+     * @description Number to identify premise on a thoroughfare or dependant thoroughfare.
+     * @example 10
+     */
+    paf_building_number: string;
+    /**
+     * Building Name
+     * @description Name of residential or commercial premise.
+     *
+     * Examples:
+     *   - The Manor
+     *   - 1-2
+     *   - A
+     *   - 12A
+     *   - K
+     *   - Victoria House
+     */
+    paf_building_name: string;
+    /**
+     * Sub-Building Name
+     * @description When a premise is split into individual units such as flats, apartments or business units. Cannot be present without either building_name or building_number. E.g. Flat 1, A, 10B
+     * @example Flat 1
+     */
+    paf_sub_building_name: string;
+    /**
+     * PO Box
+     * @description When the PO Box Number field is populated it will contain PO BOX nnnnnn where n represents the PO Box number. Note that the PO Box details can occasionally consist of a combination of numbers and letters. PO Box Numbers are only allocated to Large Users.
+     * @example 100
+     */
+    paf_pobox: string;
+    /**
+     * Department Name
+     * @description Used to supplment Organisation Name to identify a deparment within the organisation.
+     */
+    paf_department_name: string;
+    /**
+     * Organisation Name
+     * @description Used to supplment Organisation Name to identify a deparment within the organisation
+     * @example Prime Minister &amp; First Lord Of The Treasury
+     */
+    paf_organisation_name: string;
+    /**
+     * Postcode Type
+     * @description This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points.
+     *
+     * On average there are 15 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode.
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM";
+    paf_postcode_type: "S" | "L";
+    /**
+     * Small User Organisation Indicator
+     * @description Small User Organisation Indicator can have the values 'Y' or space. A value of 'Y' indicates that a Small User Organisation is present at this address.
+     * @example Y
+     */
+    paf_su_organisation_indicator: string;
+    /**
+     * Delivery Point Suffix
+     * @description A unique Royal Mail 2-character code (the first numeric & the second alphabetical), which, when added to the Postcode, enables each live Delivery Point to be uniquely identified. Once the Delivery Point is deleted from PAF the DPS may be reused (although they aren’t reused until all remaining Delivery Points in the range have been allocated). The DPS for a Large User is always '1A' as each Large User has its own Postcode.
+     * @example 1A
+     */
+    paf_delivery_point_suffix: string;
+    /**
+     * Premise
+     * @description A pre-computed string which sensibly combines building_number, building_name and sub_building_name. building_number, building_name and sub_building_name represent raw data from Royal Mail's and can be difficult to parse if you are unaware of how the Postcode Address File premise fields work together. For this reason, we also provide a pre-computed premise field which intelligently gathers these points into a single, simple premise string. This field is ideal if you want to pull premise information and thoroughfare information separately instead of using our address lines data.
+     * @example 10
+     */
+    paf_premise: string;
+    /**
+     * Administrative County
+     * @description The current administrative county to which the postcode has been assigned.
+     *
+     * A Unitary Authority name, where one is present. If there is no Unitary Authority, the County name is used. This information is not static, because County boundaries may change due to administrative changes. Data
+     *
+     * source: ONS
+     */
+    paf_administrative_county: string;
+    /**
+     * Postal County
+     * @description Postal counties were used for the distribution of mail before the Postcode system was introduced in the 1970s. The Former Postal County was the Administrative County at the time. This data rarely changes. May be empty.
+     * @example London
+     */
+    paf_postal_county: string;
+    /**
+     * Traditional County
+     * @description Traditional counties are provided by the Association of British Counties. It is historical data, and can date from the 1800s. May be empty.
+     * @example Greater London
+     */
+    paf_traditional_county: string;
+    /**
+     * District
+     * @description The current district/unitary authority to which the postcode has been assigned.
+     * @example Westminster
+     */
+    paf_district: string;
+    /**
+     * Ward
+     * @description The current administrative/electoral area to which the postcode has been assigned. May be empty for a small number of addresses.
+     * @example St. James'
+     */
+    paf_ward: string;
+    /**
+     * Longitude
+     * @description The longitude of the postcode (WGS84/ETRS89).
+     *
+     * Can be a positive or negative decimal. E.g. -0.1283983
+     *
+     * Returns an empty string if no location data is available.
+     */
+    Longitude: string | number;
+    /**
+     * Longitude
+     * @description The latitude of the postcode (WGS84/ETRS89).
+     *
+     * Can be a positive or negative decimal. E.g. `51.5083983`.
+     *
+     * Returns an empty string if no location data is available.
+     */
+    Latitude: string | number;
+    /**
+     * Eastings
+     * @description Eastings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid).
+     *
+     * Northern Ireland Eastings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system).
+     *
+     * Metres from origin. E.g. `550458`
+     *
+     * Returns an empty string if no location data is available. Otherwise a number is returned.
+     */
+    Eastings: string | number;
+    /**
+     * Northings
+     * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+     *
+     * Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)
+     *
+     * Metres from origin. E.g. `180458`
+     *
+     * Returns an empty string if no location data is available. Otherwise a number is returned
+     */
+    Northings: string | number;
+    PafBase: {
+      id: components["schemas"]["ID"];
+      dataset: components["schemas"]["paf_dataset"];
+      country_iso: components["schemas"]["paf_country_iso"];
+      country_iso_2: components["schemas"]["paf_country_iso_2"];
+      country: components["schemas"]["paf_country"];
+      language: components["schemas"]["paf_language"];
+      line_1: components["schemas"]["paf_line1"];
+      line_2: components["schemas"]["paf_line2"];
+      line_3: components["schemas"]["paf_line3"];
+      post_town: components["schemas"]["paf_post_town"];
+      postcode: components["schemas"]["paf_postcode"];
+      county: components["schemas"]["paf_county"];
+      /**
+       * County Code
+       * @description Short code representing the county or province. May be empty (`""`)
+       */
+      county_code: string;
+      uprn: components["schemas"]["paf_uprn"];
+      udprn: components["schemas"]["paf_udprn"];
+      umprn: components["schemas"]["paf_umprn"];
+      postcode_outward: components["schemas"]["paf_postcode_outward"];
+      postcode_inward: components["schemas"]["paf_postcode_inward"];
+      dependant_locality: components["schemas"]["paf_dependant_locality"];
+      double_dependant_locality: components["schemas"]["paf_double_dependant_locality"];
+      thoroughfare: components["schemas"]["paf_thoroughfare"];
+      dependant_thoroughfare: components["schemas"]["paf_dependant_thoroughfare"];
+      building_number: components["schemas"]["paf_building_number"];
+      building_name: components["schemas"]["paf_building_name"];
+      sub_building_name: components["schemas"]["paf_sub_building_name"];
+      po_box: components["schemas"]["paf_pobox"];
+      department_name: components["schemas"]["paf_department_name"];
+      organisation_name: components["schemas"]["paf_organisation_name"];
+      postcode_type: components["schemas"]["paf_postcode_type"];
+      su_organisation_indicator: components["schemas"]["paf_su_organisation_indicator"];
+      delivery_point_suffix: components["schemas"]["paf_delivery_point_suffix"];
+      premise: components["schemas"]["paf_premise"];
+      administrative_county: components["schemas"]["paf_administrative_county"];
+      postal_county: components["schemas"]["paf_postal_county"];
+      traditional_county: components["schemas"]["paf_traditional_county"];
+      district: components["schemas"]["paf_district"];
+      ward: components["schemas"]["paf_ward"];
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      eastings: components["schemas"]["Eastings"];
+      northings: components["schemas"]["Northings"];
+    };
     /**
      * Postcode Address File Address
      * @description Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.
      *
      * A PAF Address represents a deliverable endpoint.
      */
-    PafAddress: {
-      postcode: components["schemas"]["Postcode"];
-      postcode_outward: components["schemas"]["PostcodeOutward"];
-      postcode_inward: components["schemas"]["PostcodeInward"];
-      post_town: components["schemas"]["PostTown"];
-      dependant_locality: components["schemas"]["DependantLocality"];
-      double_dependant_locality: components["schemas"]["DoubleDependantLocality"];
-      thoroughfare: components["schemas"]["Thoroughfare"];
-      dependant_thoroughfare: components["schemas"]["DependantThoroughfare"];
-      building_number: components["schemas"]["BuildingNumber"];
-      building_name: components["schemas"]["BuildingName"];
-      sub_building_name: components["schemas"]["SubBuildingName"];
-      po_box: components["schemas"]["POBox"];
-      department_name: components["schemas"]["DepartmentName"];
-      organisation_name: components["schemas"]["OrganisationName"];
-      udprn: components["schemas"]["UDPRN"];
-      umprn: components["schemas"]["UMPRN"];
-      postcode_type: components["schemas"]["PostcodeType"];
-      su_organisation_indicator: components["schemas"]["SuOrganisationIndicator"];
-      delivery_point_suffix: components["schemas"]["DeliveryPointSuffix"];
-      line_1: components["schemas"]["Line1"];
-      line_2: components["schemas"]["Line2"];
-      line_3: components["schemas"]["Line3"];
-      premise: components["schemas"]["Premise"];
-      country: components["schemas"]["Country"];
-      county: components["schemas"]["County"];
-      administrative_county: components["schemas"]["AdministrativeCounty"];
-      postal_county: components["schemas"]["PostalCounty"];
-      traditional_county: components["schemas"]["TraditionalCounty"];
-      district: components["schemas"]["District"];
-      ward: components["schemas"]["Ward"];
-      longitude: components["schemas"]["Longitude"];
-      latitude: components["schemas"]["Latitude"];
-      eastings: components["schemas"]["Eastings"];
-      northings: components["schemas"]["Northings"];
-      uprn: components["schemas"]["UPRN"];
-      id: components["schemas"]["ID"];
+    PafAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
-      dataset: components["schemas"]["Dataset"];
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {string} */
+      dataset?: "paf";
       /** @enum {undefined} */
-      country_iso: components["schemas"]["CountryISO"];
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
     };
     /**
      * Multiple Residence Address
@@ -617,9 +705,24 @@ export interface components {
      *
      * A Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.
      */
-    MrAddress: components["schemas"]["PafAddress"] & {
+    MrAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
-      dataset?: components["schemas"]["Dataset"];
+      dataset?: "mr";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
     };
     /**
      * Not Yet Built Address
@@ -627,9 +730,65 @@ export interface components {
      *
      * This dataset is updated by Royal Mail on a monthly cadence.
      */
-    NybAddress: components["schemas"]["PafAddress"] & {
+    NybAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
-      dataset?: components["schemas"]["Dataset"];
+      dataset?: "nyb";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * PAF Alias Address
+     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
+     *
+     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
+     */
+    PafAliasAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafa";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * Welsh PAF Address
+     * @description Welsh language alternative for a PAF Address
+     */
+    WelshPafAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafw";
+      /** @enum {undefined} */
+      country_iso?: "GBR";
+      /** @enum {undefined} */
+      country_iso_2?: "GB";
+      /** @enum {undefined} */
+      language?: "cy";
+      /** @enum {undefined} */
+      country?: "Wales";
     };
     /** Postcode Response */
     PostcodeResponse: {
@@ -638,6 +797,8 @@ export interface components {
         | components["schemas"]["PafAddress"]
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
+        | components["schemas"]["PafAliasAddress"]
+        | components["schemas"]["WelshPafAddress"]
       )[];
       /**
        * Format: int32
@@ -646,6 +807,40 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
+    };
+    /** Basic Error Response */
+    ErrorResponse: {
+      /**
+       * Format: int32
+       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
+       */
+      code: number;
+      /** @description Human readable error message supplied with every error response. */
+      message: string;
+    };
+    /** Bad Request Error Response */
+    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `400X` type error response code
+       */
+      code: number;
+      /** @description Bad request error description */
+      message: string;
+      errors?: {
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example should have required property 'type'
+         */
+        message: string;
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example .query.type
+         */
+        path: string;
+        /** @example required.openapi.validation */
+        errorCode?: string;
+      }[];
     };
     /** Postcode Not Found */
     PostcodeNotFoundResponse: {
@@ -672,16 +867,6 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
-    /** Basic Error Response */
-    ErrorResponse: {
-      /**
-       * Format: int32
-       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
-       */
-      code: number;
-      /** @description Human readable error message supplied with every error response. */
-      message: string;
-    };
     /** UDPRN Response */
     UMPRNResponse: {
       result: components["schemas"]["MrAddress"];
@@ -694,11 +879,43 @@ export interface components {
       message: "Success";
     };
     /**
+     * Available Contexts
+     * @description A list of available contexts for a key
+     */
+    AvailableContexts: {
+      /**
+       * @description 3 letter ISO code
+       * @example USA
+       */
+      iso_3?: string;
+      /**
+       * @description 2 letter ISO code
+       * @example US
+       */
+      iso_2?: string;
+      /**
+       * @description Country descriptor to show in Address Finder
+       *
+       * @example United States
+       */
+      description?: string;
+      /**
+       * @description Emoji text icon
+       * @example 🇺🇸
+       */
+      emoji?: string;
+      /**
+       * @description Indicates availability of reverse geolocation search
+       *
+       * @example true
+       */
+      rgeo?: boolean;
+    }[];
+    /**
      * Context
      * @description Limits search results within a geographical boundary or country.
-     * @enum {string}
      */
-    Context: "GBR" | "USA";
+    Context: string;
     /**
      * No Context Provided
      * @description Empty string if no context is provided or key check has failed
@@ -707,6 +924,7 @@ export interface components {
     NoContext: "";
     /** Key */
     ApiKey: {
+      contexts: components["schemas"]["AvailableContexts"];
       /** @description Returns current context if it is in the list of available contexts for this key. */
       context:
         | components["schemas"]["Context"]
@@ -1089,7 +1307,7 @@ export interface components {
        * @example Flat 6, 12 Roskear, Camborne, TR14
        */
       suggestion: string;
-      udprn: components["schemas"]["UDPRN"];
+      udprn: components["schemas"]["paf_udprn"];
       /**
        * Format: int32
        * @description Optionally returned field, representing the UMPRN of a Multiple Residence household
@@ -1126,30 +1344,90 @@ export interface components {
       message: "Success";
     };
     /**
-     * Welsh PAF Address
-     * @description Welsh language alternative for a PAF Address
-     */
-    WelshPafAddress: components["schemas"]["PafAddress"] & {
-      /** @enum {undefined} */
-      dataset?: components["schemas"]["Dataset"];
-    };
-    /**
-     * PAF Alias Address
-     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
+     * Dataset
+     * @description Indicates the provenance of an address.
      *
-     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
+     *   - `paf` (GBR) Postcode Address File
+     *   - `mr` (GBR) Multiple Residence File
+     *   - `nyb` (GBR) Not Yet Built File
+     *   - `pafa` (GBR) Alias File
+     *   - `pafw` (GBR) Welsh File
+     *   - `ecaf` (IRL) Eircode ECAF
+     *   - `ecad` (IRL) Eircode ECAD
+     *   - `usps` (USA) USPS Zip+4
+     * @enum {string}
      */
-    PafAliasAddress: components["schemas"]["PafAddress"] & {
-      /** @enum {undefined} */
-      dataset?: components["schemas"]["Dataset"];
-    };
+    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps" | "ecaf" | "ecad";
+    /**
+     * ISO Country Code (3)
+     * @description   3 letter country code (ISO 3166-1)
+     *
+     * @enum {string}
+     */
+    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM" | "IRL";
+    /**
+     * ISO Country Code (2)
+     * @description  2 letter country code (ISO 3166-1)
+     *
+     * @enum {string}
+     */
+    CountryISO2: "GB" | "IM" | "JE" | "GG" | "US" | "PR" | "GU" | "IE";
+    /**
+     * Language
+     * @description Language represented by 2 letter ISO Code (639-1)
+     *
+     * @enum {string}
+     */
+    Language: "en" | "cy" | "ga";
+    /**
+     * Country
+     * @description   Full country names (ISO 3166)
+     *
+     * @example England
+     * @enum {string}
+     */
+    Country:
+      | "United States"
+      | "Guam"
+      | "Puerto Rico"
+      | "England"
+      | "Scotland"
+      | "Wales"
+      | "Northern Ireland"
+      | "Jersey"
+      | "Guernsey"
+      | "Isle of Man"
+      | "Ireland";
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
      */
     GbrGlobalAddress: {
-      /** @description Postal or Zip Code */
+      id: components["schemas"]["ID"];
+      dataset: components["schemas"]["Dataset"];
+      country_iso: components["schemas"]["CountryISO"];
+      country_iso_2: components["schemas"]["CountryISO2"];
+      language: components["schemas"]["Language"];
+      /** @description First address line */
+      line_1: string;
+      /** @description Second address line */
+      line_2: string;
+      /** @description Third address line */
+      line_3: string;
+      /** @description Postal Code or Zip Code */
       postcode: string;
+      /** @description Town or City */
+      post_town: string;
+      /** @description Province, state or county */
+      county: string;
+      /**
+       * @description Code or abbreviation associated with provice, state or county
+       * @example NY
+       */
+      county_code: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      country: components["schemas"]["Country"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -1160,28 +1438,68 @@ export interface components {
        * @enum {string}
        */
       postcode_inward: "";
-      /** @description Town or City */
-      post_town: string;
-      dependant_locality: components["schemas"]["DependantLocality"];
-      double_dependant_locality: components["schemas"]["DoubleDependantLocality"];
-      thoroughfare: components["schemas"]["Thoroughfare"];
-      dependant_thoroughfare: components["schemas"]["DependantThoroughfare"];
-      building_number: components["schemas"]["BuildingNumber"];
-      building_name: components["schemas"]["BuildingName"];
-      sub_building_name: components["schemas"]["SubBuildingName"];
-      /** @description PO Box */
-      po_box: string;
-      /** @description Department name at premise */
-      department_name: string;
-      /** @description Name of organisation at premise */
-      organisation_name: string;
       /**
-       * @description Not available for non-UK addresses. See id for address identifier
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      dependant_locality: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      double_dependant_locality: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      thoroughfare: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      dependant_thoroughfare: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      building_number: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      building_name: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      sub_building_name: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      premise: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      po_box: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      department_name: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      organisation_name: "";
+      /**
+       * @description Not available for non-UK addresses. See `id` for address identifier
        * @enum {string}
        */
       udprn: "";
       /**
-       * @description Not available for non-UK addresses. See id for address identifier
+       * @description Not available for non-UK addresses. See `id` for address identifier
        * @enum {string}
        */
       umprn: "";
@@ -1200,13 +1518,6 @@ export interface components {
        * @enum {string}
        */
       delivery_point_suffix: "";
-      line_1: components["schemas"]["Line1"];
-      line_2: components["schemas"]["Line2"];
-      line_3: components["schemas"]["Line3"];
-      premise: components["schemas"]["Premise"];
-      country: components["schemas"]["Country"];
-      /** @description Province, state or county */
-      county: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -1222,10 +1533,16 @@ export interface components {
        * @enum {string}
        */
       traditional_county: "";
-      district: components["schemas"]["District"];
-      ward: components["schemas"]["Ward"];
-      longitude: components["schemas"]["Longitude"];
-      latitude: components["schemas"]["Latitude"];
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      district: "";
+      /**
+       * @description Not available for non-UK addresses
+       * @enum {string}
+       */
+      ward: "";
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -1237,13 +1554,10 @@ export interface components {
        */
       northings: "";
       /**
-       * @description Not available for non-UK addresses. See id for address identifier
+       * @description Not available for non-UK addresses. See `id` for address identifier
        * @enum {string}
        */
       uprn: "";
-      id: components["schemas"]["ID"];
-      dataset: components["schemas"]["Dataset"];
-      country_iso: components["schemas"]["CountryISO"];
     };
     /** Address Resolution Response (GBR) */
     GbrResolveAddressResponse: {
@@ -1270,16 +1584,32 @@ export interface components {
     usps_dataset: "usps";
     /**
      * Country
-     * @description Full country name associated with address
+     * @description   Full country names (ISO 3166)
+     *
      * @enum {string}
      */
     usps_country: "United States" | "Guam" | "Puerto Rico";
     /**
-     * USPS ISO Country Codes
-     * @description 3 letter ISO country code associated with USA
+     * ISO Country Code (3)
+     * @description   3 letter country code (ISO 3166-1)
+     *
      * @enum {string}
      */
     usps_country_iso: "USA" | "PRI" | "GUM";
+    /**
+     * ISO Country Code (2)
+     * @description  2 letter country code (ISO 3166-1)
+     *
+     * @enum {string}
+     */
+    usps_country_iso_2: "US" | "PR" | "GU";
+    /**
+     * Language
+     * @description Language represented by 2 letter ISO Code (639-1)
+     *
+     * @enum {string}
+     */
+    usps_language: "en";
     /**
      * Primary Number
      * @description A house, rural route, contract box, or Post Office Box number. The numeric or alphanumeric component of an address preceding the street name. Often referred to as house number.
@@ -1311,9 +1641,9 @@ export interface components {
      */
     line_2: string;
     /**
-     * TITLE
+     * Last Line
      * @description Last line of the address comprising of city, state, zip code and zip+4
-     * @example GREENWICH, CT, 06830-1234
+     * @example Greenwich CT 06830-1234
      */
     last_line: string;
     /**
@@ -1448,7 +1778,7 @@ export interface components {
     /**
      * County Name
      * @description The name of the county or parish in which the 5-digit ZIP Code resides. If APO/FPO/DPO, then the county name will be blank.
-     * @example SUFFOLK
+     * @example Suffolk
      */
     county: string;
     /**
@@ -1525,8 +1855,10 @@ export interface components {
     UspsAddress: {
       id: components["schemas"]["ID"];
       dataset: components["schemas"]["usps_dataset"];
-      country?: components["schemas"]["usps_country"];
+      country: components["schemas"]["usps_country"];
       country_iso: components["schemas"]["usps_country_iso"];
+      country_iso_2: components["schemas"]["usps_country_iso_2"];
+      language: components["schemas"]["usps_language"];
       primary_number: components["schemas"]["primary_number"];
       secondary_number: components["schemas"]["secondary_number"];
       plus_4_code: components["schemas"]["plus_4_code"];
@@ -1572,8 +1904,10 @@ export interface components {
       id: components["schemas"]["ID"];
       /** @enum {undefined} */
       dataset: components["schemas"]["Dataset"];
-      country?: components["schemas"]["Country"];
+      country: components["schemas"]["Country"];
       country_iso: components["schemas"]["CountryISO"];
+      country_iso_2: components["schemas"]["CountryISO2"];
+      language: components["schemas"]["Language"];
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -1929,30 +2263,6 @@ export interface components {
        */
       code: 2000;
     };
-    /** Bad Request Error Response */
-    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
-      /**
-       * Format: int32
-       * @description `400X` type error response code
-       */
-      code: number;
-      /** @description Bad request error description */
-      message: string;
-      errors?: {
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example should have required property 'type'
-         */
-        message: string;
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example .query.type
-         */
-        path: string;
-        /** @example required.openapi.validation */
-        errorCode?: string;
-      }[];
-    };
     /** Unauthorized Request Error Response */
     UnauthorizedResponse: components["schemas"]["ErrorResponse"] & {
       /**
@@ -2021,6 +2331,421 @@ export interface components {
        */
       payload?: string;
     };
+    EircBase: {
+      id: components["schemas"]["ID"];
+      /** @description Source of address */
+      dataset: string;
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "IRL";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "IE";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Ireland";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "en" | "ga";
+      /** @description Address Line 1 */
+      line_1: string;
+      /** @description Address Line 2 */
+      line_2: string;
+      /** @description Address Line 3 */
+      line_3: string;
+      /** @description Address Line 4 */
+      line_4: string;
+      /** @description Address Line 5 */
+      line_5: string;
+      /** @description Address Line 6 */
+      line_6: string;
+      /** @description Address Line 7 */
+      line_7: string;
+      /** @description Address Line 8 */
+      line_8: string;
+      /** @description Address Line 9 */
+      line_9: string;
+      /**
+       * @description The department or division within an organisation. If the department element exists, then the organisation must also exist.
+       * @example Accounts Department
+       */
+      department: string;
+      /**
+       * @description Organisation name
+       * @example Oak Tree Limited
+       */
+      organisation: string;
+      /**
+       * @description The sub-building refers to an apartment, flat or unit within a building.
+       * @example Flat 1
+       */
+      sub_building_name: string;
+      /**
+       * @description The name given to the building. Prepended by sub building, if any, when the sub building does not appear on a line to itself. The building name is omitted if it is the same as either the Organisation or Building Group.
+       * @example Rose Cottage
+       */
+      building_name: string;
+      /**
+       * @description A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.
+       * A complex building number may be one of the following:
+       *   - Dual. Two number separated by '/' e.g. 63/64 = 63, 64
+       *   - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6
+       *   - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 56, 66
+       * The building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality.
+       * @example 22
+       */
+      building_number: string;
+      /**
+       * @description A building group is a collection of buildings with a collective name, located on or near the same thoroughfare.
+       * @example Marrian Terrace
+       */
+      building_group: string;
+      /**
+       * @description The name of the thoroughfare on which premises are located. It may appear on a line by itself or be appended to either a sub building or building number.
+       *
+       * Addresses with thoroughfares can sometimes have the thoroughfare excluded where a Building Group exists, such as a Retail Centre or Business Park, and the thoroughfare is not part of the Postal Address.
+       * @example Griffith Road
+       */
+      primary_thoroughfare: string;
+      /**
+       * @description It is never present without a primary thoroughfare. The primary thoroughfare is dependent on the secondary thoroughfare and appears before the secondary thoroughfare in any address.
+       *
+       * Secondary thoroughfare are generally used to assist locating a primary thoroughfare.
+       * @example Navan Road
+       */
+      secondary_thoroughfare: string;
+      /**
+       * @description First locality elements which can refer to areas, districts, industrial estates, towns, etc.
+       *
+       * The primary locality refers to the specific place the address is.
+       *
+       * In urban areas, the primary locality can be required to distinguish between two thoroughfares of the same name in the same district or town. Industrial estates with named thoroughfares are also held as localities. In rural areas the primary locality is generally a townland name.
+       * @example Cookstown Industrial Estate
+       */
+      primary_locality: string;
+      /**
+       * @description Never present without a primary locality. The secondary locality has a wider geographic scope than the primary locality.
+       *
+       * It is the secondary locality therefore which differentiates addresses with the same primary locality name within the same county.
+       *
+       * Secondary localities are more likely to be required for rural addresses.
+       *
+       * Second locality elements which can refer to areas, districts, industrial estates, towns, etc
+       *
+       * The secondary locality helps identify where the primary locality is located.
+       * @example Manorhamilton
+       */
+      secondary_locality: string;
+      /**
+       * @description Also known as the Post Town.
+       *
+       * The name of the post town associated with the premises for postal delivery purposes. This includes Dublin Postal Districts "Dublin 1" to "Dublin 24".
+       *
+       * The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist4, describes post towns in the following manner:
+       *
+       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as POST TOWNS, chosen because of their accessibility and convenience."
+       * @example Dublin 14
+       */
+      tertiary_locality: string;
+      /**
+       * @description One of the 26 Counties in the Republic of Ireland. These counties are sub-national divisions used for the purposes of administrative, geographical and political demarcation. Post County is the County associated with the Post Town, not the geographic county in which the building is located. The Post County is normally used as part of the Postal Address with some exceptions e.g. Dublin Postal Districts where the Post County is not used and some Post Towns (e.g. Tipperary, Kildare, etc.) that have the same name as the Post County.
+       * @example Cork
+       */
+      post_county: string;
+      /**
+       * @description The seven character Eircode has an A65 F4E2 format. The Eircode is a mandatory address element. The last line of a Postal Address will contain the Eircode, displayed with a space. e.g. `A65 F4E2`.
+       *
+       * The Eircode is always the last line of a Postal Address generated within the state, e.g. if an address has four lines then the Eircode will be on its own on Address Line 5. For inbound international mail the country name IRELAND should be appended as the last line of the Postal Address.
+       * @example A65 R2AF
+       */
+      eircode: string;
+      /** @description The address reference is the An Post GeoDirectory address reference identifier used by the Universal Service Provider. */
+      address_reference: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+    };
+    /**
+     * Ireland ECAF Address
+     * @description ECAF is the Eircode Address File which contains one record for each Postal Address. English language and Irish language versions are available. It is distributed as a flat file, details of data provision and updates are provided in section 2.
+     */
+    EcafAddress: components["schemas"]["EircBase"] & {
+      /** @enum {string} */
+      dataset?: "ecaf";
+      /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
+      ecaf_id?: string;
+    } & {
+      ecaf_id: unknown;
+    };
+    /**
+     * Ireland ECAD Address
+     * @description The ECAD contains additional data for each ECAF address.
+     */
+    EcadAddress: components["schemas"]["EircBase"] & {
+      /** @enum {string} */
+      dataset?: "ecad";
+      /**
+       * @description Unique 10 digit ECAD ID
+       * @example 17000000
+       */
+      ecad_id?: string;
+      /**
+       * @description Organisation ID
+       * @example 10098783
+       */
+      organisation_id?: string;
+      /**
+       * @description Address Point ID
+       * @example 10098783
+       */
+      address_point_id?: string;
+      /**
+       * @description Building ID
+       * @example 10098783
+       */
+      building_id?: string;
+      /**
+       * @description Building Group ID
+       * @example 10098783
+       */
+      building_group_id?: string;
+      /**
+       * @description Primary Thoroughfare ID
+       * @example 10098783
+       */
+      primary_thoroughfare_id?: string;
+      /**
+       * @description Secondary Thoroughfare ID
+       * @example 10098783
+       */
+      secondary_thoroughfare_id?: string;
+      /**
+       * @description Primary Locality ID
+       * @example 10098783
+       */
+      primary_locality_id?: string;
+      /**
+       * @description Secondary Locality ID
+       * @example 10098783
+       */
+      secondary_locality_id?: string;
+      /**
+       * @description The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:
+       *
+       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience."
+       */
+      post_town?: string;
+      /**
+       * @description Post Town ID
+       * @example 10098783
+       */
+      post_town_id?: string;
+      /**
+       * @description Post County ID
+       * @example 10098783
+       */
+      post_county_id?: string;
+      /**
+       * @description NUA means "non-unique address".
+       *
+       * The NUA field contains `true` when the address is a non-unique address, and `false` when it is a unique address.
+       *
+       * Ireland has a very high level of non-unique addresses (NUA), i.e. the address does not contain a unique building number or name. Approximately 35% of all Irish addresses are non-unique which equates to 600,000 addresses.
+       *
+       * The typical example of NUA addressing is where every address in a townland is the same. The way that post is delivered is by local knowledge of postal delivery personnel of which addressee lives in which house.
+       *
+       * N.B. For a NUA address, it is impossible to match to a unique record in the ECAD and assign an Eircode.
+       */
+      nua?: boolean;
+      /**
+       * @description Gaeltact refers to a district where the Irish government recognises that the Irish language is the predominant language.
+       *
+       * Returns `true` if address is in a Gaeltacht area and `false` if not.
+       */
+      gaeltacht?: boolean;
+      /**
+       * @description Addresses points can assume one of the following values:
+       *
+       * - Residential Address Point. This type of address point has one residential addresses associated with it.
+       * - Non-Residential Address Point. This type of address point has one or more non-residential address (business, club or other organisation) associated with it.
+       * - Mixed Address Point. This is a special case where the residential and non residential addresses in the building are essentially the same address. The typical example is a farm house on an active farm. It is important to note that this is a special case. In general a building with both residential and non-residential addresses (e.g. an apartment over a shop) will receive two address points, one commercial and one residential, and hence two Eircodes.
+       *
+       * Buildings can contain multiple address points of type Residential and/or Non-Residential.
+       */
+      address_type?: string;
+      /**
+       * @description The building type can assume one of the following values:
+       *
+       * - Single Occupancy Residential Building. This type of building contains one residential address.
+       * - Multi Occupancy Residential Building. This type of building contains multiple residential addresses.
+       * - Single Occupancy Non-Residential Building. This type of building contains one non-residential address (business, club or other organisation).
+       * - Multi Occupancy Non-Residential Building. This type of building contains multiple non-residential addresses (business, club or other organisation).
+       * - Multi Occupancy Mixed Use Building. This type of building contains multiple residential and non- residential addresses.
+       *
+       * Buildings can also have a more specific address types such as a Hospital, School, Shopping Centre, etc.
+       */
+      building_address_type?: string;
+      /**
+       * @description The building group type can be:
+       *
+       * - Residential Building Group. This type of building group contains buildings with residential addresses only.
+       * - Non-Residential Building Group This type of building group contains buildings with non-residential addresses (business, club or other organisation) only.
+       * - Mixed Building Group. This type of building group contains buildings with residential and non-residential addresses. Can also have a more specific address type such as a Hospital, School, Shopping Centre, etc.
+       *
+       * Building groups can also have a more specific address type such as a Hospital, School, Shopping Centre, etc.
+       */
+      building_group_address_type?: string;
+      /**
+       * @description The locality type can be:
+       *   - Rural Locality. This is generally a townland.
+       *   - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.
+       *   - Shopping District. Shopping Centre.
+       *   - Housing Estate. Residential Housing Estate.
+       *   - Village. Based on Census 2011 population < 1,500.
+       *   - Town. Based on Census 2011 population > 1,500.
+       *   - Urban Area. Wholly within a village/town/city e.g. Rathmines.
+       *   - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.
+       *
+       * Where the locality is also the post town, the type can be:
+       *   - Village. Based on Census 2011 population < 1,500
+       *   - Town. Based on Census 2011 population > 1,500
+       *   - Postal District. Dublin 1 to 24
+       *   - City. Dublin, Cork, Limerick, Galway or Waterford
+       */
+      primary_locality_address_type?: string;
+      /**
+       * @description The locality type can be:
+       *   - Rural Locality. This is generally a townland.
+       *   - Industrial Estate. Industrial Estate, Industrial Park, Business Campus, etc.
+       *   - Shopping District. Shopping Centre.
+       *   - Housing Estate. Residential Housing Estate.
+       *   - Village. Based on Census 2011 population < 1,500.
+       *   - Town. Based on Census 2011 population > 1,500.
+       *   - Urban Area. Wholly within a village/town/city e.g. Rathmines.
+       *   - Suburban Locality. This is an area that is both rural and urban, as it is both a townland, and also an area name applied to houses in a town, as the town has extended partially into the townland.
+       *
+       * Where the locality is also the post town, the type can be:
+       *   - Village. Based on Census 2011 population < 1,500
+       *   - Town. Based on Census 2011 population > 1,500
+       *   - Postal District. Dublin 1 to 24
+       *   - City. Dublin, Cork, Limerick, Galway or Waterford
+       */
+      secondary_locality_address_type?: string;
+      /** @description Describes the type of building, e.g. detached, semi-detached, bungalow. */
+      building_type?: string;
+      /**
+       * @description A Yes/No field, indicating whether or not the building is a holiday home.
+       * @enum {undefined}
+       */
+      holiday_home?: "N" | "Y" | "";
+      /**
+       * @description A Yes/No field, indicating whether or not the building is under construction.
+       * @enum {undefined}
+       */
+      under_construction?: "N" | "Y" | "";
+      /**
+       * @description Can be one of:
+       *
+       * - `R` Residential
+       * - `C` Commercial
+       * - `B` Both
+       * - `U` Unknown
+       * @enum {undefined}
+       */
+      building_use?: "R" | "C" | "B" | "U";
+      /**
+       * @description A Yes/No field, indicating whether the building is vacant.
+       * @enum {undefined}
+       */
+      vacant?: "Y" | "N" | "";
+      /**
+       * @description A Yes/No field, indicating whether the organisation is vacant.
+       * @enum {undefined}
+       */
+      org_vacant?: "Y" | "N" | "";
+      /** @description The NACE Code for the Category. */
+      nace_code?: string;
+      /** @description Name of the NACE Category */
+      nace_category?: string;
+      /** @description Name of local authority */
+      local_authority?: string;
+      /**
+       * @description Unique Identifier for Electoral Divisions 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      ded_id?: string;
+      /**
+       * @description Unique Identifier for the Small Area 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      small_area_id?: string;
+      /**
+       * @description Unique Identifier for townland 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      townland_id?: string;
+      /**
+       * @description Unique Identifier for the 7 Gaeltacht areas 2017 data.
+       *
+       * Note that this field is subject to breaking changes if a new generation of government data IDs is released. Currently this uses 2017 IDs. Contact us to be notified ahead of his change.
+       */
+      gaeltacht_id?: string;
+      /** @description An Post sorting information. */
+      postaim_presort_61?: string;
+      /** @description An Post sorting information. */
+      postaim_presort_152?: string;
+      /** @description An Post publicity post zone information. */
+      publicity_post_zone?: string;
+    } & {
+      organisation_id: unknown;
+      address_point_id: unknown;
+      building_id: unknown;
+      building_group_id: unknown;
+      primary_thoroughfare_id: unknown;
+      secondary_thoroughfare_id: unknown;
+      primary_locality_id: unknown;
+      secondary_locality_id: unknown;
+      post_town: unknown;
+      post_town_id: unknown;
+      post_county_id: unknown;
+      nua: unknown;
+      gaeltacht: unknown;
+      address_type: unknown;
+      building_address_type: unknown;
+      building_group_address_type: unknown;
+      primary_locality_address_type: unknown;
+      secondary_locality_address_type: unknown;
+      building_type: unknown;
+      holiday_home: unknown;
+      under_construction: unknown;
+      building_use: unknown;
+      vacant: unknown;
+      org_vacant: unknown;
+      nace_code: unknown;
+      nace_category: unknown;
+      local_authority: unknown;
+      ded_id: unknown;
+      small_area_id: unknown;
+      townland_id: unknown;
+      gaeltacht_id: unknown;
+      postaim_presort_61: unknown;
+      postaim_presort_152: unknown;
+      publicity_post_zone: unknown;
+    };
   };
 }
 
@@ -2058,7 +2783,7 @@ export interface operations {
     parameters: {
       path: {
         /** Postcode to retrieve */
-        postcode: components["schemas"]["Postcode"];
+        postcode: components["schemas"]["paf_postcode"];
       };
       query: {
         api_key?: components["schemas"]["ApiKeyParam"];
@@ -2071,6 +2796,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["PostcodeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
       /** Postcode Not Found */
@@ -2259,6 +2990,12 @@ export interface operations {
           "application/json": components["schemas"]["ApiKeyUsageResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /**
@@ -2303,6 +3040,12 @@ export interface operations {
       200: {
         content: {
           "text/csv": string;
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2418,6 +3161,12 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AutocompleteResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2584,6 +3333,18 @@ export interface operations {
           "application/json": components["schemas"]["AddressResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Postcode Not Found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["PostcodeNotFoundResponse"];
+        };
+      };
     };
   };
   /** Returns a list of licensees for a key. */
@@ -2609,6 +3370,12 @@ export interface operations {
           "application/json": components["schemas"]["LicenseesResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /** Create a licensee for the specified API Key. */
@@ -2626,6 +3393,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LicenseeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2653,6 +3426,12 @@ export interface operations {
           "application/json": components["schemas"]["LicenseeResponse"];
         };
       };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
     };
   };
   /** Update Licensee */
@@ -2671,6 +3450,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LicenseeResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
@@ -2711,6 +3496,12 @@ export interface operations {
             /** @enum {string} */
             message: "Success";
           };
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
