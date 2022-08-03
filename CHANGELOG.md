@@ -1,3 +1,10 @@
+# [3.2.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.1.0...3.2.0-beta.1) (2022-08-03)
+
+
+### Features
+
+* **Global Addresses:** Add native address formats ([d33e770](https://github.com/ideal-postcodes/openapi/commit/d33e770f88c86a805c0d90088495656dad6aa5b7))
+
 # [3.1.0](https://github.com/ideal-postcodes/openapi/compare/3.0.0...3.1.0) (2022-07-19)
 
 
