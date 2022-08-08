@@ -1,3 +1,10 @@
+# [3.2.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.2.0-beta.1...3.2.0-beta.2) (2022-08-08)
+
+
+### Bug Fixes
+
+* **ApiKey:** Add required attrs ([2ff1c16](https://github.com/ideal-postcodes/openapi/commit/2ff1c16eb1bb6d985a6110b116ca3b4b048bd3cf))
+
 # [3.2.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.1.0...3.2.0-beta.1) (2022-08-03)
 
 
