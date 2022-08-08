@@ -3087,6 +3087,13 @@
         "description": "A list of available contexts for a key",
         "items": {
           "type": "object",
+          "required": [
+            "iso_3",
+            "iso_2",
+            "description",
+            "emoji",
+            "rgeo"
+          ],
           "properties": {
             "iso_3": {
               "type": "string",

@@ -887,29 +887,29 @@ export interface components {
        * @description 3 letter ISO code
        * @example USA
        */
-      iso_3?: string;
+      iso_3: string;
       /**
        * @description 2 letter ISO code
        * @example US
        */
-      iso_2?: string;
+      iso_2: string;
       /**
        * @description Country descriptor to show in Address Finder
        *
        * @example United States
        */
-      description?: string;
+      description: string;
       /**
        * @description Emoji text icon
        * @example 🇺🇸
        */
-      emoji?: string;
+      emoji: string;
       /**
        * @description Indicates availability of reverse geolocation search
        *
        * @example true
        */
-      rgeo?: boolean;
+      rgeo: boolean;
     }[];
     /**
      * Context
