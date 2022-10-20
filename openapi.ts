@@ -323,11 +323,11 @@ export interface paths {
      *
      * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
      */
-    get: operations["Places"];
+    get: operations["FindPlace"];
   };
   "/places/${place}": {
     /** Resolves a place autocompletion by its place ID. */
-    get: operations["Resolve"];
+    get: operations["ResolvePlace"];
   };
   "/keys/{key}/licensees": {
     /** Returns a list of licensees for a key. */
@@ -3429,12 +3429,16 @@ export interface operations {
       };
     };
   };
-  /** Resolves a place autocompletion by its place ID. */
+  /**
+   * Resolves an address autocompletion by its address ID.
+   *
+   * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
+   */
   Resolve: {
     parameters: {
       path: {
-        /** ID of place suggestion */
-        place: string;
+        /** ID of address suggestion */
+        address: string;
       };
       query: {
         api_key?: components["schemas"]["ApiKeyParam"];
@@ -3444,7 +3448,7 @@ export interface operations {
       /** Success */
       200: {
         content: {
-          "application/json": components["schemas"]["ResolvePlaceResponse"];
+          "application/json": components["schemas"]["GbrResolveAddressResponse"];
         };
       };
       /** Resource not found */
@@ -3633,7 +3637,7 @@ export interface operations {
    *
    * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
    */
-  Places: {
+  FindPlace: {
     parameters: {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
@@ -3656,6 +3660,32 @@ export interface operations {
       400: {
         content: {
           "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+    };
+  };
+  /** Resolves a place autocompletion by its place ID. */
+  ResolvePlace: {
+    parameters: {
+      path: {
+        /** ID of place suggestion */
+        place: string;
+      };
+      query: {
+        api_key?: components["schemas"]["ApiKeyParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ResolvePlaceResponse"];
+        };
+      };
+      /** Resource not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
         };
       };
     };

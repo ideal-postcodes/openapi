@@ -1358,7 +1358,7 @@
         ],
         "summary": "Find Place",
         "description": "Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.\n\nThis API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.\n\n## Implementing Place Autocomplete\n\nExtracting the full information of a place is a 2 step process:\n\n1. Retrieve place suggestions via /places\n2. Retrieve the entire place with the ID provided in the suggestion\n\n## Suggestion Format\n\nEach place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.\n\n## Rate Limiting\n\nYou can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.\n\n| Header                  | Description                                                                            |\n| ----------------------- | -------------------------------------------------------------------------------------- |\n| `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |\n| `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |\n| `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |\n\n## Pricing\n\nThis API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.\n\nPlease note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.\n",
-        "operationId": "Places",
+        "operationId": "FindPlace",
         "parameters": [
           {
             "name": "api_key",
@@ -1459,7 +1459,7 @@
           "Place Search"
         ],
         "summary": "Resolve Place",
-        "operationId": "Resolve",
+        "operationId": "ResolvePlace",
         "description": "Resolves a place autocompletion by its place ID.\n",
         "parameters": [
           {
