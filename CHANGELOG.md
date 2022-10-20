@@ -1,3 +1,10 @@
+# [3.3.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.2.0...3.3.0-beta.1) (2022-10-20)
+
+
+### Features
+
+* **Places:** Expose places API ([c9cd926](https://github.com/ideal-postcodes/openapi/commit/c9cd926121d0a7f2c323c44e436baebaa8350869))
+
 # [3.2.0](https://github.com/ideal-postcodes/openapi/compare/3.1.0...3.2.0) (2022-08-17)
 
 
