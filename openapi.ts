@@ -290,6 +290,45 @@ export interface paths {
      */
     get: operations["Addresses"];
   };
+  "/places": {
+    /**
+     * Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.
+     *
+     * This API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.
+     *
+     * ## Implementing Place Autocomplete
+     *
+     * Extracting the full information of a place is a 2 step process:
+     *
+     * 1. Retrieve place suggestions via /places
+     * 2. Retrieve the entire place with the ID provided in the suggestion
+     *
+     * ## Suggestion Format
+     *
+     * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+     *
+     * ## Rate Limiting
+     *
+     * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+     *
+     * | Header                  | Description                                                                            |
+     * | ----------------------- | -------------------------------------------------------------------------------------- |
+     * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
+     * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
+     * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
+     *
+     * ## Pricing
+     *
+     * This API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.
+     *
+     * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
+     */
+    get: operations["Places"];
+  };
+  "/places/${place}": {
+    /** Resolves a place autocompletion by its place ID. */
+    get: operations["Resolve"];
+  };
   "/keys/{key}/licensees": {
     /** Returns a list of licensees for a key. */
     get: operations["ListLicensees"];
@@ -324,6 +363,7 @@ export interface components {
   schemas: {
     ecaf: components["schemas"]["EcafAddress"];
     ecad: components["schemas"]["EcadAddress"];
+    geonames: components["schemas"]["GeonamesPlace"];
     /**
      * Postcode
      * @description Correctly formatted postcode. Capitalised and spaced.
@@ -336,7 +376,7 @@ export interface components {
      *
      * Available from your dashboard
      *
-     * @example ak_hk71kco54zGSGvF9eXXrvvnMOLLNh
+     * @example ak_test
      */
     ApiKeyParam: string;
     /**
@@ -1261,7 +1301,7 @@ export interface components {
      */
     BiasThoroughfareParam: string;
     /**
-     * Bias County
+     * Bias Country
      * @description Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
      */
     BiasCountryParam: string;
@@ -1275,7 +1315,7 @@ export interface components {
      * Bias query by Geolocation of IP
      * @description Biases search based on approximate geolocation of IP address.
      * Set `bias_ip=true` to enable.
-     * @example bias_ip=true
+     * @example true
      * @enum {string}
      */
     BiasIpParam: "true";
@@ -2555,6 +2595,93 @@ export interface components {
       };
     };
     /**
+     * Country
+     * @description Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     * @example GBR
+     */
+    CountryIsoParam: string;
+    /**
+     * Country
+     * @description Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     */
+    BiasCountryIsoParam: string;
+    /**
+     * Place Name
+     * @description Place name
+     *
+     * @example London
+     */
+    place_name: string;
+    /**
+     * Descriptive Place Name
+     * @description Longer form description of the place.
+     *
+     * @example London, United Kingdom
+     */
+    place_descriptive_name: string;
+    /**
+     * ID
+     * @description Unique identifier for place
+     *
+     * @example geonames_5324
+     */
+    place_id: string;
+    /**
+     * Place Description
+     * @description Represents a possible place given an autocomplete query.
+     */
+    PlaceSuggestion: {
+      name: components["schemas"]["place_name"];
+      descriptive_name: components["schemas"]["place_descriptive_name"];
+      id: components["schemas"]["place_id"];
+    };
+    /** Place Search Response */
+    PlaceResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result: {
+        /** @description List of up to 10 matching places */
+        hits: components["schemas"]["PlaceSuggestion"][];
+      };
+    };
+    /**
+     * Country
+     * @description   3 letter country code (ISO 3166-1)
+     *
+     * @example GBR
+     */
+    place_country_iso: string;
+    /**
+     * Place
+     * @description Represents a geographical name
+     */
+    Place: {
+      name: components["schemas"]["place_name"];
+      descriptive_name: components["schemas"]["place_descriptive_name"];
+      country_iso: components["schemas"]["place_country_iso"];
+      language: components["schemas"]["Language"];
+      longitude?: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+    } & {
+      longitde: unknown;
+    };
+    /** Place Resolution Response */
+    ResolvePlaceResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result: components["schemas"]["Place"];
+    };
+    /**
      * Licensee
      * @description Licensee object which can be defined by user
      */
@@ -2759,6 +2886,117 @@ export interface components {
        * }
        */
       payload?: string;
+    };
+    /**
+     * GeoNames Place
+     * @description Full GeoNames place specification
+     */
+    GeonamesPlace: {
+      /**
+       * Format: int32
+       * @description Unique identifier for GeoNames place
+       * @example 5353
+       */
+      geonameid?: number;
+      /**
+       * @description Place name (UTF8)
+       * @example London
+       */
+      name?: string;
+      /**
+       * @description Place Name (ASCII)
+       * @example London
+       */
+      asciiname?: string;
+      /** @description List of alternate ASCII names */
+      alternatenames?: string[];
+      latitude?: components["schemas"]["Latitude"];
+      longitude?: components["schemas"]["Longitude"];
+      /**
+       * @description GeoNames single letter feature code
+       * @enum {string}
+       */
+      feature_class?: "A" | "H" | "L" | "P" | "R" | "S" | "T" | "U" | "V";
+      /**
+       * @description Full GeoNames feature code (http://www.geonames.org/export/codes.html)
+       * @example ADM1
+       */
+      feature_code?: string;
+      /**
+       * @description 2 Letter ISO country code
+       * @example GB
+       */
+      country_code?: string;
+      /** @description List of other countries codes mapping to this place */
+      cc2?: string[];
+      /**
+       * @description Fipscode (subject to change to iso code)
+       * @example 05
+       */
+      admin1_code?: string;
+      /**
+       * @description Code for the second administrative division
+       * @example 06
+       */
+      admin2_code?: string;
+      /**
+       * @description Code for third level administrative division
+       * @example 08
+       */
+      admin3_code?: string;
+      /**
+       * @description Code for fourth level administrative division
+       * @example 07
+       */
+      admin4_code?: string;
+      /**
+       * @description Population at place. Represented as string as it could be a larger than a 32bit integer
+       * @example 7392832
+       */
+      population?: string;
+      /**
+       * Format: int32
+       * @description Elevation in meters
+       */
+      elevation?: number;
+      dem?: number | string;
+      /**
+       * @description The IANA timezone ID
+       * @example Europe/London
+       */
+      timezone?: string;
+      /**
+       * @description Datetime format
+       * @example 2015-03-09
+       */
+      modification_date?: string;
+      /** @enum {string} */
+      dataset?: "geonames";
+      /**
+       * @description Unique place ID
+       * @example geonames_5353
+       */
+      id?: string;
+    } & {
+      geonameid: unknown;
+      name: unknown;
+      asciiname: unknown;
+      alternatenames: unknown;
+      latitude: unknown;
+      longitude: unknown;
+      feature_class: unknown;
+      feature_code: unknown;
+      country_code: unknown;
+      cc2: unknown;
+      admin1_code: unknown;
+      admin2_code: unknown;
+      admin3_code: unknown;
+      admin4_code: unknown;
+      population: unknown;
+      elevation: unknown;
+      dem: unknown;
+      timezone: unknown;
+      modification_date: unknown;
     };
   };
 }
@@ -2967,6 +3205,12 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["ApiKeyDetailsResponse"];
+        };
+      };
+      /** Unauthorised */
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
         };
       };
       /** Resource not found */
@@ -3185,16 +3429,12 @@ export interface operations {
       };
     };
   };
-  /**
-   * Resolves an address autocompletion by its address ID.
-   *
-   * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
-   */
+  /** Resolves a place autocompletion by its place ID. */
   Resolve: {
     parameters: {
       path: {
-        /** ID of address suggestion */
-        address: string;
+        /** ID of place suggestion */
+        place: string;
       };
       query: {
         api_key?: components["schemas"]["ApiKeyParam"];
@@ -3204,7 +3444,7 @@ export interface operations {
       /** Success */
       200: {
         content: {
-          "application/json": components["schemas"]["GbrResolveAddressResponse"];
+          "application/json": components["schemas"]["ResolvePlaceResponse"];
         };
       };
       /** Resource not found */
@@ -3357,6 +3597,65 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["PostcodeNotFoundResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.
+   *
+   * This API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.
+   *
+   * ## Implementing Place Autocomplete
+   *
+   * Extracting the full information of a place is a 2 step process:
+   *
+   * 1. Retrieve place suggestions via /places
+   * 2. Retrieve the entire place with the ID provided in the suggestion
+   *
+   * ## Suggestion Format
+   *
+   * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+   *
+   * ## Rate Limiting
+   *
+   * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+   *
+   * | Header                  | Description                                                                            |
+   * | ----------------------- | -------------------------------------------------------------------------------------- |
+   * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
+   * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
+   * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
+   *
+   * ## Pricing
+   *
+   * This API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.
+   *
+   * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
+   */
+  Places: {
+    parameters: {
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+        /** Specifies the place you wish to query. Query can be shortened to `q=` */
+        query?: string;
+        country_iso?: components["schemas"]["CountryIsoParam"];
+        bias_country_iso?: components["schemas"]["BiasCountryIsoParam"];
+        bias_lonlat?: components["schemas"]["BiasLonLatParam"];
+        bias_ip?: components["schemas"]["BiasIpParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["PlaceResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };

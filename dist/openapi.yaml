@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 3.2.0
+  version: 3.3.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -353,6 +353,8 @@ servers:
 tags:
   - name: Address Search
     description: Global address autocomplete, for search-as-you-type
+  - name: Place Search
+    description: Global places search to identify geographical names and places
   - name: UK
     description: UK Address and Postcode Search
   - name: Keys
@@ -422,11 +424,20 @@ tags:
       ECAF file including additional data for each address.
 
       <SchemaDefinition schemaRef="#/components/schemas/EcadAddress" />
+  - name: geonames_place
+    x-displayName: GeoNames Place
+    description: |
+      GeoNames place record
+
+      <SchemaDefinition schemaRef="#/components/schemas/GeonamesPlace" />
 x-tagGroups:
   - name: Address Search
     tags:
       - Address Search
       - UK
+  - name: Place Search
+    tags:
+      - Place Search
   - name: Management
     tags:
       - Keys
@@ -439,6 +450,7 @@ x-tagGroups:
       - uk_address
       - ecaf_address
       - ecad_address
+      - geonames_place
 paths:
   /postcodes/{postcode}:
     get:
@@ -808,6 +820,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKeyDetailsResponse'
+        '401':
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Resource not found
           content:
@@ -1770,6 +1788,191 @@ paths:
             curl -k -G 'https://api.ideal-postcodes.co.uk/v1/addresses' \
               -d 'api_key=iddqd' \
               --data-urlencode 'query=10 downing street london'
+  /places:
+    get:
+      tags:
+        - Place Search
+      summary: Find Place
+      description: >
+        Query for geographical places across countries. Each query will return a
+        list of place suggestions, which consists of a place name, descriptive
+        name and id.
+
+
+        This API returns geographical information such as countries, capitals,
+        administrative areas and more. It is ideal for correctly identifying a
+        place along with any other details like geolocation.
+
+
+        ## Implementing Place Autocomplete
+
+
+        Extracting the full information of a place is a 2 step process:
+
+
+        1. Retrieve place suggestions via /places
+
+        2. Retrieve the entire place with the ID provided in the suggestion
+
+
+        ## Suggestion Format
+
+
+        Each place suggestion contains a descriptive name which you can provide
+        to users to uniquely idenfity a place.
+
+
+        ## Rate Limiting
+
+
+        You can make up to 3000 requests to the autocomplete API within a 5
+        minute span. The HTTP Header contains information on your current rate
+        limit.
+
+
+        | Header                  |
+        Description                                                                           
+        |
+
+        | ----------------------- |
+        --------------------------------------------------------------------------------------
+        |
+
+        | `X-RateLimit-Limit`     | The maximum number of requests that can be
+        made in 5 minutes                           |
+
+        | `X-RateLimit-Remaining` | The remaining requests within the current
+        rate limit window                            |
+
+        | `X-RateLimit-Reset`     | The time when the rate limit window resets
+        in Unix Time (seconds) or UTC Epoch seconds |
+
+
+        ## Pricing
+
+
+        This API currently does not affect your balance. However, resolving a
+        suggestion into a full place requires a paid request.
+
+
+        Please note, this API is not intended as a standalone free resource.
+        Integrations that consistently make autocomplete requests without a paid
+        request to resolve an place may be disrupted via tightened rate limits.
+      operationId: Places
+      parameters:
+        - name: api_key
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: query
+          in: query
+          description: >-
+            Specifies the place you wish to query. Query can be shortened to
+            `q=`
+          style: form
+          explode: false
+          schema:
+            type: string
+        - name: country_iso
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/CountryIsoParam'
+        - name: bias_country_iso
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasCountryIsoParam'
+        - name: bias_lonlat
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasLonLatParam'
+        - name: bias_ip
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/BiasIpParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/places?api_key=ak_test&query=london
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G 'https://api.ideal-postcodes.co.uk/v1/places' \
+              -d 'api_key=ak_test' \
+              --data-urlencode 'query=london'
+  /places/${place}:
+    get:
+      tags:
+        - Place Search
+      summary: Resolve Place
+      operationId: Resolve
+      description: |
+        Resolves a place autocompletion by its place ID.
+      parameters:
+        - name: place
+          in: path
+          description: ID of place suggestion
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: api_key
+          in: query
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+      responses:
+        '200':
+          description: Success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResolvePlaceResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/places/geonames_5353?api_key=ak_test
+        - lang: cURL
+          label: CLI
+          source: >
+            curl -k -G
+            https://api.ideal-postcodes.co.uk/v1/places/geonames_5355?api_key=ak_test
+            \
+              -d "api_key=ak_test"
   /keys/{key}/licensees:
     get:
       tags:
@@ -2292,6 +2495,8 @@ components:
       $ref: '#/components/schemas/EcafAddress'
     ecad:
       $ref: '#/components/schemas/EcadAddress'
+    geonames:
+      $ref: '#/components/schemas/GeonamesPlace'
     paf_postcode:
       title: Postcode
       type: string
@@ -2306,7 +2511,7 @@ components:
         Your API Key. Typically beings `ak_`.
 
         Available from your dashboard
-      example: ak_hk71kco54zGSGvF9eXXrvvnMOLLNh
+      example: ak_test
     FilterParam:
       title: Filter
       type: string
@@ -3741,7 +3946,7 @@ components:
       type: string
       description: Bias by street name.
     BiasCountryParam:
-      title: Bias County
+      title: Bias Country
       type: string
       description: >-
         Bias by country. Possible values are England, Scotland, Wales, Northern
@@ -3763,7 +3968,7 @@ components:
       description: |-
         Biases search based on approximate geolocation of IP address.
         Set `bias_ip=true` to enable.
-      example: bias_ip=true
+      example: 'true'
     AddressSuggestion:
       title: Address Suggestion
       description: Represents an address suggestion for any address in the world
@@ -5788,6 +5993,130 @@ components:
               maximum: 10
               type: integer
               format: int32
+    CountryIsoParam:
+      title: Country
+      type: string
+      description: >-
+        Filter by country ISO code. Uses 3 letter country code (ISO 3166-1)
+        standard.
+      example: GBR
+    BiasCountryIsoParam:
+      title: Country
+      type: string
+      description: >-
+        Bias by country ISO code. Uses 3 letter country code (ISO 3166-1)
+        standard.
+    place_name:
+      title: Place Name
+      type: string
+      description: |
+        Place name
+      example: London
+    place_descriptive_name:
+      title: Descriptive Place Name
+      type: string
+      description: |
+        Longer form description of the place.
+      example: London, United Kingdom
+    place_id:
+      title: ID
+      type: string
+      description: |
+        Unique identifier for place
+      example: geonames_5324
+    PlaceSuggestion:
+      title: Place Description
+      description: |
+        Represents a possible place given an autocomplete query.
+      required:
+        - name
+        - descriptive_name
+        - id
+      properties:
+        name:
+          $ref: '#/components/schemas/place_name'
+        descriptive_name:
+          $ref: '#/components/schemas/place_descriptive_name'
+        id:
+          $ref: '#/components/schemas/place_id'
+    PlaceResponse:
+      title: Place Search Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          type: object
+          required:
+            - hits
+          properties:
+            hits:
+              type: array
+              description: |
+                List of up to 10 matching places
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/PlaceSuggestion'
+    place_country_iso:
+      title: Country
+      type: string
+      description: |2
+          3 letter country code (ISO 3166-1)
+      example: GBR
+    Place:
+      title: Place
+      description: Represents a geographical name
+      required:
+        - name
+        - descriptive_name
+        - country_iso
+        - language
+        - longitde
+        - latitude
+      properties:
+        name:
+          $ref: '#/components/schemas/place_name'
+        descriptive_name:
+          $ref: '#/components/schemas/place_descriptive_name'
+        country_iso:
+          $ref: '#/components/schemas/place_country_iso'
+        language:
+          $ref: '#/components/schemas/Language'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+    ResolvePlaceResponse:
+      title: Place Resolution Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/Place'
     LicenseeEditable:
       title: Licensee
       description: Licensee object which can be defined by user
@@ -6080,3 +6409,162 @@ components:
           minimum: 0
           maximum: 4096
           description: A serialised payload of up to `4096` characters
+    GeonamesPlace:
+      title: GeoNames Place
+      description: Full GeoNames place specification
+      required:
+        - geonameid
+        - name
+        - asciiname
+        - alternatenames
+        - latitude
+        - longitude
+        - feature_class
+        - feature_code
+        - country_code
+        - cc2
+        - admin1_code
+        - admin2_code
+        - admin3_code
+        - admin4_code
+        - population
+        - elevation
+        - dem
+        - timezone
+        - modification_date
+      allOf:
+        - type: object
+          properties:
+            geonameid:
+              type: integer
+              format: int32
+              description: Unique identifier for GeoNames place
+              example: 5353
+            name:
+              type: string
+              description: Place name (UTF8)
+              minLength: 0
+              maxLength: 200
+              example: London
+            asciiname:
+              type: string
+              description: Place Name (ASCII)
+              minLength: 0
+              maxLength: 200
+              example: London
+            alternatenames:
+              type: array
+              description: List of alternate ASCII names
+              items:
+                oneOf:
+                  - type: string
+                    description: Alternate name for place
+                    minLength: 0
+                    maxLength: 40
+                    example: London
+            latitude:
+              $ref: '#/components/schemas/Latitude'
+            longitude:
+              $ref: '#/components/schemas/Longitude'
+            feature_class:
+              type: string
+              description: GeoNames single letter feature code
+              enum:
+                - A
+                - H
+                - L
+                - P
+                - R
+                - S
+                - T
+                - U
+                - V
+            feature_code:
+              type: string
+              description: >-
+                Full GeoNames feature code
+                (http://www.geonames.org/export/codes.html)
+              minLength: 0
+              maxLength: 7
+              example: ADM1
+            country_code:
+              type: string
+              description: 2 Letter ISO country code
+              minLength: 2
+              maxLength: 2
+              example: GB
+            cc2:
+              type: array
+              description: List of other countries codes mapping to this place
+              items:
+                oneOf:
+                  - type: string
+                    description: Alternate name for place
+                    minLength: 2
+                    maxLength: 2
+                    example: IE
+            admin1_code:
+              type: string
+              description: Fipscode (subject to change to iso code)
+              minLength: 0
+              maxLength: 20
+              example: '05'
+            admin2_code:
+              type: string
+              description: Code for the second administrative division
+              minLength: 0
+              maxLength: 20
+              example: '06'
+            admin3_code:
+              type: string
+              description: Code for third level administrative division
+              minLength: 0
+              maxLength: 20
+              example: '08'
+            admin4_code:
+              type: string
+              description: Code for fourth level administrative division
+              minLength: 0
+              maxLength: 20
+              example: '07'
+            population:
+              type: string
+              description: >-
+                Population at place. Represented as string as it could be a
+                larger than a 32bit integer
+              example: '7392832'
+            elevation:
+              type: integer
+              format: int32
+              description: Elevation in meters
+            dem:
+              oneOf:
+                - type: integer
+                  format: int32
+                  description: Digital elevation model
+                  example: 32
+                - type: string
+                  minLength: 0
+                  maxLength: 0
+                  description: Empty string if not assigned
+                  example: ''
+            timezone:
+              type: string
+              description: The IANA timezone ID
+              minLength: 0
+              maxLength: 40
+              example: Europe/London
+            modification_date:
+              type: string
+              description: Datetime format
+              minLength: 10
+              maxLength: 10
+              example: '2015-03-09'
+            dataset:
+              type: string
+              enum:
+                - geonames
+            id:
+              type: string
+              description: Unique place ID
+              example: geonames_5353
