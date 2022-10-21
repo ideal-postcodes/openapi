@@ -2661,6 +2661,20 @@ export interface components {
      * @description Represents a geographical name
      */
     Place: {
+      /**
+       * ID
+       * @description Global unique internally generated identifier for a place
+       * @example geonames_5353
+       */
+      id: string;
+      /**
+       * Dataset
+       * @description Indicates the provenance of a place.
+       *
+       *   - `geonames` GeoNames place
+       * @enum {string}
+       */
+      dataset: "geonames";
       name: components["schemas"]["place_name"];
       descriptive_name: components["schemas"]["place_descriptive_name"];
       country_iso: components["schemas"]["place_country_iso"];

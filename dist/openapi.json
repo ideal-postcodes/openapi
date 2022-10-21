@@ -5945,6 +5945,8 @@
         "title": "Place",
         "description": "Represents a geographical name",
         "required": [
+          "id",
+          "dataset",
           "name",
           "descriptive_name",
           "country_iso",
@@ -5953,6 +5955,20 @@
           "latitude"
         ],
         "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string",
+            "description": "Global unique internally generated identifier for a place",
+            "example": "geonames_5353"
+          },
+          "dataset": {
+            "title": "Dataset",
+            "type": "string",
+            "description": "Indicates the provenance of a place.\n\n  - `geonames` GeoNames place",
+            "enum": [
+              "geonames"
+            ]
+          },
           "name": {
             "$ref": "#/components/schemas/place_name"
           },
