@@ -1,3 +1,10 @@
+# [3.3.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.1...3.3.0-beta.2) (2022-10-22)
+
+
+### Bug Fixes
+
+* **Release:** Trigger beta release ([2205bd6](https://github.com/ideal-postcodes/openapi/commit/2205bd69299d60dc3a4f26c170622d92142c6de0))
+
 # [3.3.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.2.0...3.3.0-beta.1) (2022-10-20)
 
 
