@@ -48,4 +48,3 @@ JSON and YAML specs can be accessed at `node_modules/@ideal-postcodes/openapi/di
 ## Licence
 
 MIT
-
