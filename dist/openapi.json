@@ -5943,7 +5943,7 @@
       },
       "Place": {
         "title": "Place",
-        "description": "Represents a geographical name",
+        "description": "Represents a geographical place",
         "required": [
           "id",
           "dataset",
@@ -5951,7 +5951,7 @@
           "descriptive_name",
           "country_iso",
           "language",
-          "longitde",
+          "longitude",
           "latitude"
         ],
         "properties": {

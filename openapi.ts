@@ -2658,7 +2658,7 @@ export interface components {
     place_country_iso: string;
     /**
      * Place
-     * @description Represents a geographical name
+     * @description Represents a geographical place
      */
     Place: {
       /**
@@ -2679,10 +2679,8 @@ export interface components {
       descriptive_name: components["schemas"]["place_descriptive_name"];
       country_iso: components["schemas"]["place_country_iso"];
       language: components["schemas"]["Language"];
-      longitude?: components["schemas"]["Longitude"];
+      longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
-    } & {
-      longitde: unknown;
     };
     /** Place Resolution Response */
     ResolvePlaceResponse: {
