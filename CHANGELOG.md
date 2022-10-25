@@ -1,3 +1,10 @@
+# [3.3.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.3...3.3.0-beta.4) (2022-10-25)
+
+
+### Bug Fixes
+
+* **Geonames:** Add native data attribute ([e063128](https://github.com/ideal-postcodes/openapi/commit/e063128b9eb642154c73accd1388ed77424916ef))
+
 # [3.3.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.2...3.3.0-beta.3) (2022-10-24)
 
 
