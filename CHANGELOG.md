@@ -1,3 +1,10 @@
+# [3.3.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.4...3.3.0-beta.5) (2022-10-25)
+
+
+### Bug Fixes
+
+* **Geonames:** Allow sub admins to be nullable ([0d29ddb](https://github.com/ideal-postcodes/openapi/commit/0d29ddbde7e0f7576f0af719ded7d7b848a67d53))
+
 # [3.3.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.3...3.3.0-beta.4) (2022-10-25)
 
 
