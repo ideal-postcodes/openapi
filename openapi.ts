@@ -2753,8 +2753,13 @@ export interface components {
        * Format: int32
        * @description Elevation in meters
        */
-      elevation?: number;
-      dem?: number | string;
+      elevation?: number | null;
+      /**
+       * Format: int32
+       * @description Digital elevation model
+       * @example 32
+       */
+      dem?: number | null;
       /**
        * @description The IANA timezone ID
        * @example Europe/London

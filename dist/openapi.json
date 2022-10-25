@@ -6122,25 +6122,16 @@
               },
               "elevation": {
                 "type": "integer",
+                "nullable": true,
                 "format": "int32",
                 "description": "Elevation in meters"
               },
               "dem": {
-                "oneOf": [
-                  {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "Digital elevation model",
-                    "example": 32
-                  },
-                  {
-                    "type": "string",
-                    "minLength": 0,
-                    "maxLength": 0,
-                    "description": "Empty string if not assigned",
-                    "example": ""
-                  }
-                ]
+                "type": "integer",
+                "nullable": true,
+                "format": "int32",
+                "description": "Digital elevation model",
+                "example": 32
               },
               "timezone": {
                 "type": "string",
