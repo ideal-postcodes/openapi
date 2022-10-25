@@ -6043,6 +6043,7 @@ components:
         - name
         - descriptive_name
         - id
+        - country_iso
       properties:
         name:
           $ref: '#/components/schemas/place_name'

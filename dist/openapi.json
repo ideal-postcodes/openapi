@@ -5885,7 +5885,8 @@
         "required": [
           "name",
           "descriptive_name",
-          "id"
+          "id",
+          "country_iso"
         ],
         "properties": {
           "name": {

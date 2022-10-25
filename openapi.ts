@@ -2643,7 +2643,7 @@ export interface components {
     PlaceSuggestion: {
       name: components["schemas"]["place_name"];
       descriptive_name: components["schemas"]["place_descriptive_name"];
-      country_iso?: components["schemas"]["place_country_iso"];
+      country_iso: components["schemas"]["place_country_iso"];
       id: components["schemas"]["place_id"];
     };
     /** Place Search Response */
