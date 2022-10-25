@@ -1,3 +1,10 @@
+# [3.3.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.5...3.3.0-beta.6) (2022-10-25)
+
+
+### Bug Fixes
+
+* **Geonames:** Require country in suggestion ([dbd4566](https://github.com/ideal-postcodes/openapi/commit/dbd4566ed35610af5b148a3e56ebfaea6fbedfcf))
+
 # [3.3.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.4...3.3.0-beta.5) (2022-10-25)
 
 
