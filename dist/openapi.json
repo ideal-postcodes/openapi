@@ -5846,13 +5846,14 @@
       "CountryIsoParam": {
         "title": "Country",
         "type": "string",
-        "description": "Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.",
+        "description": "Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\nFilter by multiple countries with a comma separated list. E.g. `GBR,IRL`",
         "example": "GBR"
       },
       "BiasCountryIsoParam": {
         "title": "Country",
         "type": "string",
-        "description": "Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard."
+        "description": "Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\nBias by multiple countries with a comma separated list. E.g. `GBR,IRL`",
+        "example": "GBR"
       },
       "place_name": {
         "title": "Place Name",
@@ -5865,6 +5866,12 @@
         "type": "string",
         "description": "Longer form description of the place.\n",
         "example": "London, United Kingdom"
+      },
+      "place_country_iso": {
+        "title": "Country",
+        "type": "string",
+        "description": "  3 letter country code (ISO 3166-1)\n",
+        "example": "GBR"
       },
       "place_id": {
         "title": "ID",
@@ -5886,6 +5893,9 @@
           },
           "descriptive_name": {
             "$ref": "#/components/schemas/place_descriptive_name"
+          },
+          "country_iso": {
+            "$ref": "#/components/schemas/place_country_iso"
           },
           "id": {
             "$ref": "#/components/schemas/place_id"
@@ -5935,11 +5945,228 @@
           }
         }
       },
-      "place_country_iso": {
-        "title": "Country",
-        "type": "string",
-        "description": "  3 letter country code (ISO 3166-1)\n",
-        "example": "GBR"
+      "GeonamesPlace": {
+        "title": "GeoNames Place",
+        "description": "Full GeoNames place specification",
+        "required": [
+          "geonameid",
+          "name",
+          "asciiname",
+          "alternatenames",
+          "latitude",
+          "longitude",
+          "feature_class",
+          "feature_code",
+          "country_code",
+          "cc2",
+          "admin1_geonameid",
+          "admin2_geonameid",
+          "admin1_name",
+          "admin2_name",
+          "admin1_code",
+          "admin2_code",
+          "admin3_code",
+          "admin4_code",
+          "population",
+          "elevation",
+          "dem",
+          "timezone",
+          "modification_date"
+        ],
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "geonameid": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Unique identifier for GeoNames place",
+                "example": 5353
+              },
+              "name": {
+                "type": "string",
+                "description": "Place name (UTF8)",
+                "minLength": 0,
+                "maxLength": 200,
+                "example": "London"
+              },
+              "asciiname": {
+                "type": "string",
+                "description": "Place Name (ASCII)",
+                "minLength": 0,
+                "maxLength": 200,
+                "example": "London"
+              },
+              "alternatenames": {
+                "type": "array",
+                "description": "List of alternate ASCII names",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "Alternate name for place",
+                      "minLength": 0,
+                      "maxLength": 40,
+                      "example": "London"
+                    }
+                  ]
+                }
+              },
+              "latitude": {
+                "$ref": "#/components/schemas/Latitude"
+              },
+              "longitude": {
+                "$ref": "#/components/schemas/Longitude"
+              },
+              "feature_class": {
+                "type": "string",
+                "description": "GeoNames single letter feature code",
+                "enum": [
+                  "A",
+                  "H",
+                  "L",
+                  "P",
+                  "R",
+                  "S",
+                  "T",
+                  "U",
+                  "V"
+                ]
+              },
+              "feature_code": {
+                "type": "string",
+                "description": "Full GeoNames feature code (http://www.geonames.org/export/codes.html)",
+                "minLength": 0,
+                "maxLength": 7,
+                "example": "ADM1"
+              },
+              "country_code": {
+                "type": "string",
+                "description": "2 Letter ISO country code",
+                "minLength": 2,
+                "maxLength": 2,
+                "example": "GB"
+              },
+              "cc2": {
+                "type": "array",
+                "description": "List of other countries codes mapping to this place",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "Alternate name for place",
+                      "minLength": 2,
+                      "maxLength": 2,
+                      "example": "IE"
+                    }
+                  ]
+                }
+              },
+              "admin1_name": {
+                "type": "string",
+                "description": "Name of first administrative area",
+                "example": "England"
+              },
+              "admin1_geonameid": {
+                "type": "integer",
+                "format": "int32",
+                "description": "GeoName ID for first administrative area",
+                "example": 5353
+              },
+              "admin1_code": {
+                "type": "string",
+                "description": "Fipscode (subject to change to iso code)",
+                "minLength": 0,
+                "maxLength": 20,
+                "example": "ENG"
+              },
+              "admin2_name": {
+                "type": "string",
+                "description": "Name of second administrative area",
+                "example": "England"
+              },
+              "admin2_geonameid": {
+                "type": "integer",
+                "format": "int32",
+                "description": "GeoName ID for second administrative area",
+                "example": 5353
+              },
+              "admin2_code": {
+                "type": "string",
+                "description": "Code for the second administrative division",
+                "minLength": 0,
+                "maxLength": 20,
+                "example": "06"
+              },
+              "admin3_code": {
+                "type": "string",
+                "description": "Code for third level administrative division",
+                "minLength": 0,
+                "maxLength": 20,
+                "example": "08"
+              },
+              "admin4_code": {
+                "type": "string",
+                "description": "Code for fourth level administrative division",
+                "minLength": 0,
+                "maxLength": 20,
+                "example": "07"
+              },
+              "population": {
+                "type": "string",
+                "description": "Population at place. Represented as string as it could be a larger than a 32bit integer",
+                "example": "7392832"
+              },
+              "elevation": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Elevation in meters"
+              },
+              "dem": {
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Digital elevation model",
+                    "example": 32
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 0,
+                    "description": "Empty string if not assigned",
+                    "example": ""
+                  }
+                ]
+              },
+              "timezone": {
+                "type": "string",
+                "description": "The IANA timezone ID",
+                "minLength": 0,
+                "maxLength": 40,
+                "example": "Europe/London"
+              },
+              "modification_date": {
+                "type": "string",
+                "description": "Datetime format",
+                "minLength": 10,
+                "maxLength": 10,
+                "example": "2015-03-09"
+              },
+              "dataset": {
+                "type": "string",
+                "enum": [
+                  "geonames"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique place ID",
+                "example": "geonames_5353"
+              }
+            }
+          }
+        ]
       },
       "Place": {
         "title": "Place",
@@ -5986,6 +6213,14 @@
           },
           "latitude": {
             "$ref": "#/components/schemas/Latitude"
+          },
+          "native": {
+            "description": "Native representation of a place",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GeonamesPlace"
+              }
+            ]
           }
         }
       },
@@ -6387,203 +6622,6 @@
             "description": "A serialised payload of up to `4096` characters"
           }
         }
-      },
-      "GeonamesPlace": {
-        "title": "GeoNames Place",
-        "description": "Full GeoNames place specification",
-        "required": [
-          "geonameid",
-          "name",
-          "asciiname",
-          "alternatenames",
-          "latitude",
-          "longitude",
-          "feature_class",
-          "feature_code",
-          "country_code",
-          "cc2",
-          "admin1_code",
-          "admin2_code",
-          "admin3_code",
-          "admin4_code",
-          "population",
-          "elevation",
-          "dem",
-          "timezone",
-          "modification_date"
-        ],
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "geonameid": {
-                "type": "integer",
-                "format": "int32",
-                "description": "Unique identifier for GeoNames place",
-                "example": 5353
-              },
-              "name": {
-                "type": "string",
-                "description": "Place name (UTF8)",
-                "minLength": 0,
-                "maxLength": 200,
-                "example": "London"
-              },
-              "asciiname": {
-                "type": "string",
-                "description": "Place Name (ASCII)",
-                "minLength": 0,
-                "maxLength": 200,
-                "example": "London"
-              },
-              "alternatenames": {
-                "type": "array",
-                "description": "List of alternate ASCII names",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "string",
-                      "description": "Alternate name for place",
-                      "minLength": 0,
-                      "maxLength": 40,
-                      "example": "London"
-                    }
-                  ]
-                }
-              },
-              "latitude": {
-                "$ref": "#/components/schemas/Latitude"
-              },
-              "longitude": {
-                "$ref": "#/components/schemas/Longitude"
-              },
-              "feature_class": {
-                "type": "string",
-                "description": "GeoNames single letter feature code",
-                "enum": [
-                  "A",
-                  "H",
-                  "L",
-                  "P",
-                  "R",
-                  "S",
-                  "T",
-                  "U",
-                  "V"
-                ]
-              },
-              "feature_code": {
-                "type": "string",
-                "description": "Full GeoNames feature code (http://www.geonames.org/export/codes.html)",
-                "minLength": 0,
-                "maxLength": 7,
-                "example": "ADM1"
-              },
-              "country_code": {
-                "type": "string",
-                "description": "2 Letter ISO country code",
-                "minLength": 2,
-                "maxLength": 2,
-                "example": "GB"
-              },
-              "cc2": {
-                "type": "array",
-                "description": "List of other countries codes mapping to this place",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "string",
-                      "description": "Alternate name for place",
-                      "minLength": 2,
-                      "maxLength": 2,
-                      "example": "IE"
-                    }
-                  ]
-                }
-              },
-              "admin1_code": {
-                "type": "string",
-                "description": "Fipscode (subject to change to iso code)",
-                "minLength": 0,
-                "maxLength": 20,
-                "example": "05"
-              },
-              "admin2_code": {
-                "type": "string",
-                "description": "Code for the second administrative division",
-                "minLength": 0,
-                "maxLength": 20,
-                "example": "06"
-              },
-              "admin3_code": {
-                "type": "string",
-                "description": "Code for third level administrative division",
-                "minLength": 0,
-                "maxLength": 20,
-                "example": "08"
-              },
-              "admin4_code": {
-                "type": "string",
-                "description": "Code for fourth level administrative division",
-                "minLength": 0,
-                "maxLength": 20,
-                "example": "07"
-              },
-              "population": {
-                "type": "string",
-                "description": "Population at place. Represented as string as it could be a larger than a 32bit integer",
-                "example": "7392832"
-              },
-              "elevation": {
-                "type": "integer",
-                "format": "int32",
-                "description": "Elevation in meters"
-              },
-              "dem": {
-                "oneOf": [
-                  {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "Digital elevation model",
-                    "example": 32
-                  },
-                  {
-                    "type": "string",
-                    "minLength": 0,
-                    "maxLength": 0,
-                    "description": "Empty string if not assigned",
-                    "example": ""
-                  }
-                ]
-              },
-              "timezone": {
-                "type": "string",
-                "description": "The IANA timezone ID",
-                "minLength": 0,
-                "maxLength": 40,
-                "example": "Europe/London"
-              },
-              "modification_date": {
-                "type": "string",
-                "description": "Datetime format",
-                "minLength": 10,
-                "maxLength": 10,
-                "example": "2015-03-09"
-              },
-              "dataset": {
-                "type": "string",
-                "enum": [
-                  "geonames"
-                ]
-              },
-              "id": {
-                "type": "string",
-                "description": "Unique place ID",
-                "example": "geonames_5353"
-              }
-            }
-          }
-        ]
       }
     }
   }

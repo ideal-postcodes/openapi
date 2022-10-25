@@ -2597,12 +2597,15 @@ export interface components {
     /**
      * Country
      * @description Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     * Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`
      * @example GBR
      */
     CountryIsoParam: string;
     /**
      * Country
      * @description Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     * Bias by multiple countries with a comma separated list. E.g. `GBR,IRL`
+     * @example GBR
      */
     BiasCountryIsoParam: string;
     /**
@@ -2620,6 +2623,13 @@ export interface components {
      */
     place_descriptive_name: string;
     /**
+     * Country
+     * @description   3 letter country code (ISO 3166-1)
+     *
+     * @example GBR
+     */
+    place_country_iso: string;
+    /**
      * ID
      * @description Unique identifier for place
      *
@@ -2633,6 +2643,7 @@ export interface components {
     PlaceSuggestion: {
       name: components["schemas"]["place_name"];
       descriptive_name: components["schemas"]["place_descriptive_name"];
+      country_iso?: components["schemas"]["place_country_iso"];
       id: components["schemas"]["place_id"];
     };
     /** Place Search Response */
@@ -2650,12 +2661,142 @@ export interface components {
       };
     };
     /**
-     * Country
-     * @description   3 letter country code (ISO 3166-1)
-     *
-     * @example GBR
+     * GeoNames Place
+     * @description Full GeoNames place specification
      */
-    place_country_iso: string;
+    GeonamesPlace: {
+      /**
+       * Format: int32
+       * @description Unique identifier for GeoNames place
+       * @example 5353
+       */
+      geonameid?: number;
+      /**
+       * @description Place name (UTF8)
+       * @example London
+       */
+      name?: string;
+      /**
+       * @description Place Name (ASCII)
+       * @example London
+       */
+      asciiname?: string;
+      /** @description List of alternate ASCII names */
+      alternatenames?: string[];
+      latitude?: components["schemas"]["Latitude"];
+      longitude?: components["schemas"]["Longitude"];
+      /**
+       * @description GeoNames single letter feature code
+       * @enum {string}
+       */
+      feature_class?: "A" | "H" | "L" | "P" | "R" | "S" | "T" | "U" | "V";
+      /**
+       * @description Full GeoNames feature code (http://www.geonames.org/export/codes.html)
+       * @example ADM1
+       */
+      feature_code?: string;
+      /**
+       * @description 2 Letter ISO country code
+       * @example GB
+       */
+      country_code?: string;
+      /** @description List of other countries codes mapping to this place */
+      cc2?: string[];
+      /**
+       * @description Name of first administrative area
+       * @example England
+       */
+      admin1_name?: string;
+      /**
+       * Format: int32
+       * @description GeoName ID for first administrative area
+       * @example 5353
+       */
+      admin1_geonameid?: number;
+      /**
+       * @description Fipscode (subject to change to iso code)
+       * @example ENG
+       */
+      admin1_code?: string;
+      /**
+       * @description Name of second administrative area
+       * @example England
+       */
+      admin2_name?: string;
+      /**
+       * Format: int32
+       * @description GeoName ID for second administrative area
+       * @example 5353
+       */
+      admin2_geonameid?: number;
+      /**
+       * @description Code for the second administrative division
+       * @example 06
+       */
+      admin2_code?: string;
+      /**
+       * @description Code for third level administrative division
+       * @example 08
+       */
+      admin3_code?: string;
+      /**
+       * @description Code for fourth level administrative division
+       * @example 07
+       */
+      admin4_code?: string;
+      /**
+       * @description Population at place. Represented as string as it could be a larger than a 32bit integer
+       * @example 7392832
+       */
+      population?: string;
+      /**
+       * Format: int32
+       * @description Elevation in meters
+       */
+      elevation?: number;
+      dem?: number | string;
+      /**
+       * @description The IANA timezone ID
+       * @example Europe/London
+       */
+      timezone?: string;
+      /**
+       * @description Datetime format
+       * @example 2015-03-09
+       */
+      modification_date?: string;
+      /** @enum {string} */
+      dataset?: "geonames";
+      /**
+       * @description Unique place ID
+       * @example geonames_5353
+       */
+      id?: string;
+    } & {
+      geonameid: unknown;
+      name: unknown;
+      asciiname: unknown;
+      alternatenames: unknown;
+      latitude: unknown;
+      longitude: unknown;
+      feature_class: unknown;
+      feature_code: unknown;
+      country_code: unknown;
+      cc2: unknown;
+      admin1_geonameid: unknown;
+      admin2_geonameid: unknown;
+      admin1_name: unknown;
+      admin2_name: unknown;
+      admin1_code: unknown;
+      admin2_code: unknown;
+      admin3_code: unknown;
+      admin4_code: unknown;
+      population: unknown;
+      elevation: unknown;
+      dem: unknown;
+      timezone: unknown;
+      modification_date: unknown;
+    };
     /**
      * Place
      * @description Represents a geographical place
@@ -2681,6 +2822,8 @@ export interface components {
       language: components["schemas"]["Language"];
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
+      /** @description Native representation of a place */
+      native?: components["schemas"]["GeonamesPlace"];
     };
     /** Place Resolution Response */
     ResolvePlaceResponse: {
@@ -2898,117 +3041,6 @@ export interface components {
        * }
        */
       payload?: string;
-    };
-    /**
-     * GeoNames Place
-     * @description Full GeoNames place specification
-     */
-    GeonamesPlace: {
-      /**
-       * Format: int32
-       * @description Unique identifier for GeoNames place
-       * @example 5353
-       */
-      geonameid?: number;
-      /**
-       * @description Place name (UTF8)
-       * @example London
-       */
-      name?: string;
-      /**
-       * @description Place Name (ASCII)
-       * @example London
-       */
-      asciiname?: string;
-      /** @description List of alternate ASCII names */
-      alternatenames?: string[];
-      latitude?: components["schemas"]["Latitude"];
-      longitude?: components["schemas"]["Longitude"];
-      /**
-       * @description GeoNames single letter feature code
-       * @enum {string}
-       */
-      feature_class?: "A" | "H" | "L" | "P" | "R" | "S" | "T" | "U" | "V";
-      /**
-       * @description Full GeoNames feature code (http://www.geonames.org/export/codes.html)
-       * @example ADM1
-       */
-      feature_code?: string;
-      /**
-       * @description 2 Letter ISO country code
-       * @example GB
-       */
-      country_code?: string;
-      /** @description List of other countries codes mapping to this place */
-      cc2?: string[];
-      /**
-       * @description Fipscode (subject to change to iso code)
-       * @example 05
-       */
-      admin1_code?: string;
-      /**
-       * @description Code for the second administrative division
-       * @example 06
-       */
-      admin2_code?: string;
-      /**
-       * @description Code for third level administrative division
-       * @example 08
-       */
-      admin3_code?: string;
-      /**
-       * @description Code for fourth level administrative division
-       * @example 07
-       */
-      admin4_code?: string;
-      /**
-       * @description Population at place. Represented as string as it could be a larger than a 32bit integer
-       * @example 7392832
-       */
-      population?: string;
-      /**
-       * Format: int32
-       * @description Elevation in meters
-       */
-      elevation?: number;
-      dem?: number | string;
-      /**
-       * @description The IANA timezone ID
-       * @example Europe/London
-       */
-      timezone?: string;
-      /**
-       * @description Datetime format
-       * @example 2015-03-09
-       */
-      modification_date?: string;
-      /** @enum {string} */
-      dataset?: "geonames";
-      /**
-       * @description Unique place ID
-       * @example geonames_5353
-       */
-      id?: string;
-    } & {
-      geonameid: unknown;
-      name: unknown;
-      asciiname: unknown;
-      alternatenames: unknown;
-      latitude: unknown;
-      longitude: unknown;
-      feature_class: unknown;
-      feature_code: unknown;
-      country_code: unknown;
-      cc2: unknown;
-      admin1_code: unknown;
-      admin2_code: unknown;
-      admin3_code: unknown;
-      admin4_code: unknown;
-      population: unknown;
-      elevation: unknown;
-      dem: unknown;
-      timezone: unknown;
-      modification_date: unknown;
     };
   };
 }
