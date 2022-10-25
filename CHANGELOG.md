@@ -1,3 +1,10 @@
+# [3.3.0-beta.7](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.6...3.3.0-beta.7) (2022-10-25)
+
+
+### Bug Fixes
+
+* **Geonames:** Nullable dem and elevation ([7e247a0](https://github.com/ideal-postcodes/openapi/commit/7e247a025cbd03f57c33c5988703157b57d3f122))
+
 # [3.3.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.5...3.3.0-beta.6) (2022-10-25)
 
 
