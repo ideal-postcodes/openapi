@@ -6186,6 +6186,7 @@ components:
             admin1_geonameid:
               type: integer
               format: int32
+              nullable: true
               description: GeoName ID for first administrative area
               example: 5353
             admin1_code:
@@ -6201,6 +6202,7 @@ components:
             admin2_geonameid:
               type: integer
               format: int32
+              nullable: true
               description: GeoName ID for second administrative area
               example: 5353
             admin2_code:

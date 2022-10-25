@@ -2712,7 +2712,7 @@ export interface components {
        * @description GeoName ID for first administrative area
        * @example 5353
        */
-      admin1_geonameid?: number;
+      admin1_geonameid?: number | null;
       /**
        * @description Fipscode (subject to change to iso code)
        * @example ENG
@@ -2728,7 +2728,7 @@ export interface components {
        * @description GeoName ID for second administrative area
        * @example 5353
        */
-      admin2_geonameid?: number;
+      admin2_geonameid?: number | null;
       /**
        * @description Code for the second administrative division
        * @example 06
