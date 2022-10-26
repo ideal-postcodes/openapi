@@ -1,3 +1,20 @@
+# [3.3.0](https://github.com/ideal-postcodes/openapi/compare/3.2.0...3.3.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* **Geonames:** Add native data attribute ([e063128](https://github.com/ideal-postcodes/openapi/commit/e063128b9eb642154c73accd1388ed77424916ef))
+* **Geonames:** Allow sub admins to be nullable ([0d29ddb](https://github.com/ideal-postcodes/openapi/commit/0d29ddbde7e0f7576f0af719ded7d7b848a67d53))
+* **Geonames:** Nullable dem and elevation ([7e247a0](https://github.com/ideal-postcodes/openapi/commit/7e247a025cbd03f57c33c5988703157b57d3f122))
+* **Geonames:** Require country in suggestion ([dbd4566](https://github.com/ideal-postcodes/openapi/commit/dbd4566ed35610af5b148a3e56ebfaea6fbedfcf))
+* **Places:** Fix typo ([0bc36d6](https://github.com/ideal-postcodes/openapi/commit/0bc36d6af56e4708fcea848bd362d910b8fc5a03))
+* **Release:** Trigger beta release ([2205bd6](https://github.com/ideal-postcodes/openapi/commit/2205bd69299d60dc3a4f26c170622d92142c6de0))
+
+
+### Features
+
+* **Places:** Expose places API ([c9cd926](https://github.com/ideal-postcodes/openapi/commit/c9cd926121d0a7f2c323c44e436baebaa8350869))
+
 # [3.3.0-beta.7](https://github.com/ideal-postcodes/openapi/compare/3.3.0-beta.6...3.3.0-beta.7) (2022-10-25)
 
 
