@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/ideal-postcodes/openapi/compare/3.3.0...3.4.0) (2022-12-08)
+
+
+### Features
+
+* **Email:** Email verification endpoint ([0204f92](https://github.com/ideal-postcodes/openapi/commit/0204f92a2e03cd767c763bb0f2e111fe6b768c7c))
+
 # [3.3.0](https://github.com/ideal-postcodes/openapi/compare/3.2.0...3.3.0) (2022-10-26)
 
 
