@@ -3072,29 +3072,29 @@ export interface components {
       result: "unknown";
       /**
        * @description Deliverability is not known
-       * @enum {boolean}
+       * @enum {boolean|null}
        */
-      deliverable: null;
+      deliverable: null | null;
       /**
        * @description Disposability is not known
-       * @enum {boolean}
+       * @enum {boolean|null}
        */
-      disposable: null;
+      disposable: null | null;
       /**
        * @description Free email provider is not known
-       * @enum {boolean}
+       * @enum {boolean|null}
        */
-      free: null;
+      free: null | null;
       /**
        * @description Role is not known
-       * @enum {boolean}
+       * @enum {boolean|null}
        */
-      role: null;
+      role: null | null;
       /**
        * @description Catch-all status is not known
-       * @enum {boolean}
+       * @enum {boolean|null}
        */
-      catchall: null;
+      catchall: null | null;
     };
     /** Email Verification Response */
     EmailResponse: {

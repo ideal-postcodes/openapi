@@ -6722,30 +6722,35 @@ components:
         deliverable:
           type: boolean
           x-nullable: true
+          nullable: true
           description: Deliverability is not known
           enum:
             - null
         disposable:
           type: boolean
           x-nullable: true
+          nullable: true
           description: Disposability is not known
           enum:
             - null
         free:
           type: boolean
           x-nullable: true
+          nullable: true
           description: Free email provider is not known
           enum:
             - null
         role:
           type: boolean
           x-nullable: true
+          nullable: true
           description: Role is not known
           enum:
             - null
         catchall:
           type: boolean
           x-nullable: true
+          nullable: true
           description: Catch-all status is not known
           enum:
             - null
