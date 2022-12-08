@@ -357,6 +357,10 @@ export interface paths {
     /** Permanently deletes a configuration object. */
     delete: operations["DeleteConfig"];
   };
+  "/emails": {
+    /** Query for and validate email addresses. */
+    get: operations["EmailValidation"];
+  };
 }
 
 export interface components {
@@ -3047,6 +3051,64 @@ export interface components {
        */
       payload?: string;
     };
+    /** Email Object */
+    Email: {
+      /** @enum {string} */
+      result: "deliverable" | "not_deliverable";
+      /** @description Returns `true` if the email can be delivered */
+      deliverable: boolean;
+      /** @description Returns `true` if email comes from a disposable email service like temp-mail */
+      disposable: boolean;
+      /** @description Returns `true` if the email originates from a free service like Outlook or Gmail. */
+      free: boolean;
+      /** @description Returns `true` if email address represents an organisational role like `admin`, `support`, `postmaster` etc */
+      role: boolean;
+      /** @description Returns `true` if this domain accepts all emails regardless of username */
+      catchall: boolean;
+    };
+    /** Unknown Email Object */
+    UnknownEmail: {
+      /** @enum {string} */
+      result: "unknown";
+      /**
+       * @description Deliverability is not known
+       * @enum {boolean}
+       */
+      deliverable: null;
+      /**
+       * @description Disposability is not known
+       * @enum {boolean}
+       */
+      disposable: null;
+      /**
+       * @description Free email provider is not known
+       * @enum {boolean}
+       */
+      free: null;
+      /**
+       * @description Role is not known
+       * @enum {boolean}
+       */
+      role: null;
+      /**
+       * @description Catch-all status is not known
+       * @enum {boolean}
+       */
+      catchall: null;
+    };
+    /** Email Verification Response */
+    EmailResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["Email"]
+        | components["schemas"]["UnknownEmail"];
+    };
   };
 }
 
@@ -4086,6 +4148,30 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["NotFoundResponse"];
+        };
+      };
+    };
+  };
+  /** Query for and validate email addresses. */
+  EmailValidation: {
+    parameters: {
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+        /** Specifies the email address to validate */
+        query: string;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EmailResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
     };
