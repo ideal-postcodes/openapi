@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 3.4.0
+  version: 3.5.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -444,6 +444,7 @@ x-tagGroups:
       - Licensees
       - Configs
       - Emails
+      - Phone Numbers
   - name: Models
     tags:
       - suggestion
@@ -2537,7 +2538,55 @@ paths:
           source: |
             curl -k -G 'https://api.ideal-postcodes.co.uk/v1/emails' \
               -d 'api_key=iddqd' \
-              --data-urlencode 'query=10 downing street london'
+              --data-urlencode 'query=foo@domain.com'
+  /phone_numbers:
+    get:
+      tags:
+        - Phone Numbers
+      summary: Phone Number Validation
+      description: |
+        Query for and validate phone numbers.
+      operationId: PhoneNumberValidation
+      parameters:
+        - name: api_key
+          in: query
+          style: form
+          required: true
+          explode: false
+          schema:
+            $ref: '#/components/schemas/ApiKeyParam'
+        - name: query
+          in: query
+          description: Specifies the phone number to validate
+          required: true
+          explode: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+      x-codeSamples:
+        - lang: http
+          label: URL
+          source: >
+            https://api.ideal-postcodes.co.uk/v1/phone)numbers?api_key=ak_test&query=02071128019
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G 'https://api.ideal-postcodes.co.uk/v1/phone_numbers' \
+              -d 'api_key=iddqd' \
+              --data-urlencode 'query=02071128019'
 components:
   schemas:
     ecaf:
@@ -6775,3 +6824,109 @@ components:
           oneOf:
             - $ref: '#/components/schemas/Email'
             - $ref: '#/components/schemas/UnknownEmail'
+    PhoneNumber:
+      title: Phone Number Object
+      type: object
+      required:
+        - valid
+        - national_format
+        - international_format
+        - iso_country
+        - iso_country_2
+        - country
+      properties:
+        valid:
+          type: boolean
+          enum:
+            - true
+        national_format:
+          description: Phone number formatted to local standard
+          type: string
+          example: 020 7112 8019
+        international_format:
+          description: Phone number formatted to international standard
+          type: string
+          example: '442071128019'
+        iso_country:
+          description: Country code in 3 letter ISO format
+          type: string
+          example: GBR
+        iso_country_2:
+          description: Country code in 2 letter ISO format
+          type: string
+          example: GB
+        country:
+          description: Full country name
+          type: string
+          example: United Kingdom
+    InvalidPhoneNumber:
+      title: Invalid Phone Number Object
+      type: object
+      required:
+        - valid
+        - national_format
+        - international_format
+        - iso_country
+        - iso_country_2
+        - country
+      properties:
+        valid:
+          type: boolean
+          enum:
+            - false
+        national_format:
+          description: Phone number formatted to local standard
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        international_format:
+          description: Phone number formatted to international standard
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        iso_country:
+          description: Country code in 3 letter ISO format
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        iso_country_2:
+          description: Country code in 2 letter ISO format
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        country:
+          description: Full country name
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+    PhoneNumberResponse:
+      title: Phone Number Verification Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/PhoneNumber'
+            - $ref: '#/components/schemas/InvalidPhoneNumber'
