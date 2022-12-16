@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/ideal-postcodes/openapi/compare/3.4.0...3.5.0) (2022-12-16)
+
+
+### Features
+
+* **Phone:** Add phone validation ([244fe91](https://github.com/ideal-postcodes/openapi/commit/244fe9180cc8858eaea1642d012844b82159619c))
+
 # [3.4.0](https://github.com/ideal-postcodes/openapi/compare/3.3.0...3.4.0) (2022-12-08)
 
 
