@@ -361,6 +361,10 @@ export interface paths {
     /** Query for and validate email addresses. */
     get: operations["EmailValidation"];
   };
+  "/phone_numbers": {
+    /** Query for and validate phone numbers. */
+    get: operations["PhoneNumberValidation"];
+  };
 }
 
 export interface components {
@@ -3109,6 +3113,79 @@ export interface components {
         | components["schemas"]["Email"]
         | components["schemas"]["UnknownEmail"];
     };
+    /** Phone Number Object */
+    PhoneNumber: {
+      /** @enum {boolean} */
+      valid: true;
+      /**
+       * @description Phone number formatted to local standard
+       * @example 020 7112 8019
+       */
+      national_format: string;
+      /**
+       * @description Phone number formatted to international standard
+       * @example 442071128019
+       */
+      international_format: string;
+      /**
+       * @description Country code in 3 letter ISO format
+       * @example GBR
+       */
+      iso_country: string;
+      /**
+       * @description Country code in 2 letter ISO format
+       * @example GB
+       */
+      iso_country_2: string;
+      /**
+       * @description Full country name
+       * @example United Kingdom
+       */
+      country: string;
+    };
+    /** Invalid Phone Number Object */
+    InvalidPhoneNumber: {
+      /** @enum {boolean} */
+      valid: false;
+      /**
+       * @description Phone number formatted to local standard
+       * @enum {string|null}
+       */
+      national_format: null | null;
+      /**
+       * @description Phone number formatted to international standard
+       * @enum {string|null}
+       */
+      international_format: null | null;
+      /**
+       * @description Country code in 3 letter ISO format
+       * @enum {string|null}
+       */
+      iso_country: null | null;
+      /**
+       * @description Country code in 2 letter ISO format
+       * @enum {string|null}
+       */
+      iso_country_2: null | null;
+      /**
+       * @description Full country name
+       * @enum {string|null}
+       */
+      country: null | null;
+    };
+    /** Phone Number Verification Response */
+    PhoneNumberResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["PhoneNumber"]
+        | components["schemas"]["InvalidPhoneNumber"];
+    };
   };
 }
 
@@ -4166,6 +4243,30 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["EmailResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+    };
+  };
+  /** Query for and validate phone numbers. */
+  PhoneNumberValidation: {
+    parameters: {
+      query: {
+        api_key: components["schemas"]["ApiKeyParam"];
+        /** Specifies the phone number to validate */
+        query: string;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["PhoneNumberResponse"];
         };
       };
       /** Bad Request */
