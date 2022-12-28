@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/ideal-postcodes/openapi/compare/3.5.0...3.5.1) (2022-12-28)
+
+
+### Bug Fixes
+
+* **Phone:** Fix typo in URL ([a85a556](https://github.com/ideal-postcodes/openapi/commit/a85a556afddb7ef4fea3d7f3400a824cd4802fc4))
+
 # [3.5.0](https://github.com/ideal-postcodes/openapi/compare/3.4.0...3.5.0) (2022-12-16)
 
 
