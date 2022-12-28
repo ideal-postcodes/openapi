@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 3.5.0
+  version: 3.5.1
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -2580,7 +2580,7 @@ paths:
         - lang: http
           label: URL
           source: >
-            https://api.ideal-postcodes.co.uk/v1/phone)numbers?api_key=ak_test&query=02071128019
+            https://api.ideal-postcodes.co.uk/v1/phone_numbers?api_key=ak_test&query=02071128019
         - lang: cURL
           label: CLI
           source: |
