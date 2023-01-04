@@ -2393,7 +2393,7 @@
           {
             "name": "query",
             "in": "query",
-            "description": "Specifies the phone number to validate",
+            "description": "Specifies the phone number to validate. Phone number must include a country code in acceptable format. For instance, UK phone numbers should be suffixed `+44`, `44` or `0044`.",
             "required": true,
             "explode": false,
             "style": "form",

@@ -4258,7 +4258,7 @@ export interface operations {
     parameters: {
       query: {
         api_key: components["schemas"]["ApiKeyParam"];
-        /** Specifies the phone number to validate */
+        /** Specifies the phone number to validate. Phone number must include a country code in acceptable format. For instance, UK phone numbers should be suffixed `+44`, `44` or `0044`. */
         query: string;
       };
     };
