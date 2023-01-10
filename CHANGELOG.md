@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/ideal-postcodes/openapi/compare/3.5.1...3.6.0) (2023-01-10)
+
+
+### Features
+
+* **Eircode:** Add Eircode to postcode lookup ([969c019](https://github.com/ideal-postcodes/openapi/commit/969c019e5ba7af475ff48a8cf947174061c36376))
+
 ## [3.5.1](https://github.com/ideal-postcodes/openapi/compare/3.5.0...3.5.1) (2022-12-28)
 
 
