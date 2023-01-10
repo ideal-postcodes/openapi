@@ -838,559 +838,6 @@ export interface components {
       /** @enum {undefined} */
       country?: "Wales";
     };
-    /** Postcode Response */
-    PostcodeResponse: {
-      /** @description All addresses listed at the postcode */
-      result: (
-        | components["schemas"]["PafAddress"]
-        | components["schemas"]["MrAddress"]
-        | components["schemas"]["NybAddress"]
-        | components["schemas"]["PafAliasAddress"]
-        | components["schemas"]["WelshPafAddress"]
-      )[];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
-    /** Basic Error Response */
-    ErrorResponse: {
-      /**
-       * Format: int32
-       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
-       */
-      code: number;
-      /** @description Human readable error message supplied with every error response. */
-      message: string;
-    };
-    /** Bad Request Error Response */
-    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
-      /**
-       * Format: int32
-       * @description `400X` type error response code
-       */
-      code: number;
-      /** @description Bad request error description */
-      message: string;
-      errors?: {
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example should have required property 'type'
-         */
-        message: string;
-        /**
-         * @description Indicates location of error in request query or URL parameter
-         * @example .query.type
-         */
-        path: string;
-        /** @example required.openapi.validation */
-        errorCode?: string;
-      }[];
-    };
-    /** Postcode Not Found */
-    PostcodeNotFoundResponse: {
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 4040;
-      /** @enum {string} */
-      message: "Postcode not found";
-      /** @description A list of alternate nearest matching postcodes you can try */
-      suggestions: string[];
-    };
-    /** UDPRN Response */
-    UDPRNResponse: {
-      result:
-        | components["schemas"]["PafAddress"]
-        | components["schemas"]["NybAddress"];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
-    /** UDPRN Response */
-    UMPRNResponse: {
-      result: components["schemas"]["MrAddress"];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
-    /**
-     * Available Contexts
-     * @description A list of available contexts for a key
-     */
-    AvailableContexts: {
-      /**
-       * @description 3 letter ISO code
-       * @example USA
-       */
-      iso_3: string;
-      /**
-       * @description 2 letter ISO code
-       * @example US
-       */
-      iso_2: string;
-      /**
-       * @description Country descriptor to show in Address Finder
-       *
-       * @example United States
-       */
-      description: string;
-      /**
-       * @description Emoji text icon
-       * @example 🇺🇸
-       */
-      emoji: string;
-      /**
-       * @description Indicates availability of reverse geolocation search
-       *
-       * @example true
-       */
-      rgeo: boolean;
-    }[];
-    /**
-     * Context
-     * @description Limits search results within a geographical boundary or country.
-     */
-    Context: string;
-    /**
-     * No Context Provided
-     * @description Empty string if no context is provided or key check has failed
-     * @enum {string}
-     */
-    NoContext: "";
-    /** Key */
-    ApiKey: {
-      contexts: components["schemas"]["AvailableContexts"];
-      /** @description Returns current context if it is in the list of available contexts for this key. */
-      context:
-        | components["schemas"]["Context"]
-        | components["schemas"]["NoContext"];
-      /**
-       * @description Determines whether the key can be used by the requesting agent.
-       *
-       * Returns false if one of the following conditions are met:
-       *   - Key has no lookups remaining
-       *   - Daily limit has been reached on the key
-       *   - Daily individual limit has been reached
-       *   - Key is not being used via an authorised URL
-       *   - (Sublicensed key only) Key has a valid licensee attached
-       *   - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
-       *
-       * @example true
-       */
-      available: boolean;
-    };
-    /** API Key Response */
-    ApiKeyResponse: {
-      result: components["schemas"]["ApiKey"];
-      /** @enum {string} */
-      message: "Success";
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-    };
-    /**
-     * User Token
-     * @description A secret key used for sensitive operations on your account and API Keys.
-     *
-     * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
-     *
-     * Typically beings `uk_...`
-     *
-     * @example uk_B59ScW1p1HHouf1VqclEPZUx
-     */
-    UserTokenParam: string;
-    /** API Key Daily Limit */
-    ApiKeyDailyLimit: {
-      /**
-       * Format: int32
-       * @description `number` or `null`. The daily lookup limit currently set on your key.
-       * `null` means the limit is currently disabled.
-       * @example 1000
-       */
-      limit: number;
-      /**
-       * Format: int32
-       * @description Number of lookups performed today which count towards your daily limit.
-       * @example 288
-       */
-      consumed: number;
-    };
-    /** API Key Individual Limit */
-    ApiKeyIndividualLimit: {
-      /**
-       * Format: int32
-       * @description `number` or `null` Limit set on the number of lookups that can be
-       * performed from a single IP address. `null` means the limit is currently
-       * disabled.
-       * @example 30
-       */
-      limit: number;
-    };
-    /** API Key Notifications */
-    ApiKeyNotifications: {
-      /** @description A list of email addresses designated by you to receive notifications about this key. */
-      emails: string[];
-      /** @description Indicates whether email notifications are enabled. */
-      enabled: boolean;
-    };
-    /**
-     * API Key Dataset Availability
-     * @description Indicates which datasets are available and added by default to the address responses
-     */
-    ApiKeyDatasets: {
-      /**
-       * @description UK Postcode Address File enabled
-       * @example true
-       */
-      paf: boolean;
-      /**
-       * @description UK Multiple Residence Dataset enabled
-       * @example true
-       */
-      mr: boolean;
-      /** @description UK Not Yet Built Dataset enabled */
-      nyb: boolean;
-    };
-    /**
-     * API Key Automated Topup
-     * @description Automated topup status
-     */
-    ApiKeyAutomatedTopup: {
-      /**
-       * @description Indicates whether automated top-ups are enabled
-       * @example true
-       */
-      enabled: boolean;
-    };
-    /** API Key Batch Purchase */
-    ApiKeyCurrentPurchase: {
-      /**
-       * @description `string` or `null` The date when this purchase will expire in simplified
-       * extended ISO format (ISO 8601). This is typically 365 days from the time
-       * of first use. This field will be `null` if the purchase has not yet been
-       * used.
-       * @example 2022-01-06T11:41:27.092Z
-       */
-      expires: string;
-      /**
-       * Format: int32
-       * @description Number of procured lookups from this purchase.
-       * @example 20000
-       */
-      purchased: number;
-      /**
-       * Format: int32
-       * @description Number of consumed lookups off this purchase.
-       * @example 121
-       */
-      consumed: number;
-    };
-    /** API Key Details */
-    ApiKeyDetails: {
-      /**
-       * Format: int32
-       * @example 19889
-       */
-      lookups_remaining: number;
-      daily_limit: components["schemas"]["ApiKeyDailyLimit"];
-      individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
-      /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
-      allowed_urls: string[];
-      notifications?: components["schemas"]["ApiKeyNotifications"];
-      datasets?: components["schemas"]["ApiKeyDatasets"];
-      automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
-      /** @description Current balance purchases attached to key. */
-      current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
-    } & {
-      notificatinos: unknown;
-    };
-    /** API Key Details Response */
-    ApiKeyDetailsResponse: {
-      result: components["schemas"]["ApiKeyDetails"];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
-    /**
-     * Start Time
-     * Format: int32
-     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
-     *
-     * @example 1418556452651
-     */
-    StartParam: number;
-    /**
-     * End Time
-     * Format: int32
-     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
-     *
-     * @example 1418556477882
-     */
-    EndParam: number;
-    /**
-     * Tags
-     * @description A comma separated list of tags to query over.
-     *
-     * Useful if you want to specify the circumstances in which the request was made.
-     *
-     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
-     *
-     * @example foo,bar
-     */
-    TagsParam: string;
-    /**
-     * Licensee Key
-     * @description Uniquely identifies a licensee
-     *
-     * @example sk_hk71kco54zGSGvF9eXXrvvnMOLLNh
-     */
-    LicenseeParam: string;
-    /** Key Usage */
-    KeyUsageResult: {
-      /**
-       * @description Start date in ISO 8601 format.
-       * @example 2015-01-22T15:08:06.609Z
-       */
-      start: string;
-      /**
-       * @description End date in ISO 8601 format.
-       * @example 2015-01-23T15:08:06.609Z
-       */
-      end: string;
-      /**
-       * Format: int32
-       * @description Total of paid lookups performed in specified period.
-       * @example 132
-       */
-      total: number;
-      /** @description An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day. */
-      dailyCount: {
-        /** @example 2015-01-22T00:00:00.000Z */
-        date: string;
-        /**
-         * Format: int32
-         * @example 132
-         */
-        count: number;
-      }[];
-    };
-    /** Key Usage Response */
-    ApiKeyUsageResponse: {
-      result: components["schemas"]["KeyUsageResult"];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
-    /**
-     * Limit
-     * Format: int32
-     * @description Specifies the maximum number of suggestions to retrieve.
-     *
-     * By default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`
-     *
-     * @default 10
-     * @example 5
-     */
-    LimitParam: number;
-    /**
-     * Postcode Outward
-     * @description Filter by outward code.
-     * @example 1AA
-     */
-    PostcodeOutwardParam: string;
-    /**
-     * Postcode
-     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example SW1A 2AA
-     */
-    PostcodeParam: string;
-    /**
-     * Postcode Area
-     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example SW
-     */
-    PostcodeAreaParam: string;
-    /**
-     * Postcode Sector
-     * @description Filter by postcode sector, the outward code plus first numeric of the inward code.
-     * @example SW1A 2
-     */
-    PostcodeSectorParam: string;
-    /**
-     * Post Town
-     * @description Filter by town.
-     * @example London
-     */
-    PostTownParam: string;
-    /**
-     * UPRN
-     * @description Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted
-     * @example 100023336956
-     */
-    UPRNParam: number;
-    /**
-     * Country
-     * @description Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
-     * @example England
-     */
-    CountryParam: string;
-    /**
-     * Country
-     * @description Filter by Postcode Type. Useful for separating organisational and residential addresses
-     * @example L
-     */
-    PostcodeTypeParam: string;
-    /**
-     * SU Organisation Indicator
-     * @description Filter by Organisation Indicator. Useful for separating organisational and residential addresses
-     * @example Y
-     */
-    SmallUserParam: string;
-    /**
-     * Box
-     * @description Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.   Only one geospatial box can be provided.
-     * @example 2.095,57.15,-2.096,57.14
-     */
-    BoxParam: string;
-    /**
-     * Bias Postcode Outward
-     * @description Bias by outward code
-     */
-    BiasPostcodeOutwardParam: string;
-    /**
-     * Bias Postcode
-     * @description Bias by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example /addresses?postcode=SW1A2AA&q=10
-     */
-    BiasPostcodeParam: string;
-    /**
-     * Bias Postcode Area
-     * @description Bias by postcode area, the first one or two non-numeric characters of a postcode.
-     * @example The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
-     */
-    BiasPostcodeAreaParam: string;
-    /**
-     * Bias Postcode Sector
-     * @description Bias by postcode sector, the outward code plus first numeric of the inward code.
-     * @example SW1A 2AA is SW1A 2
-     */
-    BiasPostcodeSectorParam: string;
-    /**
-     * Bias Post Town
-     * @description Bias by town.
-     */
-    BiasPosttownParam: string;
-    /**
-     * Bias Thoroughfare
-     * @description Bias by street name.
-     */
-    BiasThoroughfareParam: string;
-    /**
-     * Bias Country
-     * @description Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
-     */
-    BiasCountryParam: string;
-    /**
-     * Bias Lon/Lat
-     * @description Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided
-     * @example -2.095,57.15,100
-     */
-    BiasLonLatParam: string;
-    /**
-     * Bias query by Geolocation of IP
-     * @description Biases search based on approximate geolocation of IP address.
-     * Set `bias_ip=true` to enable.
-     * @example true
-     * @enum {string}
-     */
-    BiasIpParam: "true";
-    /**
-     * Address Suggestion
-     * @description Represents an address suggestion for any address in the world
-     */
-    AddressSuggestion: {
-      id: components["schemas"]["ID"];
-      /**
-       * @description Address Suggestion to be displayed to the user
-       * @example Flat 6, 12 Roskear, Camborne, TR14
-       */
-      suggestion: string;
-      urls: { [key: string]: unknown };
-    };
-    /**
-     * UK Address Suggestion
-     * @description Represents a possible address given an autocomplete query.
-     *
-     * UK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.
-     *
-     * UK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.
-     */
-    UkAddressSuggestion: {
-      id: components["schemas"]["ID"];
-      /**
-       * @description Address suggestion for a given query.
-       * @example Flat 6, 12 Roskear, Camborne, TR14
-       */
-      suggestion: string;
-      udprn: components["schemas"]["paf_udprn"];
-      /**
-       * Format: int32
-       * @description Optionally returned field, representing the UMPRN of a Multiple Residence household
-       * @example 51103417
-       */
-      umprn?: number;
-      urls: {
-        /**
-         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
-         * @example /v1/udprn/50985827
-         */
-        udprn: string;
-        /**
-         * @description Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household
-         * @example /v1/umprn/51103417
-         */
-        umprn?: string;
-      };
-    };
-    /** Address Autocomplete Response */
-    AutocompleteResponse: {
-      result: {
-        hits: (
-          | components["schemas"]["AddressSuggestion"]
-          | components["schemas"]["UkAddressSuggestion"]
-        )[];
-      };
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
-      code: 2000;
-      /** @enum {string} */
-      message: "Success";
-    };
     /**
      * Dataset
      * @description Indicates the provenance of an address.
@@ -2191,21 +1638,42 @@ export interface components {
       country_iso: components["schemas"]["CountryISO"];
       country_iso_2: components["schemas"]["CountryISO2"];
       language: components["schemas"]["Language"];
-      /** @description First address line */
+      /**
+       * Address First Line
+       * @description First line of the address. Typically the building number and street name
+       * @example 10 Georgia Ave
+       */
       line_1: string;
-      /** @description Second address line */
+      /**
+       * Address Second Line
+       * @description Second line of the address. Can be blank
+       */
       line_2: string;
-      /** @description Third address line */
+      /**
+       * Address Third Line
+       * @description Third line of the address. Can also be blank
+       */
       line_3: string;
-      /** @description Postal Code or Zip Code */
+      /**
+       * Postal Code
+       * @description Represents the postal or zip code
+       * @example 30529-2320
+       */
       postcode: string;
-      /** @description Town or City */
+      /**
+       * @description The city, town or other primary locality
+       *
+       * @example Commerce
+       */
       post_town: string;
-      /** @description Province, state or county */
+      /**
+       * @description State or county name
+       * @example Georgia
+       */
       county: string;
       /**
-       * @description Code or abbreviation associated with provice, state or county
-       * @example NY
+       * @description Code abbreviation for state or county used in some countries.
+       * @example GA
        */
       county_code: string;
       longitude: components["schemas"]["Longitude"];
@@ -2276,11 +1744,8 @@ export interface components {
        * @enum {string}
        */
       organisation_name: "";
-      /**
-       * @description Not available for non-UK addresses. See `id` for address identifier
-       * @enum {string}
-       */
-      udprn: "";
+      /** @description Not available for non-UK addresses. See `id` for address identifier */
+      udprn: string;
       /**
        * @description Not available for non-UK addresses. See `id` for address identifier
        * @enum {string}
@@ -2346,6 +1811,564 @@ export interface components {
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
         | components["schemas"]["UspsAddress"];
+    };
+    /** Postcode Response */
+    PostcodeResponse: {
+      /**
+       * @description All addresses listed at the postcode.
+       *
+       * If Eircode is enabled, addreses for the Republic of Ireland will be returned in the English format.
+       */
+      result: (
+        | components["schemas"]["PafAddress"]
+        | components["schemas"]["MrAddress"]
+        | components["schemas"]["NybAddress"]
+        | components["schemas"]["PafAliasAddress"]
+        | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["GbrGlobalAddress"]
+      )[];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+    };
+    /** Basic Error Response */
+    ErrorResponse: {
+      /**
+       * Format: int32
+       * @description API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.
+       */
+      code: number;
+      /** @description Human readable error message supplied with every error response. */
+      message: string;
+    };
+    /** Bad Request Error Response */
+    BadRequestResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `400X` type error response code
+       */
+      code: number;
+      /** @description Bad request error description */
+      message: string;
+      errors?: {
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example should have required property 'type'
+         */
+        message: string;
+        /**
+         * @description Indicates location of error in request query or URL parameter
+         * @example .query.type
+         */
+        path: string;
+        /** @example required.openapi.validation */
+        errorCode?: string;
+      }[];
+    };
+    /** Postcode Not Found */
+    PostcodeNotFoundResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 4040;
+      /** @enum {string} */
+      message: "Postcode not found";
+      /** @description A list of alternate nearest matching postcodes you can try */
+      suggestions: string[];
+    };
+    /** UDPRN Response */
+    UDPRNResponse: {
+      result:
+        | components["schemas"]["PafAddress"]
+        | components["schemas"]["NybAddress"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+    };
+    /** UDPRN Response */
+    UMPRNResponse: {
+      result: components["schemas"]["MrAddress"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+    };
+    /**
+     * Available Contexts
+     * @description A list of available contexts for a key
+     */
+    AvailableContexts: {
+      /**
+       * @description 3 letter ISO code
+       * @example USA
+       */
+      iso_3: string;
+      /**
+       * @description 2 letter ISO code
+       * @example US
+       */
+      iso_2: string;
+      /**
+       * @description Country descriptor to show in Address Finder
+       *
+       * @example United States
+       */
+      description: string;
+      /**
+       * @description Emoji text icon
+       * @example 🇺🇸
+       */
+      emoji: string;
+      /**
+       * @description Indicates availability of reverse geolocation search
+       *
+       * @example true
+       */
+      rgeo: boolean;
+    }[];
+    /**
+     * Context
+     * @description Limits search results within a geographical boundary or country.
+     */
+    Context: string;
+    /**
+     * No Context Provided
+     * @description Empty string if no context is provided or key check has failed
+     * @enum {string}
+     */
+    NoContext: "";
+    /** Key */
+    ApiKey: {
+      contexts: components["schemas"]["AvailableContexts"];
+      /** @description Returns current context if it is in the list of available contexts for this key. */
+      context:
+        | components["schemas"]["Context"]
+        | components["schemas"]["NoContext"];
+      /**
+       * @description Determines whether the key can be used by the requesting agent.
+       *
+       * Returns false if one of the following conditions are met:
+       *   - Key has no lookups remaining
+       *   - Daily limit has been reached on the key
+       *   - Daily individual limit has been reached
+       *   - Key is not being used via an authorised URL
+       *   - (Sublicensed key only) Key has a valid licensee attached
+       *   - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
+       *
+       * @example true
+       */
+      available: boolean;
+    };
+    /** API Key Response */
+    ApiKeyResponse: {
+      result: components["schemas"]["ApiKey"];
+      /** @enum {string} */
+      message: "Success";
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+    };
+    /**
+     * User Token
+     * @description A secret key used for sensitive operations on your account and API Keys.
+     *
+     * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+     *
+     * Typically beings `uk_...`
+     *
+     * @example uk_B59ScW1p1HHouf1VqclEPZUx
+     */
+    UserTokenParam: string;
+    /** API Key Daily Limit */
+    ApiKeyDailyLimit: {
+      /**
+       * Format: int32
+       * @description `number` or `null`. The daily lookup limit currently set on your key.
+       * `null` means the limit is currently disabled.
+       * @example 1000
+       */
+      limit: number;
+      /**
+       * Format: int32
+       * @description Number of lookups performed today which count towards your daily limit.
+       * @example 288
+       */
+      consumed: number;
+    };
+    /** API Key Individual Limit */
+    ApiKeyIndividualLimit: {
+      /**
+       * Format: int32
+       * @description `number` or `null` Limit set on the number of lookups that can be
+       * performed from a single IP address. `null` means the limit is currently
+       * disabled.
+       * @example 30
+       */
+      limit: number;
+    };
+    /** API Key Notifications */
+    ApiKeyNotifications: {
+      /** @description A list of email addresses designated by you to receive notifications about this key. */
+      emails: string[];
+      /** @description Indicates whether email notifications are enabled. */
+      enabled: boolean;
+    };
+    /**
+     * API Key Dataset Availability
+     * @description Indicates which datasets are available and added by default to the address responses
+     */
+    ApiKeyDatasets: {
+      /**
+       * @description UK Postcode Address File enabled
+       * @example true
+       */
+      paf: boolean;
+      /**
+       * @description UK Multiple Residence Dataset enabled
+       * @example true
+       */
+      mr: boolean;
+      /** @description UK Not Yet Built Dataset enabled */
+      nyb: boolean;
+    };
+    /**
+     * API Key Automated Topup
+     * @description Automated topup status
+     */
+    ApiKeyAutomatedTopup: {
+      /**
+       * @description Indicates whether automated top-ups are enabled
+       * @example true
+       */
+      enabled: boolean;
+    };
+    /** API Key Batch Purchase */
+    ApiKeyCurrentPurchase: {
+      /**
+       * @description `string` or `null` The date when this purchase will expire in simplified
+       * extended ISO format (ISO 8601). This is typically 365 days from the time
+       * of first use. This field will be `null` if the purchase has not yet been
+       * used.
+       * @example 2022-01-06T11:41:27.092Z
+       */
+      expires: string;
+      /**
+       * Format: int32
+       * @description Number of procured lookups from this purchase.
+       * @example 20000
+       */
+      purchased: number;
+      /**
+       * Format: int32
+       * @description Number of consumed lookups off this purchase.
+       * @example 121
+       */
+      consumed: number;
+    };
+    /** API Key Details */
+    ApiKeyDetails: {
+      /**
+       * Format: int32
+       * @example 19889
+       */
+      lookups_remaining: number;
+      daily_limit: components["schemas"]["ApiKeyDailyLimit"];
+      individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
+      /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
+      allowed_urls: string[];
+      notifications?: components["schemas"]["ApiKeyNotifications"];
+      datasets?: components["schemas"]["ApiKeyDatasets"];
+      automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
+      /** @description Current balance purchases attached to key. */
+      current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
+    } & {
+      notificatinos: unknown;
+    };
+    /** API Key Details Response */
+    ApiKeyDetailsResponse: {
+      result: components["schemas"]["ApiKeyDetails"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+    };
+    /**
+     * Start Time
+     * Format: int32
+     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
+     *
+     * @example 1418556452651
+     */
+    StartParam: number;
+    /**
+     * End Time
+     * Format: int32
+     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
+     *
+     * @example 1418556477882
+     */
+    EndParam: number;
+    /**
+     * Tags
+     * @description A comma separated list of tags to query over.
+     *
+     * Useful if you want to specify the circumstances in which the request was made.
+     *
+     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+     *
+     * @example foo,bar
+     */
+    TagsParam: string;
+    /**
+     * Licensee Key
+     * @description Uniquely identifies a licensee
+     *
+     * @example sk_hk71kco54zGSGvF9eXXrvvnMOLLNh
+     */
+    LicenseeParam: string;
+    /** Key Usage */
+    KeyUsageResult: {
+      /**
+       * @description Start date in ISO 8601 format.
+       * @example 2015-01-22T15:08:06.609Z
+       */
+      start: string;
+      /**
+       * @description End date in ISO 8601 format.
+       * @example 2015-01-23T15:08:06.609Z
+       */
+      end: string;
+      /**
+       * Format: int32
+       * @description Total of paid lookups performed in specified period.
+       * @example 132
+       */
+      total: number;
+      /** @description An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day. */
+      dailyCount: {
+        /** @example 2015-01-22T00:00:00.000Z */
+        date: string;
+        /**
+         * Format: int32
+         * @example 132
+         */
+        count: number;
+      }[];
+    };
+    /** Key Usage Response */
+    ApiKeyUsageResponse: {
+      result: components["schemas"]["KeyUsageResult"];
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+    };
+    /**
+     * Limit
+     * Format: int32
+     * @description Specifies the maximum number of suggestions to retrieve.
+     *
+     * By default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`
+     *
+     * @default 10
+     * @example 5
+     */
+    LimitParam: number;
+    /**
+     * Postcode Outward
+     * @description Filter by outward code.
+     * @example 1AA
+     */
+    PostcodeOutwardParam: string;
+    /**
+     * Postcode
+     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example SW1A 2AA
+     */
+    PostcodeParam: string;
+    /**
+     * Postcode Area
+     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example SW
+     */
+    PostcodeAreaParam: string;
+    /**
+     * Postcode Sector
+     * @description Filter by postcode sector, the outward code plus first numeric of the inward code.
+     * @example SW1A 2
+     */
+    PostcodeSectorParam: string;
+    /**
+     * Post Town
+     * @description Filter by town.
+     * @example London
+     */
+    PostTownParam: string;
+    /**
+     * UPRN
+     * @description Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted
+     * @example 100023336956
+     */
+    UPRNParam: number;
+    /**
+     * Country
+     * @description Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     * @example England
+     */
+    CountryParam: string;
+    /**
+     * Country
+     * @description Filter by Postcode Type. Useful for separating organisational and residential addresses
+     * @example L
+     */
+    PostcodeTypeParam: string;
+    /**
+     * SU Organisation Indicator
+     * @description Filter by Organisation Indicator. Useful for separating organisational and residential addresses
+     * @example Y
+     */
+    SmallUserParam: string;
+    /**
+     * Box
+     * @description Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.   Only one geospatial box can be provided.
+     * @example 2.095,57.15,-2.096,57.14
+     */
+    BoxParam: string;
+    /**
+     * Bias Postcode Outward
+     * @description Bias by outward code
+     */
+    BiasPostcodeOutwardParam: string;
+    /**
+     * Bias Postcode
+     * @description Bias by postcode. Can be combined with query to perform a postcode + building number/name search.
+     * @example /addresses?postcode=SW1A2AA&q=10
+     */
+    BiasPostcodeParam: string;
+    /**
+     * Bias Postcode Area
+     * @description Bias by postcode area, the first one or two non-numeric characters of a postcode.
+     * @example The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+     */
+    BiasPostcodeAreaParam: string;
+    /**
+     * Bias Postcode Sector
+     * @description Bias by postcode sector, the outward code plus first numeric of the inward code.
+     * @example SW1A 2AA is SW1A 2
+     */
+    BiasPostcodeSectorParam: string;
+    /**
+     * Bias Post Town
+     * @description Bias by town.
+     */
+    BiasPosttownParam: string;
+    /**
+     * Bias Thoroughfare
+     * @description Bias by street name.
+     */
+    BiasThoroughfareParam: string;
+    /**
+     * Bias Country
+     * @description Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     */
+    BiasCountryParam: string;
+    /**
+     * Bias Lon/Lat
+     * @description Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided
+     * @example -2.095,57.15,100
+     */
+    BiasLonLatParam: string;
+    /**
+     * Bias query by Geolocation of IP
+     * @description Biases search based on approximate geolocation of IP address.
+     * Set `bias_ip=true` to enable.
+     * @example true
+     * @enum {string}
+     */
+    BiasIpParam: "true";
+    /**
+     * Address Suggestion
+     * @description Represents an address suggestion for any address in the world
+     */
+    AddressSuggestion: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Address Suggestion to be displayed to the user
+       * @example Flat 6, 12 Roskear, Camborne, TR14
+       */
+      suggestion: string;
+      urls: { [key: string]: unknown };
+    };
+    /**
+     * UK Address Suggestion
+     * @description Represents a possible address given an autocomplete query.
+     *
+     * UK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.
+     *
+     * UK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.
+     */
+    UkAddressSuggestion: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Address suggestion for a given query.
+       * @example Flat 6, 12 Roskear, Camborne, TR14
+       */
+      suggestion: string;
+      udprn: components["schemas"]["paf_udprn"];
+      /**
+       * Format: int32
+       * @description Optionally returned field, representing the UMPRN of a Multiple Residence household
+       * @example 51103417
+       */
+      umprn?: number;
+      urls: {
+        /**
+         * @description URL to retrieve the entire details for a given address suggestion by the UDPRN
+         * @example /v1/udprn/50985827
+         */
+        udprn: string;
+        /**
+         * @description Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household
+         * @example /v1/umprn/51103417
+         */
+        umprn?: string;
+      };
+    };
+    /** Address Autocomplete Response */
+    AutocompleteResponse: {
+      result: {
+        hits: (
+          | components["schemas"]["AddressSuggestion"]
+          | components["schemas"]["UkAddressSuggestion"]
+        )[];
+      };
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
     };
     /** Address Resolution Response (GBR) */
     GbrResolveAddressResponse: {

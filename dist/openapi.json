@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "3.5.1",
+    "version": "3.6.0",
     "license": {
       "name": "AGPLv3",
       "url": "https://opensource.org/licenses/AGPL-3.0"
@@ -2744,8 +2744,8 @@
             "type": "number",
             "description": "Represents latitude",
             "example": 52.938278,
-            "minimum": -180,
-            "maximum": 180
+            "minimum": -90,
+            "maximum": 90
           }
         ]
       },
@@ -3199,895 +3199,6 @@
             }
           }
         ]
-      },
-      "PostcodeResponse": {
-        "title": "Postcode Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/PafAddress"
-                },
-                {
-                  "$ref": "#/components/schemas/MrAddress"
-                },
-                {
-                  "$ref": "#/components/schemas/NybAddress"
-                },
-                {
-                  "$ref": "#/components/schemas/PafAliasAddress"
-                },
-                {
-                  "$ref": "#/components/schemas/WelshPafAddress"
-                }
-              ]
-            },
-            "description": "All addresses listed at the postcode"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
-      },
-      "ErrorResponse": {
-        "title": "Basic Error Response",
-        "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "description": "API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "description": "Human readable error message supplied with every error response."
-          }
-        }
-      },
-      "BadRequestResponse": {
-        "title": "Bad Request Error Response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ErrorResponse"
-          },
-          {
-            "type": "object",
-            "required": [
-              "code",
-              "message"
-            ],
-            "properties": {
-              "code": {
-                "type": "integer",
-                "description": "`400X` type error response code",
-                "format": "int32"
-              },
-              "message": {
-                "type": "string",
-                "description": "Bad request error description"
-              },
-              "errors": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "path",
-                    "message"
-                  ],
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "should have required property 'type'",
-                      "description": "Indicates location of error in request query or URL parameter"
-                    },
-                    "path": {
-                      "type": "string",
-                      "example": ".query.type",
-                      "description": "Indicates location of error in request query or URL parameter"
-                    },
-                    "errorCode": {
-                      "type": "string",
-                      "example": "required.openapi.validation"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
-      "PostcodeNotFoundResponse": {
-        "title": "Postcode Not Found",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "suggestions"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              4040
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Postcode not found"
-            ]
-          },
-          "suggestions": {
-            "description": "A list of alternate nearest matching postcodes you can try",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "SN13 0SF"
-            }
-          }
-        }
-      },
-      "UDPRNResponse": {
-        "title": "UDPRN Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PafAddress"
-              },
-              {
-                "$ref": "#/components/schemas/NybAddress"
-              }
-            ]
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
-      },
-      "UMPRNResponse": {
-        "title": "UDPRN Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MrAddress"
-              }
-            ]
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
-      },
-      "AvailableContexts": {
-        "title": "Available Contexts",
-        "type": "array",
-        "description": "A list of available contexts for a key",
-        "items": {
-          "type": "object",
-          "required": [
-            "iso_3",
-            "iso_2",
-            "description",
-            "emoji",
-            "rgeo"
-          ],
-          "properties": {
-            "iso_3": {
-              "type": "string",
-              "example": "USA",
-              "description": "3 letter ISO code"
-            },
-            "iso_2": {
-              "type": "string",
-              "example": "US",
-              "description": "2 letter ISO code"
-            },
-            "description": {
-              "type": "string",
-              "example": "United States",
-              "description": "Country descriptor to show in Address Finder\n"
-            },
-            "emoji": {
-              "type": "string",
-              "description": "Emoji text icon",
-              "example": "🇺🇸"
-            },
-            "rgeo": {
-              "type": "boolean",
-              "example": true,
-              "description": "Indicates availability of reverse geolocation search\n"
-            }
-          }
-        }
-      },
-      "Context": {
-        "title": "Context",
-        "type": "string",
-        "description": "Limits search results within a geographical boundary or country."
-      },
-      "NoContext": {
-        "title": "No Context Provided",
-        "type": "string",
-        "enum": [
-          ""
-        ],
-        "description": "Empty string if no context is provided or key check has failed"
-      },
-      "ApiKey": {
-        "title": "Key",
-        "type": "object",
-        "required": [
-          "available",
-          "context",
-          "contexts"
-        ],
-        "properties": {
-          "contexts": {
-            "$ref": "#/components/schemas/AvailableContexts"
-          },
-          "context": {
-            "description": "Returns current context if it is in the list of available contexts for this key.\n",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Context"
-              },
-              {
-                "$ref": "#/components/schemas/NoContext"
-              }
-            ]
-          },
-          "available": {
-            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions are met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "ApiKeyResponse": {
-        "title": "API Key Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ApiKey"
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          }
-        }
-      },
-      "UserTokenParam": {
-        "title": "User Token",
-        "type": "string",
-        "description": "A secret key used for sensitive operations on your account and API Keys.\n\nYour user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).\n\nTypically beings `uk_...`\n",
-        "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
-      },
-      "ApiKeyDailyLimit": {
-        "title": "API Key Daily Limit",
-        "type": "object",
-        "required": [
-          "limit",
-          "consumed"
-        ],
-        "properties": {
-          "limit": {
-            "x-nullable": true,
-            "minimum": 0,
-            "example": 1000,
-            "type": "integer",
-            "description": "`number` or `null`. The daily lookup limit currently set on your key. \n`null` means the limit is currently disabled.",
-            "format": "int32"
-          },
-          "consumed": {
-            "minimum": 0,
-            "example": 288,
-            "type": "integer",
-            "description": "Number of lookups performed today which count towards your daily limit.",
-            "format": "int32"
-          }
-        }
-      },
-      "ApiKeyIndividualLimit": {
-        "title": "API Key Individual Limit",
-        "type": "object",
-        "required": [
-          "limit"
-        ],
-        "properties": {
-          "limit": {
-            "minimum": 0,
-            "example": 30,
-            "x-nullable": true,
-            "type": "integer",
-            "description": "`number` or `null` Limit set on the number of lookups that can be \nperformed from a single IP address. `null` means the limit is currently \ndisabled.",
-            "format": "int32"
-          }
-        }
-      },
-      "ApiKeyNotifications": {
-        "title": "API Key Notifications",
-        "type": "object",
-        "required": [
-          "emails",
-          "enabled"
-        ],
-        "properties": {
-          "emails": {
-            "type": "array",
-            "description": "A list of email addresses designated by you to receive notifications about this key.",
-            "items": {
-              "type": "string",
-              "example": "person@example.com"
-            }
-          },
-          "enabled": {
-            "description": "Indicates whether email notifications are enabled.",
-            "type": "boolean"
-          }
-        }
-      },
-      "ApiKeyDatasets": {
-        "title": "API Key Dataset Availability",
-        "description": "Indicates which datasets are available and added by default to the address responses",
-        "type": "object",
-        "required": [
-          "paf",
-          "mr",
-          "nyb"
-        ],
-        "properties": {
-          "paf": {
-            "type": "boolean",
-            "description": "UK Postcode Address File enabled",
-            "example": true
-          },
-          "mr": {
-            "type": "boolean",
-            "description": "UK Multiple Residence Dataset enabled",
-            "example": true
-          },
-          "nyb": {
-            "type": "boolean",
-            "description": "UK Not Yet Built Dataset enabled",
-            "example": false
-          }
-        }
-      },
-      "ApiKeyAutomatedTopup": {
-        "title": "API Key Automated Topup",
-        "description": "Automated topup status",
-        "type": "object",
-        "required": [
-          "enabled"
-        ],
-        "properties": {
-          "enabled": {
-            "type": "boolean",
-            "description": "Indicates whether automated top-ups are enabled",
-            "example": true
-          }
-        }
-      },
-      "ApiKeyCurrentPurchase": {
-        "title": "API Key Batch Purchase",
-        "type": "object",
-        "required": [
-          "expires",
-          "purchased",
-          "consumed"
-        ],
-        "properties": {
-          "expires": {
-            "x-nullable": true,
-            "type": "string",
-            "example": "2022-01-06T11:41:27.092Z",
-            "description": "`string` or `null` The date when this purchase will expire in simplified \nextended ISO format (ISO 8601). This is typically 365 days from the time \nof first use. This field will be `null` if the purchase has not yet been \nused."
-          },
-          "purchased": {
-            "minimum": 0,
-            "type": "integer",
-            "description": "Number of procured lookups from this purchase.",
-            "example": 20000,
-            "format": "int32"
-          },
-          "consumed": {
-            "minimum": 0,
-            "type": "integer",
-            "description": "Number of consumed lookups off this purchase.",
-            "format": "int32",
-            "example": 121
-          }
-        }
-      },
-      "ApiKeyDetails": {
-        "title": "API Key Details",
-        "type": "object",
-        "required": [
-          "lookups_remaining",
-          "daily_limit",
-          "individual_limit",
-          "allowed_urls",
-          "notificatinos",
-          "automated_topups",
-          "current_purchases"
-        ],
-        "properties": {
-          "lookups_remaining": {
-            "minimum": 0,
-            "example": 19889,
-            "type": "integer",
-            "format": "int32"
-          },
-          "daily_limit": {
-            "$ref": "#/components/schemas/ApiKeyDailyLimit"
-          },
-          "individual_limit": {
-            "$ref": "#/components/schemas/ApiKeyIndividualLimit"
-          },
-          "allowed_urls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled."
-          },
-          "notifications": {
-            "$ref": "#/components/schemas/ApiKeyNotifications"
-          },
-          "datasets": {
-            "$ref": "#/components/schemas/ApiKeyDatasets"
-          },
-          "automated_topups": {
-            "$ref": "#/components/schemas/ApiKeyAutomatedTopup"
-          },
-          "current_purchases": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ApiKeyCurrentPurchase"
-            },
-            "description": "Current balance purchases attached to key."
-          }
-        }
-      },
-      "ApiKeyDetailsResponse": {
-        "title": "API Key Details Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ApiKeyDetails"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
-      },
-      "StartParam": {
-        "title": "Start Time",
-        "type": "integer",
-        "format": "int32",
-        "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.\n",
-        "example": 1418556452651
-      },
-      "EndParam": {
-        "title": "End Time",
-        "type": "integer",
-        "format": "int32",
-        "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
-        "example": 1418556477882
-      },
-      "TagsParam": {
-        "title": "Tags",
-        "type": "string",
-        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
-        "example": "foo,bar"
-      },
-      "LicenseeParam": {
-        "title": "Licensee Key",
-        "type": "string",
-        "description": "Uniquely identifies a licensee\n",
-        "example": "sk_hk71kco54zGSGvF9eXXrvvnMOLLNh"
-      },
-      "KeyUsageResult": {
-        "title": "Key Usage",
-        "type": "object",
-        "required": [
-          "start",
-          "end",
-          "total",
-          "dailyCount"
-        ],
-        "properties": {
-          "start": {
-            "type": "string",
-            "description": "Start date in ISO 8601 format.",
-            "example": "2015-01-22T15:08:06.609Z"
-          },
-          "end": {
-            "type": "string",
-            "description": "End date in ISO 8601 format.",
-            "example": "2015-01-23T15:08:06.609Z"
-          },
-          "total": {
-            "type": "integer",
-            "description": "Total of paid lookups performed in specified period.",
-            "format": "int32",
-            "example": 132
-          },
-          "dailyCount": {
-            "type": "array",
-            "description": "An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day.\n",
-            "items": {
-              "type": "object",
-              "required": [
-                "date",
-                "count"
-              ],
-              "properties": {
-                "date": {
-                  "type": "string",
-                  "example": "2015-01-22T00:00:00.000Z"
-                },
-                "count": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 132
-                }
-              }
-            }
-          }
-        }
-      },
-      "ApiKeyUsageResponse": {
-        "title": "Key Usage Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/KeyUsageResult"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
-      },
-      "LimitParam": {
-        "title": "Limit",
-        "description": "Specifies the maximum number of suggestions to retrieve.\n\nBy default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`\n",
-        "minimum": 1,
-        "maximum": 100,
-        "default": 10,
-        "example": 5,
-        "type": "integer",
-        "format": "int32"
-      },
-      "PostcodeOutwardParam": {
-        "title": "Postcode Outward",
-        "type": "string",
-        "description": "Filter by outward code.",
-        "example": "1AA"
-      },
-      "PostcodeParam": {
-        "title": "Postcode",
-        "type": "string",
-        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "SW1A 2AA"
-      },
-      "PostcodeAreaParam": {
-        "title": "Postcode Area",
-        "type": "string",
-        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "SW"
-      },
-      "PostcodeSectorParam": {
-        "title": "Postcode Sector",
-        "type": "string",
-        "description": "Filter by postcode sector, the outward code plus first numeric of the inward code. ",
-        "example": "SW1A 2"
-      },
-      "PostTownParam": {
-        "title": "Post Town",
-        "type": "string",
-        "description": "Filter by town. ",
-        "example": "London"
-      },
-      "UPRNParam": {
-        "title": "UPRN",
-        "type": "integer",
-        "description": "Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted",
-        "example": "100023336956"
-      },
-      "CountryParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.",
-        "example": "England"
-      },
-      "PostcodeTypeParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Filter by Postcode Type. Useful for separating organisational and residential addresses",
-        "example": "L"
-      },
-      "SmallUserParam": {
-        "title": "SU Organisation Indicator",
-        "type": "string",
-        "description": "Filter by Organisation Indicator. Useful for separating organisational and residential addresses",
-        "example": "Y"
-      },
-      "BoxParam": {
-        "title": "Box",
-        "type": "string",
-        "description": "Restrict search to a geospatial box determined by the \"top-left\" and \"bottom-right\" gelocations.   Only one geospatial box can be provided.",
-        "example": "2.095,57.15,-2.096,57.14"
-      },
-      "BiasPostcodeOutwardParam": {
-        "title": "Bias Postcode Outward",
-        "type": "string",
-        "description": "Bias by outward code"
-      },
-      "BiasPostcodeParam": {
-        "title": "Bias Postcode",
-        "type": "string",
-        "description": "Bias by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "/addresses?postcode=SW1A2AA&q=10"
-      },
-      "BiasPostcodeAreaParam": {
-        "title": "Bias Postcode Area",
-        "type": "string",
-        "description": "Bias by postcode area, the first one or two non-numeric characters of a postcode.",
-        "example": "The postcode area of SW1A 2AA and N1 6RT are SW and N respectively"
-      },
-      "BiasPostcodeSectorParam": {
-        "title": "Bias Postcode Sector",
-        "type": "string",
-        "description": "Bias by postcode sector, the outward code plus first numeric of the inward code.",
-        "example": "SW1A 2AA is SW1A 2"
-      },
-      "BiasPosttownParam": {
-        "title": "Bias Post Town",
-        "type": "string",
-        "description": "Bias by town."
-      },
-      "BiasThoroughfareParam": {
-        "title": "Bias Thoroughfare",
-        "type": "string",
-        "description": "Bias by street name."
-      },
-      "BiasCountryParam": {
-        "title": "Bias Country",
-        "type": "string",
-        "description": "Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man."
-      },
-      "BiasLonLatParam": {
-        "title": "Bias Lon/Lat",
-        "type": "string",
-        "description": "Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided",
-        "example": "-2.095,57.15,100"
-      },
-      "BiasIpParam": {
-        "title": "Bias query by Geolocation of IP",
-        "type": "string",
-        "enum": [
-          "true"
-        ],
-        "description": "Biases search based on approximate geolocation of IP address.\nSet `bias_ip=true` to enable.",
-        "example": "true"
-      },
-      "AddressSuggestion": {
-        "title": "Address Suggestion",
-        "description": "Represents an address suggestion for any address in the world",
-        "type": "object",
-        "required": [
-          "id",
-          "suggestion",
-          "urls"
-        ],
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/ID"
-          },
-          "suggestion": {
-            "type": "string",
-            "description": "Address Suggestion to be displayed to the user",
-            "example": "Flat 6, 12 Roskear, Camborne, TR14"
-          },
-          "urls": {
-            "type": "object"
-          }
-        }
-      },
-      "UkAddressSuggestion": {
-        "title": "UK Address Suggestion",
-        "description": "Represents a possible address given an autocomplete query.\n\nUK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.\n\nUK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.\n",
-        "type": "object",
-        "required": [
-          "id",
-          "suggestion",
-          "udprn",
-          "urls"
-        ],
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/ID"
-          },
-          "suggestion": {
-            "type": "string",
-            "description": "Address suggestion for a given query.",
-            "example": "Flat 6, 12 Roskear, Camborne, TR14"
-          },
-          "udprn": {
-            "$ref": "#/components/schemas/paf_udprn"
-          },
-          "umprn": {
-            "type": "number",
-            "format": "int32",
-            "description": "Optionally returned field, representing the UMPRN of a Multiple Residence household",
-            "example": 51103417
-          },
-          "urls": {
-            "required": [
-              "udprn"
-            ],
-            "type": "object",
-            "properties": {
-              "udprn": {
-                "type": "string",
-                "description": "URL to retrieve the entire details for a given address suggestion by the UDPRN",
-                "example": "/v1/udprn/50985827"
-              },
-              "umprn": {
-                "type": "string",
-                "description": "Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household",
-                "example": "/v1/umprn/51103417"
-              }
-            }
-          }
-        }
-      },
-      "AutocompleteResponse": {
-        "title": "Address Autocomplete Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "type": "object",
-            "required": [
-              "hits"
-            ],
-            "properties": {
-              "hits": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/AddressSuggestion"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UkAddressSuggestion"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          }
-        }
       },
       "Dataset": {
         "title": "Dataset",
@@ -5243,33 +4354,43 @@
             "$ref": "#/components/schemas/Language"
           },
           "line_1": {
+            "title": "Address First Line",
             "type": "string",
-            "description": "First address line"
+            "description": "First line of the address. Typically the building number and street name",
+            "example": "10 Georgia Ave"
           },
           "line_2": {
+            "title": "Address Second Line",
             "type": "string",
-            "description": "Second address line"
+            "description": "Second line of the address. Can be blank",
+            "example": ""
           },
           "line_3": {
+            "title": "Address Third Line",
             "type": "string",
-            "description": "Third address line"
+            "description": "Third line of the address. Can also be blank",
+            "example": ""
           },
           "postcode": {
+            "title": "Postal Code",
             "type": "string",
-            "description": "Postal Code or Zip Code"
+            "description": "Represents the postal or zip code",
+            "example": "30529-2320"
           },
           "post_town": {
             "type": "string",
-            "description": "Town or City"
+            "description": "The city, town or other primary locality\n",
+            "example": "Commerce"
           },
           "county": {
             "type": "string",
-            "description": "Province, state or county"
+            "description": "State or county name",
+            "example": "Georgia"
           },
           "county_code": {
             "type": "string",
-            "description": "Code or abbreviation associated with provice, state or county",
-            "example": "NY"
+            "description": "Code abbreviation for state or county used in some countries.",
+            "example": "GA"
           },
           "longitude": {
             "$ref": "#/components/schemas/Longitude"
@@ -5373,10 +4494,7 @@
           },
           "udprn": {
             "type": "string",
-            "description": "Not available for non-UK addresses. See `id` for address identifier",
-            "enum": [
-              ""
-            ]
+            "description": "Not available for non-UK addresses. See `id` for address identifier"
           },
           "umprn": {
             "type": "string",
@@ -5474,6 +4592,898 @@
               {
                 "$ref": "#/components/schemas/UspsAddress"
               }
+            ]
+          }
+        }
+      },
+      "PostcodeResponse": {
+        "title": "Postcode Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PafAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/MrAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/NybAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/PafAliasAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/WelshPafAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/GbrGlobalAddress"
+                }
+              ]
+            },
+            "description": "All addresses listed at the postcode.\n\nIf Eircode is enabled, addreses for the Republic of Ireland will be returned in the English format.\n"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "Basic Error Response",
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human readable error message supplied with every error response."
+          }
+        }
+      },
+      "BadRequestResponse": {
+        "title": "Bad Request Error Response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "`400X` type error response code",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string",
+                "description": "Bad request error description"
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "path",
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "should have required property 'type'",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": ".query.type",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "required.openapi.validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PostcodeNotFoundResponse": {
+        "title": "Postcode Not Found",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "suggestions"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              4040
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Postcode not found"
+            ]
+          },
+          "suggestions": {
+            "description": "A list of alternate nearest matching postcodes you can try",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "SN13 0SF"
+            }
+          }
+        }
+      },
+      "UDPRNResponse": {
+        "title": "UDPRN Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/NybAddress"
+              }
+            ]
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          }
+        }
+      },
+      "UMPRNResponse": {
+        "title": "UDPRN Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MrAddress"
+              }
+            ]
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          }
+        }
+      },
+      "AvailableContexts": {
+        "title": "Available Contexts",
+        "type": "array",
+        "description": "A list of available contexts for a key",
+        "items": {
+          "type": "object",
+          "required": [
+            "iso_3",
+            "iso_2",
+            "description",
+            "emoji",
+            "rgeo"
+          ],
+          "properties": {
+            "iso_3": {
+              "type": "string",
+              "example": "USA",
+              "description": "3 letter ISO code"
+            },
+            "iso_2": {
+              "type": "string",
+              "example": "US",
+              "description": "2 letter ISO code"
+            },
+            "description": {
+              "type": "string",
+              "example": "United States",
+              "description": "Country descriptor to show in Address Finder\n"
+            },
+            "emoji": {
+              "type": "string",
+              "description": "Emoji text icon",
+              "example": "🇺🇸"
+            },
+            "rgeo": {
+              "type": "boolean",
+              "example": true,
+              "description": "Indicates availability of reverse geolocation search\n"
+            }
+          }
+        }
+      },
+      "Context": {
+        "title": "Context",
+        "type": "string",
+        "description": "Limits search results within a geographical boundary or country."
+      },
+      "NoContext": {
+        "title": "No Context Provided",
+        "type": "string",
+        "enum": [
+          ""
+        ],
+        "description": "Empty string if no context is provided or key check has failed"
+      },
+      "ApiKey": {
+        "title": "Key",
+        "type": "object",
+        "required": [
+          "available",
+          "context",
+          "contexts"
+        ],
+        "properties": {
+          "contexts": {
+            "$ref": "#/components/schemas/AvailableContexts"
+          },
+          "context": {
+            "description": "Returns current context if it is in the list of available contexts for this key.\n",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Context"
+              },
+              {
+                "$ref": "#/components/schemas/NoContext"
+              }
+            ]
+          },
+          "available": {
+            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions are met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "ApiKeyResponse": {
+        "title": "API Key Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ApiKey"
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          }
+        }
+      },
+      "UserTokenParam": {
+        "title": "User Token",
+        "type": "string",
+        "description": "A secret key used for sensitive operations on your account and API Keys.\n\nYour user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).\n\nTypically beings `uk_...`\n",
+        "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
+      },
+      "ApiKeyDailyLimit": {
+        "title": "API Key Daily Limit",
+        "type": "object",
+        "required": [
+          "limit",
+          "consumed"
+        ],
+        "properties": {
+          "limit": {
+            "x-nullable": true,
+            "minimum": 0,
+            "example": 1000,
+            "type": "integer",
+            "description": "`number` or `null`. The daily lookup limit currently set on your key. \n`null` means the limit is currently disabled.",
+            "format": "int32"
+          },
+          "consumed": {
+            "minimum": 0,
+            "example": 288,
+            "type": "integer",
+            "description": "Number of lookups performed today which count towards your daily limit.",
+            "format": "int32"
+          }
+        }
+      },
+      "ApiKeyIndividualLimit": {
+        "title": "API Key Individual Limit",
+        "type": "object",
+        "required": [
+          "limit"
+        ],
+        "properties": {
+          "limit": {
+            "minimum": 0,
+            "example": 30,
+            "x-nullable": true,
+            "type": "integer",
+            "description": "`number` or `null` Limit set on the number of lookups that can be \nperformed from a single IP address. `null` means the limit is currently \ndisabled.",
+            "format": "int32"
+          }
+        }
+      },
+      "ApiKeyNotifications": {
+        "title": "API Key Notifications",
+        "type": "object",
+        "required": [
+          "emails",
+          "enabled"
+        ],
+        "properties": {
+          "emails": {
+            "type": "array",
+            "description": "A list of email addresses designated by you to receive notifications about this key.",
+            "items": {
+              "type": "string",
+              "example": "person@example.com"
+            }
+          },
+          "enabled": {
+            "description": "Indicates whether email notifications are enabled.",
+            "type": "boolean"
+          }
+        }
+      },
+      "ApiKeyDatasets": {
+        "title": "API Key Dataset Availability",
+        "description": "Indicates which datasets are available and added by default to the address responses",
+        "type": "object",
+        "required": [
+          "paf",
+          "mr",
+          "nyb"
+        ],
+        "properties": {
+          "paf": {
+            "type": "boolean",
+            "description": "UK Postcode Address File enabled",
+            "example": true
+          },
+          "mr": {
+            "type": "boolean",
+            "description": "UK Multiple Residence Dataset enabled",
+            "example": true
+          },
+          "nyb": {
+            "type": "boolean",
+            "description": "UK Not Yet Built Dataset enabled",
+            "example": false
+          }
+        }
+      },
+      "ApiKeyAutomatedTopup": {
+        "title": "API Key Automated Topup",
+        "description": "Automated topup status",
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Indicates whether automated top-ups are enabled",
+            "example": true
+          }
+        }
+      },
+      "ApiKeyCurrentPurchase": {
+        "title": "API Key Batch Purchase",
+        "type": "object",
+        "required": [
+          "expires",
+          "purchased",
+          "consumed"
+        ],
+        "properties": {
+          "expires": {
+            "x-nullable": true,
+            "type": "string",
+            "example": "2022-01-06T11:41:27.092Z",
+            "description": "`string` or `null` The date when this purchase will expire in simplified \nextended ISO format (ISO 8601). This is typically 365 days from the time \nof first use. This field will be `null` if the purchase has not yet been \nused."
+          },
+          "purchased": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Number of procured lookups from this purchase.",
+            "example": 20000,
+            "format": "int32"
+          },
+          "consumed": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Number of consumed lookups off this purchase.",
+            "format": "int32",
+            "example": 121
+          }
+        }
+      },
+      "ApiKeyDetails": {
+        "title": "API Key Details",
+        "type": "object",
+        "required": [
+          "lookups_remaining",
+          "daily_limit",
+          "individual_limit",
+          "allowed_urls",
+          "notificatinos",
+          "automated_topups",
+          "current_purchases"
+        ],
+        "properties": {
+          "lookups_remaining": {
+            "minimum": 0,
+            "example": 19889,
+            "type": "integer",
+            "format": "int32"
+          },
+          "daily_limit": {
+            "$ref": "#/components/schemas/ApiKeyDailyLimit"
+          },
+          "individual_limit": {
+            "$ref": "#/components/schemas/ApiKeyIndividualLimit"
+          },
+          "allowed_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled."
+          },
+          "notifications": {
+            "$ref": "#/components/schemas/ApiKeyNotifications"
+          },
+          "datasets": {
+            "$ref": "#/components/schemas/ApiKeyDatasets"
+          },
+          "automated_topups": {
+            "$ref": "#/components/schemas/ApiKeyAutomatedTopup"
+          },
+          "current_purchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiKeyCurrentPurchase"
+            },
+            "description": "Current balance purchases attached to key."
+          }
+        }
+      },
+      "ApiKeyDetailsResponse": {
+        "title": "API Key Details Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ApiKeyDetails"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          }
+        }
+      },
+      "StartParam": {
+        "title": "Start Time",
+        "type": "integer",
+        "format": "int32",
+        "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.\n",
+        "example": 1418556452651
+      },
+      "EndParam": {
+        "title": "End Time",
+        "type": "integer",
+        "format": "int32",
+        "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
+        "example": 1418556477882
+      },
+      "TagsParam": {
+        "title": "Tags",
+        "type": "string",
+        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
+        "example": "foo,bar"
+      },
+      "LicenseeParam": {
+        "title": "Licensee Key",
+        "type": "string",
+        "description": "Uniquely identifies a licensee\n",
+        "example": "sk_hk71kco54zGSGvF9eXXrvvnMOLLNh"
+      },
+      "KeyUsageResult": {
+        "title": "Key Usage",
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "total",
+          "dailyCount"
+        ],
+        "properties": {
+          "start": {
+            "type": "string",
+            "description": "Start date in ISO 8601 format.",
+            "example": "2015-01-22T15:08:06.609Z"
+          },
+          "end": {
+            "type": "string",
+            "description": "End date in ISO 8601 format.",
+            "example": "2015-01-23T15:08:06.609Z"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total of paid lookups performed in specified period.",
+            "format": "int32",
+            "example": 132
+          },
+          "dailyCount": {
+            "type": "array",
+            "description": "An array of objects representing number of paid lookups made on specific days, ordered by date. Each object contains a `date` attribute, which represents the day and a `count` attribute, which represents the number of paid lookups made on that day.\n",
+            "items": {
+              "type": "object",
+              "required": [
+                "date",
+                "count"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "2015-01-22T00:00:00.000Z"
+                },
+                "count": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 132
+                }
+              }
+            }
+          }
+        }
+      },
+      "ApiKeyUsageResponse": {
+        "title": "Key Usage Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/KeyUsageResult"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          }
+        }
+      },
+      "LimitParam": {
+        "title": "Limit",
+        "description": "Specifies the maximum number of suggestions to retrieve.\n\nBy default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`\n",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 10,
+        "example": 5,
+        "type": "integer",
+        "format": "int32"
+      },
+      "PostcodeOutwardParam": {
+        "title": "Postcode Outward",
+        "type": "string",
+        "description": "Filter by outward code.",
+        "example": "1AA"
+      },
+      "PostcodeParam": {
+        "title": "Postcode",
+        "type": "string",
+        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
+        "example": "SW1A 2AA"
+      },
+      "PostcodeAreaParam": {
+        "title": "Postcode Area",
+        "type": "string",
+        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
+        "example": "SW"
+      },
+      "PostcodeSectorParam": {
+        "title": "Postcode Sector",
+        "type": "string",
+        "description": "Filter by postcode sector, the outward code plus first numeric of the inward code. ",
+        "example": "SW1A 2"
+      },
+      "PostTownParam": {
+        "title": "Post Town",
+        "type": "string",
+        "description": "Filter by town. ",
+        "example": "London"
+      },
+      "UPRNParam": {
+        "title": "UPRN",
+        "type": "integer",
+        "description": "Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted",
+        "example": "100023336956"
+      },
+      "CountryParam": {
+        "title": "Country",
+        "type": "string",
+        "description": "Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.",
+        "example": "England"
+      },
+      "PostcodeTypeParam": {
+        "title": "Country",
+        "type": "string",
+        "description": "Filter by Postcode Type. Useful for separating organisational and residential addresses",
+        "example": "L"
+      },
+      "SmallUserParam": {
+        "title": "SU Organisation Indicator",
+        "type": "string",
+        "description": "Filter by Organisation Indicator. Useful for separating organisational and residential addresses",
+        "example": "Y"
+      },
+      "BoxParam": {
+        "title": "Box",
+        "type": "string",
+        "description": "Restrict search to a geospatial box determined by the \"top-left\" and \"bottom-right\" gelocations.   Only one geospatial box can be provided.",
+        "example": "2.095,57.15,-2.096,57.14"
+      },
+      "BiasPostcodeOutwardParam": {
+        "title": "Bias Postcode Outward",
+        "type": "string",
+        "description": "Bias by outward code"
+      },
+      "BiasPostcodeParam": {
+        "title": "Bias Postcode",
+        "type": "string",
+        "description": "Bias by postcode. Can be combined with query to perform a postcode + building number/name search.",
+        "example": "/addresses?postcode=SW1A2AA&q=10"
+      },
+      "BiasPostcodeAreaParam": {
+        "title": "Bias Postcode Area",
+        "type": "string",
+        "description": "Bias by postcode area, the first one or two non-numeric characters of a postcode.",
+        "example": "The postcode area of SW1A 2AA and N1 6RT are SW and N respectively"
+      },
+      "BiasPostcodeSectorParam": {
+        "title": "Bias Postcode Sector",
+        "type": "string",
+        "description": "Bias by postcode sector, the outward code plus first numeric of the inward code.",
+        "example": "SW1A 2AA is SW1A 2"
+      },
+      "BiasPosttownParam": {
+        "title": "Bias Post Town",
+        "type": "string",
+        "description": "Bias by town."
+      },
+      "BiasThoroughfareParam": {
+        "title": "Bias Thoroughfare",
+        "type": "string",
+        "description": "Bias by street name."
+      },
+      "BiasCountryParam": {
+        "title": "Bias Country",
+        "type": "string",
+        "description": "Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man."
+      },
+      "BiasLonLatParam": {
+        "title": "Bias Lon/Lat",
+        "type": "string",
+        "description": "Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided",
+        "example": "-2.095,57.15,100"
+      },
+      "BiasIpParam": {
+        "title": "Bias query by Geolocation of IP",
+        "type": "string",
+        "enum": [
+          "true"
+        ],
+        "description": "Biases search based on approximate geolocation of IP address.\nSet `bias_ip=true` to enable.",
+        "example": "true"
+      },
+      "AddressSuggestion": {
+        "title": "Address Suggestion",
+        "description": "Represents an address suggestion for any address in the world",
+        "type": "object",
+        "required": [
+          "id",
+          "suggestion",
+          "urls"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "Address Suggestion to be displayed to the user",
+            "example": "Flat 6, 12 Roskear, Camborne, TR14"
+          },
+          "urls": {
+            "type": "object"
+          }
+        }
+      },
+      "UkAddressSuggestion": {
+        "title": "UK Address Suggestion",
+        "description": "Represents a possible address given an autocomplete query.\n\nUK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.\n\nUK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.\n",
+        "type": "object",
+        "required": [
+          "id",
+          "suggestion",
+          "udprn",
+          "urls"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "Address suggestion for a given query.",
+            "example": "Flat 6, 12 Roskear, Camborne, TR14"
+          },
+          "udprn": {
+            "$ref": "#/components/schemas/paf_udprn"
+          },
+          "umprn": {
+            "type": "number",
+            "format": "int32",
+            "description": "Optionally returned field, representing the UMPRN of a Multiple Residence household",
+            "example": 51103417
+          },
+          "urls": {
+            "required": [
+              "udprn"
+            ],
+            "type": "object",
+            "properties": {
+              "udprn": {
+                "type": "string",
+                "description": "URL to retrieve the entire details for a given address suggestion by the UDPRN",
+                "example": "/v1/udprn/50985827"
+              },
+              "umprn": {
+                "type": "string",
+                "description": "Optionally returned field, to retrieve the entire details for a suggested Multiple Residence household",
+                "example": "/v1/umprn/51103417"
+              }
+            }
+          }
+        }
+      },
+      "AutocompleteResponse": {
+        "title": "Address Autocomplete Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "type": "object",
+            "required": [
+              "hits"
+            ],
+            "properties": {
+              "hits": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AddressSuggestion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UkAddressSuggestion"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
             ]
           }
         }
