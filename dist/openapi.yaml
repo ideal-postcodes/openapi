@@ -6847,6 +6847,13 @@ components:
     Carrier:
       title: Carrier Object
       type: object
+      x-nullable: true
+      nullable: true
+      required:
+        - network_code
+        - name
+        - country
+        - network_type
       properties:
         network_code:
           title: Network Code
@@ -6891,6 +6898,8 @@ components:
         - iso_country
         - iso_country_2
         - country
+        - current_carrier
+        - original_carrier
       properties:
         valid:
           type: boolean
