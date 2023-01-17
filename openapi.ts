@@ -3136,6 +3136,40 @@ export interface components {
         | components["schemas"]["Email"]
         | components["schemas"]["UnknownEmail"];
     };
+    /** Carrier Object */
+    Carrier: {
+      /**
+       * Network Code
+       * @description The [Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code) for the carrier.
+       * @example 234
+       */
+      network_code?: string;
+      /**
+       * Name
+       * @description The full name of the carrier that number is associated with.
+       * @example BT Group
+       */
+      name?: string;
+      /**
+       * Country ISO Alpha-2 Code
+       * @description Country that number is associated with. In ISO 3166-1 alpha-2 format.
+       * @example GB
+       */
+      country?: string;
+      /**
+       * Network Type
+       * @description Type of network that number is associated with.
+       * @enum {string}
+       */
+      network_type?:
+        | "mobile"
+        | "landline"
+        | "landline_premium"
+        | "landline_tollfree"
+        | "virtual"
+        | "unknown"
+        | "pager";
+    };
     /** Phone Number Object */
     PhoneNumber: {
       /** @enum {boolean} */
@@ -3165,6 +3199,10 @@ export interface components {
        * @example United Kingdom
        */
       country: string;
+      /** @description Representation of current phone carrier information like network code, name, country, network type */
+      current_carrier?: components["schemas"]["Carrier"];
+      /** @description Representation of original phone carrier information like network code, name, country, network type */
+      original_carrier?: components["schemas"]["Carrier"];
     };
     /** Invalid Phone Number Object */
     InvalidPhoneNumber: {
@@ -3195,6 +3233,16 @@ export interface components {
        * @enum {string|null}
        */
       country: null | null;
+      /**
+       * @description Representation of current phone carrier information like network code, name, country, network type
+       * @enum {string|null}
+       */
+      current_carrier?: null | null;
+      /**
+       * @description Representation of original phone carrier information like network code, name, country, network type
+       * @enum {string|null}
+       */
+      original_carrier?: null | null;
     };
     /** Phone Number Verification Response */
     PhoneNumberResponse: {
