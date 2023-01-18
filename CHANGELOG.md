@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/ideal-postcodes/openapi/compare/3.6.0...3.7.0) (2023-01-18)
+
+
+### Features
+
+* **Phone:** Add carrier information to response payload ([b6b826f](https://github.com/ideal-postcodes/openapi/commit/b6b826fdec74727e64b704a5f35fc990a3152b00))
+
 # [3.6.0](https://github.com/ideal-postcodes/openapi/compare/3.5.1...3.6.0) (2023-01-10)
 
 
