@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 3.6.0
+  version: 3.7.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -6844,6 +6844,50 @@ components:
           oneOf:
             - $ref: '#/components/schemas/Email'
             - $ref: '#/components/schemas/UnknownEmail'
+    Carrier:
+      title: Carrier Object
+      type: object
+      x-nullable: true
+      nullable: true
+      required:
+        - network_code
+        - name
+        - country
+        - network_type
+      properties:
+        network_code:
+          title: Network Code
+          type: string
+          description: >-
+            The [Mobile Country
+            Code](https://en.wikipedia.org/wiki/Mobile_country_code) for the
+            carrier.
+          example: '234'
+        name:
+          title: Name
+          type: string
+          description: The full name of the carrier that number is associated with.
+          example: BT Group
+        country:
+          title: Country ISO Alpha-2 Code
+          type: string
+          description: >-
+            Country that number is associated with. In ISO 3166-1 alpha-2
+            format.
+          example: GB
+        network_type:
+          title: Network Type
+          type: string
+          x-nullable: true
+          description: Type of network that number is associated with.
+          enum:
+            - mobile
+            - landline
+            - landline_premium
+            - landline_tollfree
+            - virtual
+            - unknown
+            - pager
     PhoneNumber:
       title: Phone Number Object
       type: object
@@ -6854,6 +6898,8 @@ components:
         - iso_country
         - iso_country_2
         - country
+        - current_carrier
+        - original_carrier
       properties:
         valid:
           type: boolean
@@ -6879,6 +6925,16 @@ components:
           description: Full country name
           type: string
           example: United Kingdom
+        current_carrier:
+          description: >-
+            Representation of current phone carrier information like network
+            code, name, country, network type
+          $ref: '#/components/schemas/Carrier'
+        original_carrier:
+          description: >-
+            Representation of original phone carrier information like network
+            code, name, country, network type
+          $ref: '#/components/schemas/Carrier'
     InvalidPhoneNumber:
       title: Invalid Phone Number Object
       type: object
@@ -6924,6 +6980,24 @@ components:
             - null
         country:
           description: Full country name
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        current_carrier:
+          description: >-
+            Representation of current phone carrier information like network
+            code, name, country, network type
+          x-nullable: true
+          nullable: true
+          type: string
+          enum:
+            - null
+        original_carrier:
+          description: >-
+            Representation of original phone carrier information like network
+            code, name, country, network type
           x-nullable: true
           nullable: true
           type: string
