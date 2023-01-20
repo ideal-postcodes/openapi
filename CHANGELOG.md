@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/ideal-postcodes/openapi/compare/3.7.0...3.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* **Datasets:** Add new dataset attributes ([681881b](https://github.com/ideal-postcodes/openapi/commit/681881bb5a819b12babe877ecc608f98c79c828e))
+
 # [3.7.0](https://github.com/ideal-postcodes/openapi/compare/3.6.0...3.7.0) (2023-01-18)
 
 
