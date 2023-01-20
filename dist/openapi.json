@@ -5003,23 +5003,58 @@
         "required": [
           "paf",
           "mr",
-          "nyb"
+          "nyb",
+          "pafa",
+          "pafw",
+          "ecad",
+          "ecaf",
+          "usps"
         ],
         "properties": {
           "paf": {
             "type": "boolean",
-            "description": "UK Postcode Address File enabled",
+            "description": "UK Main Address File (Postcode Address File)",
             "example": true
+          },
+          "pafa": {
+            "type": "boolean",
+            "description": "UK Property Alias dataset",
+            "example": false
+          },
+          "pafw": {
+            "type": "boolean",
+            "description": "UK Welsh Language Dataset",
+            "example": false
           },
           "mr": {
             "type": "boolean",
-            "description": "UK Multiple Residence Dataset enabled",
+            "description": "UK Multiple Residence Dataset",
             "example": true
           },
           "nyb": {
             "type": "boolean",
-            "description": "UK Not Yet Built Dataset enabled",
+            "description": "UK Not Yet Built Dataset",
             "example": false
+          },
+          "usps": {
+            "type": "boolean",
+            "description": "US Address Dataset",
+            "example": true
+          },
+          "ecad": {
+            "type": "boolean",
+            "description": "IE Address File. Eircode Address Database",
+            "example": false
+          },
+          "ecaf": {
+            "type": "boolean",
+            "description": "IE Base Address File. Eircode Address File",
+            "example": false
+          },
+          "herewe": {
+            "type": "boolean",
+            "description": "Western Europe Address File",
+            "example": true
           }
         }
       },
@@ -6918,18 +6953,24 @@
           "network_code": {
             "title": "Network Code",
             "type": "string",
+            "x-nullable": true,
+            "nullable": true,
             "description": "The [Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code) for the carrier.",
             "example": "234"
           },
           "name": {
             "title": "Name",
             "type": "string",
+            "x-nullable": true,
+            "nullable": true,
             "description": "The full name of the carrier that number is associated with.",
             "example": "BT Group"
           },
           "country": {
             "title": "Country ISO Alpha-2 Code",
             "type": "string",
+            "x-nullable": true,
+            "nullable": true,
             "description": "Country that number is associated with. In ISO 3166-1 alpha-2 format.",
             "example": "GB"
           },
@@ -6937,6 +6978,7 @@
             "title": "Network Type",
             "type": "string",
             "x-nullable": true,
+            "nullable": true,
             "description": "Type of network that number is associated with.",
             "enum": [
               "mobile",

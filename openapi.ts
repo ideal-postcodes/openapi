@@ -2033,17 +2033,35 @@ export interface components {
      */
     ApiKeyDatasets: {
       /**
-       * @description UK Postcode Address File enabled
+       * @description UK Main Address File (Postcode Address File)
        * @example true
        */
       paf: boolean;
+      /** @description UK Property Alias dataset */
+      pafa: boolean;
+      /** @description UK Welsh Language Dataset */
+      pafw: boolean;
       /**
-       * @description UK Multiple Residence Dataset enabled
+       * @description UK Multiple Residence Dataset
        * @example true
        */
       mr: boolean;
-      /** @description UK Not Yet Built Dataset enabled */
+      /** @description UK Not Yet Built Dataset */
       nyb: boolean;
+      /**
+       * @description US Address Dataset
+       * @example true
+       */
+      usps: boolean;
+      /** @description IE Address File. Eircode Address Database */
+      ecad: boolean;
+      /** @description IE Base Address File. Eircode Address File */
+      ecaf: boolean;
+      /**
+       * @description Western Europe Address File
+       * @example true
+       */
+      herewe?: boolean;
     };
     /**
      * API Key Automated Topup
@@ -3143,32 +3161,35 @@ export interface components {
        * @description The [Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code) for the carrier.
        * @example 234
        */
-      network_code: string;
+      network_code: string | null;
       /**
        * Name
        * @description The full name of the carrier that number is associated with.
        * @example BT Group
        */
-      name: string;
+      name: string | null;
       /**
        * Country ISO Alpha-2 Code
        * @description Country that number is associated with. In ISO 3166-1 alpha-2 format.
        * @example GB
        */
-      country: string;
+      country: string | null;
       /**
        * Network Type
        * @description Type of network that number is associated with.
-       * @enum {string}
+       * @enum {string|null}
        */
       network_type:
-        | "mobile"
-        | "landline"
-        | "landline_premium"
-        | "landline_tollfree"
-        | "virtual"
-        | "unknown"
-        | "pager";
+        | (
+            | "mobile"
+            | "landline"
+            | "landline_premium"
+            | "landline_tollfree"
+            | "virtual"
+            | "unknown"
+            | "pager"
+          )
+        | null;
     } | null;
     /** Phone Number Object */
     PhoneNumber: {
