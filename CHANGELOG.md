@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/ideal-postcodes/openapi/compare/3.7.1...3.8.0) (2023-01-26)
+
+
+### Features
+
+* **Cleanse:** Add GBR cleanse API ([00fd5ef](https://github.com/ideal-postcodes/openapi/commit/00fd5eff56064f6d57e5513f70866a3c0803729c))
+
 ## [3.7.1](https://github.com/ideal-postcodes/openapi/compare/3.7.0...3.7.1) (2023-01-20)
 
 
