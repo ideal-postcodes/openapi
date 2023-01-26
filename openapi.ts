@@ -136,6 +136,26 @@ export interface paths {
      */
     get: operations["KeyLogs"];
   };
+  "/cleanse/addresses": {
+    /**
+     * The address cleanse API attempts to return the closest matching address for any given address inputs. We also return a number of Match Level indicators that describe the degree to which the suggested address matches the input address. The more impaired the input address, the harder it is to cleanse.
+     *
+     * ## Confidence Score
+     *
+     * The confidence score is a number ranging between 0 and 1. Where 1 implies a full match and 0 implies no major elements completely match. Each incorrect, missing or misspelled element will subtract from the overall confidence score.
+     *
+     * ### Deciding on an Acceptable Confidence Score Threshold
+     *
+     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+     *
+     * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
+     * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+     * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
+     *
+     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+     */
+    post: operations["AddressCleanse"];
+  };
   "/autocomplete/addresses": {
     /**
      * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.
@@ -2201,6 +2221,121 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
+    /** Address Match */
+    GbrCleanseMatch: {
+      /** @description Originally submitted query */
+      query: string;
+      /** @description Nearest matching address */
+      match:
+        | components["schemas"]["PafAddress"]
+        | components["schemas"]["MrAddress"]
+        | components["schemas"]["NybAddress"]
+        | components["schemas"]["PafAliasAddress"]
+        | components["schemas"]["WelshPafAddress"];
+      /** @description The number of addresses we matched to the input. We return the closest match by default. */
+      count: number;
+      /** @description A score represented as number between 1 and 0. Fit compares the address elements present in your query against the matching address elements. It does not incorporate elements you have not presented in the score. A partial address (e.g. 12 Pye Green Road) will have a fit of 1 even though it is missing post town and postcode. Its confidence score will be less than 1 however because it is missing some crucial elements. */
+      fit: number;
+      /** @description A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements. */
+      confidence: number;
+      /**
+       * @description Match indicator for the organisation
+       * @enum {string}
+       */
+      organisation_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+      /**
+       * @description Match indicator for the premise
+       * @enum {string}
+       */
+      premise_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+      /**
+       * @description Match indicator for the postcode
+       * @enum {string}
+       */
+      postcode_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+      /**
+       * @description Match indicator for the street
+       * @enum {string}
+       */
+      thoroughfare_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+      /**
+       * @description Match indicator for the locality
+       * @enum {string}
+       */
+      locality_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+      /**
+       * @description Match indicator for the post_town
+       * @enum {string}
+       */
+      post_town_match: "FULL" | "PARTIAL" | "INCORRECT" | "MISSING" | "NA";
+    };
+    /** No Address Match */
+    GbrCleanseNoMatch: {
+      /** @description Originally submitted query */
+      query: string;
+      /**
+       * @description Nearest matching address
+       * @enum {object|null}
+       */
+      match: null | null;
+      /** @enum {number} */
+      count: 0;
+      /**
+       * Format: float
+       * @enum {number}
+       */
+      fit: 0;
+      /**
+       * Format: float
+       * @enum {number}
+       */
+      confidence: 0;
+      /** @enum {string} */
+      organisation_match: "NO_MATCH";
+      /** @enum {string} */
+      premise_match: "NO_MATCH";
+      /** @enum {string} */
+      postcode_match: "NO_MATCH";
+      /** @enum {string} */
+      thoroughfare_match: "NO_MATCH";
+      /** @enum {string} */
+      locality_match: "NO_MATCH";
+      /** @enum {string} */
+      post_town_match: "NO_MATCH";
+    };
+    /** Address Cleanse Response */
+    CleanseResponse: {
+      /**
+       * Format: int32
+       * @enum {integer}
+       */
+      code: 2000;
+      /** @enum {string} */
+      message: "Success";
+      result:
+        | components["schemas"]["GbrCleanseMatch"]
+        | components["schemas"]["GbrCleanseNoMatch"];
+    };
+    /** Unauthorized Request Error Response */
+    UnauthorizedResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `401X` type error response code
+       */
+      code: number;
+      /** @description Unauthorized request error description */
+      message: string;
+    };
+    /** Unauthorized Request Error Response */
+    RateLimitedResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `429X` type error response code
+       */
+      code: number;
+      /** @description Request is being rate limited */
+      message: string;
+    };
     /**
      * Limit
      * Format: int32
@@ -3028,16 +3163,6 @@ export interface components {
        */
       code: 2000;
     };
-    /** Unauthorized Request Error Response */
-    UnauthorizedResponse: components["schemas"]["ErrorResponse"] & {
-      /**
-       * Format: int32
-       * @description `401X` type error response code
-       */
-      code: number;
-      /** @description Unauthorized request error description */
-      message: string;
-    };
     /**
      * New Config Object
      * @description Required configuration object parameters
@@ -3584,6 +3709,68 @@ export interface operations {
       400: {
         content: {
           "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * The address cleanse API attempts to return the closest matching address for any given address inputs. We also return a number of Match Level indicators that describe the degree to which the suggested address matches the input address. The more impaired the input address, the harder it is to cleanse.
+   *
+   * ## Confidence Score
+   *
+   * The confidence score is a number ranging between 0 and 1. Where 1 implies a full match and 0 implies no major elements completely match. Each incorrect, missing or misspelled element will subtract from the overall confidence score.
+   *
+   * ### Deciding on an Acceptable Confidence Score Threshold
+   *
+   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+   *
+   * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
+   * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+   * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
+   *
+   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+   */
+  AddressCleanse: {
+    parameters: {
+      query: {
+        api_key?: components["schemas"]["ApiKeyParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CleanseResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Unauthorized */
+      401: {
+        content: {
+          "application/json": components["schemas"]["UnauthorizedResponse"];
+        };
+      };
+      /** Rate Limited */
+      429: {
+        content: {
+          "application/json": components["schemas"]["RateLimitedResponse"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /**
+           * @description Freeform address input to cleanse
+           *
+           * @example 10 Downing Street, London, SW2A 2BN
+           */
+          query: string;
         };
       };
     };
