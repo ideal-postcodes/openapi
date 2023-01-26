@@ -2053,17 +2053,35 @@ export interface components {
      */
     ApiKeyDatasets: {
       /**
-       * @description UK Postcode Address File enabled
+       * @description UK Main Address File (Postcode Address File)
        * @example true
        */
       paf: boolean;
+      /** @description UK Property Alias dataset */
+      pafa: boolean;
+      /** @description UK Welsh Language Dataset */
+      pafw: boolean;
       /**
-       * @description UK Multiple Residence Dataset enabled
+       * @description UK Multiple Residence Dataset
        * @example true
        */
       mr: boolean;
-      /** @description UK Not Yet Built Dataset enabled */
+      /** @description UK Not Yet Built Dataset */
       nyb: boolean;
+      /**
+       * @description US Address Dataset
+       * @example true
+       */
+      usps: boolean;
+      /** @description IE Address File. Eircode Address Database */
+      ecad: boolean;
+      /** @description IE Base Address File. Eircode Address File */
+      ecaf: boolean;
+      /**
+       * @description Western Europe Address File
+       * @example true
+       */
+      herewe?: boolean;
     };
     /**
      * API Key Automated Topup
@@ -2306,6 +2324,16 @@ export interface components {
        */
       code: number;
       /** @description Unauthorized request error description */
+      message: string;
+    };
+    /** Unauthorized Request Error Response */
+    RateLimitedResponse: components["schemas"]["ErrorResponse"] & {
+      /**
+       * Format: int32
+       * @description `429X` type error response code
+       */
+      code: number;
+      /** @description Request is being rate limited */
       message: string;
     };
     /**
@@ -3725,6 +3753,12 @@ export interface operations {
       401: {
         content: {
           "application/json": components["schemas"]["UnauthorizedResponse"];
+        };
+      };
+      /** Rate Limited */
+      429: {
+        content: {
+          "application/json": components["schemas"]["RateLimitedResponse"];
         };
       };
     };
