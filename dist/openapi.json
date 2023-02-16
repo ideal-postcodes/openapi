@@ -2512,6 +2512,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Rate Limit Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
@@ -3317,7 +3327,33 @@
           "USA",
           "PRI",
           "GUM",
-          "IRL"
+          "IRL",
+          "VAT",
+          "FRA",
+          "GRL",
+          "NLD",
+          "LUX",
+          "AUT",
+          "GIB",
+          "LIE",
+          "FIN",
+          "UNI",
+          "ISL",
+          "CHE",
+          "PRT",
+          "BEL",
+          "MCO",
+          "ITA",
+          "FRO",
+          "NOR",
+          "DNK",
+          "SMR",
+          "MLT",
+          "AND",
+          "SWE",
+          "DEU",
+          "ESP",
+          "SJM"
         ]
       },
       "CountryISO2": {
@@ -3332,7 +3368,33 @@
           "US",
           "PR",
           "GU",
-          "IE"
+          "IE",
+          "VA",
+          "FR",
+          "GL",
+          "NL",
+          "LU",
+          "AT",
+          "GI",
+          "LI",
+          "FI",
+          "GB",
+          "IS",
+          "CH",
+          "PT",
+          "BE",
+          "MC",
+          "IT",
+          "FO",
+          "NO",
+          "DK",
+          "SM",
+          "MT",
+          "AD",
+          "SE",
+          "DE",
+          "ES",
+          "SJ"
         ]
       },
       "Language": {
@@ -3342,26 +3404,67 @@
         "enum": [
           "en",
           "cy",
-          "ga"
+          "ga",
+          "fo",
+          "pt",
+          "es",
+          "fr",
+          "fi",
+          "ca",
+          "wa",
+          "it",
+          "nl",
+          "de",
+          "da",
+          "no",
+          "mt",
+          "sv",
+          "is"
         ]
       },
       "Country": {
         "title": "Country",
         "type": "string",
         "description": "  Full country names (ISO 3166)\n",
-        "example": "England",
         "enum": [
-          "United States",
-          "Guam",
-          "Puerto Rico",
+          "United Kingdom",
           "England",
           "Scotland",
           "Wales",
           "Northern Ireland",
+          "Isle of Man",
           "Jersey",
           "Guernsey",
-          "Isle of Man",
-          "Ireland"
+          "Guam",
+          "United States",
+          "Puerto Rico",
+          "Ireland",
+          "Vatican City",
+          "France",
+          "Greenland",
+          "Netherlands",
+          "Luxembourg",
+          "Austria",
+          "Gibraltar",
+          "Liechtenstein",
+          "Finland",
+          "United Kingdom",
+          "Iceland",
+          "Switzerland",
+          "Portugal",
+          "Belgium",
+          "Monaco",
+          "Italy",
+          "Faroe Islands",
+          "Norway",
+          "Denmark",
+          "San Marino",
+          "Malta",
+          "Andorra",
+          "Sweden",
+          "Germany",
+          "Spain",
+          "Svalbard and Jan Mayen"
         ]
       },
       "EircBase": {
@@ -4380,6 +4483,115 @@
           }
         }
       },
+      "HereWeAddress": {
+        "title": "Western Europe Address (HERE)",
+        "description": "An address in Western Europe",
+        "required": [
+          "organisation_id",
+          "address_point_id",
+          "building_id",
+          "building_group_id",
+          "primary_thoroughfare_id",
+          "secondary_thoroughfare_id",
+          "primary_locality_id",
+          "secondary_locality_id",
+          "post_town",
+          "post_town_id",
+          "post_county_id"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EircBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "type": "string",
+                "enum": [
+                  "ecad"
+                ]
+              },
+              "ecad_id": {
+                "type": "string",
+                "description": "Unique 10 digit ECAD ID",
+                "example": "17000000",
+                "minLength": 1,
+                "maxLength": 10
+              },
+              "organisation_id": {
+                "type": "string",
+                "description": "Organisation ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "address_point_id": {
+                "type": "string",
+                "description": "Address Point ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "building_id": {
+                "type": "string",
+                "description": "Building ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "building_group_id": {
+                "type": "string",
+                "description": "Building Group ID",
+                "example": "10098783"
+              },
+              "primary_thoroughfare_id": {
+                "type": "string",
+                "description": "Primary Thoroughfare ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "secondary_thoroughfare_id": {
+                "type": "string",
+                "description": "Secondary Thoroughfare ID",
+                "example": "10098783"
+              },
+              "primary_locality_id": {
+                "type": "string",
+                "description": "Primary Locality ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "secondary_locality_id": {
+                "type": "string",
+                "description": "Secondary Locality ID",
+                "example": "10098783"
+              },
+              "post_town": {
+                "type": "string",
+                "minLength": 0,
+                "description": "The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:\n\n\"A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience.\""
+              },
+              "post_town_id": {
+                "type": "string",
+                "description": "Post Town ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              },
+              "post_county_id": {
+                "type": "string",
+                "description": "Post County ID",
+                "example": "10098783",
+                "maxLength": 10,
+                "minLength": 1
+              }
+            }
+          }
+        ]
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -4681,6 +4893,9 @@
               },
               {
                 "$ref": "#/components/schemas/UspsAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereWeAddress"
               }
             ]
           }
@@ -6286,6 +6501,9 @@
               },
               {
                 "$ref": "#/components/schemas/WelshPafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereWeAddress"
               }
             ]
           }

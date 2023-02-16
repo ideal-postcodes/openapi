@@ -879,40 +879,152 @@ export interface components {
      *
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM" | "IRL";
+    CountryISO:
+      | "GBR"
+      | "IMN"
+      | "JEY"
+      | "GGY"
+      | "USA"
+      | "PRI"
+      | "GUM"
+      | "IRL"
+      | "VAT"
+      | "FRA"
+      | "GRL"
+      | "NLD"
+      | "LUX"
+      | "AUT"
+      | "GIB"
+      | "LIE"
+      | "FIN"
+      | "UNI"
+      | "ISL"
+      | "CHE"
+      | "PRT"
+      | "BEL"
+      | "MCO"
+      | "ITA"
+      | "FRO"
+      | "NOR"
+      | "DNK"
+      | "SMR"
+      | "MLT"
+      | "AND"
+      | "SWE"
+      | "DEU"
+      | "ESP"
+      | "SJM";
     /**
      * ISO Country Code (2)
      * @description  2 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    CountryISO2: "GB" | "IM" | "JE" | "GG" | "US" | "PR" | "GU" | "IE";
+    CountryISO2:
+      | "GB"
+      | "IM"
+      | "JE"
+      | "GG"
+      | "US"
+      | "PR"
+      | "GU"
+      | "IE"
+      | "VA"
+      | "FR"
+      | "GL"
+      | "NL"
+      | "LU"
+      | "AT"
+      | "GI"
+      | "LI"
+      | "FI"
+      | "GB"
+      | "IS"
+      | "CH"
+      | "PT"
+      | "BE"
+      | "MC"
+      | "IT"
+      | "FO"
+      | "NO"
+      | "DK"
+      | "SM"
+      | "MT"
+      | "AD"
+      | "SE"
+      | "DE"
+      | "ES"
+      | "SJ";
     /**
      * Language
      * @description Language represented by 2 letter ISO Code (639-1)
      *
      * @enum {string}
      */
-    Language: "en" | "cy" | "ga";
+    Language:
+      | "en"
+      | "cy"
+      | "ga"
+      | "fo"
+      | "pt"
+      | "es"
+      | "fr"
+      | "fi"
+      | "ca"
+      | "wa"
+      | "it"
+      | "nl"
+      | "de"
+      | "da"
+      | "no"
+      | "mt"
+      | "sv"
+      | "is";
     /**
      * Country
      * @description   Full country names (ISO 3166)
      *
-     * @example England
      * @enum {string}
      */
     Country:
-      | "United States"
-      | "Guam"
-      | "Puerto Rico"
+      | "United Kingdom"
       | "England"
       | "Scotland"
       | "Wales"
       | "Northern Ireland"
+      | "Isle of Man"
       | "Jersey"
       | "Guernsey"
-      | "Isle of Man"
-      | "Ireland";
+      | "Guam"
+      | "United States"
+      | "Puerto Rico"
+      | "Ireland"
+      | "Vatican City"
+      | "France"
+      | "Greenland"
+      | "Netherlands"
+      | "Luxembourg"
+      | "Austria"
+      | "Gibraltar"
+      | "Liechtenstein"
+      | "Finland"
+      | "United Kingdom"
+      | "Iceland"
+      | "Switzerland"
+      | "Portugal"
+      | "Belgium"
+      | "Monaco"
+      | "Italy"
+      | "Faroe Islands"
+      | "Norway"
+      | "Denmark"
+      | "San Marino"
+      | "Malta"
+      | "Andorra"
+      | "Sweden"
+      | "Germany"
+      | "Spain"
+      | "Svalbard and Jan Mayen";
     EircBase: {
       id: components["schemas"]["ID"];
       /** @description Source of address */
@@ -1649,6 +1761,87 @@ export interface components {
       county_number: components["schemas"]["county_number"];
     };
     /**
+     * Western Europe Address (HERE)
+     * @description An address in Western Europe
+     */
+    HereWeAddress: components["schemas"]["EircBase"] & {
+      /** @enum {string} */
+      dataset?: "ecad";
+      /**
+       * @description Unique 10 digit ECAD ID
+       * @example 17000000
+       */
+      ecad_id?: string;
+      /**
+       * @description Organisation ID
+       * @example 10098783
+       */
+      organisation_id?: string;
+      /**
+       * @description Address Point ID
+       * @example 10098783
+       */
+      address_point_id?: string;
+      /**
+       * @description Building ID
+       * @example 10098783
+       */
+      building_id?: string;
+      /**
+       * @description Building Group ID
+       * @example 10098783
+       */
+      building_group_id?: string;
+      /**
+       * @description Primary Thoroughfare ID
+       * @example 10098783
+       */
+      primary_thoroughfare_id?: string;
+      /**
+       * @description Secondary Thoroughfare ID
+       * @example 10098783
+       */
+      secondary_thoroughfare_id?: string;
+      /**
+       * @description Primary Locality ID
+       * @example 10098783
+       */
+      primary_locality_id?: string;
+      /**
+       * @description Secondary Locality ID
+       * @example 10098783
+       */
+      secondary_locality_id?: string;
+      /**
+       * @description The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:
+       *
+       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience."
+       */
+      post_town?: string;
+      /**
+       * @description Post Town ID
+       * @example 10098783
+       */
+      post_town_id?: string;
+      /**
+       * @description Post County ID
+       * @example 10098783
+       */
+      post_county_id?: string;
+    } & {
+      organisation_id: unknown;
+      address_point_id: unknown;
+      building_id: unknown;
+      building_group_id: unknown;
+      primary_thoroughfare_id: unknown;
+      secondary_thoroughfare_id: unknown;
+      primary_locality_id: unknown;
+      secondary_locality_id: unknown;
+      post_town: unknown;
+      post_town_id: unknown;
+      post_county_id: unknown;
+    };
+    /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
      */
@@ -1830,7 +2023,8 @@ export interface components {
       native:
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
-        | components["schemas"]["UspsAddress"];
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["HereWeAddress"];
     };
     /** Postcode Response */
     PostcodeResponse: {
@@ -2713,7 +2907,8 @@ export interface components {
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
-        | components["schemas"]["WelshPafAddress"];
+        | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["HereWeAddress"];
     };
     /** Address Resolution Response (USA) */
     UsaResolveAddressResponse: {
@@ -4550,6 +4745,12 @@ export interface operations {
       };
       /** Bad Request */
       400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Rate Limit Timeout */
+      429: {
         content: {
           "application/json": components["schemas"]["BadRequestResponse"];
         };
