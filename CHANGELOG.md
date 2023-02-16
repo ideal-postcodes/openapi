@@ -1,3 +1,10 @@
+# [3.9.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.8.0...3.9.0-beta.1) (2023-02-16)
+
+
+### Features
+
+* **Western Europe:** Add ISO codes for WE ([aaa6275](https://github.com/ideal-postcodes/openapi/commit/aaa62754540b97c1e4a8a1441b97ee34d1fc500b))
+
 # [3.8.0](https://github.com/ideal-postcodes/openapi/compare/3.7.1...3.8.0) (2023-01-26)
 
 
