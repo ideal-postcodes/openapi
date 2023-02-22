@@ -1,3 +1,10 @@
+# [3.9.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.4...3.9.0-beta.5) (2023-02-22)
+
+
+### Bug Fixes
+
+* **HERE:** Add address lines ([dd43be8](https://github.com/ideal-postcodes/openapi/commit/dd43be8e3d2da89393b8f6c7c031aa2a2cc35401))
+
 # [3.9.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.3...3.9.0-beta.4) (2023-02-22)
 
 
