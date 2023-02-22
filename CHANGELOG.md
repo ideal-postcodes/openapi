@@ -1,3 +1,10 @@
+# [3.9.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.2...3.9.0-beta.3) (2023-02-22)
+
+
+### Bug Fixes
+
+* **HERE:** Add required datapoints ([66c10b6](https://github.com/ideal-postcodes/openapi/commit/66c10b6476e6e2c55d777111449482954cbdd94e))
+
 # [3.9.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.1...3.9.0-beta.2) (2023-02-22)
 
 
