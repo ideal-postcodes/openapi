@@ -1,3 +1,11 @@
+# [3.9.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.3...3.9.0-beta.4) (2023-02-22)
+
+
+### Bug Fixes
+
+* **HERE:** Add identifiable datapoints ([f6054c6](https://github.com/ideal-postcodes/openapi/commit/f6054c6c92c8a44bd8da6b55c00a41bb9af06fdc))
+* **HEREWE:** Rationalise schema ([178029d](https://github.com/ideal-postcodes/openapi/commit/178029ddb3e86b95f957e85f982fcbd6f5a04463))
+
 # [3.9.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.2...3.9.0-beta.3) (2023-02-22)
 
 
