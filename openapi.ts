@@ -1946,6 +1946,12 @@ export interface components {
       is_stale_name: unknown;
       is_vanity_name: unknown;
       is_scenic_name: unknown;
+      is_intersection_name: unknown;
+      is_bridge_name: unknown;
+      is_tunnel_name: unknown;
+      is_overpass_name: unknown;
+      is_underpass_name: unknown;
+      is_bicycle_route_name: unknown;
       street_type: unknown;
       street_name: unknown;
       postal_code: unknown;
