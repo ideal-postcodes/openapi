@@ -4487,6 +4487,9 @@
         "title": "Western Europe Address",
         "description": "An address in Western Europe",
         "required": [
+          "id",
+          "dataset",
+          "country_iso",
           "language_code",
           "address",
           "latitude",
@@ -4521,6 +4524,14 @@
           {
             "type": "object",
             "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ID"
+              },
+              "country_iso": {
+                "type": "string",
+                "description": "Three character country code based on ISO Standard 3166.\n\nCan be empty string `\"\"` if not present.",
+                "example": "ITA"
+              },
               "dataset": {
                 "type": "string",
                 "enum": [

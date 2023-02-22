@@ -1765,6 +1765,14 @@ export interface components {
      * @description An address in Western Europe
      */
     HereWeAddress: {
+      id?: components["schemas"]["ID"];
+      /**
+       * @description Three character country code based on ISO Standard 3166.
+       *
+       * Can be empty string `""` if not present.
+       * @example ITA
+       */
+      country_iso?: string;
       /** @enum {string} */
       dataset?: "herewe";
       /**
@@ -1931,6 +1939,9 @@ export interface components {
        */
       iso_country_code?: string;
     } & {
+      id: unknown;
+      dataset: unknown;
+      country_iso: unknown;
       language_code: unknown;
       address: unknown;
       latitude: unknown;
