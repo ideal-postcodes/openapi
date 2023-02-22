@@ -1761,85 +1761,199 @@ export interface components {
       county_number: components["schemas"]["county_number"];
     };
     /**
-     * Western Europe Address (HERE)
+     * Western Europe Address
      * @description An address in Western Europe
      */
-    HereWeAddress: components["schemas"]["EircBase"] & {
+    HereWeAddress: {
       /** @enum {string} */
-      dataset?: "ecad";
+      dataset?: "herewe";
       /**
-       * @description Unique 10 digit ECAD ID
-       * @example 17000000
+       * @description Language Code of Address and Building Name for the Point Address.
+       * @example ITA
        */
-      ecad_id?: string;
+      language_code?: string;
       /**
-       * @description Organisation ID
-       * @example 10098783
-       */
-      organisation_id?: string;
-      /**
-       * @description Address Point ID
-       * @example 10098783
-       */
-      address_point_id?: string;
-      /**
-       * @description Building ID
-       * @example 10098783
-       */
-      building_id?: string;
-      /**
-       * @description Building Group ID
-       * @example 10098783
-       */
-      building_group_id?: string;
-      /**
-       * @description Primary Thoroughfare ID
-       * @example 10098783
-       */
-      primary_thoroughfare_id?: string;
-      /**
-       * @description Secondary Thoroughfare ID
-       * @example 10098783
-       */
-      secondary_thoroughfare_id?: string;
-      /**
-       * @description Primary Locality ID
-       * @example 10098783
-       */
-      primary_locality_id?: string;
-      /**
-       * @description Secondary Locality ID
-       * @example 10098783
-       */
-      secondary_locality_id?: string;
-      /**
-       * @description The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:
+       * @description Address / House Number uniquely identifying the address along the specified road link.
        *
-       * "A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience."
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
        */
-      post_town?: string;
+      address?: string;
       /**
-       * @description Post Town ID
-       * @example 10098783
+       * @description Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1
        */
-      post_town_id?: string;
+      address_type?: string;
       /**
-       * @description Post County ID
-       * @example 10098783
+       * @description Latitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.
+       * @example 45.28447
        */
-      post_county_id?: string;
+      delivery_latitude?: number;
+      /**
+       * @description Longitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.
+       * @example 12.00821
+       */
+      delivery_longitude?: number;
+      /**
+       * @description Name of the Building to which the Point Address is associated.
+       *
+       * Can be empty string `""` if not present.
+       */
+      building_name?: string;
+      latitude?: string | number;
+      longitude?: string | number;
+      /**
+       * @description Is the name an exit name?
+       * @example N
+       * @enum {string}
+       */
+      is_exit_name?: "Y" | "N";
+      /**
+       * @description Is the name explicatable?
+       * @example Y
+       */
+      explicatable?: string;
+      /**
+       * @description Is the name a junction name?
+       * @example N
+       * @enum {string}
+       */
+      is_junction_name?: "Y" | "N";
+      /**
+       * @description Is the name on the road sign?
+       * @example Y
+       * @enum {string}
+       */
+      is_name_on_roadsign?: "Y" | "N";
+      /**
+       * @description Is the name a postal name?
+       * @example N
+       * @enum {string}
+       */
+      is_postal_name?: "Y" | "N";
+      /**
+       * @description Is the name a stale name?
+       * @example N
+       * @enum {string}
+       */
+      is_stale_name?: "Y" | "N";
+      /**
+       * @description Is the name a vanity name
+       * @example N
+       * @enum {string}
+       */
+      is_vanity_name?: "Y" | "N";
+      /**
+       * @description Indicates whether the link is part of a scenic route.
+       * @example N
+       * @enum {string}
+       */
+      is_scenic_name?: "Y" | "N";
+      /**
+       * @description The permanent identifier of the link with which this Road Link is associated.
+       * @example 943125307
+       */
+      link_id?: string;
+      /**
+       * @description Identifies a road name as an intersection name.
+       * @example N
+       * @enum {string}
+       */
+      is_intersection_name?: "Y" | "N";
+      /**
+       * @description Identifies a road name as a bridge name.
+       * @example N
+       * @enum {string}
+       */
+      is_bridge_name?: "Y" | "N";
+      /**
+       * @description Identifies a road name as a tunnel name.
+       * @example N
+       * @enum {string}
+       */
+      is_tunnel_name?: "Y" | "N";
+      /**
+       * @description Identifies a road name as an overpass name.
+       * @example N
+       * @enum {string}
+       */
+      is_overpass_name?: "Y" | "N";
+      /**
+       * @description Identifies a road name as an underpass name.
+       * @example N
+       * @enum {string}
+       */
+      is_underpass_name?: "Y" | "N";
+      /**
+       * @description Identifies a road name as a bicycle route name.
+       * @example N
+       * @enum {string}
+       */
+      is_bicycle_route_name?: "Y" | "N";
+      /**
+       * @description The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.
+       * @example Via Giuseppe Garibaldi
+       */
+      street_name?: string;
+      /**
+       * @description Full postal code; could be numeric or alphanumeric postal code.
+       *
+       * Can be empty string `""` if not present.
+       * @example 35020
+       */
+      postal_code?: string;
+      /**
+       * @description Identifies the highest administrative level in which a country can be subdivided.
+       * @example Veneto
+       */
+      order1_name?: string;
+      /**
+       * @description Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.
+       * @example Padova
+       */
+      order2_name?: string;
+      /**
+       * @description Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)
+       * @example Brugine
+       */
+      order8_name?: string;
+      /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
+      builtup_name?: string;
+      /**
+       * @description Three character country code based on ISO Standard 3166.
+       *
+       * Can be empty string `""` if not present.
+       * @example ITA
+       */
+      iso_country_code?: string;
     } & {
-      organisation_id: unknown;
-      address_point_id: unknown;
-      building_id: unknown;
-      building_group_id: unknown;
-      primary_thoroughfare_id: unknown;
-      secondary_thoroughfare_id: unknown;
-      primary_locality_id: unknown;
-      secondary_locality_id: unknown;
-      post_town: unknown;
-      post_town_id: unknown;
-      post_county_id: unknown;
+      language_code: unknown;
+      address: unknown;
+      latitude: unknown;
+      longitude: unknown;
+      building_name: unknown;
+      delivery_longitude: unknown;
+      delivery_latitude: unknown;
+      is_exit_name: unknown;
+      explicatable: unknown;
+      is_junction_name: unknown;
+      is_name_on_roadsign: unknown;
+      is_postal_name: unknown;
+      is_stale_name: unknown;
+      is_vanity_name: unknown;
+      is_scenic_name: unknown;
+      street_type: unknown;
+      street_name: unknown;
+      postal_code: unknown;
+      order1_name: unknown;
+      order2_name: unknown;
+      order8_name: unknown;
+      builtup_name: unknown;
+      iso_country_code: unknown;
     };
     /**
      * Global Address

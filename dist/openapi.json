@@ -4484,109 +4484,278 @@
         }
       },
       "HereWeAddress": {
-        "title": "Western Europe Address (HERE)",
+        "title": "Western Europe Address",
         "description": "An address in Western Europe",
         "required": [
-          "organisation_id",
-          "address_point_id",
-          "building_id",
-          "building_group_id",
-          "primary_thoroughfare_id",
-          "secondary_thoroughfare_id",
-          "primary_locality_id",
-          "secondary_locality_id",
-          "post_town",
-          "post_town_id",
-          "post_county_id"
+          "language_code",
+          "address",
+          "latitude",
+          "longitude",
+          "building_name",
+          "delivery_longitude",
+          "delivery_latitude",
+          "is_exit_name",
+          "explicatable",
+          "is_junction_name",
+          "is_name_on_roadsign",
+          "is_postal_name",
+          "is_stale_name",
+          "is_vanity_name",
+          "is_scenic_name",
+          "street_type",
+          "street_name",
+          "postal_code",
+          "order1_name",
+          "order2_name",
+          "order8_name",
+          "builtup_name",
+          "iso_country_code"
         ],
         "allOf": [
-          {
-            "$ref": "#/components/schemas/EircBase"
-          },
           {
             "type": "object",
             "properties": {
               "dataset": {
                 "type": "string",
                 "enum": [
-                  "ecad"
+                  "herewe"
                 ]
               },
-              "ecad_id": {
+              "language_code": {
                 "type": "string",
-                "description": "Unique 10 digit ECAD ID",
-                "example": "17000000",
+                "description": "Language Code of Address and Building Name for the Point Address.",
+                "example": "ITA",
                 "minLength": 1,
-                "maxLength": 10
+                "maxLength": 3
               },
-              "organisation_id": {
+              "address": {
                 "type": "string",
-                "description": "Organisation ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+                "description": "Address / House Number uniquely identifying the address along the specified road link.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16",
+                "minLength": 1,
+                "maxLength": 150
               },
-              "address_point_id": {
+              "address_type": {
                 "type": "string",
-                "description": "Address Point ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+                "description": "Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "1"
               },
-              "building_id": {
-                "type": "string",
-                "description": "Building ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+              "delivery_latitude": {
+                "type": "number",
+                "description": "Latitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.",
+                "example": 45.28447,
+                "minimum": -90,
+                "maximum": 90
               },
-              "building_group_id": {
-                "type": "string",
-                "description": "Building Group ID",
-                "example": "10098783"
+              "delivery_longitude": {
+                "type": "number",
+                "description": "Longitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.",
+                "example": 12.00821,
+                "minimum": -180,
+                "maximum": 180
               },
-              "primary_thoroughfare_id": {
+              "building_name": {
                 "type": "string",
-                "description": "Primary Thoroughfare ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+                "description": "Name of the Building to which the Point Address is associated.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 1,
+                "maxLength": 150
               },
-              "secondary_thoroughfare_id": {
-                "type": "string",
-                "description": "Secondary Thoroughfare ID",
-                "example": "10098783"
+              "latitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Latitude of the display position for the Point Address.\nCan be empty string `\"\"` if not present.",
+                    "example": 45.28441
+                  }
+                ]
               },
-              "primary_locality_id": {
-                "type": "string",
-                "description": "Primary Locality ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+              "longitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude of the display position for the Point Address.",
+                    "example": 12.00825
+                  }
+                ]
               },
-              "secondary_locality_id": {
+              "is_exit_name": {
                 "type": "string",
-                "description": "Secondary Locality ID",
-                "example": "10098783"
+                "description": "Is the name an exit name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
               },
-              "post_town": {
+              "explicatable": {
                 "type": "string",
-                "minLength": 0,
-                "description": "The post town is a significant element of the Postal Address, however it is not always populated in an address. The official post office guide, Eolaí an Phoist1, describes post towns in the following manner:\n\n\"A provincial postal address may include the name of a town or village several miles distant, with which the addressee has little or no connection, and, in some places, especially if this residence happens to be near a county boundary, the name of the neighbouring county instead of the county in which he actually resides. The explanation is that the main mail despatches have to be sent for more detailed sub division to certain centres known as post towns, chosen because of their accessibility and convenience.\""
+                "description": "Is the name explicatable?",
+                "example": "Y"
               },
-              "post_town_id": {
+              "is_junction_name": {
                 "type": "string",
-                "description": "Post Town ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+                "description": "Is the name a junction name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
               },
-              "post_county_id": {
+              "is_name_on_roadsign": {
                 "type": "string",
-                "description": "Post County ID",
-                "example": "10098783",
-                "maxLength": 10,
-                "minLength": 1
+                "description": "Is the name on the road sign?",
+                "example": "Y",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_postal_name": {
+                "type": "string",
+                "description": "Is the name a postal name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_stale_name": {
+                "type": "string",
+                "description": "Is the name a stale name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_vanity_name": {
+                "type": "string",
+                "description": "Is the name a vanity name",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_scenic_name": {
+                "type": "string",
+                "description": "Indicates whether the link is part of a scenic route.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "link_id": {
+                "type": "string",
+                "description": "The permanent identifier of the link with which this Road Link is associated.",
+                "example": "943125307"
+              },
+              "is_intersection_name": {
+                "type": "string",
+                "description": "Identifies a road name as an intersection name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_bridge_name": {
+                "type": "string",
+                "description": "Identifies a road name as a bridge name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_tunnel_name": {
+                "type": "string",
+                "description": "Identifies a road name as a tunnel name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_overpass_name": {
+                "type": "string",
+                "description": "Identifies a road name as an overpass name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_underpass_name": {
+                "type": "string",
+                "description": "Identifies a road name as an underpass name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_bicycle_route_name": {
+                "type": "string",
+                "description": "Identifies a road name as a bicycle route name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "street_name": {
+                "type": "string",
+                "description": "The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.",
+                "minLength": 1,
+                "maxLength": 100,
+                "example": "Via Giuseppe Garibaldi"
+              },
+              "postal_code": {
+                "type": "string",
+                "description": "Full postal code; could be numeric or alphanumeric postal code.\n\nCan be empty string `\"\"` if not present.",
+                "minLength": 1,
+                "maxLength": 15,
+                "example": "35020"
+              },
+              "order1_name": {
+                "type": "string",
+                "description": "Identifies the highest administrative level in which a country can be subdivided.",
+                "example": "Veneto"
+              },
+              "order2_name": {
+                "type": "string",
+                "description": "Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.",
+                "example": "Padova"
+              },
+              "order8_name": {
+                "type": "string",
+                "description": "Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)",
+                "example": "Brugine"
+              },
+              "builtup_name": {
+                "type": "string",
+                "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. ",
+                "example": ""
+              },
+              "iso_country_code": {
+                "type": "string",
+                "description": "Three character country code based on ISO Standard 3166.\n\nCan be empty string `\"\"` if not present.",
+                "example": "ITA"
               }
             }
           }
