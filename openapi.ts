@@ -1931,13 +1931,6 @@ export interface components {
       order8_name?: string;
       /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
       builtup_name?: string;
-      /**
-       * @description Three character country code based on ISO Standard 3166.
-       *
-       * Can be empty string `""` if not present.
-       * @example ITA
-       */
-      iso_country_code?: string;
     } & {
       id: unknown;
       dataset: unknown;
@@ -1970,7 +1963,6 @@ export interface components {
       order2_name: unknown;
       order8_name: unknown;
       builtup_name: unknown;
-      iso_country_code: unknown;
     };
     /**
      * Global Address

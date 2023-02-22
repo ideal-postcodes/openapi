@@ -4977,7 +4977,6 @@ components:
         - order2_name
         - order8_name
         - builtup_name
-        - iso_country_code
       allOf:
         - type: object
           properties:
@@ -5217,13 +5216,6 @@ components:
                 for destination selection. The Built-up Area polygon, as
                 published in RDF_CARTO, can also be used for map display. 
               example: ''
-            iso_country_code:
-              type: string
-              description: |-
-                Three character country code based on ISO Standard 3166.
-
-                Can be empty string `""` if not present.
-              example: ITA
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
