@@ -1,3 +1,10 @@
+# [3.9.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.1...3.9.0-beta.2) (2023-02-22)
+
+
+### Bug Fixes
+
+* **Release:** Trigger new build ([9da7a57](https://github.com/ideal-postcodes/openapi/commit/9da7a57bb8bd3b92b58ea98e26abfbe8ebcee4c7))
+
 # [3.9.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.8.0...3.9.0-beta.1) (2023-02-16)
 
 
