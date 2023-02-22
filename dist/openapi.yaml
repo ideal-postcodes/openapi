@@ -4949,6 +4949,11 @@ components:
         - id
         - dataset
         - country_iso
+        - line_1
+        - line_2
+        - line_3
+        - line_4
+        - line_5
         - language_code
         - address
         - latitude
@@ -5001,6 +5006,51 @@ components:
               example: ITA
               minLength: 1
               maxLength: 3
+            line_1:
+              type: string
+              description: |
+                First address line.
+
+                Can be empty string `""` if not present.
+              example: 16 Via Giuseppe Garibaldi
+              minLength: 1
+              maxLength: 150
+            line_2:
+              type: string
+              description: |
+                Second address line.
+
+                Can be empty string `""` if not present.
+              example: ''
+              minLength: 0
+              maxLength: 150
+            line_3:
+              type: string
+              description: |
+                Third address line.
+
+                Can be empty string `""` if not present.
+              example: ''
+              minLength: 0
+              maxLength: 150
+            line_4:
+              type: string
+              description: |
+                Fourth address line.
+
+                Can be empty string `""` if not present.
+              example: ''
+              minLength: 0
+              maxLength: 150
+            line_5:
+              type: string
+              description: |
+                Fifth address line.
+
+                Can be empty string `""` if not present.
+              example: ''
+              minLength: 0
+              maxLength: 150
             address:
               type: string
               description: >
@@ -5010,7 +5060,7 @@ components:
 
                 Can be empty string `""` if not present.
               example: '16'
-              minLength: 1
+              minLength: 0
               maxLength: 150
             address_type:
               type: string
@@ -5044,7 +5094,7 @@ components:
 
                 Can be empty string `""` if not present.
               example: ''
-              minLength: 1
+              minLength: 0
               maxLength: 150
             latitude:
               oneOf:
@@ -5181,7 +5231,7 @@ components:
                 Full postal code; could be numeric or alphanumeric postal code.
 
                 Can be empty string `""` if not present.
-              minLength: 1
+              minLength: 0
               maxLength: 15
               example: '35020'
             order1_name:

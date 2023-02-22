@@ -1781,6 +1781,38 @@ export interface components {
        */
       language_code?: string;
       /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16 Via Giuseppe Garibaldi
+       */
+      line_1?: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_2?: string;
+      /**
+       * @description Third address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_3?: string;
+      /**
+       * @description Fourth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_4?: string;
+      /**
+       * @description Fifth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_5?: string;
+      /**
        * @description Address / House Number uniquely identifying the address along the specified road link.
        *
        * Can be empty string `""` if not present.
@@ -1935,6 +1967,11 @@ export interface components {
       id: unknown;
       dataset: unknown;
       country_iso: unknown;
+      line_1: unknown;
+      line_2: unknown;
+      line_3: unknown;
+      line_4: unknown;
+      line_5: unknown;
       language_code: unknown;
       address: unknown;
       latitude: unknown;

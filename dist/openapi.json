@@ -4490,6 +4490,11 @@
           "id",
           "dataset",
           "country_iso",
+          "line_1",
+          "line_2",
+          "line_3",
+          "line_4",
+          "line_5",
           "language_code",
           "address",
           "latitude",
@@ -4544,11 +4549,46 @@
                 "minLength": 1,
                 "maxLength": 3
               },
+              "line_1": {
+                "type": "string",
+                "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16 Via Giuseppe Garibaldi",
+                "minLength": 1,
+                "maxLength": 150
+              },
+              "line_2": {
+                "type": "string",
+                "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_3": {
+                "type": "string",
+                "description": "Third address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_4": {
+                "type": "string",
+                "description": "Fourth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_5": {
+                "type": "string",
+                "description": "Fifth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
               "address": {
                 "type": "string",
                 "description": "Address / House Number uniquely identifying the address along the specified road link.\n\nCan be empty string `\"\"` if not present.\n",
                 "example": "16",
-                "minLength": 1,
+                "minLength": 0,
                 "maxLength": 150
               },
               "address_type": {
@@ -4574,7 +4614,7 @@
                 "type": "string",
                 "description": "Name of the Building to which the Point Address is associated.\n\nCan be empty string `\"\"` if not present.\n",
                 "example": "",
-                "minLength": 1,
+                "minLength": 0,
                 "maxLength": 150
               },
               "latitude": {
@@ -4744,7 +4784,7 @@
               "postal_code": {
                 "type": "string",
                 "description": "Full postal code; could be numeric or alphanumeric postal code.\n\nCan be empty string `\"\"` if not present.",
-                "minLength": 1,
+                "minLength": 0,
                 "maxLength": 15,
                 "example": "35020"
               },
