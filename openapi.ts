@@ -1765,21 +1765,21 @@ export interface components {
      * @description An address in Western Europe
      */
     HereWeAddress: {
-      id?: components["schemas"]["ID"];
+      id: components["schemas"]["ID"];
       /**
        * @description Three character country code based on ISO Standard 3166.
        *
        * Can be empty string `""` if not present.
        * @example ITA
        */
-      country_iso?: string;
+      country_iso: string;
       /** @enum {string} */
-      dataset?: "herewe";
+      dataset: "herewe";
       /**
        * @description Language Code of Address and Building Name for the Point Address.
        * @example ITA
        */
-      language_code?: string;
+      language_code: string;
       /**
        * @description First address line.
        *
@@ -1787,31 +1787,31 @@ export interface components {
        *
        * @example 16 Via Giuseppe Garibaldi
        */
-      line_1?: string;
+      line_1: string;
       /**
        * @description Second address line.
        *
        * Can be empty string `""` if not present.
        */
-      line_2?: string;
+      line_2: string;
       /**
        * @description Third address line.
        *
        * Can be empty string `""` if not present.
        */
-      line_3?: string;
+      line_3: string;
       /**
        * @description Fourth address line.
        *
        * Can be empty string `""` if not present.
        */
-      line_4?: string;
+      line_4: string;
       /**
        * @description Fifth address line.
        *
        * Can be empty string `""` if not present.
        */
-      line_5?: string;
+      line_5: string;
       /**
        * @description Address / House Number uniquely identifying the address along the specified road link.
        *
@@ -1819,7 +1819,7 @@ export interface components {
        *
        * @example 16
        */
-      address?: string;
+      address: string;
       /**
        * @description Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).
        *
@@ -1829,70 +1829,70 @@ export interface components {
        */
       address_type?: string;
       /**
-       * @description Latitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.
+       * @description Latitude defining the arrival position of the Point Address.
        * @example 45.28447
        */
-      delivery_latitude?: number;
+      delivery_latitude: number;
       /**
-       * @description Longitude defining the arrival position of the Point Address, defined in 0.00001 degree precision.
+       * @description Longitude defining the arrival position of the Point Address.
        * @example 12.00821
        */
-      delivery_longitude?: number;
+      delivery_longitude: number;
       /**
        * @description Name of the Building to which the Point Address is associated.
        *
        * Can be empty string `""` if not present.
        */
-      building_name?: string;
-      latitude?: string | number;
-      longitude?: string | number;
+      building_name: string;
+      latitude: string | number;
+      longitude: string | number;
       /**
        * @description Is the name an exit name?
        * @example N
        * @enum {string}
        */
-      is_exit_name?: "Y" | "N";
+      is_exit_name: "Y" | "N";
       /**
        * @description Is the name explicatable?
        * @example Y
        */
-      explicatable?: string;
+      explicatable: string;
       /**
        * @description Is the name a junction name?
        * @example N
        * @enum {string}
        */
-      is_junction_name?: "Y" | "N";
+      is_junction_name: "Y" | "N";
       /**
        * @description Is the name on the road sign?
        * @example Y
        * @enum {string}
        */
-      is_name_on_roadsign?: "Y" | "N";
+      is_name_on_roadsign: "Y" | "N";
       /**
        * @description Is the name a postal name?
        * @example N
        * @enum {string}
        */
-      is_postal_name?: "Y" | "N";
+      is_postal_name: "Y" | "N";
       /**
        * @description Is the name a stale name?
        * @example N
        * @enum {string}
        */
-      is_stale_name?: "Y" | "N";
+      is_stale_name: "Y" | "N";
       /**
        * @description Is the name a vanity name
        * @example N
        * @enum {string}
        */
-      is_vanity_name?: "Y" | "N";
+      is_vanity_name: "Y" | "N";
       /**
        * @description Indicates whether the link is part of a scenic route.
        * @example N
        * @enum {string}
        */
-      is_scenic_name?: "Y" | "N";
+      is_scenic_name: "Y" | "N";
       /**
        * @description The permanent identifier of the link with which this Road Link is associated.
        * @example 943125307
@@ -1903,103 +1903,68 @@ export interface components {
        * @example N
        * @enum {string}
        */
-      is_intersection_name?: "Y" | "N";
+      is_intersection_name: "Y" | "N";
       /**
        * @description Identifies a road name as a bridge name.
        * @example N
        * @enum {string}
        */
-      is_bridge_name?: "Y" | "N";
+      is_bridge_name: "Y" | "N";
       /**
        * @description Identifies a road name as a tunnel name.
        * @example N
        * @enum {string}
        */
-      is_tunnel_name?: "Y" | "N";
+      is_tunnel_name: "Y" | "N";
       /**
        * @description Identifies a road name as an overpass name.
        * @example N
        * @enum {string}
        */
-      is_overpass_name?: "Y" | "N";
+      is_overpass_name: "Y" | "N";
       /**
        * @description Identifies a road name as an underpass name.
        * @example N
        * @enum {string}
        */
-      is_underpass_name?: "Y" | "N";
+      is_underpass_name: "Y" | "N";
       /**
        * @description Identifies a road name as a bicycle route name.
        * @example N
        * @enum {string}
        */
-      is_bicycle_route_name?: "Y" | "N";
+      is_bicycle_route_name: "Y" | "N";
       /**
        * @description The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.
        * @example Via Giuseppe Garibaldi
        */
-      street_name?: string;
+      street_name: string;
       /**
        * @description Full postal code; could be numeric or alphanumeric postal code.
        *
        * Can be empty string `""` if not present.
        * @example 35020
        */
-      postal_code?: string;
+      postal_code: string;
       /**
        * @description Identifies the highest administrative level in which a country can be subdivided.
        * @example Veneto
        */
-      order1_name?: string;
+      order1_name: string;
       /**
        * @description Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.
        * @example Padova
        */
-      order2_name?: string;
+      order2_name: string;
       /**
        * @description Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)
        * @example Brugine
        */
-      order8_name?: string;
+      order8_name: string;
       /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
-      builtup_name?: string;
+      builtup_name: string;
     } & {
-      id: unknown;
-      dataset: unknown;
-      country_iso: unknown;
-      line_1: unknown;
-      line_2: unknown;
-      line_3: unknown;
-      line_4: unknown;
-      line_5: unknown;
-      language_code: unknown;
-      address: unknown;
-      latitude: unknown;
-      longitude: unknown;
-      building_name: unknown;
-      delivery_longitude: unknown;
-      delivery_latitude: unknown;
-      is_exit_name: unknown;
-      explicatable: unknown;
-      is_junction_name: unknown;
-      is_name_on_roadsign: unknown;
-      is_postal_name: unknown;
-      is_stale_name: unknown;
-      is_vanity_name: unknown;
-      is_scenic_name: unknown;
-      is_intersection_name: unknown;
-      is_bridge_name: unknown;
-      is_tunnel_name: unknown;
-      is_overpass_name: unknown;
-      is_underpass_name: unknown;
-      is_bicycle_route_name: unknown;
       street_type: unknown;
-      street_name: unknown;
-      postal_code: unknown;
-      order1_name: unknown;
-      order2_name: unknown;
-      order8_name: unknown;
-      builtup_name: unknown;
     };
     /**
      * Global Address

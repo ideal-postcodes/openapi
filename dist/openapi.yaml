@@ -4945,45 +4945,45 @@ components:
     HereWeAddress:
       title: Western Europe Address
       description: An address in Western Europe
-      required:
-        - id
-        - dataset
-        - country_iso
-        - line_1
-        - line_2
-        - line_3
-        - line_4
-        - line_5
-        - language_code
-        - address
-        - latitude
-        - longitude
-        - building_name
-        - delivery_longitude
-        - delivery_latitude
-        - is_exit_name
-        - explicatable
-        - is_junction_name
-        - is_name_on_roadsign
-        - is_postal_name
-        - is_stale_name
-        - is_vanity_name
-        - is_scenic_name
-        - is_intersection_name
-        - is_bridge_name
-        - is_tunnel_name
-        - is_overpass_name
-        - is_underpass_name
-        - is_bicycle_route_name
-        - street_type
-        - street_name
-        - postal_code
-        - order1_name
-        - order2_name
-        - order8_name
-        - builtup_name
       allOf:
         - type: object
+          required:
+            - id
+            - dataset
+            - country_iso
+            - line_1
+            - line_2
+            - line_3
+            - line_4
+            - line_5
+            - language_code
+            - address
+            - latitude
+            - longitude
+            - building_name
+            - delivery_longitude
+            - delivery_latitude
+            - is_exit_name
+            - explicatable
+            - is_junction_name
+            - is_name_on_roadsign
+            - is_postal_name
+            - is_stale_name
+            - is_vanity_name
+            - is_scenic_name
+            - is_intersection_name
+            - is_bridge_name
+            - is_tunnel_name
+            - is_overpass_name
+            - is_underpass_name
+            - is_bicycle_route_name
+            - street_type
+            - street_name
+            - postal_code
+            - order1_name
+            - order2_name
+            - order8_name
+            - builtup_name
           properties:
             id:
               $ref: '#/components/schemas/ID'
@@ -5073,17 +5073,13 @@ components:
               example: '1'
             delivery_latitude:
               type: number
-              description: >-
-                Latitude defining the arrival position of the Point Address,
-                defined in 0.00001 degree precision.
+              description: Latitude defining the arrival position of the Point Address.
               example: 45.28447
               minimum: -90
               maximum: 90
             delivery_longitude:
               type: number
-              description: >-
-                Longitude defining the arrival position of the Point Address,
-                defined in 0.00001 degree precision.
+              description: Longitude defining the arrival position of the Point Address.
               example: 12.00821
               minimum: -180
               maximum: 180
