@@ -743,29 +743,192 @@ export interface components {
       northings: components["schemas"]["Northings"];
     };
     /**
-     * Postcode Address File Address
-     * @description Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.
+     * Language
+     * @description Language represented by 2 letter ISO Code (639-1)
      *
-     * A PAF Address represents a deliverable endpoint.
+     * @enum {string}
+     */
+    Language: "en" | "cy" | "ga";
+    /**
+     * AddressBase Core
+     * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset
+     */
+    AbAddress: {
+      language: components["schemas"]["Language"];
+      line_1: components["schemas"]["paf_line1"];
+      line_2: components["schemas"]["paf_line2"];
+      line_3: components["schemas"]["paf_line3"];
+      premise: components["schemas"]["paf_premise"];
+      /**
+       * UPRN
+       * @description Unique Property Reference Number (UPRN) assigned by the LLPG Custodian or Ordnance Survey.
+       */
+      uprn: number;
+      /**
+       * UDPRN
+       * @description Royal Mail's Unique Delivery Point Reference Number (UDPRN).
+       */
+      udprn: number;
+      /**
+       * PARENT_UPRN
+       * @description UPRN of the parent Record if a parent-child relationship exists.
+       */
+      parent_uprn: number;
+      /**
+       * USRN
+       * @description Unique Street Reference Number assigned by the Street Name and Numbering Custodian OR
+       *
+       * Ordnance Survey depending on the address record.
+       */
+      usrn: number;
+      /**
+       * TOID
+       * @description The Topographic Identifier taken from OS MasterMap Topography Layer. This TOID is assigned to the UPRN by performing a spatial intersection between the two identifiers. It consists of the letters 'osgb' and is followed by up to sixteen digits.
+       */
+      toid: string;
+      /**
+       * Classification Code
+       * @description A code that describes the classification of the address record to a maximum of a secondary level.
+       */
+      classification_code: string;
+      /**
+       * Easting
+       * @description A value in metres defining the x location in accordance with the British National Grid.
+       */
+      eastings: number;
+      /**
+       * Northing
+       * @description A value in metres defining the y location in accordance with the British National Grid.
+       */
+      northings: number;
+      /**
+       * Latitude
+       * @description A value in metres defining the y location in accordance with the British National Grid.
+       */
+      latitude: number;
+      /**
+       * Longitude
+       * @description A value defining the Longitude location in accordance with the ETRS89 coordinate reference system.
+       */
+      longitude: number;
+      /**
+       * Single Line Address
+       * @description A single attribute containing text concatenation of the address elements separated by a comma.
+       */
+      single_address_line: string;
+      /**
+       * Single Line Address
+       * @description Street / Road name for the address record.
+       */
+      street_name: string;
+      /**
+       * Locality
+       * @description A locality defines an area or geographical identifier within a town, village or hamlet. Locality represents the lower level geographical area. The locality field should be used in conjunction with the town name and street description fields to uniquely identify geographic area where there may be more than one within an administrative area.
+       */
+      locality: string;
+      /**
+       * Town Name
+       * @description Geographical town name assigned by the Local Authority. Please note this can be different from the Post Town value assigned by Royal Mail.
+       */
+      town_name: string;
+      /**
+       * Delivery Point Suffix
+       * @description A two-character code uniquely identifying an individual delivery point within a postcode, assigned by Royal Mail.
+       */
+      delivery_point_suffix: string;
+      /**
+       * Town Name
+       * @description The town or city in which the Royal Mail sorting office is located which services this address record.
+       *
+       * Condition:
+       * POST_TOWN is not populated if this is the same as TOWN_NAME.
+       */
+      post_town: string;
+      /**
+       * Governmental Statistical Service
+       * @description The Office for National Statistics Governmental Statistical Service (GSS) code representing the contributing Local Authority.
+       */
+      gss_code: string;
+      /**
+       * Representative Point Code
+       * @description Representative Point Code describes the accuracy of the coordinate that has been allocated to the UPRN as indicated by the Local Authority and enhanced using large scale OS data.
+       */
+      rpc: number;
+      /**
+       * Last Update Date
+       * Format: date
+       * @description The latest date on which any of the attributes on this record were last changed.
+       */
+      last_update_date: string;
+      /**
+       * Island
+       * @description Third level of geographic area name to record island names where appropriate.
+       */
+      island: string;
+      /**
+       * Change Code
+       * @description This enumeration is used in association with the attribute “CHANGE_CODE”. This enumeration identifies the type of change that has been made to a feature. The change type must be set when a feature is inserted, updated or deleted. Please see section 3 for more information. Example I = Insert, U = Update, D = Delete
+       * @enum {string}
+       */
+      change_code: "I" | "U" | "D";
+      /**
+       * Building Name
+       * @description The building name is a description applied to a single address or a group of addresses.
+       */
+      building_name: string;
+      /**
+       * Building Number
+       * @description The building number is a number or range of numbers given to a single address or a group of addresses.
+       */
+      building_number: string;
+      /**
+       * Sub-building
+       * @description The sub-building name and/or number for the address record.
+       */
+      sub_building: string;
+      /**
+       * Postcode
+       * @description A postcode assigned by Royal Mail for the address record.
+       */
+      postcode: string;
+      /**
+       * PO Box
+       * @description Text concatenation of 'PO BOX' and the Post Office Box (PO Box) number or 'BFPO' and the British Forces Post Office number.
+       */
+      po_box: string;
+      /**
+       * Organisation
+       * @description The organisation name is the business name given, when appropriate, to an address record.
+       */
+      organisation: string;
+      country: components["schemas"]["paf_country"];
+      county: components["schemas"]["paf_county"];
+      district: components["schemas"]["paf_district"];
+      ward: components["schemas"]["paf_ward"];
+      traditional_county: components["schemas"]["paf_traditional_county"];
+      administrative_county: components["schemas"]["paf_administrative_county"];
+      postal_county: components["schemas"]["paf_postal_county"];
+    };
+    /**
+     * AddressBase Core
+     * @description Address from Ordnance Survey AddressBase Ccore dataset.
+     *
+     * Please contact us to have this enabled on your account.
+     *
+     * All AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.
      */
     PafAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
-      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      country_iso?: "GBR";
       /** @enum {string} */
-      dataset?: "paf";
+      dataset?: "ab";
       /** @enum {undefined} */
-      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      country_iso_2?: "GB";
       /** @enum {undefined} */
       language?: "en";
       /** @enum {undefined} */
-      country?:
-        | "England"
-        | "Scotland"
-        | "Wales"
-        | "Northern Ireland"
-        | "Jersey"
-        | "Guernsey"
-        | "Isle of Man";
+      country?: "England" | "Scotland" | "Wales";
+      native: components["schemas"]["AbAddress"];
     };
     /**
      * Multiple Residence Address
@@ -887,13 +1050,6 @@ export interface components {
      * @enum {string}
      */
     CountryISO2: "GB" | "IM" | "JE" | "GG" | "US" | "PR" | "GU" | "IE";
-    /**
-     * Language
-     * @description Language represented by 2 letter ISO Code (639-1)
-     *
-     * @enum {string}
-     */
-    Language: "en" | "cy" | "ga";
     /**
      * Country
      * @description   Full country names (ISO 3166)
@@ -1830,7 +1986,9 @@ export interface components {
       native:
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
-        | components["schemas"]["UspsAddress"];
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["AbAddress"];
     };
     /** Postcode Response */
     PostcodeResponse: {
@@ -4550,6 +4708,12 @@ export interface operations {
       };
       /** Bad Request */
       400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Rate Limit Timeout */
+      429: {
         content: {
           "application/json": components["schemas"]["BadRequestResponse"];
         };

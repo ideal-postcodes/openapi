@@ -2512,6 +2512,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Rate Limit Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
@@ -3046,36 +3056,293 @@
           }
         }
       },
+      "Language": {
+        "title": "Language",
+        "type": "string",
+        "description": "Language represented by 2 letter ISO Code (639-1)\n",
+        "enum": [
+          "en",
+          "cy",
+          "ga"
+        ]
+      },
+      "AbAddress": {
+        "title": "AddressBase Core",
+        "description": "Represents a GB address in Ordnance Survey's AddressBase Core dataset",
+        "required": [
+          "language",
+          "line_1",
+          "line_2",
+          "line_3",
+          "premise",
+          "uprn",
+          "udprn",
+          "parent_uprn",
+          "usrn",
+          "toid",
+          "classification_code",
+          "eastings",
+          "northings",
+          "latitude",
+          "longitude",
+          "single_address_line",
+          "street_name",
+          "locality",
+          "town_name",
+          "delivery_point_suffix",
+          "post_town",
+          "gss_code",
+          "rpc",
+          "last_update_date",
+          "island",
+          "change_code",
+          "building_name",
+          "building_number",
+          "sub_building",
+          "postcode",
+          "po_box",
+          "organisation",
+          "country",
+          "county",
+          "district",
+          "ward",
+          "traditional_county",
+          "administrative_county",
+          "postal_county"
+        ],
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "line_1": {
+            "$ref": "#/components/schemas/paf_line1"
+          },
+          "line_2": {
+            "$ref": "#/components/schemas/paf_line2"
+          },
+          "line_3": {
+            "$ref": "#/components/schemas/paf_line3"
+          },
+          "premise": {
+            "$ref": "#/components/schemas/paf_premise"
+          },
+          "uprn": {
+            "title": "UPRN",
+            "type": "number",
+            "maxLength": 12,
+            "description": "Unique Property Reference Number (UPRN) assigned by the LLPG Custodian or Ordnance Survey."
+          },
+          "udprn": {
+            "title": "UDPRN",
+            "type": "number",
+            "maxLength": 8,
+            "description": "Royal Mail's Unique Delivery Point Reference Number (UDPRN)."
+          },
+          "parent_uprn": {
+            "title": "PARENT_UPRN",
+            "type": "number",
+            "maxLength": 12,
+            "description": "UPRN of the parent Record if a parent-child relationship exists."
+          },
+          "usrn": {
+            "title": "USRN",
+            "type": "number",
+            "maxLength": 8,
+            "description": "Unique Street Reference Number assigned by the Street Name and Numbering Custodian OR\n\nOrdnance Survey depending on the address record."
+          },
+          "toid": {
+            "title": "TOID",
+            "type": "string",
+            "maxLength": 20,
+            "description": "The Topographic Identifier taken from OS MasterMap Topography Layer. This TOID is assigned to the UPRN by performing a spatial intersection between the two identifiers. It consists of the letters 'osgb' and is followed by up to sixteen digits."
+          },
+          "classification_code": {
+            "title": "Classification Code",
+            "type": "string",
+            "maxLength": 4,
+            "description": "A code that describes the classification of the address record to a maximum of a secondary level."
+          },
+          "eastings": {
+            "title": "Easting",
+            "type": "number",
+            "maxLength": 8,
+            "multipleOf": 0.01,
+            "description": "A value in metres defining the x location in accordance with the British National Grid."
+          },
+          "northings": {
+            "title": "Northing",
+            "type": "number",
+            "maxLength": 9,
+            "multipleOf": 0.01,
+            "description": "A value in metres defining the y location in accordance with the British National Grid."
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number",
+            "description": "A value in metres defining the y location in accordance with the British National Grid."
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number",
+            "description": "A value defining the Longitude location in accordance with the ETRS89 coordinate reference system."
+          },
+          "single_address_line": {
+            "title": "Single Line Address",
+            "type": "string",
+            "maxLength": 500,
+            "description": "A single attribute containing text concatenation of the address elements separated by a comma."
+          },
+          "street_name": {
+            "title": "Single Line Address",
+            "type": "string",
+            "maxLength": 100,
+            "description": "Street / Road name for the address record."
+          },
+          "locality": {
+            "title": "Locality",
+            "type": "string",
+            "maxLength": 35,
+            "description": "A locality defines an area or geographical identifier within a town, village or hamlet. Locality represents the lower level geographical area. The locality field should be used in conjunction with the town name and street description fields to uniquely identify geographic area where there may be more than one within an administrative area."
+          },
+          "town_name": {
+            "title": "Town Name",
+            "type": "string",
+            "maxLength": 35,
+            "description": "Geographical town name assigned by the Local Authority. Please note this can be different from the Post Town value assigned by Royal Mail."
+          },
+          "delivery_point_suffix": {
+            "title": "Delivery Point Suffix",
+            "type": "string",
+            "maxLength": 2,
+            "description": "A two-character code uniquely identifying an individual delivery point within a postcode, assigned by Royal Mail."
+          },
+          "post_town": {
+            "title": "Town Name",
+            "type": "string",
+            "maxLength": 30,
+            "description": "The town or city in which the Royal Mail sorting office is located which services this address record.\n\nCondition:\nPOST_TOWN is not populated if this is the same as TOWN_NAME."
+          },
+          "gss_code": {
+            "title": "Governmental Statistical Service",
+            "type": "string",
+            "maxLength": 9,
+            "description": "The Office for National Statistics Governmental Statistical Service (GSS) code representing the contributing Local Authority."
+          },
+          "rpc": {
+            "title": "Representative Point Code",
+            "type": "number",
+            "maxLength": 1,
+            "description": "Representative Point Code describes the accuracy of the coordinate that has been allocated to the UPRN as indicated by the Local Authority and enhanced using large scale OS data."
+          },
+          "last_update_date": {
+            "title": "Last Update Date",
+            "type": "string",
+            "format": "date",
+            "description": "The latest date on which any of the attributes on this record were last changed."
+          },
+          "island": {
+            "title": "Island",
+            "type": "string",
+            "maxLength": 50,
+            "description": "Third level of geographic area name to record island names where appropriate."
+          },
+          "change_code": {
+            "title": "Change Code",
+            "type": "string",
+            "maxLength": 50,
+            "description": "This enumeration is used in association with the attribute “CHANGE_CODE”. This enumeration identifies the type of change that has been made to a feature. The change type must be set when a feature is inserted, updated or deleted. Please see section 3 for more information. Example I = Insert, U = Update, D = Delete",
+            "enum": [
+              "I",
+              "U",
+              "D"
+            ]
+          },
+          "building_name": {
+            "title": "Building Name",
+            "type": "string",
+            "maxLength": 110,
+            "description": "The building name is a description applied to a single address or a group of addresses."
+          },
+          "building_number": {
+            "title": "Building Number",
+            "type": "string",
+            "maxLength": 13,
+            "description": "The building number is a number or range of numbers given to a single address or a group of addresses."
+          },
+          "sub_building": {
+            "title": "Sub-building",
+            "type": "string",
+            "maxLength": 110,
+            "description": "The sub-building name and/or number for the address record."
+          },
+          "postcode": {
+            "title": "Postcode",
+            "type": "string",
+            "maxLength": 8,
+            "description": "A postcode assigned by Royal Mail for the address record."
+          },
+          "po_box": {
+            "title": "PO Box",
+            "type": "string",
+            "maxLength": 13,
+            "description": "Text concatenation of 'PO BOX' and the Post Office Box (PO Box) number or 'BFPO' and the British Forces Post Office number."
+          },
+          "organisation": {
+            "title": "Organisation",
+            "type": "string",
+            "maxLength": 100,
+            "description": "The organisation name is the business name given, when appropriate, to an address record."
+          },
+          "country": {
+            "$ref": "#/components/schemas/paf_country"
+          },
+          "county": {
+            "$ref": "#/components/schemas/paf_county"
+          },
+          "district": {
+            "$ref": "#/components/schemas/paf_district"
+          },
+          "ward": {
+            "$ref": "#/components/schemas/paf_ward"
+          },
+          "traditional_county": {
+            "$ref": "#/components/schemas/paf_traditional_county"
+          },
+          "administrative_county": {
+            "$ref": "#/components/schemas/paf_administrative_county"
+          },
+          "postal_county": {
+            "$ref": "#/components/schemas/paf_postal_county"
+          }
+        }
+      },
       "PafAddress": {
-        "title": "Postcode Address File Address",
-        "description": "Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.\n\nA PAF Address represents a deliverable endpoint.",
+        "title": "AddressBase Core",
+        "description": "Address from Ordnance Survey AddressBase Ccore dataset.\n\nPlease contact us to have this enabled on your account.\n\nAll AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafBase"
           },
           {
             "type": "object",
+            "required": [
+              "native"
+            ],
             "properties": {
               "country_iso": {
                 "enum": [
-                  "GBR",
-                  "IMN",
-                  "JEY",
-                  "GGY"
+                  "GBR"
                 ]
               },
               "dataset": {
                 "type": "string",
                 "enum": [
-                  "paf"
+                  "ab"
                 ]
               },
               "country_iso_2": {
                 "enum": [
-                  "GB",
-                  "IM",
-                  "JE",
-                  "GG"
+                  "GB"
                 ]
               },
               "language": {
@@ -3087,12 +3354,11 @@
                 "enum": [
                   "England",
                   "Scotland",
-                  "Wales",
-                  "Northern Ireland",
-                  "Jersey",
-                  "Guernsey",
-                  "Isle of Man"
+                  "Wales"
                 ]
+              },
+              "native": {
+                "$ref": "#/components/schemas/AbAddress"
               }
             }
           }
@@ -3333,16 +3599,6 @@
           "PR",
           "GU",
           "IE"
-        ]
-      },
-      "Language": {
-        "title": "Language",
-        "type": "string",
-        "description": "Language represented by 2 letter ISO Code (639-1)\n",
-        "enum": [
-          "en",
-          "cy",
-          "ga"
         ]
       },
       "Country": {
@@ -4681,6 +4937,12 @@
               },
               {
                 "$ref": "#/components/schemas/UspsAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UspsAddress"
+              },
+              {
+                "$ref": "#/components/schemas/AbAddress"
               }
             ]
           }
