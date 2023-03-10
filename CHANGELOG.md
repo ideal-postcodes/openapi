@@ -1,3 +1,10 @@
+# [3.9.0](https://github.com/ideal-postcodes/openapi/compare/3.8.0...3.9.0) (2023-03-10)
+
+
+### Features
+
+* **AB Core:** Add AddressBase core ([afbd719](https://github.com/ideal-postcodes/openapi/commit/afbd719b91698cd9817c2f5d5cbbfeacf1f3c5b9))
+
 # [3.8.0](https://github.com/ideal-postcodes/openapi/compare/3.7.1...3.8.0) (2023-01-26)
 
 
