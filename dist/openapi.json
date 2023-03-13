@@ -77,6 +77,11 @@
       "description": "ECAF file including additional data for each address.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/EcadAddress\" />\n"
     },
     {
+      "name": "ab_address",
+      "x-displayName": "AddressBase Core",
+      "description": "AddressBase Core Address. An alternative to UK PAF dataset from Ordnance Survey.\n\nPlease contact us to have this enabled on your account.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/AddressBaseCore\" />\n"
+    },
+    {
       "name": "geonames_place",
       "x-displayName": "GeoNames Place",
       "description": "GeoNames place record\n\n<SchemaDefinition schemaRef=\"#/components/schemas/GeonamesPlace\" />\n"
@@ -112,6 +117,7 @@
         "suggestion",
         "usps_address",
         "uk_address",
+        "ab_address",
         "ecaf_address",
         "ecad_address",
         "geonames_place"
@@ -3056,6 +3062,250 @@
           }
         }
       },
+      "PafAddress": {
+        "title": "Postcode Address File Address",
+        "description": "Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.\n\nA PAF Address represents a deliverable endpoint.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "country_iso": {
+                "enum": [
+                  "GBR",
+                  "IMN",
+                  "JEY",
+                  "GGY"
+                ]
+              },
+              "dataset": {
+                "type": "string",
+                "enum": [
+                  "paf"
+                ]
+              },
+              "country_iso_2": {
+                "enum": [
+                  "GB",
+                  "IM",
+                  "JE",
+                  "GG"
+                ]
+              },
+              "language": {
+                "enum": [
+                  "en"
+                ]
+              },
+              "country": {
+                "enum": [
+                  "England",
+                  "Scotland",
+                  "Wales",
+                  "Northern Ireland",
+                  "Jersey",
+                  "Guernsey",
+                  "Isle of Man"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "MrAddress": {
+        "title": "Multiple Residence Address",
+        "description": "Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.\n\nA Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.\n",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "enum": [
+                  "mr"
+                ]
+              },
+              "country_iso": {
+                "enum": [
+                  "GBR",
+                  "IMN",
+                  "JEY",
+                  "GGY"
+                ]
+              },
+              "country_iso_2": {
+                "enum": [
+                  "GB",
+                  "IM",
+                  "JE",
+                  "GG"
+                ]
+              },
+              "language": {
+                "enum": [
+                  "en"
+                ]
+              },
+              "country": {
+                "enum": [
+                  "England",
+                  "Scotland",
+                  "Wales",
+                  "Northern Ireland",
+                  "Jersey",
+                  "Guernsey",
+                  "Isle of Man"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "NybAddress": {
+        "title": "Not Yet Built Address",
+        "description": "A UK premise under construction and currently not occupied.\n\nThis dataset is updated by Royal Mail on a monthly cadence.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "enum": [
+                  "nyb"
+                ]
+              },
+              "country_iso": {
+                "enum": [
+                  "GBR",
+                  "IMN",
+                  "JEY",
+                  "GGY"
+                ]
+              },
+              "country_iso_2": {
+                "enum": [
+                  "GB",
+                  "IM",
+                  "JE",
+                  "GG"
+                ]
+              },
+              "language": {
+                "enum": [
+                  "en"
+                ]
+              },
+              "country": {
+                "enum": [
+                  "England",
+                  "Scotland",
+                  "Wales",
+                  "Northern Ireland",
+                  "Jersey",
+                  "Guernsey",
+                  "Isle of Man"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "PafAliasAddress": {
+        "title": "PAF Alias Address",
+        "description": "PAF Aliases addresses are alternate ways to present an address already found on PAF.\n\nAlias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "enum": [
+                  "pafa"
+                ]
+              },
+              "country_iso": {
+                "enum": [
+                  "GBR",
+                  "IMN",
+                  "JEY",
+                  "GGY"
+                ]
+              },
+              "country_iso_2": {
+                "enum": [
+                  "GB",
+                  "IM",
+                  "JE",
+                  "GG"
+                ]
+              },
+              "language": {
+                "enum": [
+                  "en"
+                ]
+              },
+              "country": {
+                "enum": [
+                  "England",
+                  "Scotland",
+                  "Wales",
+                  "Northern Ireland",
+                  "Jersey",
+                  "Guernsey",
+                  "Isle of Man"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "WelshPafAddress": {
+        "title": "Welsh PAF Address",
+        "description": "Welsh language alternative for a PAF Address",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PafBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataset": {
+                "enum": [
+                  "pafw"
+                ]
+              },
+              "country_iso": {
+                "enum": [
+                  "GBR"
+                ]
+              },
+              "country_iso_2": {
+                "enum": [
+                  "GB"
+                ]
+              },
+              "language": {
+                "enum": [
+                  "cy"
+                ]
+              },
+              "country": {
+                "enum": [
+                  "Wales"
+                ]
+              }
+            }
+          }
+        ]
+      },
       "Language": {
         "title": "Language",
         "type": "string",
@@ -3066,7 +3316,7 @@
           "ga"
         ]
       },
-      "AbAddress": {
+      "AddressBaseCore": {
         "title": "AddressBase Core",
         "description": "Represents a GB address in Ordnance Survey's AddressBase Core dataset",
         "required": [
@@ -3316,7 +3566,7 @@
           }
         }
       },
-      "PafAddress": {
+      "AbAddress": {
         "title": "AddressBase Core",
         "description": "Address from Ordnance Survey AddressBase Ccore dataset.\n\nPlease contact us to have this enabled on your account.\n\nAll AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.",
         "allOf": [
@@ -3358,199 +3608,7 @@
                 ]
               },
               "native": {
-                "$ref": "#/components/schemas/AbAddress"
-              }
-            }
-          }
-        ]
-      },
-      "MrAddress": {
-        "title": "Multiple Residence Address",
-        "description": "Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.\n\nA Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.\n",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PafBase"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "dataset": {
-                "enum": [
-                  "mr"
-                ]
-              },
-              "country_iso": {
-                "enum": [
-                  "GBR",
-                  "IMN",
-                  "JEY",
-                  "GGY"
-                ]
-              },
-              "country_iso_2": {
-                "enum": [
-                  "GB",
-                  "IM",
-                  "JE",
-                  "GG"
-                ]
-              },
-              "language": {
-                "enum": [
-                  "en"
-                ]
-              },
-              "country": {
-                "enum": [
-                  "England",
-                  "Scotland",
-                  "Wales",
-                  "Northern Ireland",
-                  "Jersey",
-                  "Guernsey",
-                  "Isle of Man"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "NybAddress": {
-        "title": "Not Yet Built Address",
-        "description": "A UK premise under construction and currently not occupied.\n\nThis dataset is updated by Royal Mail on a monthly cadence.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PafBase"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "dataset": {
-                "enum": [
-                  "nyb"
-                ]
-              },
-              "country_iso": {
-                "enum": [
-                  "GBR",
-                  "IMN",
-                  "JEY",
-                  "GGY"
-                ]
-              },
-              "country_iso_2": {
-                "enum": [
-                  "GB",
-                  "IM",
-                  "JE",
-                  "GG"
-                ]
-              },
-              "language": {
-                "enum": [
-                  "en"
-                ]
-              },
-              "country": {
-                "enum": [
-                  "England",
-                  "Scotland",
-                  "Wales",
-                  "Northern Ireland",
-                  "Jersey",
-                  "Guernsey",
-                  "Isle of Man"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "PafAliasAddress": {
-        "title": "PAF Alias Address",
-        "description": "PAF Aliases addresses are alternate ways to present an address already found on PAF.\n\nAlias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PafBase"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "dataset": {
-                "enum": [
-                  "pafa"
-                ]
-              },
-              "country_iso": {
-                "enum": [
-                  "GBR",
-                  "IMN",
-                  "JEY",
-                  "GGY"
-                ]
-              },
-              "country_iso_2": {
-                "enum": [
-                  "GB",
-                  "IM",
-                  "JE",
-                  "GG"
-                ]
-              },
-              "language": {
-                "enum": [
-                  "en"
-                ]
-              },
-              "country": {
-                "enum": [
-                  "England",
-                  "Scotland",
-                  "Wales",
-                  "Northern Ireland",
-                  "Jersey",
-                  "Guernsey",
-                  "Isle of Man"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "WelshPafAddress": {
-        "title": "Welsh PAF Address",
-        "description": "Welsh language alternative for a PAF Address",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PafBase"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "dataset": {
-                "enum": [
-                  "pafw"
-                ]
-              },
-              "country_iso": {
-                "enum": [
-                  "GBR"
-                ]
-              },
-              "country_iso_2": {
-                "enum": [
-                  "GB"
-                ]
-              },
-              "language": {
-                "enum": [
-                  "cy"
-                ]
-              },
-              "country": {
-                "enum": [
-                  "Wales"
-                ]
+                "$ref": "#/components/schemas/AddressBaseCore"
               }
             }
           }
@@ -3559,7 +3617,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4",
         "enum": [
           "paf",
           "pafw",
@@ -3568,7 +3626,8 @@
           "nyb",
           "usps",
           "ecaf",
-          "ecad"
+          "ecad",
+          "ab"
         ]
       },
       "CountryISO": {
@@ -4940,9 +4999,6 @@
               },
               {
                 "$ref": "#/components/schemas/UspsAddress"
-              },
-              {
-                "$ref": "#/components/schemas/AbAddress"
               }
             ]
           }
@@ -4975,6 +5031,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/WelshPafAddress"
+                },
+                {
+                  "$ref": "#/components/schemas/AbAddress"
                 },
                 {
                   "$ref": "#/components/schemas/GbrGlobalAddress"
@@ -6224,6 +6283,9 @@
                 "$ref": "#/components/schemas/NybAddress"
               },
               {
+                "$ref": "#/components/schemas/AbAddress"
+              },
+              {
                 "$ref": "#/components/schemas/GbrGlobalAddress"
               }
             ]
@@ -6548,6 +6610,9 @@
               },
               {
                 "$ref": "#/components/schemas/WelshPafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/AbAddress"
               }
             ]
           }
@@ -6655,6 +6720,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/PafAliasAddress"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AbAddress"
                     }
                   ]
                 }
