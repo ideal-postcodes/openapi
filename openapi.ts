@@ -1055,12 +1055,22 @@ export interface components {
      *   - `nyb` (GBR) Not Yet Built File
      *   - `pafa` (GBR) Alias File
      *   - `pafw` (GBR) Welsh File
+     *   - `ab` (GBR) AddressBase Core
      *   - `ecaf` (IRL) Eircode ECAF
      *   - `ecad` (IRL) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
      * @enum {string}
      */
-    Dataset: "paf" | "pafw" | "pafa" | "mr" | "nyb" | "usps" | "ecaf" | "ecad";
+    Dataset:
+      | "paf"
+      | "pafw"
+      | "pafa"
+      | "mr"
+      | "nyb"
+      | "usps"
+      | "ecaf"
+      | "ecad"
+      | "ab";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)

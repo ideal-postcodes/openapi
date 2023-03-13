@@ -3830,6 +3830,7 @@ components:
           - `nyb` (GBR) Not Yet Built File
           - `pafa` (GBR) Alias File
           - `pafw` (GBR) Welsh File
+          - `ab` (GBR) AddressBase Core
           - `ecaf` (IRL) Eircode ECAF
           - `ecad` (IRL) Eircode ECAD
           - `usps` (USA) USPS Zip+4
@@ -3842,6 +3843,7 @@ components:
         - usps
         - ecaf
         - ecad
+        - ab
     CountryISO:
       title: ISO Country Code (3)
       type: string
