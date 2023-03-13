@@ -77,6 +77,11 @@
       "description": "ECAF file including additional data for each address.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/EcadAddress\" />\n"
     },
     {
+      "name": "ab_address",
+      "x-displayName": "AddressBase Core",
+      "description": "AddressBase Core Address. An alternative to UK PAF dataset from Ordnance Survey.\n\nPlease contact us to have this enabled on your account.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/AddressBaseCore\" />\n"
+    },
+    {
       "name": "geonames_place",
       "x-displayName": "GeoNames Place",
       "description": "GeoNames place record\n\n<SchemaDefinition schemaRef=\"#/components/schemas/GeonamesPlace\" />\n"
@@ -112,6 +117,7 @@
         "suggestion",
         "usps_address",
         "uk_address",
+        "ab_address",
         "ecaf_address",
         "ecad_address",
         "geonames_place"

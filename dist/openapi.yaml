@@ -424,6 +424,17 @@ tags:
       ECAF file including additional data for each address.
 
       <SchemaDefinition schemaRef="#/components/schemas/EcadAddress" />
+  - name: ab_address
+    x-displayName: AddressBase Core
+    description: >
+      AddressBase Core Address. An alternative to UK PAF dataset from Ordnance
+      Survey.
+
+
+      Please contact us to have this enabled on your account.
+
+
+      <SchemaDefinition schemaRef="#/components/schemas/AddressBaseCore" />
   - name: geonames_place
     x-displayName: GeoNames Place
     description: |
@@ -450,6 +461,7 @@ x-tagGroups:
       - suggestion
       - usps_address
       - uk_address
+      - ab_address
       - ecaf_address
       - ecad_address
       - geonames_place
