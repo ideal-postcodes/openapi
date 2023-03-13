@@ -879,7 +879,7 @@ export interface components {
        * UPRN
        * @description Unique Property Reference Number (UPRN) assigned by the LLPG Custodian or Ordnance Survey.
        */
-      uprn: number;
+      uprn: string;
       /**
        * UDPRN
        * @description Royal Mail's Unique Delivery Point Reference Number (UDPRN).
@@ -889,7 +889,7 @@ export interface components {
        * PARENT_UPRN
        * @description UPRN of the parent Record if a parent-child relationship exists.
        */
-      parent_uprn: number;
+      parent_uprn: string;
       /**
        * USRN
        * @description Unique Street Reference Number assigned by the Street Name and Numbering Custodian OR

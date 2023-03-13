@@ -3378,7 +3378,7 @@
           },
           "uprn": {
             "title": "UPRN",
-            "type": "number",
+            "type": "string",
             "maxLength": 12,
             "description": "Unique Property Reference Number (UPRN) assigned by the LLPG Custodian or Ordnance Survey."
           },
@@ -3390,7 +3390,7 @@
           },
           "parent_uprn": {
             "title": "PARENT_UPRN",
-            "type": "number",
+            "type": "string",
             "maxLength": 12,
             "description": "UPRN of the parent Record if a parent-child relationship exists."
           },
