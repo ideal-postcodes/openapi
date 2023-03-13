@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/ideal-postcodes/openapi/compare/3.9.0...3.9.1) (2023-03-13)
+
+
+### Bug Fixes
+
+* **AB Core:** Add to AB Core to UK endpoints ([1b3af9a](https://github.com/ideal-postcodes/openapi/commit/1b3af9acde6aef6cb0b751686ea7765c86b8c8dc))
+
 # [3.9.0](https://github.com/ideal-postcodes/openapi/compare/3.8.0...3.9.0) (2023-03-10)
 
 
