@@ -1,3 +1,10 @@
+## [3.9.2](https://github.com/ideal-postcodes/openapi/compare/3.9.1...3.9.2) (2023-03-13)
+
+
+### Bug Fixes
+
+* **AB Core:** UPRNs delivered as strings ([5bf31e1](https://github.com/ideal-postcodes/openapi/commit/5bf31e1f6f23d2d299f76d380f94b3f8625d7b40))
+
 ## [3.9.1](https://github.com/ideal-postcodes/openapi/compare/3.9.0...3.9.1) (2023-03-13)
 
 
