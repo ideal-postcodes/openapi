@@ -743,6 +743,122 @@ export interface components {
       northings: components["schemas"]["Northings"];
     };
     /**
+     * Postcode Address File Address
+     * @description Standard UK Address. Also known as a Postcode Address File (PAF) address is defined by Royal Mail and updated on a daily cadence.
+     *
+     * A PAF Address represents a deliverable endpoint.
+     */
+    PafAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {string} */
+      dataset?: "paf";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * Multiple Residence Address
+     * @description Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.
+     *
+     * A Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.
+     */
+    MrAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "mr";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * Not Yet Built Address
+     * @description A UK premise under construction and currently not occupied.
+     *
+     * This dataset is updated by Royal Mail on a monthly cadence.
+     */
+    NybAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "nyb";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * PAF Alias Address
+     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
+     *
+     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
+     */
+    PafAliasAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafa";
+      /** @enum {undefined} */
+      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
+      /** @enum {undefined} */
+      country_iso_2?: "GB" | "IM" | "JE" | "GG";
+      /** @enum {undefined} */
+      language?: "en";
+      /** @enum {undefined} */
+      country?:
+        | "England"
+        | "Scotland"
+        | "Wales"
+        | "Northern Ireland"
+        | "Jersey"
+        | "Guernsey"
+        | "Isle of Man";
+    };
+    /**
+     * Welsh PAF Address
+     * @description Welsh language alternative for a PAF Address
+     */
+    WelshPafAddress: components["schemas"]["PafBase"] & {
+      /** @enum {undefined} */
+      dataset?: "pafw";
+      /** @enum {undefined} */
+      country_iso?: "GBR";
+      /** @enum {undefined} */
+      country_iso_2?: "GB";
+      /** @enum {undefined} */
+      language?: "cy";
+      /** @enum {undefined} */
+      country?: "Wales";
+    };
+    /**
      * Language
      * @description Language represented by 2 letter ISO Code (639-1)
      *
@@ -753,7 +869,7 @@ export interface components {
      * AddressBase Core
      * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset
      */
-    AbAddress: {
+    AddressBaseCore: {
       language: components["schemas"]["Language"];
       line_1: components["schemas"]["paf_line1"];
       line_2: components["schemas"]["paf_line2"];
@@ -917,7 +1033,7 @@ export interface components {
      *
      * All AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.
      */
-    PafAddress: components["schemas"]["PafBase"] & {
+    AbAddress: components["schemas"]["PafBase"] & {
       /** @enum {undefined} */
       country_iso?: "GBR";
       /** @enum {string} */
@@ -928,98 +1044,7 @@ export interface components {
       language?: "en";
       /** @enum {undefined} */
       country?: "England" | "Scotland" | "Wales";
-      native: components["schemas"]["AbAddress"];
-    };
-    /**
-     * Multiple Residence Address
-     * @description Subdivision of a Postcode Address File address. Also known as a Multiple Residence or Multiple Occupancy address.
-     *
-     * A Multiple Residence address does not have its own deliverable endpoint. Instead it relies on the deliverable endpoint of a parent address, where the parent address can be found on the main Postcode Address File.
-     */
-    MrAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "mr";
-      /** @enum {undefined} */
-      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
-      /** @enum {undefined} */
-      country_iso_2?: "GB" | "IM" | "JE" | "GG";
-      /** @enum {undefined} */
-      language?: "en";
-      /** @enum {undefined} */
-      country?:
-        | "England"
-        | "Scotland"
-        | "Wales"
-        | "Northern Ireland"
-        | "Jersey"
-        | "Guernsey"
-        | "Isle of Man";
-    };
-    /**
-     * Not Yet Built Address
-     * @description A UK premise under construction and currently not occupied.
-     *
-     * This dataset is updated by Royal Mail on a monthly cadence.
-     */
-    NybAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "nyb";
-      /** @enum {undefined} */
-      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
-      /** @enum {undefined} */
-      country_iso_2?: "GB" | "IM" | "JE" | "GG";
-      /** @enum {undefined} */
-      language?: "en";
-      /** @enum {undefined} */
-      country?:
-        | "England"
-        | "Scotland"
-        | "Wales"
-        | "Northern Ireland"
-        | "Jersey"
-        | "Guernsey"
-        | "Isle of Man";
-    };
-    /**
-     * PAF Alias Address
-     * @description PAF Aliases addresses are alternate ways to present an address already found on PAF.
-     *
-     * Alias data is information the public chooses to use when addressing mail, but which isn’t actually required for delivery purposes.  The Alias data contains records of alternative address details that are included in the address but not necessarily needed for delivery purposes.
-     */
-    PafAliasAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "pafa";
-      /** @enum {undefined} */
-      country_iso?: "GBR" | "IMN" | "JEY" | "GGY";
-      /** @enum {undefined} */
-      country_iso_2?: "GB" | "IM" | "JE" | "GG";
-      /** @enum {undefined} */
-      language?: "en";
-      /** @enum {undefined} */
-      country?:
-        | "England"
-        | "Scotland"
-        | "Wales"
-        | "Northern Ireland"
-        | "Jersey"
-        | "Guernsey"
-        | "Isle of Man";
-    };
-    /**
-     * Welsh PAF Address
-     * @description Welsh language alternative for a PAF Address
-     */
-    WelshPafAddress: components["schemas"]["PafBase"] & {
-      /** @enum {undefined} */
-      dataset?: "pafw";
-      /** @enum {undefined} */
-      country_iso?: "GBR";
-      /** @enum {undefined} */
-      country_iso_2?: "GB";
-      /** @enum {undefined} */
-      language?: "cy";
-      /** @enum {undefined} */
-      country?: "Wales";
+      native: components["schemas"]["AddressBaseCore"];
     };
     /**
      * Dataset
@@ -1987,8 +2012,7 @@ export interface components {
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
         | components["schemas"]["UspsAddress"]
-        | components["schemas"]["UspsAddress"]
-        | components["schemas"]["AbAddress"];
+        | components["schemas"]["UspsAddress"];
     };
     /** Postcode Response */
     PostcodeResponse: {
@@ -2003,6 +2027,7 @@ export interface components {
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["AbAddress"]
         | components["schemas"]["GbrGlobalAddress"]
       )[];
       /**
@@ -2696,6 +2721,7 @@ export interface components {
         | components["schemas"]["WelshPafAddress"]
         | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["NybAddress"]
+        | components["schemas"]["AbAddress"]
         | components["schemas"]["GbrGlobalAddress"];
     };
     /**
@@ -2871,7 +2897,8 @@ export interface components {
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
-        | components["schemas"]["WelshPafAddress"];
+        | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["AbAddress"];
     };
     /** Address Resolution Response (USA) */
     UsaResolveAddressResponse: {
@@ -2923,6 +2950,7 @@ export interface components {
           | components["schemas"]["NybAddress"]
           | components["schemas"]["WelshPafAddress"]
           | components["schemas"]["PafAliasAddress"]
+          | components["schemas"]["AbAddress"]
         )[];
         /** Format: int32 */
         total: number;
