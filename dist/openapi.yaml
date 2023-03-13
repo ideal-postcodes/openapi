@@ -3581,7 +3581,7 @@ components:
           $ref: '#/components/schemas/paf_premise'
         uprn:
           title: UPRN
-          type: number
+          type: string
           maxLength: 12
           description: >-
             Unique Property Reference Number (UPRN) assigned by the LLPG
@@ -3593,7 +3593,7 @@ components:
           description: Royal Mail's Unique Delivery Point Reference Number (UDPRN).
         parent_uprn:
           title: PARENT_UPRN
-          type: number
+          type: string
           maxLength: 12
           description: UPRN of the parent Record if a parent-child relationship exists.
         usrn:
