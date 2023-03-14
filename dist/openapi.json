@@ -3321,6 +3321,8 @@
         "description": "Represents a GB address in Ordnance Survey's AddressBase Core dataset",
         "required": [
           "language",
+          "dataset",
+          "id",
           "line_1",
           "line_2",
           "line_3",
@@ -3614,6 +3616,13 @@
                 "enum": [
                   "en"
                 ]
+              },
+              "postcode_type": {
+                "title": "Postcode Type",
+                "enum": [
+                  ""
+                ],
+                "type": "string"
               },
               "country": {
                 "enum": [
