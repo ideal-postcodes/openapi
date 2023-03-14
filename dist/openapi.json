@@ -3362,6 +3362,17 @@
           "postal_county"
         ],
         "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "title": "Dataset",
+            "type": "string",
+            "description": "Indicates the provenance of an address",
+            "enum": [
+              "ab"
+            ]
+          },
           "language": {
             "$ref": "#/components/schemas/Language"
           },
