@@ -1,3 +1,10 @@
+## [3.9.3](https://github.com/ideal-postcodes/openapi/compare/3.9.2...3.9.3) (2023-03-14)
+
+
+### Bug Fixes
+
+* **AB Core:** Add country iso ([e6710d0](https://github.com/ideal-postcodes/openapi/commit/e6710d0c9ac3de0a4bcd1c679410a7c1857225ed))
+
 ## [3.9.2](https://github.com/ideal-postcodes/openapi/compare/3.9.1...3.9.2) (2023-03-13)
 
 
