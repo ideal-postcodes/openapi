@@ -1018,6 +1018,7 @@ export interface components {
        */
       organisation: string;
       country: components["schemas"]["paf_country"];
+      country_iso: components["schemas"]["paf_country_iso"];
       county: components["schemas"]["paf_county"];
       district: components["schemas"]["paf_district"];
       ward: components["schemas"]["paf_ward"];
