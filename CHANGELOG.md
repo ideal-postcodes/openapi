@@ -1,3 +1,10 @@
+## [3.9.4](https://github.com/ideal-postcodes/openapi/compare/3.9.3...3.9.4) (2023-03-14)
+
+
+### Bug Fixes
+
+* **AB Core:** Add ID and dataset fields ([a3f8e94](https://github.com/ideal-postcodes/openapi/commit/a3f8e94701a6cdeebde19a4f046b607527a9ba75))
+
 ## [3.9.3](https://github.com/ideal-postcodes/openapi/compare/3.9.2...3.9.3) (2023-03-14)
 
 
