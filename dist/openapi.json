@@ -3353,6 +3353,7 @@
           "po_box",
           "organisation",
           "country",
+          "country_iso",
           "county",
           "district",
           "ward",
@@ -3545,6 +3546,9 @@
           },
           "country": {
             "$ref": "#/components/schemas/paf_country"
+          },
+          "country_iso": {
+            "$ref": "#/components/schemas/paf_country_iso"
           },
           "county": {
             "$ref": "#/components/schemas/paf_county"

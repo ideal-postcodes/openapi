@@ -3562,6 +3562,7 @@ components:
         - po_box
         - organisation
         - country
+        - country_iso
         - county
         - district
         - ward
@@ -3782,6 +3783,8 @@ components:
             to an address record.
         country:
           $ref: '#/components/schemas/paf_country'
+        country_iso:
+          $ref: '#/components/schemas/paf_country_iso'
         county:
           $ref: '#/components/schemas/paf_county'
         district:
