@@ -1,3 +1,10 @@
+## [3.9.5](https://github.com/ideal-postcodes/openapi/compare/3.9.4...3.9.5) (2023-03-14)
+
+
+### Bug Fixes
+
+* **AB:** Require id and dataset ([1792c1c](https://github.com/ideal-postcodes/openapi/commit/1792c1c6c8829ff101a8012b3966d4b03f1cfa05))
+
 ## [3.9.4](https://github.com/ideal-postcodes/openapi/compare/3.9.3...3.9.4) (2023-03-14)
 
 
