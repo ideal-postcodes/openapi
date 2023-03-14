@@ -870,6 +870,13 @@ export interface components {
      * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset
      */
     AddressBaseCore: {
+      id?: components["schemas"]["ID"];
+      /**
+       * Dataset
+       * @description Indicates the provenance of an address
+       * @enum {string}
+       */
+      dataset?: "ab";
       language: components["schemas"]["Language"];
       line_1: components["schemas"]["paf_line1"];
       line_2: components["schemas"]["paf_line2"];
