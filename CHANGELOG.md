@@ -1,3 +1,10 @@
+## [3.9.6](https://github.com/ideal-postcodes/openapi/compare/3.9.5...3.9.6) (2023-03-15)
+
+
+### Bug Fixes
+
+* **PAF:** Extends Postcode Type ([77e4bfd](https://github.com/ideal-postcodes/openapi/commit/77e4bfd22d0691c6fad997d01431999b5fe07a77))
+
 ## [3.9.5](https://github.com/ideal-postcodes/openapi/compare/3.9.4...3.9.5) (2023-03-14)
 
 
