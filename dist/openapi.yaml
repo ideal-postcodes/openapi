@@ -3030,6 +3030,7 @@ components:
       enum:
         - S
         - L
+        - ''
       type: string
       description: >-
         This indicates the type of user. It can only take the values 'S' or 'L'
@@ -3040,7 +3041,7 @@ components:
         Points.
 
 
-        On average there are 15 Delivery Points per Postcode. However this can
+        On average there are 19 Delivery Points per Postcode. However this can
         vary between 1 and, in some cases, 100. There will never be more than
         100 Delivery Points on a Postcode.
     paf_su_organisation_indicator:
