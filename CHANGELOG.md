@@ -4,6 +4,19 @@
 ### Bug Fixes
 
 * **HERE:** Add required attributes ([f269f1c](https://github.com/ideal-postcodes/openapi/commit/f269f1c07a571a19f20310eb127c9f84c5314328))
+* **Release:** Increment patch ([e7634d7](https://github.com/ideal-postcodes/openapi/commit/e7634d7dad4b081fa50b1d47bd18ffa160335b86))
+
+
+### Features
+
+* **AB:** Include AB ([20037b8](https://github.com/ideal-postcodes/openapi/commit/20037b840c058a494f52ce238f4a011025e3fbd5))
+
+# [3.9.0-beta.6](https://github.com/ideal-postcodes/openapi/compare/3.9.0-beta.5...3.9.0-beta.6) (2023-04-17)
+
+
+### Bug Fixes
+
+* **HERE:** Add required attributes ([f269f1c](https://github.com/ideal-postcodes/openapi/commit/f269f1c07a571a19f20310eb127c9f84c5314328))
 
 
 ### Features
