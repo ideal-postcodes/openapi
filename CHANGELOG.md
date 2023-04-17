@@ -1,3 +1,10 @@
+# [3.10.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/3.9.5...3.10.0-beta.1) (2023-04-17)
+
+
+### Features
+
+* **Western Europe:** Add Western Europe data ([fd329a2](https://github.com/ideal-postcodes/openapi/commit/fd329a22fc7e9c59bcd6095346bfef9967d6eb11))
+
 ## [3.9.5](https://github.com/ideal-postcodes/openapi/compare/3.9.4...3.9.5) (2023-03-14)
 
 
