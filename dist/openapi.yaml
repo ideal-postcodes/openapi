@@ -2687,6 +2687,22 @@ paths:
           style: form
           schema:
             type: string
+        - name: current_carrier
+          in: query
+          required: false
+          description: >
+            When set to `true` the current network of the phone number will be
+            retrieved and populated.
+
+
+            Note that this operation is potentially slow depending on the
+            network and local conditions.
+          explode: false
+          style: form
+          schema:
+            type: string
+            enum:
+              - true
       responses:
         '200':
           description: Success
@@ -7599,6 +7615,10 @@ components:
             - virtual
             - unknown
             - pager
+            - mobile_or_landline
+            - shared_cost
+            - uan
+            - voicemail
     PhoneNumber:
       title: Phone Number Object
       type: object

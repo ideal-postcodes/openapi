@@ -3522,6 +3522,10 @@ export interface components {
             | "virtual"
             | "unknown"
             | "pager"
+            | "mobile_or_landline"
+            | "shared_cost"
+            | "uan"
+            | "voicemail"
           )
         | null;
     } | null;
@@ -4748,6 +4752,12 @@ export interface operations {
         api_key: components["schemas"]["ApiKeyParam"];
         /** Specifies the phone number to validate. Phone number must include a country code in acceptable format. For instance, UK phone numbers should be suffixed `+44`, `44` or `0044`. */
         query: string;
+        /**
+         * When set to `true` the current network of the phone number will be retrieved and populated.
+         *
+         * Note that this operation is potentially slow depending on the network and local conditions.
+         */
+        current_carrier?: true;
       };
     };
     responses: {
