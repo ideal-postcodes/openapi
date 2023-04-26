@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/ideal-postcodes/openapi/compare/3.9.6...3.10.0) (2023-04-26)
+
+
+### Features
+
+* **Phone:** Separate live carrier information ([118cc75](https://github.com/ideal-postcodes/openapi/commit/118cc75e602cafa3c837417a8c132e3058f8c865))
+
 ## [3.9.6](https://github.com/ideal-postcodes/openapi/compare/3.9.5...3.9.6) (2023-03-15)
 
 
