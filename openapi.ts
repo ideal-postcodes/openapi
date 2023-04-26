@@ -4757,7 +4757,7 @@ export interface operations {
          *
          * Note that this operation is potentially slow depending on the network and local conditions.
          */
-        current_carrier?: true;
+        current_carrier?: "true";
       };
     };
     responses: {

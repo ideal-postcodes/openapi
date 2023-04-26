@@ -2702,7 +2702,7 @@ paths:
           schema:
             type: string
             enum:
-              - true
+              - 'true'
       responses:
         '200':
           description: Success
