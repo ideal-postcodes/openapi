@@ -2496,6 +2496,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "current_carrier",
+            "in": "query",
+            "required": false,
+            "description": "When set to `true` the current network of the phone number will be retrieved and populated.\n\nNote that this operation is potentially slow depending on the network and local conditions.\n",
+            "explode": false,
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true"
+              ]
+            }
           }
         ],
         "responses": {
@@ -7715,7 +7729,11 @@
               "landline_tollfree",
               "virtual",
               "unknown",
-              "pager"
+              "pager",
+              "mobile_or_landline",
+              "shared_cost",
+              "uan",
+              "voicemail"
             ]
           }
         }
