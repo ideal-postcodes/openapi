@@ -1,3 +1,10 @@
+# [3.11.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.2...3.11.0-beta.3) (2023-05-05)
+
+
+### Bug Fixes
+
+* **WE:** Require language ([d8ad329](https://github.com/ideal-postcodes/openapi/commit/d8ad32997722f57c0077762517e8786ee2f52d07))
+
 # [3.11.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.1...3.11.0-beta.2) (2023-05-05)
 
 
