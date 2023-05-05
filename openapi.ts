@@ -882,7 +882,8 @@ export interface components {
       | "no"
       | "mt"
       | "sv"
-      | "is";
+      | "is"
+      | "hr";
     /**
      * AddressBase Core
      * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset

@@ -3557,6 +3557,7 @@ components:
         - mt
         - sv
         - is
+        - hr
     AddressBaseCore:
       title: AddressBase Core
       description: Represents a GB address in Ordnance Survey's AddressBase Core dataset
