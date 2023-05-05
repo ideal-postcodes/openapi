@@ -4886,12 +4886,12 @@
                   "herewe"
                 ]
               },
-              "language_code": {
+              "language": {
                 "type": "string",
                 "description": "Language Code of Address and Building Name for the Point Address.",
-                "example": "ITA",
-                "minLength": 1,
-                "maxLength": 3
+                "example": "it",
+                "minLength": 2,
+                "maxLength": 2
               },
               "line_1": {
                 "type": "string",
@@ -5149,7 +5149,7 @@
               },
               "builtup_name": {
                 "type": "string",
-                "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. ",
+                "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.",
                 "example": ""
               }
             }

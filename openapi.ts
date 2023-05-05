@@ -1981,9 +1981,9 @@ export interface components {
       dataset: "herewe";
       /**
        * @description Language Code of Address and Building Name for the Point Address.
-       * @example ITA
+       * @example it
        */
-      language_code: string;
+      language?: string;
       /**
        * @description First address line.
        *
@@ -2168,6 +2168,7 @@ export interface components {
       /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
       builtup_name: string;
     } & {
+      language_code: unknown;
       street_type: unknown;
     };
     /**
