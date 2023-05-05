@@ -5311,7 +5311,7 @@ components:
             - line_3
             - line_4
             - line_5
-            - language_code
+            - language
             - address
             - latitude
             - longitude
