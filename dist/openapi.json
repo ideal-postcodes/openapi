@@ -3671,7 +3671,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4\n  - `herewe` (Western Europe) Western Europe Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3681,7 +3681,8 @@
           "usps",
           "ecaf",
           "ecad",
-          "ab"
+          "ab",
+          "herewe"
         ]
       },
       "CountryISO": {

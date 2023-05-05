@@ -1090,6 +1090,7 @@ export interface components {
      *   - `ecaf` (IRL) Eircode ECAF
      *   - `ecad` (IRL) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
+     *   - `herewe` (Western Europe) Western Europe Dataset
      * @enum {string}
      */
     Dataset:
@@ -1101,7 +1102,8 @@ export interface components {
       | "usps"
       | "ecaf"
       | "ecad"
-      | "ab";
+      | "ab"
+      | "herewe";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)

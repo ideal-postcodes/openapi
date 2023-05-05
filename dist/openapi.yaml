@@ -3896,6 +3896,7 @@ components:
           - `ecaf` (IRL) Eircode ECAF
           - `ecad` (IRL) Eircode ECAD
           - `usps` (USA) USPS Zip+4
+          - `herewe` (Western Europe) Western Europe Dataset
       enum:
         - paf
         - pafw
@@ -3906,6 +3907,7 @@ components:
         - ecaf
         - ecad
         - ab
+        - herewe
     CountryISO:
       title: ISO Country Code (3)
       type: string
