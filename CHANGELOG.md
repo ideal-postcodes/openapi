@@ -1,3 +1,10 @@
+# [3.11.0-beta.5](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.4...3.11.0-beta.5) (2023-05-05)
+
+
+### Bug Fixes
+
+* **Language:** Add Croatian ([2fbac93](https://github.com/ideal-postcodes/openapi/commit/2fbac93a5de13519466cfd7891e78d0d199ed11b))
+
 # [3.11.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.3...3.11.0-beta.4) (2023-05-05)
 
 
