@@ -1,3 +1,10 @@
+# [3.11.0-beta.4](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.3...3.11.0-beta.4) (2023-05-05)
+
+
+### Bug Fixes
+
+* **Datasests:** Add herewe as an allwoed dataset ([89172e0](https://github.com/ideal-postcodes/openapi/commit/89172e0c41a2675590f106dd87009bc854d7076c))
+
 # [3.11.0-beta.3](https://github.com/ideal-postcodes/openapi/compare/3.11.0-beta.2...3.11.0-beta.3) (2023-05-05)
 
 
