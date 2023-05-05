@@ -3328,7 +3328,22 @@
         "enum": [
           "en",
           "cy",
-          "ga"
+          "ga",
+          "fo",
+          "pt",
+          "es",
+          "fr",
+          "fi",
+          "ca",
+          "wa",
+          "it",
+          "nl",
+          "de",
+          "da",
+          "no",
+          "mt",
+          "sv",
+          "is"
         ]
       },
       "AddressBaseCore": {
@@ -3681,7 +3696,33 @@
           "USA",
           "PRI",
           "GUM",
-          "IRL"
+          "IRL",
+          "VAT",
+          "FRA",
+          "GRL",
+          "NLD",
+          "LUX",
+          "AUT",
+          "GIB",
+          "LIE",
+          "FIN",
+          "UNI",
+          "ISL",
+          "CHE",
+          "PRT",
+          "BEL",
+          "MCO",
+          "ITA",
+          "FRO",
+          "NOR",
+          "DNK",
+          "SMR",
+          "MLT",
+          "AND",
+          "SWE",
+          "DEU",
+          "ESP",
+          "SJM"
         ]
       },
       "CountryISO2": {
@@ -3696,26 +3737,78 @@
           "US",
           "PR",
           "GU",
-          "IE"
+          "IE",
+          "VA",
+          "FR",
+          "GL",
+          "NL",
+          "LU",
+          "AT",
+          "GI",
+          "LI",
+          "FI",
+          "GB",
+          "IS",
+          "CH",
+          "PT",
+          "BE",
+          "MC",
+          "IT",
+          "FO",
+          "NO",
+          "DK",
+          "SM",
+          "MT",
+          "AD",
+          "SE",
+          "DE",
+          "ES",
+          "SJ"
         ]
       },
       "Country": {
         "title": "Country",
         "type": "string",
         "description": "  Full country names (ISO 3166)\n",
-        "example": "England",
         "enum": [
-          "United States",
-          "Guam",
-          "Puerto Rico",
+          "United Kingdom",
           "England",
           "Scotland",
           "Wales",
           "Northern Ireland",
+          "Isle of Man",
           "Jersey",
           "Guernsey",
-          "Isle of Man",
-          "Ireland"
+          "Guam",
+          "United States",
+          "Puerto Rico",
+          "Ireland",
+          "Vatican City",
+          "France",
+          "Greenland",
+          "Netherlands",
+          "Luxembourg",
+          "Austria",
+          "Gibraltar",
+          "Liechtenstein",
+          "Finland",
+          "United Kingdom",
+          "Iceland",
+          "Switzerland",
+          "Portugal",
+          "Belgium",
+          "Monaco",
+          "Italy",
+          "Faroe Islands",
+          "Norway",
+          "Denmark",
+          "San Marino",
+          "Malta",
+          "Andorra",
+          "Sweden",
+          "Germany",
+          "Spain",
+          "Svalbard and Jan Mayen"
         ]
       },
       "EircBase": {
@@ -4734,6 +4827,335 @@
           }
         }
       },
+      "HereWeAddress": {
+        "title": "Western Europe Address",
+        "description": "An address in Western Europe",
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "dataset",
+              "country_iso",
+              "line_1",
+              "line_2",
+              "line_3",
+              "line_4",
+              "line_5",
+              "language_code",
+              "address",
+              "latitude",
+              "longitude",
+              "building_name",
+              "delivery_longitude",
+              "delivery_latitude",
+              "is_exit_name",
+              "explicatable",
+              "is_junction_name",
+              "is_name_on_roadsign",
+              "is_postal_name",
+              "is_stale_name",
+              "is_vanity_name",
+              "is_scenic_name",
+              "is_intersection_name",
+              "is_bridge_name",
+              "is_tunnel_name",
+              "is_overpass_name",
+              "is_underpass_name",
+              "is_bicycle_route_name",
+              "street_type",
+              "street_name",
+              "postal_code",
+              "order1_name",
+              "order2_name",
+              "order8_name",
+              "builtup_name"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ID"
+              },
+              "country_iso": {
+                "type": "string",
+                "description": "Three character country code based on ISO Standard 3166.\n\nCan be empty string `\"\"` if not present.",
+                "example": "ITA"
+              },
+              "dataset": {
+                "type": "string",
+                "enum": [
+                  "herewe"
+                ]
+              },
+              "language_code": {
+                "type": "string",
+                "description": "Language Code of Address and Building Name for the Point Address.",
+                "example": "ITA",
+                "minLength": 1,
+                "maxLength": 3
+              },
+              "line_1": {
+                "type": "string",
+                "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16 Via Giuseppe Garibaldi",
+                "minLength": 1,
+                "maxLength": 150
+              },
+              "line_2": {
+                "type": "string",
+                "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_3": {
+                "type": "string",
+                "description": "Third address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_4": {
+                "type": "string",
+                "description": "Fourth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_5": {
+                "type": "string",
+                "description": "Fifth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "address": {
+                "type": "string",
+                "description": "Address / House Number uniquely identifying the address along the specified road link.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "address_type": {
+                "type": "string",
+                "description": "Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "1"
+              },
+              "delivery_latitude": {
+                "type": "number",
+                "description": "Latitude defining the arrival position of the Point Address.",
+                "example": 45.28447,
+                "minimum": -90,
+                "maximum": 90
+              },
+              "delivery_longitude": {
+                "type": "number",
+                "description": "Longitude defining the arrival position of the Point Address.",
+                "example": 12.00821,
+                "minimum": -180,
+                "maximum": 180
+              },
+              "building_name": {
+                "type": "string",
+                "description": "Name of the Building to which the Point Address is associated.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "latitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Latitude of the display position for the Point Address.\nCan be empty string `\"\"` if not present.",
+                    "example": 45.28441
+                  }
+                ]
+              },
+              "longitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude of the display position for the Point Address.",
+                    "example": 12.00825
+                  }
+                ]
+              },
+              "is_exit_name": {
+                "type": "string",
+                "description": "Is the name an exit name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "explicatable": {
+                "type": "string",
+                "description": "Is the name explicatable?",
+                "example": "Y"
+              },
+              "is_junction_name": {
+                "type": "string",
+                "description": "Is the name a junction name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_name_on_roadsign": {
+                "type": "string",
+                "description": "Is the name on the road sign?",
+                "example": "Y",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_postal_name": {
+                "type": "string",
+                "description": "Is the name a postal name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_stale_name": {
+                "type": "string",
+                "description": "Is the name a stale name?",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_vanity_name": {
+                "type": "string",
+                "description": "Is the name a vanity name",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_scenic_name": {
+                "type": "string",
+                "description": "Indicates whether the link is part of a scenic route.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "link_id": {
+                "type": "string",
+                "description": "The permanent identifier of the link with which this Road Link is associated.",
+                "example": "943125307"
+              },
+              "is_intersection_name": {
+                "type": "string",
+                "description": "Identifies a road name as an intersection name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_bridge_name": {
+                "type": "string",
+                "description": "Identifies a road name as a bridge name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_tunnel_name": {
+                "type": "string",
+                "description": "Identifies a road name as a tunnel name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_overpass_name": {
+                "type": "string",
+                "description": "Identifies a road name as an overpass name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_underpass_name": {
+                "type": "string",
+                "description": "Identifies a road name as an underpass name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "is_bicycle_route_name": {
+                "type": "string",
+                "description": "Identifies a road name as a bicycle route name.",
+                "example": "N",
+                "enum": [
+                  "Y",
+                  "N"
+                ]
+              },
+              "street_name": {
+                "type": "string",
+                "description": "The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.",
+                "minLength": 1,
+                "maxLength": 100,
+                "example": "Via Giuseppe Garibaldi"
+              },
+              "postal_code": {
+                "type": "string",
+                "description": "Full postal code; could be numeric or alphanumeric postal code.\n\nCan be empty string `\"\"` if not present.",
+                "minLength": 0,
+                "maxLength": 15,
+                "example": "35020"
+              },
+              "order1_name": {
+                "type": "string",
+                "description": "Identifies the highest administrative level in which a country can be subdivided.",
+                "example": "Veneto"
+              },
+              "order2_name": {
+                "type": "string",
+                "description": "Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.",
+                "example": "Padova"
+              },
+              "order8_name": {
+                "type": "string",
+                "description": "Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)",
+                "example": "Brugine"
+              },
+              "builtup_name": {
+                "type": "string",
+                "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. ",
+                "example": ""
+              }
+            }
+          }
+        ]
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -5038,6 +5460,9 @@
               },
               {
                 "$ref": "#/components/schemas/UspsAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereWeAddress"
               }
             ]
           }
@@ -6652,6 +7077,9 @@
               },
               {
                 "$ref": "#/components/schemas/AbAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereWeAddress"
               }
             ]
           }

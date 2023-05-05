@@ -864,7 +864,25 @@ export interface components {
      *
      * @enum {string}
      */
-    Language: "en" | "cy" | "ga";
+    Language:
+      | "en"
+      | "cy"
+      | "ga"
+      | "fo"
+      | "pt"
+      | "es"
+      | "fr"
+      | "fi"
+      | "ca"
+      | "wa"
+      | "it"
+      | "nl"
+      | "de"
+      | "da"
+      | "no"
+      | "mt"
+      | "sv"
+      | "is";
     /**
      * AddressBase Core
      * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset
@@ -1090,33 +1108,127 @@ export interface components {
      *
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM" | "IRL";
+    CountryISO:
+      | "GBR"
+      | "IMN"
+      | "JEY"
+      | "GGY"
+      | "USA"
+      | "PRI"
+      | "GUM"
+      | "IRL"
+      | "VAT"
+      | "FRA"
+      | "GRL"
+      | "NLD"
+      | "LUX"
+      | "AUT"
+      | "GIB"
+      | "LIE"
+      | "FIN"
+      | "UNI"
+      | "ISL"
+      | "CHE"
+      | "PRT"
+      | "BEL"
+      | "MCO"
+      | "ITA"
+      | "FRO"
+      | "NOR"
+      | "DNK"
+      | "SMR"
+      | "MLT"
+      | "AND"
+      | "SWE"
+      | "DEU"
+      | "ESP"
+      | "SJM";
     /**
      * ISO Country Code (2)
      * @description  2 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    CountryISO2: "GB" | "IM" | "JE" | "GG" | "US" | "PR" | "GU" | "IE";
+    CountryISO2:
+      | "GB"
+      | "IM"
+      | "JE"
+      | "GG"
+      | "US"
+      | "PR"
+      | "GU"
+      | "IE"
+      | "VA"
+      | "FR"
+      | "GL"
+      | "NL"
+      | "LU"
+      | "AT"
+      | "GI"
+      | "LI"
+      | "FI"
+      | "GB"
+      | "IS"
+      | "CH"
+      | "PT"
+      | "BE"
+      | "MC"
+      | "IT"
+      | "FO"
+      | "NO"
+      | "DK"
+      | "SM"
+      | "MT"
+      | "AD"
+      | "SE"
+      | "DE"
+      | "ES"
+      | "SJ";
     /**
      * Country
      * @description   Full country names (ISO 3166)
      *
-     * @example England
      * @enum {string}
      */
     Country:
-      | "United States"
-      | "Guam"
-      | "Puerto Rico"
+      | "United Kingdom"
       | "England"
       | "Scotland"
       | "Wales"
       | "Northern Ireland"
+      | "Isle of Man"
       | "Jersey"
       | "Guernsey"
-      | "Isle of Man"
-      | "Ireland";
+      | "Guam"
+      | "United States"
+      | "Puerto Rico"
+      | "Ireland"
+      | "Vatican City"
+      | "France"
+      | "Greenland"
+      | "Netherlands"
+      | "Luxembourg"
+      | "Austria"
+      | "Gibraltar"
+      | "Liechtenstein"
+      | "Finland"
+      | "United Kingdom"
+      | "Iceland"
+      | "Switzerland"
+      | "Portugal"
+      | "Belgium"
+      | "Monaco"
+      | "Italy"
+      | "Faroe Islands"
+      | "Norway"
+      | "Denmark"
+      | "San Marino"
+      | "Malta"
+      | "Andorra"
+      | "Sweden"
+      | "Germany"
+      | "Spain"
+      | "Svalbard and Jan Mayen";
     EircBase: {
       id: components["schemas"]["ID"];
       /** @description Source of address */
@@ -1853,6 +1965,212 @@ export interface components {
       county_number: components["schemas"]["county_number"];
     };
     /**
+     * Western Europe Address
+     * @description An address in Western Europe
+     */
+    HereWeAddress: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Three character country code based on ISO Standard 3166.
+       *
+       * Can be empty string `""` if not present.
+       * @example ITA
+       */
+      country_iso: string;
+      /** @enum {string} */
+      dataset: "herewe";
+      /**
+       * @description Language Code of Address and Building Name for the Point Address.
+       * @example ITA
+       */
+      language_code: string;
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16 Via Giuseppe Garibaldi
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_2: string;
+      /**
+       * @description Third address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_3: string;
+      /**
+       * @description Fourth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_4: string;
+      /**
+       * @description Fifth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_5: string;
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified road link.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
+       */
+      address: string;
+      /**
+       * @description Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1
+       */
+      address_type?: string;
+      /**
+       * @description Latitude defining the arrival position of the Point Address.
+       * @example 45.28447
+       */
+      delivery_latitude: number;
+      /**
+       * @description Longitude defining the arrival position of the Point Address.
+       * @example 12.00821
+       */
+      delivery_longitude: number;
+      /**
+       * @description Name of the Building to which the Point Address is associated.
+       *
+       * Can be empty string `""` if not present.
+       */
+      building_name: string;
+      latitude: string | number;
+      longitude: string | number;
+      /**
+       * @description Is the name an exit name?
+       * @example N
+       * @enum {string}
+       */
+      is_exit_name: "Y" | "N";
+      /**
+       * @description Is the name explicatable?
+       * @example Y
+       */
+      explicatable: string;
+      /**
+       * @description Is the name a junction name?
+       * @example N
+       * @enum {string}
+       */
+      is_junction_name: "Y" | "N";
+      /**
+       * @description Is the name on the road sign?
+       * @example Y
+       * @enum {string}
+       */
+      is_name_on_roadsign: "Y" | "N";
+      /**
+       * @description Is the name a postal name?
+       * @example N
+       * @enum {string}
+       */
+      is_postal_name: "Y" | "N";
+      /**
+       * @description Is the name a stale name?
+       * @example N
+       * @enum {string}
+       */
+      is_stale_name: "Y" | "N";
+      /**
+       * @description Is the name a vanity name
+       * @example N
+       * @enum {string}
+       */
+      is_vanity_name: "Y" | "N";
+      /**
+       * @description Indicates whether the link is part of a scenic route.
+       * @example N
+       * @enum {string}
+       */
+      is_scenic_name: "Y" | "N";
+      /**
+       * @description The permanent identifier of the link with which this Road Link is associated.
+       * @example 943125307
+       */
+      link_id?: string;
+      /**
+       * @description Identifies a road name as an intersection name.
+       * @example N
+       * @enum {string}
+       */
+      is_intersection_name: "Y" | "N";
+      /**
+       * @description Identifies a road name as a bridge name.
+       * @example N
+       * @enum {string}
+       */
+      is_bridge_name: "Y" | "N";
+      /**
+       * @description Identifies a road name as a tunnel name.
+       * @example N
+       * @enum {string}
+       */
+      is_tunnel_name: "Y" | "N";
+      /**
+       * @description Identifies a road name as an overpass name.
+       * @example N
+       * @enum {string}
+       */
+      is_overpass_name: "Y" | "N";
+      /**
+       * @description Identifies a road name as an underpass name.
+       * @example N
+       * @enum {string}
+       */
+      is_underpass_name: "Y" | "N";
+      /**
+       * @description Identifies a road name as a bicycle route name.
+       * @example N
+       * @enum {string}
+       */
+      is_bicycle_route_name: "Y" | "N";
+      /**
+       * @description The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.
+       * @example Via Giuseppe Garibaldi
+       */
+      street_name: string;
+      /**
+       * @description Full postal code; could be numeric or alphanumeric postal code.
+       *
+       * Can be empty string `""` if not present.
+       * @example 35020
+       */
+      postal_code: string;
+      /**
+       * @description Identifies the highest administrative level in which a country can be subdivided.
+       * @example Veneto
+       */
+      order1_name: string;
+      /**
+       * @description Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.
+       * @example Padova
+       */
+      order2_name: string;
+      /**
+       * @description Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)
+       * @example Brugine
+       */
+      order8_name: string;
+      /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
+      builtup_name: string;
+    } & {
+      street_type: unknown;
+    };
+    /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
      */
@@ -2035,7 +2353,8 @@ export interface components {
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
         | components["schemas"]["UspsAddress"]
-        | components["schemas"]["UspsAddress"];
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["HereWeAddress"];
     };
     /** Postcode Response */
     PostcodeResponse: {
@@ -2921,7 +3240,8 @@ export interface components {
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["WelshPafAddress"]
-        | components["schemas"]["AbAddress"];
+        | components["schemas"]["AbAddress"]
+        | components["schemas"]["HereWeAddress"];
     };
     /** Address Resolution Response (USA) */
     UsaResolveAddressResponse: {
