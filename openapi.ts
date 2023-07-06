@@ -42,7 +42,7 @@ export interface paths {
      *
      * You may find it useful to store UDPRN information as it can be used to retrieve the most recent information for an address. It can also be used to test for a deleted address.
      *
-     * UDPRNs are an eight digit unique numeric code (e.g. 25962203) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.
+     * UDPRNs are an eight digit unique numeric code (e.g. `25962203`) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.
      *
      * ## Testing
      *
@@ -86,15 +86,14 @@ export interface paths {
   };
   "/keys/{key}": {
     /**
-     * Returns public information on key. Currently only returns whether the key is currently useable via the `available` property. Use this to discover if the key is useable before making further requests.
+     * Returns public information on your API Key.
+     *
+     * This endpoint can be used for the following:
+     * - Determine if the key is currently useable via the `available` property
+     * - Determine available contexts for a an API Key
+     * - Identify the currently likely context of a user given their location
      *
      * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
-     * ## Testing
-     *
-     * To test your implementation of our API, you may use the following test keys.
-     *
-     * - **iddqd** Availability will return as `true`
-     * - **idkfa** Availability will return as `false`
      */
     get: operations["KeyAvailability"];
   };
@@ -107,6 +106,12 @@ export interface paths {
      * Reports the number of lookups consumed on a key for a range of days.
      *
      * A maximum interval of 90 days can be provided for analysis. If no start or end date is provided, the last 21 days will be used as the default interval.
+     *
+     * If no `start` time is provided, the start time will be set to 21 days prior to the current time.
+     *
+     * If no `end` time is provided, the current time will be used.
+     *
+     * Append `tags` to scope the number of lookups to those with matching tag values. E.g. `tags=foo,bar` will only count transactions that match `foo` and `bar`.
      */
     get: operations["KeyUsage"];
   };
@@ -158,74 +163,48 @@ export interface paths {
   };
   "/autocomplete/addresses": {
     /**
-     * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.
+     * The Address Autocomplete API delivers address suggestions in order of relevance based on a provided query. It aids real-time address autofill implementations.
      *
-     * This API can be used to power realtime address finders, also known as address autofill or address autocomplete.
+     * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments rather than interacting with this API directly.
      *
-     * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments.
+     * ## API Usage
      *
-     * ## Implementing Address Autocomplete
+     * Implementing our Address Autocomplete API involves:
      *
-     * Rapid address autocompletion using our Address Autocomplete API is a 2 step process.
-     *
-     * 1. Retrieve partial address suggestions via `/autocomplete/addresses`
-     * 2. Retrieve the entire address with the ID provided in the suggestion
+     * 1. Fetch address suggestions with `/autocomplete/addresses`
+     * 2. Acquire the complete address using the ID from the suggestion
      *
      * Step 2 will decrement your lookup balance.
      *
-     * Please note, this API is not intended to be a free standalone resource.
+     * Note that step 1 is not a free standalone resource. Integrations that consistently make autocomplete requests without a paid Step 2 request will be rate limited and then suspended.
      *
-     * ## Filters
+     * ## Query Filters
      *
-     * You can strictly narrow your result by adding filters to your querystring. For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
+     * Refine results by appending filters to your querystring, e.g., `postcode=sw1a2aa` for postcode `SW1A 2AA`. Invalid filters return an empty set without affecting your lookup count.
      *
-     * If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty result set is returned and no lookup is incurred.
+     * To apply multiple filter terms, use a comma-separated list, e.g., `postcode_outward=e1,e2,e3` combines result sets for E1, E2, and E3. Unless otherwise specified, all filters support multiple terms.
      *
-     * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.
+     * Combine filters by `AND` logic, for instance, `su_organisation_indicator=Y&postcode_area=n`. The maximum allowed filter terms is **10**.
      *
-     * All filters can accept multiple terms unless stated otherwise below.
+     * ## Address Bias
      *
-     * Filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.
+     * Preface bias searches with `bias_` to boost certain address results. Unlike filters, biasing allows unmatched addresses to appear with lower priority.
      *
-     * A maximum of **10** terms are allowed across all filters.
+     * For example, use `bias_postcode_area=SW,SE` to favor addresses in the `SW` and `SE` postcode areas. Invalid bias terms have no effect.
      *
-     * ## Biases
-     *
-     * You can boost certain addresses results that match specific address criteria. All bias searches are prefixed with `bias_`.
-     *
-     * Biasing (unlike filtering) also allow unmatched addresses to appear with lower precedence.
-     *
-     * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
-     *
-     * No bias effect applies to bias terms that are invalid. e.g. `bias_postcode=SW1A2AAA`
-     *
-     * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
-     *
-     * All biases can accept multiple terms unless stated otherwise below.
-     *
-     * A combined maximum of **5** terms are allowed across all biases.
+     * Multiple bias terms are allowed unless stated otherwise, with a combined maximum of **5**.
      *
      * ## Suggestion Format
      *
-     * The suggestion format is prone to change over time. Attempts to parse the suggestion may result in your integration breaking. Instead use the suggestion as-is.
+     * The suggestion format is subject to change. We recommend using the suggestion as-is to prevent potential integration issues.
      *
-     * ## Rate Limiting
+     * ## Rate Limiting and Cost
      *
-     * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+     * The rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.
      *
-     * | Header                  | Description                                                                            |
-     * | ----------------------- | -------------------------------------------------------------------------------------- |
-     * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
-     * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
-     * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
-     *
-     * ## Pricing
-     *
-     * This API currently does not affect your balance. However, resolving a suggestion into a full address requires a paid request.
-     *
-     * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an address may be disrupted via tightened rate limits. Continued misuse will result in account suspension.
+     * Autocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.
      */
-    get: operations["AddressAutocomplete"];
+    get: operations["FindAddress"];
   };
   "/autocomplete/addresses/{address}/gbr": {
     /**
@@ -233,7 +212,7 @@ export interface paths {
      *
      * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
      */
-    get: operations["Resolve"];
+    get: operations["ResolveAddress"];
   };
   "/autocomplete/addresses/{address}/usa": {
     /**
@@ -241,7 +220,7 @@ export interface paths {
      *
      * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
      */
-    get: operations["ResolveUsa"];
+    get: operations["RetrieveAddress"];
   };
   "/addresses": {
     /**
@@ -327,25 +306,15 @@ export interface paths {
      *
      * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
      *
-     * ## Rate Limiting
+     * ## Rate Limiting and Cost
      *
-     * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+     * The rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.
      *
-     * | Header                  | Description                                                                            |
-     * | ----------------------- | -------------------------------------------------------------------------------------- |
-     * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
-     * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
-     * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
-     *
-     * ## Pricing
-     *
-     * This API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.
-     *
-     * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
+     * Autocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.
      */
     get: operations["FindPlace"];
   };
-  "/places/${place}": {
+  "/places/{place}": {
     /** Resolves a place autocompletion by its place ID. */
     get: operations["ResolvePlace"];
   };
@@ -366,11 +335,11 @@ export interface paths {
   "/keys/{key}/configs": {
     /** Lists configurations associated with a key */
     get: operations["ListConfigs"];
-    /** Create a config */
+    /** Create a configuration */
     post: operations["CreateConfig"];
   };
   "/keys/{key}/configs/{config}": {
-    /** Retrieve config object by name */
+    /** Retrieve configuration object by name */
     get: operations["RetrieveConfig"];
     /** Updates configuration object */
     post: operations["UpdateConfig"];
@@ -392,38 +361,6 @@ export interface components {
     ecaf: components["schemas"]["EcafAddress"];
     ecad: components["schemas"]["EcadAddress"];
     geonames: components["schemas"]["GeonamesPlace"];
-    /**
-     * Postcode
-     * @description Correctly formatted postcode. Capitalised and spaced.
-     * @example SW1A 2AA
-     */
-    paf_postcode: string;
-    /**
-     * API Key
-     * @description Your API Key. Typically beings `ak_`.
-     *
-     * Available from your dashboard
-     *
-     * @example ak_test
-     */
-    ApiKeyParam: string;
-    /**
-     * Filter
-     * @description Comma separated whitelist of address elements to return.
-     *
-     * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
-     *
-     * @example line_1,line_2,line_3
-     */
-    FilterParam: string;
-    /**
-     * Page
-     * Format: int32
-     * @description 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
-     *
-     * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
-     */
-    PageParam: number;
     /**
      * ID
      * @description Global unique internally generated identifier for an address
@@ -475,11 +412,18 @@ export interface components {
      */
     paf_line3: string;
     /**
-     * Post Town
-     * @description A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.
+     * @description **Filter by Town or City"
+     * A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.
+     *
      * @example London
      */
     paf_post_town: string;
+    /**
+     * Postcode
+     * @description Correctly formatted postcode. Capitalised and spaced.
+     * @example SW1A 2AA
+     */
+    paf_postcode: string;
     /**
      * County
      * @description Since postal, administrative or traditional counties may not apply to some addresses, the county field is designed to return whatever county data is available. Normally, the postal county is returned. If this is not present, the county field will fall back to the administrative county. If the administrative county is also not present, the county field will fall back to the traditional county. May be empty in cases where no administrative, postal or traditional county present.
@@ -601,7 +545,7 @@ export interface components {
      * @description This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points.
      *
      * On average there are 19 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode.
-     * @enum {string}
+     * @enum {undefined}
      */
     paf_postcode_type: "S" | "L" | "";
     /**
@@ -864,7 +808,26 @@ export interface components {
      *
      * @enum {string}
      */
-    Language: "en" | "cy" | "ga";
+    Language:
+      | "en"
+      | "cy"
+      | "ga"
+      | "fo"
+      | "pt"
+      | "es"
+      | "fr"
+      | "fi"
+      | "ca"
+      | "wa"
+      | "it"
+      | "nl"
+      | "de"
+      | "da"
+      | "no"
+      | "mt"
+      | "sv"
+      | "is"
+      | "hr";
     /**
      * AddressBase Core
      * @description Represents a GB address in Ordnance Survey's AddressBase Core dataset
@@ -1035,7 +998,7 @@ export interface components {
     };
     /**
      * AddressBase Core
-     * @description Address from Ordnance Survey AddressBase Ccore dataset.
+     * @description Address from Ordnance Survey AddressBase Core dataset.
      *
      * Please contact us to have this enabled on your account.
      *
@@ -1072,6 +1035,7 @@ export interface components {
      *   - `ecaf` (IRL) Eircode ECAF
      *   - `ecad` (IRL) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
+     *   - `herewe` (Western Europe) Western Europe Dataset
      * @enum {string}
      */
     Dataset:
@@ -1083,40 +1047,135 @@ export interface components {
       | "usps"
       | "ecaf"
       | "ecad"
-      | "ab";
+      | "ab"
+      | "herewe";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    CountryISO: "GBR" | "IMN" | "JEY" | "GGY" | "USA" | "PRI" | "GUM" | "IRL";
+    CountryISO:
+      | "GBR"
+      | "IMN"
+      | "JEY"
+      | "GGY"
+      | "USA"
+      | "PRI"
+      | "GUM"
+      | "IRL"
+      | "VAT"
+      | "FRA"
+      | "GRL"
+      | "NLD"
+      | "LUX"
+      | "AUT"
+      | "GIB"
+      | "LIE"
+      | "FIN"
+      | "UNI"
+      | "ISL"
+      | "CHE"
+      | "PRT"
+      | "BEL"
+      | "MCO"
+      | "ITA"
+      | "FRO"
+      | "NOR"
+      | "DNK"
+      | "SMR"
+      | "MLT"
+      | "AND"
+      | "SWE"
+      | "DEU"
+      | "ESP"
+      | "SJM";
     /**
      * ISO Country Code (2)
      * @description  2 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    CountryISO2: "GB" | "IM" | "JE" | "GG" | "US" | "PR" | "GU" | "IE";
+    CountryISO2:
+      | "GB"
+      | "IM"
+      | "JE"
+      | "GG"
+      | "US"
+      | "PR"
+      | "GU"
+      | "IE"
+      | "VA"
+      | "FR"
+      | "GL"
+      | "NL"
+      | "LU"
+      | "AT"
+      | "GI"
+      | "LI"
+      | "FI"
+      | "GB"
+      | "IS"
+      | "CH"
+      | "PT"
+      | "BE"
+      | "MC"
+      | "IT"
+      | "FO"
+      | "NO"
+      | "DK"
+      | "SM"
+      | "MT"
+      | "AD"
+      | "SE"
+      | "DE"
+      | "ES"
+      | "SJ";
     /**
      * Country
      * @description   Full country names (ISO 3166)
      *
-     * @example England
      * @enum {string}
      */
     Country:
-      | "United States"
-      | "Guam"
-      | "Puerto Rico"
+      | "United Kingdom"
       | "England"
       | "Scotland"
       | "Wales"
       | "Northern Ireland"
+      | "Isle of Man"
       | "Jersey"
       | "Guernsey"
-      | "Isle of Man"
-      | "Ireland";
+      | "Guam"
+      | "United States"
+      | "Puerto Rico"
+      | "Ireland"
+      | "Vatican City"
+      | "France"
+      | "Greenland"
+      | "Netherlands"
+      | "Luxembourg"
+      | "Austria"
+      | "Gibraltar"
+      | "Liechtenstein"
+      | "Finland"
+      | "United Kingdom"
+      | "Iceland"
+      | "Switzerland"
+      | "Portugal"
+      | "Belgium"
+      | "Monaco"
+      | "Italy"
+      | "Faroe Islands"
+      | "Norway"
+      | "Denmark"
+      | "San Marino"
+      | "Malta"
+      | "Andorra"
+      | "Sweden"
+      | "Germany"
+      | "Spain"
+      | "Svalbard and Jan Mayen";
     EircBase: {
       id: components["schemas"]["ID"];
       /** @description Source of address */
@@ -1853,6 +1912,133 @@ export interface components {
       county_number: components["schemas"]["county_number"];
     };
     /**
+     * HERE Address
+     * @description Address from the global HERE dataset
+     */
+    HereAddress: {
+      id: components["schemas"]["ID"];
+      /**
+       * @description Three character country code based on ISO Standard 3166.
+       *
+       * Can be empty string `""` if not present.
+       * @example ITA
+       */
+      country_iso: string;
+      /** @enum {string} */
+      dataset:
+        | "herewe"
+        | "heret"
+        | "heresa"
+        | "hereo"
+        | "herena"
+        | "heremea"
+        | "herem"
+        | "herei"
+        | "herehk"
+        | "hereee"
+        | "hereap";
+      /**
+       * @description Language Code of Address and Building Name for the Point Address.
+       * @example it
+       */
+      language: string;
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16 Via Giuseppe Garibaldi
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_2: string;
+      /**
+       * @description Third address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_3: string;
+      /**
+       * @description Fourth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_4: string;
+      /**
+       * @description Fifth address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_5: string;
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified road link.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
+       */
+      address: string;
+      /**
+       * @description Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1
+       */
+      address_type?: string;
+      /**
+       * @description Latitude defining the arrival position of the Point Address.
+       * @example 45.28447
+       */
+      delivery_latitude: number;
+      /**
+       * @description Longitude defining the arrival position of the Point Address.
+       * @example 12.00821
+       */
+      delivery_longitude: number;
+      /**
+       * @description Name of the Building to which the Point Address is associated.
+       *
+       * Can be empty string `""` if not present.
+       */
+      building_name: string;
+      latitude: string | number;
+      longitude: string | number;
+      /**
+       * @description The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.
+       * @example Via Giuseppe Garibaldi
+       */
+      street_name: string;
+      /**
+       * @description Full postal code; could be numeric or alphanumeric postal code.
+       *
+       * Can be empty string `""` if not present.
+       * @example 35020
+       */
+      postal_code: string;
+      /**
+       * @description Identifies the highest administrative level in which a country can be subdivided.
+       * @example Veneto
+       */
+      order1_name: string;
+      /**
+       * @description Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.
+       * @example Padova
+       */
+      order2_name: string;
+      /**
+       * @description Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)
+       * @example Brugine
+       */
+      order8_name: string;
+      /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
+      builtup_name: string;
+    };
+    /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
      */
@@ -1903,6 +2089,12 @@ export interface components {
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
       country: components["schemas"]["Country"];
+      /** @description The native representation of a non-UK address */
+      native:
+        | components["schemas"]["EcadAddress"]
+        | components["schemas"]["EcafAddress"]
+        | components["schemas"]["UspsAddress"]
+        | components["schemas"]["HereAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -2030,14 +2222,11 @@ export interface components {
        * @enum {string}
        */
       uprn: "";
-      /** @description The native representation of a non-UK address */
-      native:
-        | components["schemas"]["EcadAddress"]
-        | components["schemas"]["EcafAddress"]
-        | components["schemas"]["UspsAddress"]
-        | components["schemas"]["UspsAddress"];
     };
-    /** Postcode Response */
+    /**
+     * Postcode Response
+     * @example [object Object]
+     */
     PostcodeResponse: {
       /**
        * @description All addresses listed at the postcode.
@@ -2053,13 +2242,14 @@ export interface components {
         | components["schemas"]["AbAddress"]
         | components["schemas"]["GbrGlobalAddress"]
       )[];
-      /**
-       * Format: int32
-       * @enum {integer}
-       */
+      /** @enum {integer} */
       code: 2000;
       /** @enum {string} */
       message: "Success";
+      page: number;
+      /** @default 100 */
+      limit: number;
+      total: number;
     };
     /** Basic Error Response */
     ErrorResponse: {
@@ -2107,7 +2297,10 @@ export interface components {
       /** @description A list of alternate nearest matching postcodes you can try */
       suggestions: string[];
     };
-    /** UDPRN Response */
+    /**
+     * UDPRN Response
+     * @example [object Object]
+     */
     UDPRNResponse: {
       result:
         | components["schemas"]["PafAddress"]
@@ -2120,7 +2313,10 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
-    /** UDPRN Response */
+    /**
+     * Multiple Residence (UMPRN) Address Response
+     * @example [object Object]
+     */
     UMPRNResponse: {
       result: components["schemas"]["MrAddress"];
       /**
@@ -2208,17 +2404,6 @@ export interface components {
        */
       code: 2000;
     };
-    /**
-     * User Token
-     * @description A secret key used for sensitive operations on your account and API Keys.
-     *
-     * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
-     *
-     * Typically beings `uk_...`
-     *
-     * @example uk_B59ScW1p1HHouf1VqclEPZUx
-     */
-    UserTokenParam: string;
     /** API Key Daily Limit */
     ApiKeyDailyLimit: {
       /**
@@ -2353,40 +2538,6 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
-    /**
-     * Start Time
-     * Format: int32
-     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
-     *
-     * @example 1418556452651
-     */
-    StartParam: number;
-    /**
-     * End Time
-     * Format: int32
-     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
-     *
-     * @example 1418556477882
-     */
-    EndParam: number;
-    /**
-     * Tags
-     * @description A comma separated list of tags to query over.
-     *
-     * Useful if you want to specify the circumstances in which the request was made.
-     *
-     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
-     *
-     * @example foo,bar
-     */
-    TagsParam: string;
-    /**
-     * Licensee Key
-     * @description Uniquely identifies a licensee
-     *
-     * @example sk_hk71kco54zGSGvF9eXXrvvnMOLLNh
-     */
-    LicenseeParam: string;
     /** Key Usage */
     KeyUsageResult: {
       /**
@@ -2543,137 +2694,15 @@ export interface components {
       message: string;
     };
     /**
-     * Limit
-     * Format: int32
-     * @description Specifies the maximum number of suggestions to retrieve.
-     *
-     * By default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`
-     *
-     * @default 10
-     * @example 5
-     */
-    LimitParam: number;
-    /**
-     * Postcode Outward
-     * @description Filter by outward code.
-     * @example 1AA
-     */
-    PostcodeOutwardParam: string;
-    /**
-     * Postcode
-     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example SW1A 2AA
-     */
-    PostcodeParam: string;
-    /**
-     * Postcode Area
-     * @description Filter by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example SW
-     */
-    PostcodeAreaParam: string;
-    /**
-     * Postcode Sector
-     * @description Filter by postcode sector, the outward code plus first numeric of the inward code.
-     * @example SW1A 2
-     */
-    PostcodeSectorParam: string;
-    /**
-     * Post Town
-     * @description Filter by town.
-     * @example London
-     */
-    PostTownParam: string;
-    /**
-     * UPRN
-     * @description Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted
-     * @example 100023336956
-     */
-    UPRNParam: number;
-    /**
-     * Country
-     * @description Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
-     * @example England
-     */
-    CountryParam: string;
-    /**
-     * Country
-     * @description Filter by Postcode Type. Useful for separating organisational and residential addresses
-     * @example L
-     */
-    PostcodeTypeParam: string;
-    /**
-     * SU Organisation Indicator
-     * @description Filter by Organisation Indicator. Useful for separating organisational and residential addresses
-     * @example Y
-     */
-    SmallUserParam: string;
-    /**
-     * Box
-     * @description Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.   Only one geospatial box can be provided.
-     * @example 2.095,57.15,-2.096,57.14
-     */
-    BoxParam: string;
-    /**
-     * Bias Postcode Outward
-     * @description Bias by outward code
-     */
-    BiasPostcodeOutwardParam: string;
-    /**
-     * Bias Postcode
-     * @description Bias by postcode. Can be combined with query to perform a postcode + building number/name search.
-     * @example /addresses?postcode=SW1A2AA&q=10
-     */
-    BiasPostcodeParam: string;
-    /**
-     * Bias Postcode Area
-     * @description Bias by postcode area, the first one or two non-numeric characters of a postcode.
-     * @example The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
-     */
-    BiasPostcodeAreaParam: string;
-    /**
-     * Bias Postcode Sector
-     * @description Bias by postcode sector, the outward code plus first numeric of the inward code.
-     * @example SW1A 2AA is SW1A 2
-     */
-    BiasPostcodeSectorParam: string;
-    /**
-     * Bias Post Town
-     * @description Bias by town.
-     */
-    BiasPosttownParam: string;
-    /**
-     * Bias Thoroughfare
-     * @description Bias by street name.
-     */
-    BiasThoroughfareParam: string;
-    /**
-     * Bias Country
-     * @description Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
-     */
-    BiasCountryParam: string;
-    /**
-     * Bias Lon/Lat
-     * @description Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided
-     * @example -2.095,57.15,100
-     */
-    BiasLonLatParam: string;
-    /**
-     * Bias query by Geolocation of IP
-     * @description Biases search based on approximate geolocation of IP address.
-     * Set `bias_ip=true` to enable.
-     * @example true
-     * @enum {string}
-     */
-    BiasIpParam: "true";
-    /**
      * Address Suggestion
      * @description Represents an address suggestion for any address in the world
+     * @example [object Object]
      */
     AddressSuggestion: {
       id: components["schemas"]["ID"];
       /**
        * @description Address Suggestion to be displayed to the user
-       * @example Flat 6, 12 Roskear, Camborne, TR14
+       * @example 10 Downing St, Montpelier, VT, 05602
        */
       suggestion: string;
       urls: { [key: string]: unknown };
@@ -2685,6 +2714,8 @@ export interface components {
      * UK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.
      *
      * UK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.
+     *
+     * @example [object Object]
      */
     UkAddressSuggestion: {
       id: components["schemas"]["ID"];
@@ -2715,6 +2746,7 @@ export interface components {
     };
     /** Address Autocomplete Response */
     AutocompleteResponse: {
+      /** @example [object Object],[object Object] */
       result: {
         hits: (
           | components["schemas"]["AddressSuggestion"]
@@ -2921,9 +2953,10 @@ export interface components {
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["WelshPafAddress"]
-        | components["schemas"]["AbAddress"];
+        | components["schemas"]["AbAddress"]
+        | components["schemas"]["HereAddress"];
     };
-    /** Address Resolution Response (USA) */
+    /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
       /**
        * Format: int32
@@ -2936,26 +2969,6 @@ export interface components {
         | components["schemas"]["UspsAddress"]
         | components["schemas"]["UsaGlobalAddress"];
     };
-    /**
-     * Longitude
-     * Format: float
-     * @description Longitude query for reverse geocoding.
-     *
-     * An accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.
-     *
-     * @example -0.12767
-     */
-    AddressLongitudeParam: number;
-    /**
-     * Latitude
-     * Format: float
-     * @description Latitude query for reverse geocoding.
-     *
-     * An accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.
-     *
-     * @example 51.503541
-     */
-    AddressLatitudeParam: number;
     /** Address Search Response */
     AddressResponse: {
       /**
@@ -2987,20 +3000,6 @@ export interface components {
         page: number;
       };
     };
-    /**
-     * Country
-     * @description Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
-     * Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`
-     * @example GBR
-     */
-    CountryIsoParam: string;
-    /**
-     * Country
-     * @description Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
-     * Bias by multiple countries with a comma separated list. E.g. `GBR,IRL`
-     * @example GBR
-     */
-    BiasCountryIsoParam: string;
     /**
      * Place Name
      * @description Place name
@@ -3039,7 +3038,10 @@ export interface components {
       country_iso: components["schemas"]["place_country_iso"];
       id: components["schemas"]["place_id"];
     };
-    /** Place Search Response */
+    /**
+     * Place Search Response
+     * @example [object Object]
+     */
     PlaceResponse: {
       /**
        * Format: int32
@@ -3223,7 +3225,10 @@ export interface components {
       /** @description Native representation of a place */
       native?: components["schemas"]["GeonamesPlace"];
     };
-    /** Place Resolution Response */
+    /**
+     * Place Resolution Response
+     * @example [object Object]
+     */
     ResolvePlaceResponse: {
       /**
        * Format: int32
@@ -3401,12 +3406,6 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
-    /**
-     * Configuration Name
-     * @description User provided configuration object name
-     * @example idpc-be
-     */
-    ConfigParam: string;
     /** Not Found Response */
     NotFoundResponse: components["schemas"]["ErrorResponse"] & {
       /**
@@ -3475,7 +3474,10 @@ export interface components {
        */
       catchall: null | null;
     };
-    /** Email Verification Response */
+    /**
+     * Email Verification Response
+     * @example [object Object]
+     */
     EmailResponse: {
       /**
        * Format: int32
@@ -3603,7 +3605,10 @@ export interface components {
        */
       original_carrier?: null | null;
     };
-    /** Phone Number Verification Response */
+    /**
+     * Phone Number Verification Response
+     * @example [object Object]
+     */
     PhoneNumberResponse: {
       /**
        * Format: int32
@@ -3616,6 +3621,311 @@ export interface components {
         | components["schemas"]["PhoneNumber"]
         | components["schemas"]["InvalidPhoneNumber"];
     };
+  };
+  parameters: {
+    /**
+     * @description **API Key**
+     *
+     * Your unique identifier that allows access to our APIs.
+     *
+     * Begins `ak_`. Available from your dashboard
+     *
+     * @example ak_test
+     */
+    ApiKeyParam: string;
+    /**
+     * @description **Restrict Result Fields**
+     *
+     * Comma separated whitelist of address elements to return.
+     *
+     * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+     *
+     * @example line_1,line_2,line_3
+     */
+    FilterParam: string;
+    /**
+     * @description **Page**
+     *
+     * 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
+     *
+     * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
+     *
+     * @example 1
+     */
+    PageParam: number;
+    /**
+     * @description A comma separated list of tags to query over.
+     *
+     * Useful if you want to specify the circumstances in which the request was made.
+     *
+     * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+     *
+     * @example foo,bar
+     */
+    TagsParam: string;
+    /**
+     * @description **API Key**
+     *
+     * The API Key to retrieve. Begins `ak_`.
+     *
+     * @example ak_test
+     */
+    ApiKeyPathParam: string;
+    /**
+     * @description **Private User Token**
+     *
+     * A secret key used for sensitive operations on your account and API Keys.
+     *
+     * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+     *
+     * Typically beings `uk_...`
+     *
+     * @example uk_B59ScW1p1HHouf1VqclEPZUx
+     */
+    UserTokenParam: string;
+    /**
+     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
+     *
+     * @example 1418556452651
+     */
+    StartParam: number;
+    /**
+     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
+     *
+     * @example 1418556477882
+     */
+    EndParam: number;
+    /**
+     * @description **Licensee Key**
+     *
+     * Uniquely identifies a licensee.
+     *
+     * @example sl_hk71kco54zGSGvF9eXXrvvnMOLLNh
+     */
+    LicenseeParam: string;
+    /**
+     * @description **Context**
+     *
+     * Limits search results, typically within g country.
+     *
+     * @example GBR
+     */
+    ContextParam: string;
+    /**
+     * @description **Limit**
+     *
+     * Specifies the maximum number of records to retrieve.
+     *
+     * By default the limit is 10. Requesting a larger result set will result in more latency
+     *
+     * @example 5
+     */
+    LimitParam: number;
+    /**
+     * @description **Bias by Geolocation**
+     *
+     * Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.
+     * Uses the format bias_lonlat=[longitude],[latitude],[radius in metres]
+     * Only one geospatial bias may be provided
+     *
+     * @example -2.095,57.15,100
+     */
+    BiasLonLatParam: string;
+    /**
+     * @description **Bias by Geolocation of IP**
+     *
+     * Biases search based on approximate geolocation of IP address.
+     *
+     * Set `bias_ip=true` to enable.
+     */
+    BiasIpParam: "true";
+    /**
+     * @description **Filter by Bounding Box**
+     *
+     * Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.
+     * Only one geospatial box can be provided.
+     *
+     * @example 2.095,57.15,-2.096,57.14
+     */
+    BoxParam: string;
+    /**
+     * @description **Filter by Outward Code**
+     *
+     * Restrict result set to addresses with a matching outward code.
+     *
+     * The outward code is the first half of a postcode. E.g. the outward code for `SW1A 2AA` is `SW1A`.
+     *
+     * @example SW1A
+     */
+    PostcodeOutwardParam: string;
+    /**
+     * @description **Filter by postcode**
+     * Restrict result set to matching postcodes only.
+     * Can be combined with query to perform a postcode and building number or name search.
+     * @example SW1A 2AA
+     */
+    PostcodeParam: string;
+    /**
+     * @description **Filter by Postcode Area**
+     *
+     * Postcode area represents the first one or two non-numeric characters of a postcode. E.g. the postcode area of `SW1A 2AA` is `SW`.
+     *
+     * Can be combined with query to perform a postcode and building search.
+     *
+     * @example SW
+     */
+    PostcodeAreaParam: string;
+    /**
+     * @description **Filter by Postcode Sector**
+     *
+     * Postcode sector is the outward code plus first numeric of the inward code. E.g. postcode sector of `SW1A 2AA` is `SW1A 2`
+     *
+     * @example SW1A 2
+     */
+    PostcodeSectorParam: string;
+    /**
+     * @description **Filter by Town or City**
+     *
+     * Restrict addresses to matching town, city or other locality identifier.
+     *
+     * @example London
+     */
+    PostTownParam: string;
+    /**
+     * @description **Filter by UPRN**
+     *
+     * Does not accept comma separated terms. Only a single term is permitted
+     *
+     * @example 100023336956
+     */
+    UPRNParam: number;
+    /**
+     * @description **Filter by country**
+     *
+     * Filters by country name.
+     *
+     * In the context of GBR, country values are not United Kingdom. Instead they are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     *
+     * @example England
+     */
+    CountryParam: string;
+    /**
+     * @description **Filter by Postcode Type**
+     *
+     * Filter by Postcode Type. Useful for separating organisational and residential addresses
+     */
+    PostcodeTypeParam: string;
+    /**
+     * @description **Filter by Organisation Indicator**
+     *
+     * Useful for separating organisational and residential addresses
+     *
+     * @example Y
+     */
+    SmallUserParam: string;
+    /**
+     * @description **Bias by Outward Code**
+     * Boosts addresses with a matching outward code.
+     * Outward code is the first have of a postcode. For instance, the outward code of `SW1A 2AA` is `SW1A`
+     * @example SW1A
+     */
+    BiasPostcodeOutwardParam: string;
+    /**
+     * @description **Bias by postcode**
+     * Boost addresses which match postcode.
+     * Can be combined with query to perform a postcode and building number or name search.
+     * @example SW1A2AA
+     */
+    BiasPostcodeParam: string;
+    /**
+     * @description **Bias by Postcode Area**
+     *
+     * Boosts if the first one or two non-numeric characters of a postcode match
+     *
+     * The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+     *
+     * @example SW
+     */
+    BiasPostcodeAreaParam: string;
+    /**
+     * @description **Bias by Postcode Sector**
+     *
+     * Boost postcode sector matches. The postcode sector comprises the outward code plus first numeric of the inward code.
+     *
+     * @example SW1A 2
+     */
+    BiasPostcodeSectorParam: string;
+    /**
+     * @description **Bias by Town or City**
+     *
+     * Biases results to matching town, city or other locality name.
+     */
+    BiasPosttownParam: string;
+    /**
+     * @description **Bias by Street**
+     *
+     * Bias by street or thoroughfare name.
+     */
+    BiasThoroughfareParam: string;
+    /**
+     * @description **Bias by Country**
+     *
+     * Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+     */
+    BiasCountryParam: string;
+    /**
+     * @description **Longitude**
+     *
+     * Longitude query for reverse geocoding.
+     *
+     * An accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.
+     *
+     * @example -0.12767
+     */
+    AddressLongitudeParam: number;
+    /**
+     * @description **Latitude**
+     *
+     * Latitude query for reverse geocoding.
+     *
+     * An accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.
+     *
+     * @example 51.503541
+     */
+    AddressLatitudeParam: number;
+    /**
+     * @description **Filter by Country**
+     *
+     * Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     *
+     * Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`
+     *
+     * @example GBR
+     */
+    CountryIsoParam: string;
+    /**
+     * @description **Bias by Country**
+     * Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+     * Bias by multiple countries with a comma separated list. E.g. `GBR,IRL`
+     * @example GBR
+     */
+    BiasCountryIsoParam: string;
+    /**
+     * @description **Licensee Key**
+     *
+     * Uniquely identifies a licensee.
+     *
+     * @example sl_hk71kco54zGSGvF9eXXrvvnMOLLNh
+     */
+    LicenseePathParam: string;
+    /**
+     * @description **Configuration Name**
+     *
+     * User provided configuration object name.
+     *
+     * @example idpc-be
+     */
+    ConfigParam: string;
   };
 }
 
@@ -3653,12 +3963,41 @@ export interface operations {
     parameters: {
       path: {
         /** Postcode to retrieve */
-        postcode: components["schemas"]["paf_postcode"];
+        postcode: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
-        filter?: components["schemas"]["FilterParam"];
-        page?: components["schemas"]["PageParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * **Restrict Result Fields**
+         *
+         * Comma separated whitelist of address elements to return.
+         *
+         * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+         */
+        filter?: components["parameters"]["FilterParam"];
+        /**
+         * **Page**
+         *
+         * 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
+         *
+         * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
+         */
+        page?: components["parameters"]["PageParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -3687,7 +4026,7 @@ export interface operations {
    *
    * You may find it useful to store UDPRN information as it can be used to retrieve the most recent information for an address. It can also be used to test for a deleted address.
    *
-   * UDPRNs are an eight digit unique numeric code (e.g. 25962203) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.
+   * UDPRNs are an eight digit unique numeric code (e.g. `25962203`) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.
    *
    * ## Testing
    *
@@ -3711,8 +4050,22 @@ export interface operations {
         udprn: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
-        filter?: components["schemas"]["FilterParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * **Restrict Result Fields**
+         *
+         * Comma separated whitelist of address elements to return.
+         *
+         * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+         */
+        filter?: components["parameters"]["FilterParam"];
       };
     };
     responses: {
@@ -3757,8 +4110,22 @@ export interface operations {
         umprn: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
-        filter?: components["schemas"]["FilterParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * **Restrict Result Fields**
+         *
+         * Comma separated whitelist of address elements to return.
+         *
+         * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+         */
+        filter?: components["parameters"]["FilterParam"];
       };
     };
     responses: {
@@ -3777,20 +4144,24 @@ export interface operations {
     };
   };
   /**
-   * Returns public information on key. Currently only returns whether the key is currently useable via the `available` property. Use this to discover if the key is useable before making further requests.
+   * Returns public information on your API Key.
+   *
+   * This endpoint can be used for the following:
+   * - Determine if the key is currently useable via the `available` property
+   * - Determine available contexts for a an API Key
+   * - Identify the currently likely context of a user given their location
    *
    * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
-   * ## Testing
-   *
-   * To test your implementation of our API, you may use the following test keys.
-   *
-   * - **iddqd** Availability will return as `true`
-   * - **idkfa** Availability will return as `false`
    */
   KeyAvailability: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
     };
     responses: {
@@ -3812,10 +4183,24 @@ export interface operations {
   KeyDetails: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -3843,20 +4228,42 @@ export interface operations {
    * Reports the number of lookups consumed on a key for a range of days.
    *
    * A maximum interval of 90 days can be provided for analysis. If no start or end date is provided, the last 21 days will be used as the default interval.
+   *
+   * If no `start` time is provided, the start time will be set to 21 days prior to the current time.
+   *
+   * If no `end` time is provided, the current time will be used.
+   *
+   * Append `tags` to scope the number of lookups to those with matching tag values. E.g. `tags=foo,bar` will only count transactions that match `foo` and `bar`.
    */
   KeyUsage: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no start time is provided, the start time will be assigned to a time 21 days prior to the end time. */
-        start?: components["schemas"]["StartParam"];
-        /** An end date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no end time is provided, the current time will be used. */
-        end?: components["schemas"]["EndParam"];
-        tags?: components["schemas"]["TagsParam"];
-        /** Sublicensed keys only. This will restrict the analysed dataset to a specific licensee. */
-        licensee?: components["schemas"]["LicenseeParam"];
+        /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`. */
+        "Start Time"?: components["parameters"]["StartParam"];
+        /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
+        "End Time"?: components["parameters"]["EndParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
+        /**
+         * **Licensee Key**
+         *
+         * Uniquely identifies a licensee.
+         */
+        licensee?: components["parameters"]["LicenseeParam"];
       };
     };
     responses: {
@@ -3900,15 +4307,24 @@ export interface operations {
   KeyLogs: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no start time is provided, the start time will be assigned to a time 21 days prior to the end time. */
-        start?: components["schemas"]["StartParam"];
-        /** An end date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no end time is provided, the current time will be used. */
-        end?: components["schemas"]["EndParam"];
-        /** Sublicensed keys only. This will restrict the analysed dataset to a specific licensee. */
-        licensee?: components["schemas"]["LicenseeParam"];
+        /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`. */
+        "Start Time"?: components["parameters"]["StartParam"];
+        /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
+        "End Time"?: components["parameters"]["EndParam"];
+        /**
+         * **Licensee Key**
+         *
+         * Uniquely identifies a licensee.
+         */
+        licensee?: components["parameters"]["LicenseeParam"];
       };
     };
     responses: {
@@ -3946,7 +4362,22 @@ export interface operations {
   AddressCleanse: {
     parameters: {
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -3989,101 +4420,205 @@ export interface operations {
     };
   };
   /**
-   * The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.
+   * The Address Autocomplete API delivers address suggestions in order of relevance based on a provided query. It aids real-time address autofill implementations.
    *
-   * This API can be used to power realtime address finders, also known as address autofill or address autocomplete.
+   * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments rather than interacting with this API directly.
    *
-   * Consider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments.
+   * ## API Usage
    *
-   * ## Implementing Address Autocomplete
+   * Implementing our Address Autocomplete API involves:
    *
-   * Rapid address autocompletion using our Address Autocomplete API is a 2 step process.
-   *
-   * 1. Retrieve partial address suggestions via `/autocomplete/addresses`
-   * 2. Retrieve the entire address with the ID provided in the suggestion
+   * 1. Fetch address suggestions with `/autocomplete/addresses`
+   * 2. Acquire the complete address using the ID from the suggestion
    *
    * Step 2 will decrement your lookup balance.
    *
-   * Please note, this API is not intended to be a free standalone resource.
+   * Note that step 1 is not a free standalone resource. Integrations that consistently make autocomplete requests without a paid Step 2 request will be rate limited and then suspended.
    *
-   * ## Filters
+   * ## Query Filters
    *
-   * You can strictly narrow your result by adding filters to your querystring. For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.
+   * Refine results by appending filters to your querystring, e.g., `postcode=sw1a2aa` for postcode `SW1A 2AA`. Invalid filters return an empty set without affecting your lookup count.
    *
-   * If a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty result set is returned and no lookup is incurred.
+   * To apply multiple filter terms, use a comma-separated list, e.g., `postcode_outward=e1,e2,e3` combines result sets for E1, E2, and E3. Unless otherwise specified, all filters support multiple terms.
    *
-   * You can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.
+   * Combine filters by `AND` logic, for instance, `su_organisation_indicator=Y&postcode_area=n`. The maximum allowed filter terms is **10**.
    *
-   * All filters can accept multiple terms unless stated otherwise below.
+   * ## Address Bias
    *
-   * Filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.
+   * Preface bias searches with `bias_` to boost certain address results. Unlike filters, biasing allows unmatched addresses to appear with lower priority.
    *
-   * A maximum of **10** terms are allowed across all filters.
+   * For example, use `bias_postcode_area=SW,SE` to favor addresses in the `SW` and `SE` postcode areas. Invalid bias terms have no effect.
    *
-   * ## Biases
-   *
-   * You can boost certain addresses results that match specific address criteria. All bias searches are prefixed with `bias_`.
-   *
-   * Biasing (unlike filtering) also allow unmatched addresses to appear with lower precedence.
-   *
-   * For instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.
-   *
-   * No bias effect applies to bias terms that are invalid. e.g. `bias_postcode=SW1A2AAA`
-   *
-   * You may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.
-   *
-   * All biases can accept multiple terms unless stated otherwise below.
-   *
-   * A combined maximum of **5** terms are allowed across all biases.
+   * Multiple bias terms are allowed unless stated otherwise, with a combined maximum of **5**.
    *
    * ## Suggestion Format
    *
-   * The suggestion format is prone to change over time. Attempts to parse the suggestion may result in your integration breaking. Instead use the suggestion as-is.
+   * The suggestion format is subject to change. We recommend using the suggestion as-is to prevent potential integration issues.
    *
-   * ## Rate Limiting
+   * ## Rate Limiting and Cost
    *
-   * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+   * The rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.
    *
-   * | Header                  | Description                                                                            |
-   * | ----------------------- | -------------------------------------------------------------------------------------- |
-   * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
-   * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
-   * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
-   *
-   * ## Pricing
-   *
-   * This API currently does not affect your balance. However, resolving a suggestion into a full address requires a paid request.
-   *
-   * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an address may be disrupted via tightened rate limits. Continued misuse will result in account suspension.
+   * Autocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.
    */
-  AddressAutocomplete: {
+  FindAddress: {
     parameters: {
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
-        /** Specifies the address you wish to query. Query can be shortened to `q=` */
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * **Address Query**
+         *
+         * The partial address string entered by the user to autocomplete.
+         */
         query?: string;
-        context?: components["schemas"]["Context"];
-        /** Limits number of address suggestions unless a postcode is detected. In this instance entire list of addreses for that postcode is returned. */
-        limit?: components["schemas"]["LimitParam"];
-        postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
-        postcode?: components["schemas"]["PostcodeParam"];
-        postcode_area?: components["schemas"]["PostcodeAreaParam"];
-        postcode_sector?: components["schemas"]["PostcodeSectorParam"];
-        post_town?: components["schemas"]["PostTownParam"];
-        uprn?: components["schemas"]["UPRNParam"];
-        country?: components["schemas"]["CountryParam"];
-        postcode_type?: components["schemas"]["PostcodeTypeParam"];
-        su_organisation_indicator?: components["schemas"]["SmallUserParam"];
-        box?: components["schemas"]["BoxParam"];
-        bias_postcode_outward?: components["schemas"]["BiasPostcodeOutwardParam"];
-        bias_postcode?: components["schemas"]["BiasPostcodeParam"];
-        bias_postcode_area?: components["schemas"]["BiasPostcodeAreaParam"];
-        bias_postcode_sector?: components["schemas"]["BiasPostcodeSectorParam"];
-        bias_post_town?: components["schemas"]["BiasPosttownParam"];
-        bias_thoroughfare?: components["schemas"]["BiasThoroughfareParam"];
-        bias_country?: components["schemas"]["BiasCountryParam"];
-        bias_lonlat?: components["schemas"]["BiasLonLatParam"];
-        bias_ip?: components["schemas"]["BiasIpParam"];
+        /**
+         * **Context**
+         *
+         * Limits search results, typically within g country.
+         */
+        context?: components["parameters"]["ContextParam"];
+        /**
+         * **Limit**
+         *
+         * Specifies the maximum number of records to retrieve.
+         *
+         * By default the limit is 10. Requesting a larger result set will result in more latency
+         */
+        limit?: components["parameters"]["LimitParam"];
+        /**
+         * **Bias by Geolocation**
+         *
+         * Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.
+         * Uses the format bias_lonlat=[longitude],[latitude],[radius in metres]
+         * Only one geospatial bias may be provided
+         */
+        bias_lonlat?: components["parameters"]["BiasLonLatParam"];
+        /**
+         * **Bias by Geolocation of IP**
+         *
+         * Biases search based on approximate geolocation of IP address.
+         *
+         * Set `bias_ip=true` to enable.
+         */
+        bias_ip?: components["parameters"]["BiasIpParam"];
+        /**
+         * **Filter by Bounding Box**
+         *
+         * Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.
+         * Only one geospatial box can be provided.
+         */
+        box?: components["parameters"]["BoxParam"];
+        /**
+         * **Filter by Outward Code**
+         *
+         * Restrict result set to addresses with a matching outward code.
+         *
+         * The outward code is the first half of a postcode. E.g. the outward code for `SW1A 2AA` is `SW1A`.
+         */
+        postcode_outward?: components["parameters"]["PostcodeOutwardParam"];
+        /**
+         * **Filter by postcode**
+         * Restrict result set to matching postcodes only.
+         * Can be combined with query to perform a postcode and building number or name search.
+         */
+        postcode?: components["parameters"]["PostcodeParam"];
+        /**
+         * **Filter by Postcode Area**
+         *
+         * Postcode area represents the first one or two non-numeric characters of a postcode. E.g. the postcode area of `SW1A 2AA` is `SW`.
+         *
+         * Can be combined with query to perform a postcode and building search.
+         */
+        postcode_area?: components["parameters"]["PostcodeAreaParam"];
+        /**
+         * **Filter by Postcode Sector**
+         *
+         * Postcode sector is the outward code plus first numeric of the inward code. E.g. postcode sector of `SW1A 2AA` is `SW1A 2`
+         */
+        postcode_sector?: components["parameters"]["PostcodeSectorParam"];
+        /**
+         * **Filter by Town or City**
+         *
+         * Restrict addresses to matching town, city or other locality identifier.
+         */
+        post_town?: components["parameters"]["PostTownParam"];
+        /**
+         * **Filter by UPRN**
+         *
+         * Does not accept comma separated terms. Only a single term is permitted
+         */
+        uprn?: components["parameters"]["UPRNParam"];
+        /**
+         * **Filter by country**
+         *
+         * Filters by country name.
+         *
+         * In the context of GBR, country values are not United Kingdom. Instead they are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+         */
+        country?: components["parameters"]["CountryParam"];
+        /**
+         * **Filter by Postcode Type**
+         *
+         * Filter by Postcode Type. Useful for separating organisational and residential addresses
+         */
+        postcode_type?: components["parameters"]["PostcodeTypeParam"];
+        /**
+         * **Filter by Organisation Indicator**
+         *
+         * Useful for separating organisational and residential addresses
+         */
+        su_organisation_indicator?: components["parameters"]["SmallUserParam"];
+        /**
+         * **Bias by Outward Code**
+         * Boosts addresses with a matching outward code.
+         * Outward code is the first have of a postcode. For instance, the outward code of `SW1A 2AA` is `SW1A`
+         */
+        bias_postcode_outward?: components["parameters"]["BiasPostcodeOutwardParam"];
+        /**
+         * **Bias by postcode**
+         * Boost addresses which match postcode.
+         * Can be combined with query to perform a postcode and building number or name search.
+         */
+        bias_postcode?: components["parameters"]["BiasPostcodeParam"];
+        /**
+         * **Bias by Postcode Area**
+         *
+         * Boosts if the first one or two non-numeric characters of a postcode match
+         *
+         * The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+         */
+        bias_postcode_area?: components["parameters"]["BiasPostcodeAreaParam"];
+        /**
+         * **Bias by Postcode Sector**
+         *
+         * Boost postcode sector matches. The postcode sector comprises the outward code plus first numeric of the inward code.
+         */
+        bias_postcode_sector?: components["parameters"]["BiasPostcodeSectorParam"];
+        /**
+         * **Bias by Town or City**
+         *
+         * Biases results to matching town, city or other locality name.
+         */
+        bias_post_town?: components["parameters"]["BiasPosttownParam"];
+        /**
+         * **Bias by Street**
+         *
+         * Bias by street or thoroughfare name.
+         */
+        bias_thoroughfare?: components["parameters"]["BiasThoroughfareParam"];
+        /**
+         * **Bias by Country**
+         *
+         * Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+         */
+        bias_country?: components["parameters"]["BiasCountryParam"];
       };
     };
     responses: {
@@ -4114,14 +4649,33 @@ export interface operations {
    *
    * Resolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).
    */
-  Resolve: {
+  ResolveAddress: {
     parameters: {
       path: {
-        /** ID of address suggestion */
+        /**
+         * **ID of address suggestion**
+         *
+         * ID of address suggestion provided by the API to fully resolve.
+         */
         address: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -4144,14 +4698,33 @@ export interface operations {
    *
    * Resolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).
    */
-  ResolveUsa: {
+  RetrieveAddress: {
     parameters: {
       path: {
-        /** ID of address suggestion */
+        /**
+         * **ID of address suggestion**
+         *
+         * ID of address suggestion provided by the API to fully retrieve.
+         */
         address: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -4236,32 +4809,183 @@ export interface operations {
   Addresses: {
     parameters: {
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
-        /** Specifies the address you wish to query. Query can be shortened to `q=` */
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /** Specifies the address you wish to query. */
         query?: string;
-        limit?: components["schemas"]["LimitParam"];
-        page?: components["schemas"]["PageParam"];
-        filter?: components["schemas"]["FilterParam"];
-        lon?: components["schemas"]["AddressLongitudeParam"];
-        lat?: components["schemas"]["AddressLatitudeParam"];
-        postcode_outward?: components["schemas"]["PostcodeOutwardParam"];
-        postcode?: components["schemas"]["PostcodeParam"];
-        postcode_area?: components["schemas"]["PostcodeAreaParam"];
-        postcode_sector?: components["schemas"]["PostcodeSectorParam"];
-        post_town?: components["schemas"]["PostTownParam"];
-        uprn?: components["schemas"]["UPRNParam"];
-        country?: components["schemas"]["CountryParam"];
-        postcode_type?: components["schemas"]["PostcodeTypeParam"];
-        su_organisation_indicator?: components["schemas"]["SmallUserParam"];
-        box?: components["schemas"]["BoxParam"];
-        bias_postcode_outward?: components["schemas"]["BiasPostcodeOutwardParam"];
-        bias_postcode?: components["schemas"]["BiasPostcodeParam"];
-        bias_postcode_area?: components["schemas"]["BiasPostcodeAreaParam"];
-        bias_postcode_sector?: components["schemas"]["BiasPostcodeSectorParam"];
-        bias_post_town?: components["schemas"]["BiasPosttownParam"];
-        bias_thoroughfare?: components["schemas"]["BiasThoroughfareParam"];
-        bias_country?: components["schemas"]["BiasCountryParam"];
-        bias_lonlat?: components["schemas"]["BiasLonLatParam"];
+        /**
+         * **Limit**
+         *
+         * Specifies the maximum number of records to retrieve.
+         *
+         * By default the limit is 10. Requesting a larger result set will result in more latency
+         */
+        limit?: components["parameters"]["LimitParam"];
+        /**
+         * **Page**
+         *
+         * 0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0.
+         *
+         * A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
+         */
+        page?: components["parameters"]["PageParam"];
+        /**
+         * **Restrict Result Fields**
+         *
+         * Comma separated whitelist of address elements to return.
+         *
+         * E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
+         */
+        filter?: components["parameters"]["FilterParam"];
+        /**
+         * **Longitude**
+         *
+         * Longitude query for reverse geocoding.
+         *
+         * An accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.
+         */
+        lon?: components["parameters"]["AddressLongitudeParam"];
+        /**
+         * **Latitude**
+         *
+         * Latitude query for reverse geocoding.
+         *
+         * An accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.
+         */
+        lat?: components["parameters"]["AddressLatitudeParam"];
+        /**
+         * **Filter by Outward Code**
+         *
+         * Restrict result set to addresses with a matching outward code.
+         *
+         * The outward code is the first half of a postcode. E.g. the outward code for `SW1A 2AA` is `SW1A`.
+         */
+        postcode_outward?: components["parameters"]["PostcodeOutwardParam"];
+        /**
+         * **Filter by postcode**
+         * Restrict result set to matching postcodes only.
+         * Can be combined with query to perform a postcode and building number or name search.
+         */
+        postcode?: components["parameters"]["PostcodeParam"];
+        /**
+         * **Filter by Postcode Area**
+         *
+         * Postcode area represents the first one or two non-numeric characters of a postcode. E.g. the postcode area of `SW1A 2AA` is `SW`.
+         *
+         * Can be combined with query to perform a postcode and building search.
+         */
+        postcode_area?: components["parameters"]["PostcodeAreaParam"];
+        /**
+         * **Filter by Postcode Sector**
+         *
+         * Postcode sector is the outward code plus first numeric of the inward code. E.g. postcode sector of `SW1A 2AA` is `SW1A 2`
+         */
+        postcode_sector?: components["parameters"]["PostcodeSectorParam"];
+        /**
+         * **Filter by Town or City**
+         *
+         * Restrict addresses to matching town, city or other locality identifier.
+         */
+        post_town?: components["parameters"]["PostTownParam"];
+        /**
+         * **Filter by UPRN**
+         *
+         * Does not accept comma separated terms. Only a single term is permitted
+         */
+        uprn?: components["parameters"]["UPRNParam"];
+        /**
+         * **Filter by country**
+         *
+         * Filters by country name.
+         *
+         * In the context of GBR, country values are not United Kingdom. Instead they are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+         */
+        country?: components["parameters"]["CountryParam"];
+        /**
+         * **Filter by Postcode Type**
+         *
+         * Filter by Postcode Type. Useful for separating organisational and residential addresses
+         */
+        postcode_type?: components["parameters"]["PostcodeTypeParam"];
+        /**
+         * **Filter by Organisation Indicator**
+         *
+         * Useful for separating organisational and residential addresses
+         */
+        su_organisation_indicator?: components["parameters"]["SmallUserParam"];
+        /**
+         * **Filter by Bounding Box**
+         *
+         * Restrict search to a geospatial box determined by the "top-left" and "bottom-right" gelocations.
+         * Only one geospatial box can be provided.
+         */
+        box?: components["parameters"]["BoxParam"];
+        /**
+         * **Bias by Outward Code**
+         * Boosts addresses with a matching outward code.
+         * Outward code is the first have of a postcode. For instance, the outward code of `SW1A 2AA` is `SW1A`
+         */
+        bias_postcode_outward?: components["parameters"]["BiasPostcodeOutwardParam"];
+        /**
+         * **Bias by postcode**
+         * Boost addresses which match postcode.
+         * Can be combined with query to perform a postcode and building number or name search.
+         */
+        bias_postcode?: components["parameters"]["BiasPostcodeParam"];
+        /**
+         * **Bias by Postcode Area**
+         *
+         * Boosts if the first one or two non-numeric characters of a postcode match
+         *
+         * The postcode area of SW1A 2AA and N1 6RT are SW and N respectively
+         */
+        bias_postcode_area?: components["parameters"]["BiasPostcodeAreaParam"];
+        /**
+         * **Bias by Postcode Sector**
+         *
+         * Boost postcode sector matches. The postcode sector comprises the outward code plus first numeric of the inward code.
+         */
+        bias_postcode_sector?: components["parameters"]["BiasPostcodeSectorParam"];
+        /**
+         * **Bias by Town or City**
+         *
+         * Biases results to matching town, city or other locality name.
+         */
+        bias_post_town?: components["parameters"]["BiasPosttownParam"];
+        /**
+         * **Bias by Street**
+         *
+         * Bias by street or thoroughfare name.
+         */
+        bias_thoroughfare?: components["parameters"]["BiasThoroughfareParam"];
+        /**
+         * **Bias by Country**
+         *
+         * Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
+         */
+        bias_country?: components["parameters"]["BiasCountryParam"];
+        /**
+         * **Bias by Geolocation**
+         *
+         * Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.
+         * Uses the format bias_lonlat=[longitude],[latitude],[radius in metres]
+         * Only one geospatial bias may be provided
+         */
+        bias_lonlat?: components["parameters"]["BiasLonLatParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -4301,37 +5025,68 @@ export interface operations {
    *
    * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
    *
-   * ## Rate Limiting
+   * ## Rate Limiting and Cost
    *
-   * You can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.
+   * The rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.
    *
-   * | Header                  | Description                                                                            |
-   * | ----------------------- | -------------------------------------------------------------------------------------- |
-   * | `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |
-   * | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
-   * | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
-   *
-   * ## Pricing
-   *
-   * This API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.
-   *
-   * Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
+   * Autocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.
    */
   FindPlace: {
     parameters: {
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
         /** Specifies the place you wish to query. Query can be shortened to `q=` */
         query?: string;
-        country_iso?: components["schemas"]["CountryIsoParam"];
-        bias_country_iso?: components["schemas"]["BiasCountryIsoParam"];
-        bias_lonlat?: components["schemas"]["BiasLonLatParam"];
-        bias_ip?: components["schemas"]["BiasIpParam"];
+        /**
+         * **Filter by Country**
+         *
+         * Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+         *
+         * Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`
+         */
+        country_iso?: components["parameters"]["CountryIsoParam"];
+        /**
+         * **Bias by Country**
+         * Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
+         * Bias by multiple countries with a comma separated list. E.g. `GBR,IRL`
+         */
+        bias_country_iso?: components["parameters"]["BiasCountryIsoParam"];
+        /**
+         * **Bias by Geolocation**
+         *
+         * Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.
+         * Uses the format bias_lonlat=[longitude],[latitude],[radius in metres]
+         * Only one geospatial bias may be provided
+         */
+        bias_lonlat?: components["parameters"]["BiasLonLatParam"];
+        /**
+         * **Bias by Geolocation of IP**
+         *
+         * Biases search based on approximate geolocation of IP address.
+         *
+         * Set `bias_ip=true` to enable.
+         */
+        bias_ip?: components["parameters"]["BiasIpParam"];
       };
     };
     responses: {
       /** Success */
       200: {
+        headers: {
+          /** The maximum number of requests that can be made in 5 minutes */
+          "X-RateLimit-Limit"?: number;
+          /** The remaining requests within the current rate limit window */
+          "X-RateLimit-Remaining"?: number;
+          /** The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds. */
+          "X-RateLimit-Reset"?: number;
+        };
         content: {
           "application/json": components["schemas"]["PlaceResponse"];
         };
@@ -4352,7 +5107,22 @@ export interface operations {
         place: string;
       };
       query: {
-        api_key?: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -4374,14 +5144,34 @@ export interface operations {
   ListLicensees: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
         /** Specify ID of the licensee after which you would like to list results */
         starting_after?: number;
-        user_token?: components["schemas"]["UserTokenParam"];
-        /** Specify the maximum number of results to return per page. Default and maximum is `100`. */
-        limit?: components["schemas"]["LimitParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
+        /**
+         * **Limit**
+         *
+         * Specifies the maximum number of records to retrieve.
+         *
+         * By default the limit is 10. Requesting a larger result set will result in more latency
+         */
+        limit?: components["parameters"]["LimitParam"];
         /** Filter result by licensee name. Query can be shortened to `q=` */
         query?: string;
       };
@@ -4405,10 +5195,24 @@ export interface operations {
   CreateLicensee: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4435,11 +5239,30 @@ export interface operations {
   RetrieveLicensee: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        licensee: components["schemas"]["LicenseeParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Licensee Key**
+         *
+         * Uniquely identifies a licensee.
+         */
+        licensee: components["parameters"]["LicenseePathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4461,11 +5284,30 @@ export interface operations {
   UpdateLicensee: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        licensee: components["schemas"]["LicenseeParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Licensee Key**
+         *
+         * Uniquely identifies a licensee.
+         */
+        licensee: components["parameters"]["LicenseePathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4492,11 +5334,30 @@ export interface operations {
   DeleteLicensee: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        licensee: components["schemas"]["LicenseeParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Licensee Key**
+         *
+         * Uniquely identifies a licensee.
+         */
+        licensee: components["parameters"]["LicenseePathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4533,10 +5394,24 @@ export interface operations {
   ListConfigs: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4560,14 +5435,28 @@ export interface operations {
       };
     };
   };
-  /** Create a config */
+  /** Create a configuration */
   CreateConfig: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4596,12 +5485,22 @@ export interface operations {
       };
     };
   };
-  /** Retrieve config object by name */
+  /** Retrieve configuration object by name */
   RetrieveConfig: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        config: components["schemas"]["ConfigParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Configuration Name**
+         *
+         * User provided configuration object name.
+         */
+        config: components["parameters"]["ConfigParam"];
       };
     };
     responses: {
@@ -4629,11 +5528,30 @@ export interface operations {
   UpdateConfig: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        config: components["schemas"]["ConfigParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Configuration Name**
+         *
+         * User provided configuration object name.
+         */
+        config: components["parameters"]["ConfigParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4672,11 +5590,30 @@ export interface operations {
   DeleteConfig: {
     parameters: {
       path: {
-        key: components["schemas"]["ApiKeyParam"];
-        config: components["schemas"]["ConfigParam"];
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+        /**
+         * **Configuration Name**
+         *
+         * User provided configuration object name.
+         */
+        config: components["parameters"]["ConfigParam"];
       };
       query: {
-        user_token?: components["schemas"]["UserTokenParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
       };
     };
     responses: {
@@ -4725,9 +5662,24 @@ export interface operations {
   EmailValidation: {
     parameters: {
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
         /** Specifies the email address to validate */
         query: string;
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
@@ -4749,7 +5701,14 @@ export interface operations {
   PhoneNumberValidation: {
     parameters: {
       query: {
-        api_key: components["schemas"]["ApiKeyParam"];
+        /**
+         * **API Key**
+         *
+         * Your unique identifier that allows access to our APIs.
+         *
+         * Begins `ak_`. Available from your dashboard
+         */
+        api_key?: components["parameters"]["ApiKeyParam"];
         /** Specifies the phone number to validate. Phone number must include a country code in acceptable format. For instance, UK phone numbers should be suffixed `+44`, `44` or `0044`. */
         query: string;
         /**
@@ -4758,6 +5717,14 @@ export interface operations {
          * Note that this operation is potentially slow depending on the network and local conditions.
          */
         current_carrier?: "true";
+        /**
+         * A comma separated list of tags to query over.
+         *
+         * Useful if you want to specify the circumstances in which the request was made.
+         *
+         * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
+         */
+        Tags?: components["parameters"]["TagsParam"];
       };
     };
     responses: {
