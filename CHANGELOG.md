@@ -1,3 +1,16 @@
+# [4.0.0](https://github.com/ideal-postcodes/openapi/compare/3.10.0...4.0.0) (2023-07-07)
+
+
+### Features
+
+* **OpenAPI:** Add Global Address datasets ([8b23829](https://github.com/ideal-postcodes/openapi/commit/8b238294cbc71352bfb33a9eed78c08e41d884ef))
+
+
+### BREAKING CHANGES
+
+* **OpenAPI:** Some operation IDs (i.e. endpoint identifiers) have been updated to better reflect
+usage
+
 # [3.10.0](https://github.com/ideal-postcodes/openapi/compare/3.9.6...3.10.0) (2023-04-26)
 
 
