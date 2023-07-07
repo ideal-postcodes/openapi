@@ -361,6 +361,7 @@ export interface components {
     ecaf: components["schemas"]["EcafAddress"];
     ecad: components["schemas"]["EcadAddress"];
     geonames: components["schemas"]["GeonamesPlace"];
+    here: components["schemas"]["HereAddress"];
     /**
      * ID
      * @description Global unique internally generated identifier for an address

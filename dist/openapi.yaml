@@ -2017,6 +2017,8 @@ components:
       $ref: '#/components/schemas/EcadAddress'
     geonames:
       $ref: '#/components/schemas/GeonamesPlace'
+    here:
+      $ref: '#/components/schemas/HereAddress'
     ID:
       title: ID
       type: string
