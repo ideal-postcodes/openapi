@@ -1,23 +1,19 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "3.7.0",
+    "version": "4.0.0",
     "license": {
       "name": "AGPLv3",
       "url": "https://opensource.org/licenses/AGPL-3.0"
     },
-    "title": "API Reference - Ideal Postcodes",
+    "title": "API Reference",
     "termsOfService": "https://terms.ideal-postcodes.co.uk",
-    "description": "# Getting Started\n\n## Overview\n\n### Access\n\nAll API methods are either a `GET`, `POST` or `OPTIONS` request.\n\nThe API communicates over both HTTPS and plain HTTP using IPv4 and IPv6.\n\nWe recommend using HTTPS only although HTTP is available.\n\nWe use appropriate HTTP status codes where possible to indicate the request status.\n\n### Rate Limiting\n\nEach IP address is rate limited at 30 requests per second. Tripping the rate limit will result in a 503 response.\n\nThe autocomplete API also has an additional rate limit.\n\nIf you expect to breach the limit please contact us and we can move you to an endpoint with a higher limit.\n\n### JSONP\n\n[JSONP](http://en.wikipedia.org/wiki/JSONP) requests are supported. Include a `callback=` in your request as a query parameter. Your results return wrapped in a function designated by your request.\n\n## Authentication\n\nMost requests require an **API key** for authentication. Authenticate by passing an `api_key` as part of the query string. For example:\n\n```\napi.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=iddqd&q=parkside\n```\n\nAlternatively, authentication can be transmitted via the `Authorization` header using the following scheme:\n\n```\nAuthorization: api_key=\"iddqd\" [other_key=\"foo\"]\n```\n\n## Versioning\n\nThis API is versioned with a simple prefix in the URL. The current version is `/v1/`. We will maintain backwards-compatibility by releasing breaking changes under a new version.\n\nPlease note that the following changes are backwards-compatible:\n\n- Adding new properties to existing API responses\n- Adding new API endpoints\n- Adding new optional request parameters to existing API endpoints\n- Changing the order of properties in existing API responses\n- Changing the autocomplete address suggestion format\n\n## Error Handling\n\nA successful lookup is accompanied with a HTTP status code of 200 and a response code of 2000 (found in the body).\n\nAn error has occurred if the HTTP status code is not 200. Errors can range from a benign 404 (resource not found) to more urgent errors (your API Key ran out of credit, failed authentication, etc).\n\n## Testing\n\nEach new account comes with a free test balance. Contact us if you need more for testing and integration.\n\n### Community Key\n\nOur documentation and demos make heavy use of our community key `iddqd`. This allows for convenient access for trialing the API.\n\nMany restrictions on this key are relaxed to allow developers make test requests. This key has a limit of 15 lookups per IP address per day as well as a daily usage cap. If you hit any limit restrictions, you can continue testing the API by creating a key of your own and using our free test methods.\n\nPlease be kind with the community key. We're trusting everyone to use it responsibly so that other developers may trial the API. Thank you!\n\n## Metadata\n\nRequests that affect your balance may be annotated with arbitrary metadata. This data is stored along with your lookup history and can be queried at a later date via the API or the dashboard. We call the ability to label your requests [tagging](https://docs.ideal-postcodes.co.uk/docs/guides/tags).\n\n# Response Codes\n\nThe API returns two indicators to help you to determine the status of each HTTP request.\n\nThe first is the **HTTP Status**, which is found in the status-line of all HTTP requests. The API will return status codes that adhere to HTTP /1.1 Specifications wherever possible.\n\n`2XX` status codes indicates success while `4XX` and `5XX` indicate client and server errors respectively.\n\nThe second is the **API response code**, which can be found in the `code` property of the response body. This code will provide a more specific reason if a failure has occurred and can point you in the right direction when debugging.\n\nPlease use the glossary of code numbers and HTTP status codes below when debugging your requests.\n\n## 200 Request Success\n\n| HTTP Code | API Code | Description                                  |\n| --------- | -------- | -------------------------------------------- |\n| 200       | 2000     | Success. Request was completed successfully. |\n\n## 400 Bad Request\n\nThe request could not be understood due to some input error.\n\n| HTTP Code | API Code | Description                                                                                                                           |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |\n| 400       | 4000     | Invalid syntax submitted. Some part of your request was malformed or did not match our specifications.                                |\n| 400       | 4001     | Validation failed on your submitted data. Some of the data you provided did not meet our validation requirements, e.g. string length. |\n| 400       | 4005     | Invalid start date. Please ensure start dates are provided as a UTC Timestamp in milliseconds.                                        |\n| 400       | 4006     | Invalid end date. Please ensure end dates are provided as a UTC Timestamp in milliseconds.                                            |\n| 400       | 4007     | Invalid date range. Check if your start and end dates are in the right order.                                                         |\n| 400       | 4008     | Invalid date range. Check that your date range is 90 days or less.                                                                    |\n| 400       | 4009     | Too many tags. Please specify no more than 3 tags to query.                                                                           |\n\n## 401 Unauthorised\n\nAuthorization credentials are not valid.\n\n| HTTP Code | API Code | Description                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 401       | 4010     | Invalid Key. The `api_key` you provided is not valid.                                                                                                              |\n| 401       | 4011     | Requesting URL not on whitelist. The cross domain request is not coming from a whitelisted URL. You can update or disable your allowed URLs via your Key settings. |\n| 401       | 4012     | Failed user authentication. Invalid `user_token` presented.                                                                                                        |\n| 401       | 4013     | Licensee Key is required. Sublicensed keys require you need to present licensee credentials via the `licensee` parameter.                                          |\n\n## 402 Request Failed\n\nYour request is well-formed but are not able to complete your request for another reason.\n\n| HTTP Code | API Code | Description                                                                                                                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 402       | 4020     | Key balance depleted. You're out of lookups on your API Key.                                                                                                                                                                                                       |\n| 402       | 4021     | Limit reached. One of your lookup limits has been breached for today. This could either be your total daily limit on your key or the individual IP limit. You can either wait for for the limit to reset (after a day) or manually disable or increase your limit. |\n\n## 404 Resource Not Found\n\nThe resource you requested does not exist.\n\n| HTTP Code | API Code | Description                                                                                   |\n| --------- | -------- | --------------------------------------------------------------------------------------------- |\n| 404       | 4040     | Postcode not found. The postcode you have submitted does not exist.                           |\n| 404       | 4041     | User not found. Your user could not be identified given the credentials you presented.        |\n| 404       | 4042     | Key not found. Your key could not be identified given the credentials you presented.          |\n| 404       | 4044     | No UDPRN found. No address is associated with the UDPRN queried                               |\n| 404       | 4045     | No licensee found. Your licensee could not be identified given the credentials you presented. |\n| 404       | 4046     | No UMPRN found. No Multiple Residence premise is associated with the UMPRN queried.           |\n\n## 500 Server Error\n\nA error occurred on our server.\n\n| HTTP Code | API Code | Description                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 500       | 5000     | An error occurred on our end. These errors are logged and queued so we can understand what went wrong. However, if you need speedy resolution please email support |\n| 500       | 5001     | Akin to 5000.                                                                                                                                                      |\n| 500       | 5002     | The server took too long to process on our end, so we aborted the request. You may retry the request.                                                              |\n",
+    "description": "## Getting Started\n\nAll API methods are either a `GET`, `POST` or `OPTIONS` request.\n\nThe API communicates over both HTTPS and plain HTTP using IPv4 and IPv6.\n\nWe recommend using HTTPS only although HTTP is available.\n\nWe use appropriate HTTP status codes where possible to indicate the request status.\n\n## Rate Limiting\n\nEach IP address is rate limited at 30 requests per second. Tripping the rate limit will result in a 503 response.\n\nThe autocomplete API also has an additional rate limit.\n\nIf you expect to breach the limit please contact us and we can move you to an endpoint with a higher limit.\n\n## Authentication\n\nMost requests require an **API key** for authentication. Authenticate by passing an `api_key` as part of the query string. For example:\n\n```\napi.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=iddqd&q=parkside\n```\n\nAlternatively, authentication can be transmitted via the `Authorization` header using the following scheme:\n\n```\nAuthorization: api_key=\"iddqd\" [other_key=\"foo\"]\n```\n\n## Versioning\n\nThis API is versioned with a simple prefix in the URL. The current version is `/v1/`. We will maintain backwards-compatibility by releasing breaking changes under a new version.\n\nPlease note that the following changes are backwards-compatible:\n\n- Adding new properties to existing API responses\n- Adding new API endpoints\n- Adding new optional request parameters to existing API endpoints\n- Changing the order of properties in existing API responses\n- Changing the autocomplete address suggestion format\n\n## Error Handling\n\nA successful lookup is accompanied with a HTTP status code of 200 and a response code of 2000 (found in the body).\n\nAn error has occurred if the HTTP status code is not 200. Errors can range from a benign 404 (resource not found) to more urgent errors (your API Key ran out of credit, failed authentication, etc).\n\n## Testing\n\nEach new account comes with a free test balance. Contact us if you need more for testing and integration.\n\n## Metadata\n\nRequests that affect your balance may be annotated with arbitrary metadata. This data is stored along with your lookup history and can be queried at a later date via the API or the dashboard. We call the ability to label your requests [tagging](https://docs.ideal-postcodes.co.uk/docs/guides/tags).\n\n## Response Codes\n\nThe API returns two indicators to help you to determine the status of each HTTP request.\n\nThe first is the **HTTP Status**, which is found in the status-line of all HTTP requests. The API will return status codes that adhere to HTTP /1.1 Specifications wherever possible.\n\n`2XX` status codes indicates success while `4XX` and `5XX` indicate client and server errors respectively.\n\nThe second is the **API response code**, which can be found in the `code` property of the response body. This code will provide a more specific reason if a failure has occurred and can point you in the right direction when debugging.\n\nPlease use the glossary of code numbers and HTTP status codes below when debugging your requests.\n\n### 200 Request Success\n\n| HTTP Code | API Code | Description                                  |\n| --------- | -------- | -------------------------------------------- |\n| 200       | 2000     | Success. Request was completed successfully. |\n\n### 400 Bad Request\n\nThe request could not be understood due to some input error.\n\n| HTTP Code | API Code | Description                                                                                                                           |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |\n| 400       | 4000     | Invalid syntax submitted. Some part of your request was malformed or did not match our specifications.                                |\n| 400       | 4001     | Validation failed on your submitted data. Some of the data you provided did not meet our validation requirements, e.g. string length. |\n| 400       | 4005     | Invalid start date. Please ensure start dates are provided as a UTC Timestamp in milliseconds.                                        |\n| 400       | 4006     | Invalid end date. Please ensure end dates are provided as a UTC Timestamp in milliseconds.                                            |\n| 400       | 4007     | Invalid date range. Check if your start and end dates are in the right order.                                                         |\n| 400       | 4008     | Invalid date range. Check that your date range is 90 days or less.                                                                    |\n| 400       | 4009     | Too many tags. Please specify no more than 3 tags to query.                                                                           |\n\n### 401 Unauthorised\n\nAuthorization credentials are not valid.\n\n| HTTP Code | API Code | Description                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 401       | 4010     | Invalid Key. The `api_key` you provided is not valid.                                                                                                              |\n| 401       | 4011     | Requesting URL not on whitelist. The cross domain request is not coming from a whitelisted URL. You can update or disable your allowed URLs via your Key settings. |\n| 401       | 4012     | Failed user authentication. Invalid `user_token` presented.                                                                                                        |\n| 401       | 4013     | Licensee Key is required. Sublicensed keys require you need to present licensee credentials via the `licensee` parameter.                                          |\n\n### 402 Request Failed\n\nYour request is well-formed but are not able to complete your request for another reason.\n\n| HTTP Code | API Code | Description                                                                                                                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 402       | 4020     | Key balance depleted. You're out of lookups on your API Key.                                                                                                                                                                                                       |\n| 402       | 4021     | Limit reached. One of your lookup limits has been breached for today. This could either be your total daily limit on your key or the individual IP limit. You can either wait for for the limit to reset (after a day) or manually disable or increase your limit. |\n\n### 404 Resource Not Found\n\nThe resource you requested does not exist.\n\n| HTTP Code | API Code | Description                                                                                   |\n| --------- | -------- | --------------------------------------------------------------------------------------------- |\n| 404       | 4040     | Postcode not found. The postcode you have submitted does not exist.                           |\n| 404       | 4041     | User not found. Your user could not be identified given the credentials you presented.        |\n| 404       | 4042     | Key not found. Your key could not be identified given the credentials you presented.          |\n| 404       | 4044     | No UDPRN found. No address is associated with the UDPRN queried                               |\n| 404       | 4045     | No licensee found. Your licensee could not be identified given the credentials you presented. |\n| 404       | 4046     | No UMPRN found. No Multiple Residence premise is associated with the UMPRN queried.           |\n\n### 500 Server Error\n\nA error occurred on our server.\n\n| HTTP Code | API Code | Description                                                                                                                                                        |\n| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| 500       | 5000     | An error occurred on our end. These errors are logged and queued so we can understand what went wrong. However, if you need speedy resolution please email support |\n| 500       | 5001     | Akin to 5000.                                                                                                                                                      |\n| 500       | 5002     | The server took too long to process on our end, so we aborted the request. You may retry the request.                                                              |\n",
     "contact": {
       "email": "support@ideal-postcodes.co.uk",
       "name": "Support",
       "url": "https://ideal-postcodes.co.uk/support"
     }
-  },
-  "externalDocs": {
-    "description": "More on our APIs, libraries with guides and examples",
-    "url": "https://docs.ideal-postcodes.co.uk"
   },
   "servers": [
     {
@@ -87,43 +83,10 @@
       "description": "GeoNames place record\n\n<SchemaDefinition schemaRef=\"#/components/schemas/GeonamesPlace\" />\n"
     }
   ],
-  "x-tagGroups": [
-    {
-      "name": "Address Search",
-      "tags": [
-        "Address Search",
-        "UK"
-      ]
-    },
-    {
-      "name": "Place Search",
-      "tags": [
-        "Place Search"
-      ]
-    },
-    {
-      "name": "Management",
-      "tags": [
-        "Keys",
-        "Licensees",
-        "Configs",
-        "Emails",
-        "Phone Numbers"
-      ]
-    },
-    {
-      "name": "Models",
-      "tags": [
-        "suggestion",
-        "usps_address",
-        "uk_address",
-        "ab_address",
-        "ecaf_address",
-        "ecad_address",
-        "geonames_place"
-      ]
-    }
-  ],
+  "externalDocs": {
+    "description": "More on our APIs, libraries with guides and examples",
+    "url": "https://docs.ideal-postcodes.co.uk"
+  },
   "paths": {
     "/postcodes/{postcode}": {
       "get": {
@@ -141,38 +104,22 @@
             "required": true,
             "style": "simple",
             "explode": false,
+            "example": "SW1A 2AA",
             "schema": {
-              "$ref": "#/components/schemas/paf_postcode"
+              "type": "string"
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
-            "name": "filter",
-            "in": "query",
-            "style": "form",
-            "required": false,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/FilterParam"
-            }
+            "$ref": "#/components/parameters/FilterParam"
           },
           {
-            "name": "page",
-            "in": "query",
-            "style": "form",
-            "required": false,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PageParam"
-            }
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -182,6 +129,62 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PostcodeResponse"
+                },
+                "examples": {
+                  "Postcode Found": {
+                    "value": {
+                      "result": [
+                        {
+                          "postcode": "SW1A 2AA",
+                          "postcode_inward": "2AA",
+                          "postcode_outward": "SW1A",
+                          "post_town": "London",
+                          "dependant_locality": "",
+                          "double_dependant_locality": "",
+                          "thoroughfare": "Downing Street",
+                          "dependant_thoroughfare": "",
+                          "building_number": "10",
+                          "building_name": "",
+                          "sub_building_name": "",
+                          "po_box": "",
+                          "department_name": "",
+                          "organisation_name": "Prime Minister & First Lord Of The Treasury",
+                          "udprn": 23747771,
+                          "postcode_type": "L",
+                          "su_organisation_indicator": "",
+                          "delivery_point_suffix": "1A",
+                          "line_1": "Prime Minister & First Lord Of The Treasury",
+                          "line_2": "10 Downing Street",
+                          "line_3": "",
+                          "premise": "10",
+                          "longitude": -0.12767,
+                          "latitude": 51.503541,
+                          "eastings": 530047,
+                          "northings": 179951,
+                          "country": "England",
+                          "traditional_county": "Greater London",
+                          "administrative_county": "",
+                          "postal_county": "London",
+                          "county": "London",
+                          "district": "Westminster",
+                          "ward": "St. James's",
+                          "uprn": "100023336956",
+                          "id": "paf_23747771",
+                          "country_iso": "GBR",
+                          "country_iso_2": "GB",
+                          "county_code": "",
+                          "language": "en",
+                          "umprn": "",
+                          "dataset": "paf"
+                        }
+                      ],
+                      "code": 2000,
+                      "message": "Success",
+                      "limit": 100,
+                      "page": 0,
+                      "total": 1
+                    }
+                  }
                 }
               }
             }
@@ -228,7 +231,7 @@
         ],
         "summary": "Retrieve by UDPRN",
         "operationId": "UDPRN",
-        "description": "Returns an address as identified by its Unique Delivery Point Reference Number (UDPRN).\n\nYou may find it useful to store UDPRN information as it can be used to retrieve the most recent information for an address. It can also be used to test for a deleted address.\n\nUDPRNs are an eight digit unique numeric code (e.g. 25962203) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.\n\n## Testing\n\nTo test your implementation of our API we have a range of test UDPRNs that yield both successful and unsuccessful responses to your request.\n\nThey are the following:\n\n- `0` Returns a successful UDPRN lookup response\n  `2000`\n- `-1` Returns \"UDPRN not found\", error `4044`\n- `-2` Returns \"no lookups remaining\", error `4020`\n- `-3` Returns \"daily (or individual) lookup limit breached\",\n  error `4021`\n\nTest request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.",
+        "description": "Returns an address as identified by its Unique Delivery Point Reference Number (UDPRN).\n\nYou may find it useful to store UDPRN information as it can be used to retrieve the most recent information for an address. It can also be used to test for a deleted address.\n\nUDPRNs are an eight digit unique numeric code (e.g. `25962203`) for any premise on the Postcode Address File. It's essentially a unique identifier for every address in the UK that Royal Mail has in its database.\n\n## Testing\n\nTo test your implementation of our API we have a range of test UDPRNs that yield both successful and unsuccessful responses to your request.\n\nThey are the following:\n\n- `0` Returns a successful UDPRN lookup response\n  `2000`\n- `-1` Returns \"UDPRN not found\", error `4044`\n- `-2` Returns \"no lookups remaining\", error `4020`\n- `-3` Returns \"daily (or individual) lookup limit breached\",\n  error `4021`\n\nTest request undergo the usual authentication and restriction rules. This is to help surface any issues that occur during implementation and does not cost you a lookup.\n",
         "parameters": [
           {
             "name": "udprn",
@@ -242,22 +245,10 @@
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
-            "name": "filter",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/FilterParam"
-            }
+            "$ref": "#/components/parameters/FilterParam"
           }
         ],
         "responses": {
@@ -268,6 +259,57 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UDPRNResponse"
+                },
+                "examples": {
+                  "Valid UDPRN": {
+                    "value": {
+                      "result": {
+                        "postcode": "SW1A 2AA",
+                        "postcode_inward": "2AA",
+                        "postcode_outward": "SW1A",
+                        "post_town": "London",
+                        "dependant_locality": "",
+                        "double_dependant_locality": "",
+                        "thoroughfare": "Downing Street",
+                        "dependant_thoroughfare": "",
+                        "building_number": "10",
+                        "building_name": "",
+                        "sub_building_name": "",
+                        "po_box": "",
+                        "department_name": "",
+                        "organisation_name": "Prime Minister & First Lord Of The Treasury",
+                        "udprn": 23747771,
+                        "postcode_type": "L",
+                        "su_organisation_indicator": "",
+                        "delivery_point_suffix": "1A",
+                        "line_1": "Prime Minister & First Lord Of The Treasury",
+                        "line_2": "10 Downing Street",
+                        "line_3": "",
+                        "premise": "10",
+                        "longitude": -0.12767,
+                        "latitude": 51.503541,
+                        "eastings": 530047,
+                        "northings": 179951,
+                        "country": "England",
+                        "traditional_county": "Greater London",
+                        "administrative_county": "",
+                        "postal_county": "London",
+                        "county": "London",
+                        "district": "Westminster",
+                        "ward": "St. James's",
+                        "uprn": "100023336956",
+                        "id": "paf_23747771",
+                        "country_iso": "GBR",
+                        "country_iso_2": "GB",
+                        "county_code": "",
+                        "language": "en",
+                        "umprn": "",
+                        "dataset": "paf"
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -318,22 +360,10 @@
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
-            "name": "filter",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/FilterParam"
-            }
+            "$ref": "#/components/parameters/FilterParam"
           }
         ],
         "responses": {
@@ -344,6 +374,57 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UMPRNResponse"
+                },
+                "examples": {
+                  "Valid UMPRN": {
+                    "value": {
+                      "result": {
+                        "postcode": "CV4 7AL",
+                        "postcode_inward": "7AL",
+                        "postcode_outward": "CV4",
+                        "post_town": "Coventry",
+                        "dependant_locality": "",
+                        "double_dependant_locality": "",
+                        "thoroughfare": "Gibbet Hill Road",
+                        "dependant_thoroughfare": "",
+                        "building_number": "",
+                        "building_name": "Block 1 Arthur Vick",
+                        "sub_building_name": "Room 249a",
+                        "po_box": "",
+                        "department_name": "",
+                        "organisation_name": "",
+                        "udprn": 5770157,
+                        "postcode_type": "S",
+                        "su_organisation_indicator": "",
+                        "delivery_point_suffix": "1A",
+                        "line_1": "Room 249a, Block 1 Arthur Vick",
+                        "line_2": "Gibbet Hill Road",
+                        "line_3": "",
+                        "premise": "Room 249a, Block 1 Arthur Vick",
+                        "longitude": -1.5648072,
+                        "latitude": 52.3858227,
+                        "eastings": 429716,
+                        "northings": 276509,
+                        "country": "England",
+                        "traditional_county": "Warwickshire",
+                        "administrative_county": "",
+                        "postal_county": "West Midlands",
+                        "county": "West Midlands",
+                        "district": "Coventry",
+                        "ward": "Wainbody",
+                        "uprn": "200001572050",
+                        "id": "mr_50906058",
+                        "country_iso": "GBR",
+                        "country_iso_2": "GB",
+                        "county_code": "",
+                        "language": "en",
+                        "umprn": 50906058,
+                        "dataset": "mr"
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -380,17 +461,10 @@
         ],
         "summary": "Availability",
         "operationId": "KeyAvailability",
-        "description": "Returns public information on key. Currently only returns whether the key is currently useable via the `available` property. Use this to discover if the key is useable before making further requests.\n\nYou may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).\n## Testing\n\nTo test your implementation of our API, you may use the following test keys.\n\n- **iddqd** Availability will return as `true`\n- **idkfa** Availability will return as `false`\n\n",
+        "description": "Returns public information on your API Key.\n\nThis endpoint can be used for the following:\n- Determine if the key is currently useable via the `available` property\n- Determine available contexts for a an API Key\n- Identify the currently likely context of a user given their location\n\nYou may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).\n",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           }
         ],
         "responses": {
@@ -427,23 +501,10 @@
         "description": "Returns private data on the key including remaining lookups, available datasets and usage limits.\n",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "responses": {
@@ -488,56 +549,22 @@
         ],
         "summary": "Usage Stats",
         "operationId": "KeyUsage",
-        "description": "Reports the number of lookups consumed on a key for a range of days.\n\nA maximum interval of 90 days can be provided for analysis. If no start or end date is provided, the last 21 days will be used as the default interval.\n",
+        "description": "Reports the number of lookups consumed on a key for a range of days.\n\nA maximum interval of 90 days can be provided for analysis. If no start or end date is provided, the last 21 days will be used as the default interval.\n\nIf no `start` time is provided, the start time will be set to 21 days prior to the current time.\n\nIf no `end` time is provided, the current time will be used.\n\nAppend `tags` to scope the number of lookups to those with matching tag values. E.g. `tags=foo,bar` will only count transactions that match `foo` and `bar`.\n",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "start",
-            "in": "query",
-            "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no start time is provided, the start time will be assigned to a time 21 days prior to the end time.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/StartParam"
-            }
+            "$ref": "#/components/parameters/StartParam"
           },
           {
-            "name": "end",
-            "in": "query",
-            "description": "An end date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no end time is provided, the current time will be used.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/EndParam"
-            }
+            "$ref": "#/components/parameters/EndParam"
           },
           {
-            "name": "tags",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/TagsParam"
-            }
+            "$ref": "#/components/parameters/TagsParam"
           },
           {
-            "name": "licensee",
-            "in": "query",
-            "description": "Sublicensed keys only. This will restrict the analysed dataset to a specific licensee.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LicenseeParam"
-            }
+            "$ref": "#/components/parameters/LicenseeParam"
           }
         ],
         "responses": {
@@ -586,44 +613,16 @@
         "description": "Reports lookup information on a key for paid lookups.\n\nThis method requires a `user_token`, which can be found on your [accounts page](https://ideal-postcodes.co.uk/account).\n\nA maximum interval of 90 days can be provided for analysis. If no start or end date is provided, the last 21 days will be used as the default interval.\n\n## Download Usage History (CSV)\n\n`GET /keys/:key/lookups`\n\nReturns a CSV download of lookups performed and associated information.\n\nNote that the Content-Type returned will be CSV (text/csv). For a non 200 response, the `Content-Type` will revert to JSON with the error code and message embedded.\n\n## Data Redaction\n\nPersonally Identifiable Data (PII) caught in this your usage log (including IP, search term and URL data) will be redacted on a weekly basis.\n\nBy default, PII will be redacted if it is older than 21 days. This timeframe can be configured from your dashboard.\n\nYou may prevent PII collection altogether by setting the interval to `0` days.\n",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "start",
-            "in": "query",
-            "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no start time is provided, the start time will be assigned to a time 21 days prior to the end time.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/StartParam"
-            }
+            "$ref": "#/components/parameters/StartParam"
           },
           {
-            "name": "end",
-            "in": "query",
-            "description": "An end date/time in the form of a UNIX Timestamp in milliseconds, e.g. `1418556452651`. If no end time is provided, the current time will be used.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/EndParam"
-            }
+            "$ref": "#/components/parameters/EndParam"
           },
           {
-            "name": "licensee",
-            "in": "query",
-            "description": "Sublicensed keys only. This will restrict the analysed dataset to a specific licensee.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LicenseeParam"
-            }
+            "$ref": "#/components/parameters/LicenseeParam"
           }
         ],
         "responses": {
@@ -669,18 +668,15 @@
         "tags": [
           "UK"
         ],
-        "summary": "Cleanse",
+        "summary": "Cleanse Address",
         "description": "The address cleanse API attempts to return the closest matching address for any given address inputs. We also return a number of Match Level indicators that describe the degree to which the suggested address matches the input address. The more impaired the input address, the harder it is to cleanse.\n\n## Confidence Score\n\nThe confidence score is a number ranging between 0 and 1. Where 1 implies a full match and 0 implies no major elements completely match. Each incorrect, missing or misspelled element will subtract from the overall confidence score.\n\n### Deciding on an Acceptable Confidence Score Threshold\n\nDifferent address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.\n\nWhen determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:\n- Which confidence scores indicate ambigious matches (i.e. up to building level only)\n- Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)\n\nDepending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?\n",
         "operationId": "AddressCleanse",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "requestBody": {
@@ -760,217 +756,86 @@
           "Address Search"
         ],
         "summary": "Find Address",
-        "description": "The address autocomplete API returns a list of address suggestions that match the query ordered by relevance.\n\nThis API can be used to power realtime address finders, also known as address autofill or address autocomplete.\n\nConsider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments.\n\n## Implementing Address Autocomplete\n\nRapid address autocompletion using our Address Autocomplete API is a 2 step process.\n\n1. Retrieve partial address suggestions via `/autocomplete/addresses`\n2. Retrieve the entire address with the ID provided in the suggestion\n\nStep 2 will decrement your lookup balance.\n\nPlease note, this API is not intended to be a free standalone resource.\n\n## Filters\n\nYou can strictly narrow your result by adding filters to your querystring. For instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.\n\nIf a filter term is invalid, e.g. `postcode=SW1A2AAA`, then an empty result set is returned and no lookup is incurred.\n\nYou can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.\n\nAll filters can accept multiple terms unless stated otherwise below.\n\nFilters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.\n\nA maximum of **10** terms are allowed across all filters.\n\n## Biases\n\nYou can boost certain addresses results that match specific address criteria. All bias searches are prefixed with `bias_`.\n\nBiasing (unlike filtering) also allow unmatched addresses to appear with lower precedence.\n\nFor instance, can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.\n\nNo bias effect applies to bias terms that are invalid. e.g. `bias_postcode=SW1A2AAA`\n\nYou may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Restrict results to `E1`, `E2` and `E3` outward codes: <code>bias_postcode_outward=e1,e2,e3</code>.\n\nAll biases can accept multiple terms unless stated otherwise below.\n\nA combined maximum of **5** terms are allowed across all biases.\n\n## Suggestion Format\n\nThe suggestion format is prone to change over time. Attempts to parse the suggestion may result in your integration breaking. Instead use the suggestion as-is.\n\n## Rate Limiting\n\nYou can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.\n\n| Header                  | Description                                                                            |\n| ----------------------- | -------------------------------------------------------------------------------------- |\n| `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |\n| `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |\n| `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |\n\n## Pricing\n\nThis API currently does not affect your balance. However, resolving a suggestion into a full address requires a paid request.\n\nPlease note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an address may be disrupted via tightened rate limits. Continued misuse will result in account suspension.\n",
-        "operationId": "AddressAutocomplete",
+        "description": "The Address Autocomplete API delivers address suggestions in order of relevance based on a provided query. It aids real-time address autofill implementations.\n\nConsider using our Address Autocomplete JavaScript libraries to add address lookup to a form in moments rather than interacting with this API directly.\n\n## API Usage\n\nImplementing our Address Autocomplete API involves:\n\n1. Fetch address suggestions with `/autocomplete/addresses`\n2. Acquire the complete address using the ID from the suggestion\n\nStep 2 will decrement your lookup balance.\n\nNote that step 1 is not a free standalone resource. Integrations that consistently make autocomplete requests without a paid Step 2 request will be rate limited and then suspended.\n\n## Query Filters\n\nRefine results by appending filters to your querystring, e.g., `postcode=sw1a2aa` for postcode `SW1A 2AA`. Invalid filters return an empty set without affecting your lookup count.\n\nTo apply multiple filter terms, use a comma-separated list, e.g., `postcode_outward=e1,e2,e3` combines result sets for E1, E2, and E3. Unless otherwise specified, all filters support multiple terms.\n\nCombine filters by `AND` logic, for instance, `su_organisation_indicator=Y&postcode_area=n`. The maximum allowed filter terms is **10**.\n\n## Address Bias\n\nPreface bias searches with `bias_` to boost certain address results. Unlike filters, biasing allows unmatched addresses to appear with lower priority.\n\nFor example, use `bias_postcode_area=SW,SE` to favor addresses in the `SW` and `SE` postcode areas. Invalid bias terms have no effect.\n\nMultiple bias terms are allowed unless stated otherwise, with a combined maximum of **5**.\n\n## Suggestion Format\n\nThe suggestion format is subject to change. We recommend using the suggestion as-is to prevent potential integration issues.\n\n## Rate Limiting and Cost\n\nThe rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.\n\nAutocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.\n",
+        "operationId": "FindAddress",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
             "name": "query",
-            "in": "query",
-            "description": "Specifies the address you wish to query. Query can be shortened to `q=`",
-            "style": "form",
+            "description": "**Address Query**\n\nThe partial address string entered by the user to autocomplete.\n",
+            "example": "10 downing street lo",
             "explode": false,
+            "in": "query",
             "schema": {
-              "type": "string"
-            }
+              "type": "string",
+              "maxLength": 150
+            },
+            "style": "form"
           },
           {
-            "name": "context",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/Context"
-            }
+            "$ref": "#/components/parameters/ContextParam"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "style": "form",
-            "description": "Limits number of address suggestions unless a postcode is detected. In this instance entire list of addreses for that postcode is returned.\n",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LimitParam"
-            }
+            "$ref": "#/components/parameters/LimitParam"
           },
           {
-            "name": "postcode_outward",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeOutwardParam"
-            }
+            "$ref": "#/components/parameters/BiasLonLatParam"
           },
           {
-            "name": "postcode",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeParam"
-            }
+            "$ref": "#/components/parameters/BiasIpParam"
           },
           {
-            "name": "postcode_area",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeAreaParam"
-            }
+            "$ref": "#/components/parameters/BoxParam"
           },
           {
-            "name": "postcode_sector",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeSectorParam"
-            }
+            "$ref": "#/components/parameters/PostcodeOutwardParam"
           },
           {
-            "name": "post_town",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostTownParam"
-            }
+            "$ref": "#/components/parameters/PostcodeParam"
           },
           {
-            "name": "uprn",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UPRNParam"
-            }
+            "$ref": "#/components/parameters/PostcodeAreaParam"
           },
           {
-            "name": "country",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/CountryParam"
-            }
+            "$ref": "#/components/parameters/PostcodeSectorParam"
           },
           {
-            "name": "postcode_type",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeTypeParam"
-            }
+            "$ref": "#/components/parameters/PostTownParam"
           },
           {
-            "name": "su_organisation_indicator",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/SmallUserParam"
-            }
+            "$ref": "#/components/parameters/UPRNParam"
           },
           {
-            "name": "box",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BoxParam"
-            }
+            "$ref": "#/components/parameters/CountryParam"
           },
           {
-            "name": "bias_postcode_outward",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeOutwardParam"
-            }
+            "$ref": "#/components/parameters/PostcodeTypeParam"
           },
           {
-            "name": "bias_postcode",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeParam"
-            }
+            "$ref": "#/components/parameters/SmallUserParam"
           },
           {
-            "name": "bias_postcode_area",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeAreaParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeOutwardParam"
           },
           {
-            "name": "bias_postcode_sector",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeSectorParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeParam"
           },
           {
-            "name": "bias_post_town",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPosttownParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeAreaParam"
           },
           {
-            "name": "bias_thoroughfare",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasThoroughfareParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeSectorParam"
           },
           {
-            "name": "bias_country",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasCountryParam"
-            }
+            "$ref": "#/components/parameters/BiasPosttownParam"
           },
           {
-            "name": "bias_lonlat",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasLonLatParam"
-            }
+            "$ref": "#/components/parameters/BiasThoroughfareParam"
           },
           {
-            "name": "bias_ip",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasIpParam"
-            }
+            "$ref": "#/components/parameters/BiasCountryParam"
           }
         ],
         "responses": {
@@ -1003,6 +868,96 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutocompleteResponse"
+                },
+                "examples": {
+                  "GBR": {
+                    "summary": "Example response for GBR context",
+                    "value": {
+                      "result": {
+                        "hits": [
+                          {
+                            "id": "paf_23747771",
+                            "suggestion": "Prime Minister & First Lord Of The Treasury, 10 Downing Street, London, SW1A",
+                            "udprn": 23747771,
+                            "urls": {
+                              "udprn": "/v1/udprn/23747771"
+                            }
+                          },
+                          {
+                            "id": "paf_26245117",
+                            "suggestion": "Flat 10, Downing Court, Grenville Street, London, WC1N",
+                            "udprn": 26245117,
+                            "urls": {
+                              "udprn": "/v1/udprn/26245117"
+                            }
+                          }
+                        ]
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  },
+                  "USA": {
+                    "summary": "Example response for USA context",
+                    "value": {
+                      "result": {
+                        "hits": [
+                          {
+                            "suggestion": "10 Downing St, Montpelier, VT, 05602",
+                            "urls": {},
+                            "id": "usps_V210079628|10||3797"
+                          },
+                          {
+                            "suggestion": "10 Ten Downing St, Fountain Inn, SC, 29644",
+                            "urls": {},
+                            "id": "usps_X219061579|10||5031"
+                          },
+                          {
+                            "suggestion": "10 Downing St Apt 1, Montpelier, VT, 05602",
+                            "urls": {},
+                            "id": "usps_V210079629|10|1|3798"
+                          },
+                          {
+                            "suggestion": "2100 N Downing St Unit 10, Denver, CO, 80205",
+                            "urls": {},
+                            "id": "usps_Z125260298|2100|10|5272"
+                          },
+                          {
+                            "suggestion": "10 S Downing St, Denver, CO, 80209",
+                            "urls": {},
+                            "id": "usps_Z105732754|10||2411"
+                          },
+                          {
+                            "suggestion": "10 Downing St, Hollister, MO, 65672",
+                            "urls": {},
+                            "id": "usps_W112200302|10||5568"
+                          },
+                          {
+                            "suggestion": "10 Downing St, Greensboro, NC, 27410",
+                            "urls": {},
+                            "id": "usps_Y127860601|10||2448"
+                          },
+                          {
+                            "suggestion": "1 S Downing St Apt 10, Denver, CO, 80209",
+                            "urls": {},
+                            "id": "usps_Z105731302|1|10|2440"
+                          },
+                          {
+                            "suggestion": "1560 N Downing St Apt 10, Denver, CO, 80218",
+                            "urls": {},
+                            "id": "usps_Z122881416|1560|10|1538"
+                          },
+                          {
+                            "suggestion": "2202 N Downing St Apt 10, Denver, CO, 80205",
+                            "urls": {},
+                            "id": "usps_Z122964113|2202|10|5264"
+                          }
+                        ]
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -1037,29 +992,27 @@
         "tags": [
           "Address Search"
         ],
-        "summary": "Resolve Address (GBR)",
-        "operationId": "Resolve",
+        "summary": "Resolve Address",
+        "operationId": "ResolveAddress",
         "description": "Resolves an address autocompletion by its address ID.\n\nResolved addresses (including global addresses) are returned in a UK format (up to 3 address lines) using UK nomenclature (like postcode and county).\n",
         "parameters": [
           {
             "name": "address",
             "in": "path",
-            "description": "ID of address suggestion",
+            "description": "**ID of address suggestion**\n\nID of address suggestion provided by the API to fully resolve.\n",
             "required": true,
             "style": "simple",
             "explode": false,
+            "example": "paf_23747771",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -1104,29 +1057,27 @@
         "tags": [
           "Address Search"
         ],
-        "summary": "Resolve Address (USA)",
-        "operationId": "ResolveUsa",
+        "summary": "Retrieve Address",
+        "operationId": "RetrieveAddress",
         "description": "Resolves an address autocompletion by its address ID.\n\nResolved addresses (including global addresses) are returned in a US format (up to 2 address lines) using US nomenclature (like zipcode, state and city).\n",
         "parameters": [
           {
             "name": "address",
             "in": "path",
-            "description": "ID of address suggestion",
+            "description": "**ID of address suggestion**\n\nID of address suggestion provided by the API to fully retrieve.\n",
             "required": true,
             "style": "simple",
             "explode": false,
+            "example": "usps_V118834572|310||3191",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -1176,19 +1127,12 @@
         "operationId": "Addresses",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "required": true,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
             "name": "query",
             "in": "query",
-            "description": "Specifies the address you wish to query. Query can be shortened to `q=`",
+            "description": "Specifies the address you wish to query.",
             "style": "form",
             "explode": false,
             "schema": {
@@ -1196,211 +1140,76 @@
             }
           },
           {
-            "name": "limit",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LimitParam"
-            }
+            "$ref": "#/components/parameters/LimitParam"
           },
           {
-            "name": "page",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PageParam"
-            }
+            "$ref": "#/components/parameters/PageParam"
           },
           {
-            "name": "filter",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/FilterParam"
-            }
+            "$ref": "#/components/parameters/FilterParam"
           },
           {
-            "name": "lon",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/AddressLongitudeParam"
-            }
+            "$ref": "#/components/parameters/AddressLongitudeParam"
           },
           {
-            "name": "lat",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/AddressLatitudeParam"
-            }
+            "$ref": "#/components/parameters/AddressLatitudeParam"
           },
           {
-            "name": "postcode_outward",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeOutwardParam"
-            }
+            "$ref": "#/components/parameters/PostcodeOutwardParam"
           },
           {
-            "name": "postcode",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeParam"
-            }
+            "$ref": "#/components/parameters/PostcodeParam"
           },
           {
-            "name": "postcode_area",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeAreaParam"
-            }
+            "$ref": "#/components/parameters/PostcodeAreaParam"
           },
           {
-            "name": "postcode_sector",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeSectorParam"
-            }
+            "$ref": "#/components/parameters/PostcodeSectorParam"
           },
           {
-            "name": "post_town",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostTownParam"
-            }
+            "$ref": "#/components/parameters/PostTownParam"
           },
           {
-            "name": "uprn",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UPRNParam"
-            }
+            "$ref": "#/components/parameters/UPRNParam"
           },
           {
-            "name": "country",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/CountryParam"
-            }
+            "$ref": "#/components/parameters/CountryParam"
           },
           {
-            "name": "postcode_type",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/PostcodeTypeParam"
-            }
+            "$ref": "#/components/parameters/PostcodeTypeParam"
           },
           {
-            "name": "su_organisation_indicator",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/SmallUserParam"
-            }
+            "$ref": "#/components/parameters/SmallUserParam"
           },
           {
-            "name": "box",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BoxParam"
-            }
+            "$ref": "#/components/parameters/BoxParam"
           },
           {
-            "name": "bias_postcode_outward",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeOutwardParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeOutwardParam"
           },
           {
-            "name": "bias_postcode",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeParam"
           },
           {
-            "name": "bias_postcode_area",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeAreaParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeAreaParam"
           },
           {
-            "name": "bias_postcode_sector",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPostcodeSectorParam"
-            }
+            "$ref": "#/components/parameters/BiasPostcodeSectorParam"
           },
           {
-            "name": "bias_post_town",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasPosttownParam"
-            }
+            "$ref": "#/components/parameters/BiasPosttownParam"
           },
           {
-            "name": "bias_thoroughfare",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasThoroughfareParam"
-            }
+            "$ref": "#/components/parameters/BiasThoroughfareParam"
           },
           {
-            "name": "bias_country",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasCountryParam"
-            }
+            "$ref": "#/components/parameters/BiasCountryParam"
           },
           {
-            "name": "bias_lonlat",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasLonLatParam"
-            }
+            "$ref": "#/components/parameters/BiasLonLatParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -1455,18 +1264,11 @@
           "Place Search"
         ],
         "summary": "Find Place",
-        "description": "Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.\n\nThis API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.\n\n## Implementing Place Autocomplete\n\nExtracting the full information of a place is a 2 step process:\n\n1. Retrieve place suggestions via /places\n2. Retrieve the entire place with the ID provided in the suggestion\n\n## Suggestion Format\n\nEach place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.\n\n## Rate Limiting\n\nYou can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.\n\n| Header                  | Description                                                                            |\n| ----------------------- | -------------------------------------------------------------------------------------- |\n| `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |\n| `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |\n| `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |\n\n## Pricing\n\nThis API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.\n\nPlease note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.\n",
+        "description": "Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.\n\nThis API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.\n\n## Implementing Place Autocomplete\n\nExtracting the full information of a place is a 2 step process:\n\n1. Retrieve place suggestions via /places\n2. Retrieve the entire place with the ID provided in the suggestion\n\n## Suggestion Format\n\nEach place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.\n\n## Rate Limiting and Cost\n\nThe rate limit for the Autocomplete API is 3000 requests per 5 minutes. HTTP Headers inform about the current rate limit.\n\nAutocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may result in rate limitation or suspension.\n",
         "operationId": "FindPlace",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "required": true,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
             "name": "query",
@@ -1476,52 +1278,82 @@
             "explode": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "allowReserved": true
           },
           {
-            "name": "country_iso",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/CountryIsoParam"
-            }
+            "$ref": "#/components/parameters/CountryIsoParam"
           },
           {
-            "name": "bias_country_iso",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasCountryIsoParam"
-            }
+            "$ref": "#/components/parameters/BiasCountryIsoParam"
           },
           {
-            "name": "bias_lonlat",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasLonLatParam"
-            }
+            "$ref": "#/components/parameters/BiasLonLatParam"
           },
           {
-            "name": "bias_ip",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/BiasIpParam"
-            }
+            "$ref": "#/components/parameters/BiasIpParam"
           }
         ],
         "responses": {
           "200": {
             "description": "Success",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "The maximum number of requests that can be made in 5 minutes",
+                "schema": {
+                  "type": "number",
+                  "format": "int32"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "The remaining requests within the current rate limit window",
+                "schema": {
+                  "type": "number",
+                  "format": "int32"
+                }
+              },
+              "X-RateLimit-Reset": {
+                "description": "The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds.\n",
+                "schema": {
+                  "type": "number",
+                  "format": "int32"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlaceResponse"
+                },
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "result": {
+                        "hits": [
+                          {
+                            "id": "geonames_2643743",
+                            "name": "London",
+                            "descriptive_name": "London, Greater London, England",
+                            "country_iso": "GBR"
+                          },
+                          {
+                            "id": "geonames_4517009",
+                            "name": "London",
+                            "descriptive_name": "London, Madison County, Ohio",
+                            "country_iso": "USA"
+                          },
+                          {
+                            "id": "geonames_4298960",
+                            "name": "London",
+                            "descriptive_name": "London, Laurel County, Kentucky",
+                            "country_iso": "USA"
+                          }
+                        ]
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -1551,7 +1383,7 @@
         ]
       }
     },
-    "/places/${place}": {
+    "/places/{place}": {
       "get": {
         "tags": [
           "Place Search"
@@ -1572,13 +1404,10 @@
             }
           },
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -1589,6 +1418,163 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResolvePlaceResponse"
+                },
+                "examples": {
+                  "Valid Place": {
+                    "value": {
+                      "result": {
+                        "id": "geonames_2643743",
+                        "dataset": "geonames",
+                        "name": "London",
+                        "descriptive_name": "London, Greater London, England",
+                        "language": "en",
+                        "longitude": -0.12574,
+                        "latitude": 51.50853,
+                        "country_iso": "GBR",
+                        "native": {
+                          "admin1_code": "ENG",
+                          "admin2_name": "Greater London",
+                          "geonameid": 2643743,
+                          "timezone": "Europe/London",
+                          "latitude": 51.50853,
+                          "language": "en",
+                          "dem": 25,
+                          "admin4_code": "",
+                          "admin1_geonameid": 6269131,
+                          "alternatenames": [
+                            "ILondon",
+                            "LON",
+                            "Lakana",
+                            "Landan",
+                            "Landen",
+                            "Ljondan",
+                            "Llundain",
+                            "Lodoni",
+                            "Londain",
+                            "Londan",
+                            "Londar",
+                            "Londe",
+                            "Londen",
+                            "Londin",
+                            "Londinium",
+                            "Londino",
+                            "Londn",
+                            "London",
+                            "London osh",
+                            "Londona",
+                            "Londonas",
+                            "Londoni",
+                            "Londono",
+                            "Londons",
+                            "Londonu",
+                            "Londra",
+                            "Londres",
+                            "Londrez",
+                            "Londri",
+                            "Londro",
+                            "Londye",
+                            "Londyn",
+                            "Londýn",
+                            "Lonn",
+                            "Lontoo",
+                            "Loundres",
+                            "Luan GJon",
+                            "Lun-tun",
+                            "Lunden",
+                            "Lundra",
+                            "Lundun",
+                            "Lundunir",
+                            "Lundúnir",
+                            "Lung-dung",
+                            "Lunnainn",
+                            "Lunnin",
+                            "Lunnon",
+                            "Luân Đôn",
+                            "Lùn-tûn",
+                            "Lùng-dŭng",
+                            "Lûn-tun",
+                            "Lākana",
+                            "Lůndůn",
+                            "Lọndọnu",
+                            "Ranana",
+                            "Rānana",
+                            "ilantan",
+                            "ladana",
+                            "landan",
+                            "landana",
+                            "leondeon",
+                            "lndn",
+                            "london",
+                            "londoni",
+                            "lun dui",
+                            "lun dun",
+                            "lwndwn",
+                            "lxndxn",
+                            "rondon",
+                            "Łondra",
+                            "Λονδίνο",
+                            "Лондан",
+                            "Лондон",
+                            "Лондон ош",
+                            "Лондонъ",
+                            "Лёндан",
+                            "Լոնդոն",
+                            "לאנדאן",
+                            "לונדון",
+                            "لأندأن",
+                            "لندن",
+                            "لوندون",
+                            "لەندەن",
+                            "ܠܘܢܕܘܢ",
+                            "लंडन",
+                            "लंदन",
+                            "लण्डन",
+                            "लन्डन्",
+                            "लन्दन",
+                            "লন্ডন",
+                            "ਲੰਡਨ",
+                            "લંડન",
+                            "ଲ୍ଡନ",
+                            "இலண்டன்",
+                            "లండన్",
+                            "ಲಂಡನ್",
+                            "ലണ്ടൻ",
+                            "ලන්ඩන්",
+                            "ลอนดอน",
+                            "ລອນດອນ",
+                            "ལོན་ཊོན།",
+                            "လန်ဒန်မြို့",
+                            "ლონდონი",
+                            "ለንደን",
+                            "ᎫᎴ ᏗᏍᎪᏂᎯᏱ",
+                            "ロンドン",
+                            "伦敦",
+                            "倫敦",
+                            "런던"
+                          ],
+                          "cc2": [],
+                          "admin2_code": "GLA",
+                          "modification_date": "2022-03-09T00:00:00.000Z",
+                          "asciiname": "London",
+                          "id": "geonames_2643743",
+                          "feature_code": "PPLC",
+                          "country_iso": "GBR",
+                          "longitude": -0.12574,
+                          "elevation": null,
+                          "admin2_geonameid": 2648110,
+                          "admin1_name": "England",
+                          "population": "8961989",
+                          "country_code": "GB",
+                          "feature_class": "P",
+                          "name": "London",
+                          "admin3_code": "",
+                          "dataset": "geonames"
+                        }
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -1628,14 +1614,7 @@
         "operationId": "ListLicensees",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
             "name": "starting_after",
@@ -1649,23 +1628,10 @@
             }
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Specify the maximum number of results to return per page. Default and maximum is `100`.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LimitParam"
-            }
+            "$ref": "#/components/parameters/LimitParam"
           },
           {
             "name": "query",
@@ -1710,23 +1676,10 @@
         "operationId": "CreateLicensee",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "requestBody": {
@@ -1773,33 +1726,13 @@
         "operationId": "RetrieveLicensee",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "licensee",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LicenseeParam"
-            }
+            "$ref": "#/components/parameters/LicenseePathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "responses": {
@@ -1835,33 +1768,13 @@
         "operationId": "DeleteLicensee",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "licensee",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LicenseeParam"
-            }
+            "$ref": "#/components/parameters/LicenseePathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "responses": {
@@ -1931,33 +1844,13 @@
         "operationId": "UpdateLicensee",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "licensee",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/LicenseeParam"
-            }
+            "$ref": "#/components/parameters/LicenseePathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "requestBody": {
@@ -1997,30 +1890,17 @@
     "/keys/{key}/configs": {
       "get": {
         "tags": [
-          "Configs"
+          "Configurations"
         ],
         "summary": "List",
         "description": "Lists configurations associated with a key",
         "operationId": "ListConfigs",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "responses": {
@@ -2058,30 +1938,17 @@
       },
       "post": {
         "tags": [
-          "Configs"
+          "Configurations"
         ],
         "summary": "Create",
-        "description": "Create a config",
+        "description": "Create a configuration",
         "operationId": "CreateConfig",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "requestBody": {
@@ -2131,31 +1998,17 @@
     "/keys/{key}/configs/{config}": {
       "get": {
         "tags": [
-          "Configs"
+          "Configurations"
         ],
         "summary": "Retrieve",
-        "description": "Retrieve config object by name",
+        "description": "Retrieve configuration object by name",
         "operationId": "RetrieveConfig",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "config",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ConfigParam"
-            }
+            "$ref": "#/components/parameters/ConfigParam"
           }
         ],
         "responses": {
@@ -2194,40 +2047,20 @@
       },
       "delete": {
         "tags": [
-          "Configs"
+          "Configurations"
         ],
         "summary": "Delete",
         "description": "Permanently deletes a configuration object.",
         "operationId": "DeleteConfig",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "config",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ConfigParam"
-            }
+            "$ref": "#/components/parameters/ConfigParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "responses": {
@@ -2310,40 +2143,20 @@
       },
       "post": {
         "tags": [
-          "Configs"
+          "Configurations"
         ],
         "summary": "Update",
         "description": "Updates configuration object",
         "operationId": "UpdateConfig",
         "parameters": [
           {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
-            "name": "config",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ConfigParam"
-            }
+            "$ref": "#/components/parameters/ConfigParam"
           },
           {
-            "name": "user_token",
-            "in": "query",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/UserTokenParam"
-            }
+            "$ref": "#/components/parameters/UserTokenParam"
           }
         ],
         "requestBody": {
@@ -2410,14 +2223,7 @@
         "operationId": "EmailValidation",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "required": true,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
             "name": "query",
@@ -2428,7 +2234,11 @@
             "style": "form",
             "schema": {
               "type": "string"
-            }
+            },
+            "allowReserved": true
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -2438,6 +2248,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EmailResponse"
+                },
+                "examples": {
+                  "Valid Email": {
+                    "value": {
+                      "result": {
+                        "result": "deliverable",
+                        "deliverable": true,
+                        "catchall": false,
+                        "free": false,
+                        "role": true,
+                        "disposable": false
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -2477,14 +2303,7 @@
         "operationId": "PhoneNumberValidation",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "style": "form",
-            "required": true,
-            "explode": false,
-            "schema": {
-              "$ref": "#/components/schemas/ApiKeyParam"
-            }
+            "$ref": "#/components/parameters/ApiKeyParam"
           },
           {
             "name": "query",
@@ -2495,7 +2314,8 @@
             "style": "form",
             "schema": {
               "type": "string"
-            }
+            },
+            "allowReserved": true
           },
           {
             "name": "current_carrier",
@@ -2510,6 +2330,9 @@
                 "true"
               ]
             }
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
           }
         ],
         "responses": {
@@ -2519,6 +2342,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PhoneNumberResponse"
+                },
+                "examples": {
+                  "Valid Phone Number": {
+                    "value": {
+                      "result": {
+                        "valid": true,
+                        "national_format": "020 7112 8019",
+                        "international_format": "+44 20 7112 8019",
+                        "iso_country": "GBR",
+                        "iso_country_2": "GB",
+                        "country": "United Kingdom",
+                        "current_carrier": {
+                          "network_code": null,
+                          "name": "Invomo Ltd",
+                          "country": "GB",
+                          "network_type": "landline"
+                        },
+                        "original_carrier": {
+                          "network_code": null,
+                          "name": "Invomo Ltd",
+                          "country": "GB",
+                          "network_type": "landline"
+                        }
+                      },
+                      "code": 2000,
+                      "message": "Success"
+                    }
+                  }
                 }
               }
             }
@@ -2570,34 +2421,8 @@
       "geonames": {
         "$ref": "#/components/schemas/GeonamesPlace"
       },
-      "paf_postcode": {
-        "title": "Postcode",
-        "type": "string",
-        "description": "Correctly formatted postcode. Capitalised and spaced.",
-        "maxLength": 8,
-        "minLength": 6,
-        "example": "SW1A 2AA"
-      },
-      "ApiKeyParam": {
-        "title": "API Key",
-        "type": "string",
-        "description": "Your API Key. Typically beings `ak_`.\n\nAvailable from your dashboard\n",
-        "example": "ak_test"
-      },
-      "FilterParam": {
-        "title": "Filter",
-        "type": "string",
-        "description": "Comma separated whitelist of address elements to return. \n\nE.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response\n",
-        "example": "line_1,line_2,line_3"
-      },
-      "PageParam": {
-        "title": "Page",
-        "type": "integer",
-        "format": "int32",
-        "description": "0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0. \n\nA small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).\n",
-        "minimum": 0,
-        "default": 0,
-        "example": 0
+      "here": {
+        "$ref": "#/components/schemas/HereAddress"
       },
       "ID": {
         "title": "ID",
@@ -2650,11 +2475,18 @@
         "example": ""
       },
       "paf_post_town": {
-        "title": "Post Town",
-        "type": "string",
-        "description": "A Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.",
         "maxLength": 30,
+        "type": "string",
+        "description": "**Filter by Town or City\"\nA Post Town is mandatory for delivery of mail to a Delivery Point. This is not necessarily the nearest town geographically, but a routing instruction to the Royal Mail delivery office sorting mail for that Delivery Point. A Post Town will always be present in every address, and for some Localities the Post Town will be the only locality element present.\n",
         "example": "London"
+      },
+      "paf_postcode": {
+        "title": "Postcode",
+        "type": "string",
+        "description": "Correctly formatted postcode. Capitalised and spaced.",
+        "maxLength": 8,
+        "minLength": 6,
+        "example": "SW1A 2AA"
       },
       "paf_county": {
         "title": "County",
@@ -2778,13 +2610,12 @@
         "example": "Prime Minister &amp; First Lord Of The Treasury"
       },
       "paf_postcode_type": {
-        "title": "Postcode Type",
         "enum": [
           "S",
           "L",
           ""
         ],
-        "type": "string",
+        "title": "Postcode Type",
         "description": "This indicates the type of user. It can only take the values 'S' or 'L' indicating small or large respectively. Large User Postcodes. These are assigned to one single address either due to the large volume of mail received at that address, or because a PO Box or Selectapost service has been set up. Small User Postcodes. These identify a group of Delivery Points.\n\nOn average there are 19 Delivery Points per Postcode. However this can vary between 1 and, in some cases, 100. There will never be more than 100 Delivery Points on a Postcode."
       },
       "paf_su_organisation_indicator": {
@@ -3328,7 +3159,23 @@
         "enum": [
           "en",
           "cy",
-          "ga"
+          "ga",
+          "fo",
+          "pt",
+          "es",
+          "fr",
+          "fi",
+          "ca",
+          "wa",
+          "it",
+          "nl",
+          "de",
+          "da",
+          "no",
+          "mt",
+          "sv",
+          "is",
+          "hr"
         ]
       },
       "AddressBaseCore": {
@@ -3600,7 +3447,7 @@
       },
       "AbAddress": {
         "title": "AddressBase Core",
-        "description": "Address from Ordnance Survey AddressBase Ccore dataset.\n\nPlease contact us to have this enabled on your account.\n\nAll AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.",
+        "description": "Address from Ordnance Survey AddressBase Core dataset.\n\nPlease contact us to have this enabled on your account.\n\nAll AddressBase Core address have a UPRN and a rooftop geolocation available however they may not have a UDPRN.",
         "allOf": [
           {
             "$ref": "#/components/schemas/PafBase"
@@ -3656,7 +3503,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4\n  - `herewe` (Western Europe) Western Europe Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3666,7 +3513,8 @@
           "usps",
           "ecaf",
           "ecad",
-          "ab"
+          "ab",
+          "herewe"
         ]
       },
       "CountryISO": {
@@ -3681,7 +3529,33 @@
           "USA",
           "PRI",
           "GUM",
-          "IRL"
+          "IRL",
+          "VAT",
+          "FRA",
+          "GRL",
+          "NLD",
+          "LUX",
+          "AUT",
+          "GIB",
+          "LIE",
+          "FIN",
+          "UNI",
+          "ISL",
+          "CHE",
+          "PRT",
+          "BEL",
+          "MCO",
+          "ITA",
+          "FRO",
+          "NOR",
+          "DNK",
+          "SMR",
+          "MLT",
+          "AND",
+          "SWE",
+          "DEU",
+          "ESP",
+          "SJM"
         ]
       },
       "CountryISO2": {
@@ -3696,26 +3570,78 @@
           "US",
           "PR",
           "GU",
-          "IE"
+          "IE",
+          "VA",
+          "FR",
+          "GL",
+          "NL",
+          "LU",
+          "AT",
+          "GI",
+          "LI",
+          "FI",
+          "GB",
+          "IS",
+          "CH",
+          "PT",
+          "BE",
+          "MC",
+          "IT",
+          "FO",
+          "NO",
+          "DK",
+          "SM",
+          "MT",
+          "AD",
+          "SE",
+          "DE",
+          "ES",
+          "SJ"
         ]
       },
       "Country": {
         "title": "Country",
         "type": "string",
         "description": "  Full country names (ISO 3166)\n",
-        "example": "England",
         "enum": [
-          "United States",
-          "Guam",
-          "Puerto Rico",
+          "United Kingdom",
           "England",
           "Scotland",
           "Wales",
           "Northern Ireland",
+          "Isle of Man",
           "Jersey",
           "Guernsey",
-          "Isle of Man",
-          "Ireland"
+          "Guam",
+          "United States",
+          "Puerto Rico",
+          "Ireland",
+          "Vatican City",
+          "France",
+          "Greenland",
+          "Netherlands",
+          "Luxembourg",
+          "Austria",
+          "Gibraltar",
+          "Liechtenstein",
+          "Finland",
+          "United Kingdom",
+          "Iceland",
+          "Switzerland",
+          "Portugal",
+          "Belgium",
+          "Monaco",
+          "Italy",
+          "Faroe Islands",
+          "Norway",
+          "Denmark",
+          "San Marino",
+          "Malta",
+          "Andorra",
+          "Sweden",
+          "Germany",
+          "Spain",
+          "Svalbard and Jan Mayen"
         ]
       },
       "EircBase": {
@@ -4321,24 +4247,28 @@
       "zip_code": {
         "title": "ZIP Code",
         "type": "string",
+        "maxLength": 5,
         "description": "A 5-digit code that identifies a specific geographic delivery area. ZIP Codes can represent an area within a state, or a single building or company that has a very high mail volume. ",
         "example": "1234"
       },
       "zip_plus_4_code": {
         "title": "ZIP + 4 Code",
         "type": "string",
+        "maxLength": 9,
         "description": "Nine-digit code that identifies a small geographic delivery area that is serviceable by a single carrier; appears in the last line of the address on a mail piece.",
         "example": "12345-6789"
       },
       "update_key_number": {
         "title": "Update Key Number",
         "type": "string",
+        "maxLength": 10,
         "description": "Field that contains a number that uniquely identifies a record; used to identify the base record to which an add or delete transaction is being directed. The Update Key Number field is used only when applying transactions to the base file; it is not used in address matching and remains fixed for the life of the record. The field is alphanumeric and consists of the database segment code (V1, V2, W1, W2, X1, X2, Y1, Y2, Z1, or Z2) and eight characters containing an alphanumeric value ranging from 00000001 to AAAAAAAA.",
         "example": "00000001"
       },
       "record_type_code": {
         "title": "Record Type Code",
         "type": "string",
+        "maxLength": 1,
         "description": "An alphabetic value that identifies the type of data in the record. - G = General delivery (5-Digit ZIP, ZIP + 4, and Carrier Route products) - H = High-rise (ZIP + 4 only) - F = Firm (ZIP + 4 only) - S = Street (5-Digit ZIP, ZIP + 4, and Carrier Route products) - P = PO Box (5-Digit ZIP, ZIP + 4, and Carrier Route products) - R = Rural route/contract (5-Digit ZIP, ZIP + 4, and Carrier Route products) - M = Multi-carrier (Carrier Route product only)",
         "enum": [
           "G",
@@ -4354,45 +4284,53 @@
       "carrier_route_id": {
         "title": "Carrier Route ID",
         "type": "string",
+        "maxLength": 4,
         "description": "A 4 character ID identifying the postal route for the address.\nThe first character indicates the route type. Specifically:\n- \"B\" indicates PO Box\n- \"H\" indicates highway\n- \"C\" indicates city\n- \"G\" indicates general\n- \"R\" indicates rural",
         "example": "R012"
       },
       "street_pre_directional_abbreviation": {
         "title": "Street Pre-Directional Abbreviation",
         "type": "string",
+        "maxLength": 2,
         "description": "A geographic direction that precedes the street name."
       },
       "street_name": {
         "title": "Street Name",
         "type": "string",
+        "maxLength": 28,
         "description": "The official name of a street as assigned by a local governing authority. The Street Name field contains only the street name and does not include directionals (EAST, WEST, etc.) or suffixes (ST, DR, BLVD, etc.). This element may also contain literals, such as PO BOX, GENERAL DELIVERY, USS, PSC, or UNIT.",
         "example": "GOSHEN"
       },
       "street_suffix_abbreviation": {
         "title": "Street Suffix Abbreviation",
         "type": "string",
+        "maxLength": 4,
         "description": "Code that is the standard USPS abbreviation for the trailing designator in a street address. ",
         "example": "ST"
       },
       "street_post_directional_abbreviation": {
         "title": "Street Post Directional Abbreviation",
         "type": "string",
+        "maxLength": 2,
         "description": "A geographic direction that follows the street name."
       },
       "building_or_firm_name": {
         "title": "Building or Firm Name",
         "type": "string",
+        "maxLength": 40,
         "description": "The name of a company, building, apartment complex, shopping center, or other distinguishing secondary address information.\nThis field is normally used with firm and highrise records but may also contain literals such as “Postmaster” or “United States Postal Service.”",
         "example": "POSTMASTER"
       },
       "address_secondary_abbreviation": {
         "title": "Address Secondary Abbreviation",
         "type": "string",
+        "maxLength": 4,
         "description": "A descriptive code used to identify the type of address secondary range information in the Address Secondary Range field. \nThis code may be useful in address matching, e.g., the secondary address numbers may indicate apartment, suite, or trailer numbers."
       },
       "base_alternate_code": {
         "title": "Base Alternate Code",
         "type": "string",
+        "maxLength": 1,
         "description": "Code that specifies whether a record is a base (preferred) or alternate record. \nBase records (represented as \"B\") can represent a range of addresses or an individual address, such as a firm record, while alternate records (represented as \"A\") are individual delivery points. Base records are generally preferred over alternate records.\nGovernment deliveries will only be listed on alternate records with the appropriate government building indicator (federal, state, or city) set.",
         "enum": [
           "A",
@@ -4403,6 +4341,7 @@
       "lacs_status_indicator": {
         "title": "LACS Status Indicator",
         "type": "string",
+        "maxLength": 1,
         "description": "The Locatable Address Conversion Service (LACS) indicator describes records that have been converted to the LACS system (a product/system in a different USPS® product line that allows mailers to identify and convert a rural route address to a city-style address). Rural route and some city addresses are being modified to city-style addresses so that emergency services (e.g., ambulances, police) can find these addresses more efficiently.\n- L = LACS address: The old (usually rural-route) address that has been converted for the LACS system.\n- Blank = Not applicable",
         "enum": [
           "",
@@ -4412,6 +4351,7 @@
       "government_building_indicator": {
         "title": "Government Building Indicator",
         "type": "string",
+        "maxLength": 1,
         "description": "An alphabetic value that identifies the type of government agency at the delivery point and/or whether a firm is the only delivery at an address. For this purpose, \"address\" is defined as the complete delivery line (e.g., complete street address and, if included as part of the firm record, the secondary abbreviation and/or address secondary number).\n- A = City government building—alternates only\n- B = Federal government building—alternates only\n- C = State government building—alternates only\n- D = Firm only—base and alternates\n- E = City government building and firm only—alternates only\n- F = Federal government building and firm only—alternates only\n- G = State government building and firm only—alternates only",
         "enum": [
           "",
@@ -4427,6 +4367,7 @@
       "state_abbreviation": {
         "title": "State Abbreviation",
         "type": "string",
+        "maxLength": 2,
         "description": "A 2-character abbreviation for the name of a state, U.S. territory, or armed forces ZIP Code designation. If APO/FPO/DPO, then the state abbreviation will be “AA,” “AE,” or “AP.”",
         "example": "NY"
       },
@@ -4439,17 +4380,20 @@
       "municipality_city_state_key": {
         "title": "Municipality City State Key",
         "type": "string",
+        "maxLength": 6,
         "description": "Municipality City State Key. Currently blank."
       },
       "urbanization_city_state_key": {
         "title": "Urbanization City State Key",
         "type": "string",
+        "maxLength": 6,
         "description": "An index to the City State file that provides the urbanization name for this delivery range.",
         "example": "V18475"
       },
       "preferred_last_line_city_state_key": {
         "title": "Preferred Last Line City State Key",
         "type": "string",
+        "maxLength": 6,
         "description": "In the Carrier Route, Five-Digit ZIP Code, Delivery Statistics, and ZIP + 4 products, an index to the City State product record that provides the preferred last-line name for this address range. In the City State product, the preferred last line city/state key contains the key value of a City State product record that has the default preferred or alternate preferred last-line key for a given ZIP Code.",
         "example": "V13916"
       },
@@ -4480,6 +4424,7 @@
       "city_state_name_facility_code": {
         "title": "City State Name Facility Code",
         "type": "string",
+        "maxLength": 1,
         "description": "The type of locale identified in the city/state name. The facility may be a USPS facility, such as a post office, station, or branch, or it may be a non-postal place name. City/state name facility codes include the following:\n- B = Branch\n- C = Community post office (CPO)\n- N = Non-postal community name, former USPS facility, or place name\n- P = Post Office\n- S = Station\n- U = Urbanization",
         "enum": [
           "B",
@@ -4495,6 +4440,7 @@
       "zip_classification_code": {
         "title": "ZIP Classification Code",
         "type": "string",
+        "maxLength": 1,
         "description": "A field that describes the type of ZIP area that a 5-digit ZIP Code serves, e.g., a single educational institution, post office boxes only, or a single address that has unusually high mail volume or many different addresses.\n - M = Military ZIP Code\n - P = ZIP Code having only Post Office Boxes\n - U = Unique ZIP Code (ZIP assigned to a single organization)\n - Blank = Standard ZIP with many addresses assigned to it",
         "enum": [
           "",
@@ -4506,11 +4452,13 @@
       "city_state_mailing_name_indicator": {
         "title": "City State Mailing Name Indicator",
         "type": "string",
+        "maxLength": 1,
         "description": "Specifies whether or not the city state name can be used as a last line of address on a mail piece.\n- \"Y = City/state name is a USPS-approved mailing name.\"\n- \"N = City/state name is not approved for mailing purposes.\""
       },
       "carrier_route_rate_sortation": {
         "title": "Carrier Route Rate Sortation and Merged 5-Digit Indicator",
         "type": "string",
+        "maxLength": 1,
         "description": "Identifies where automation Carrier Route rates are available and where the commingling of automation and non-automation mail, including Enhanced Carrier Routes and 5-digit presort, on the same pallet or in the same container is allowed."
       },
       "finance_number": {
@@ -4734,6 +4682,203 @@
           }
         }
       },
+      "HereAddress": {
+        "title": "HERE Address",
+        "description": "Address from the global HERE dataset",
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "dataset",
+              "country_iso",
+              "line_1",
+              "line_2",
+              "line_3",
+              "line_4",
+              "line_5",
+              "language",
+              "address",
+              "latitude",
+              "longitude",
+              "building_name",
+              "delivery_longitude",
+              "delivery_latitude",
+              "street_name",
+              "postal_code",
+              "order1_name",
+              "order2_name",
+              "order8_name",
+              "builtup_name"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ID"
+              },
+              "country_iso": {
+                "type": "string",
+                "description": "Three character country code based on ISO Standard 3166.\n\nCan be empty string `\"\"` if not present.",
+                "example": "ITA"
+              },
+              "dataset": {
+                "type": "string",
+                "enum": [
+                  "herewe",
+                  "heret",
+                  "heresa",
+                  "hereo",
+                  "herena",
+                  "heremea",
+                  "herem",
+                  "herei",
+                  "herehk",
+                  "hereee",
+                  "hereap"
+                ]
+              },
+              "language": {
+                "type": "string",
+                "description": "Language Code of Address and Building Name for the Point Address.",
+                "example": "it",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "line_1": {
+                "type": "string",
+                "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16 Via Giuseppe Garibaldi",
+                "minLength": 1,
+                "maxLength": 150
+              },
+              "line_2": {
+                "type": "string",
+                "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_3": {
+                "type": "string",
+                "description": "Third address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_4": {
+                "type": "string",
+                "description": "Fourth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "line_5": {
+                "type": "string",
+                "description": "Fifth address line.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "address": {
+                "type": "string",
+                "description": "Address / House Number uniquely identifying the address along the specified road link.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "16",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "address_type": {
+                "type": "string",
+                "description": "Address Type defines the type of address represented by the Point Address (e.g., Base, Commercial).\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "1"
+              },
+              "delivery_latitude": {
+                "type": "number",
+                "description": "Latitude defining the arrival position of the Point Address.",
+                "example": 45.28447,
+                "minimum": -90,
+                "maximum": 90
+              },
+              "delivery_longitude": {
+                "type": "number",
+                "description": "Longitude defining the arrival position of the Point Address.",
+                "example": 12.00821,
+                "minimum": -180,
+                "maximum": 180
+              },
+              "building_name": {
+                "type": "string",
+                "description": "Name of the Building to which the Point Address is associated.\n\nCan be empty string `\"\"` if not present.\n",
+                "example": "",
+                "minLength": 0,
+                "maxLength": 150
+              },
+              "latitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Latitude of the display position for the Point Address.\nCan be empty string `\"\"` if not present.",
+                    "example": 45.28441
+                  }
+                ]
+              },
+              "longitude": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude of the display position for the Point Address.",
+                    "example": 12.00825
+                  }
+                ]
+              },
+              "street_name": {
+                "type": "string",
+                "description": "The full spelling of the street name, including Prefix, Base Name, Suffix, Street Type, and Direction on Sign.",
+                "minLength": 1,
+                "maxLength": 100,
+                "example": "Via Giuseppe Garibaldi"
+              },
+              "postal_code": {
+                "type": "string",
+                "description": "Full postal code; could be numeric or alphanumeric postal code.\n\nCan be empty string `\"\"` if not present.",
+                "minLength": 0,
+                "maxLength": 15,
+                "example": "35020"
+              },
+              "order1_name": {
+                "type": "string",
+                "description": "Identifies the highest administrative level in which a country can be subdivided.",
+                "example": "Veneto"
+              },
+              "order2_name": {
+                "type": "string",
+                "description": "Identifies an intermediate administrative level of a country and is a sub-division of an Order-1 area. Only countries with a five (or more) level administrative hierarchy have Order-2 administrative levels defined. This feature can be used for destination selection and map display.",
+                "example": "Padova"
+              },
+              "order8_name": {
+                "type": "string",
+                "description": "Identifies the lowest level of the country's administrative hierarchy that is present country- wide. (No gaps exist in the coverage.)",
+                "example": "Brugine"
+              },
+              "builtup_name": {
+                "type": "string",
+                "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.",
+                "example": ""
+              }
+            }
+          }
+        ]
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -4844,6 +4989,23 @@
           },
           "country": {
             "$ref": "#/components/schemas/Country"
+          },
+          "native": {
+            "description": "The native representation of a non-UK address",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EcadAddress"
+              },
+              {
+                "$ref": "#/components/schemas/EcafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UspsAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereAddress"
+              }
+            ]
           },
           "postcode_outward": {
             "type": "string",
@@ -5023,33 +5185,71 @@
             "enum": [
               ""
             ]
-          },
-          "native": {
-            "description": "The native representation of a non-UK address",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EcadAddress"
-              },
-              {
-                "$ref": "#/components/schemas/EcafAddress"
-              },
-              {
-                "$ref": "#/components/schemas/UspsAddress"
-              },
-              {
-                "$ref": "#/components/schemas/UspsAddress"
-              }
-            ]
           }
         }
       },
       "PostcodeResponse": {
         "title": "Postcode Response",
         "type": "object",
+        "example": {
+          "result": [
+            {
+              "postcode": "SW1A 2AA",
+              "postcode_inward": "2AA",
+              "postcode_outward": "SW1A",
+              "post_town": "London",
+              "dependant_locality": "",
+              "double_dependant_locality": "",
+              "thoroughfare": "Downing Street",
+              "dependant_thoroughfare": "",
+              "building_number": "10",
+              "building_name": "",
+              "sub_building_name": "",
+              "po_box": "",
+              "department_name": "",
+              "organisation_name": "Prime Minister & First Lord Of The Treasury",
+              "udprn": 23747771,
+              "postcode_type": "L",
+              "su_organisation_indicator": "",
+              "delivery_point_suffix": "1A",
+              "line_1": "Prime Minister & First Lord Of The Treasury",
+              "line_2": "10 Downing Street",
+              "line_3": "",
+              "premise": "10",
+              "longitude": -0.12767,
+              "latitude": 51.503541,
+              "eastings": 530047,
+              "northings": 179951,
+              "country": "England",
+              "traditional_county": "Greater London",
+              "administrative_county": "",
+              "postal_county": "London",
+              "county": "London",
+              "district": "Westminster",
+              "ward": "St. James's",
+              "uprn": "100023336956",
+              "id": "paf_23747771",
+              "country_iso": "GBR",
+              "country_iso_2": "GB",
+              "county_code": "",
+              "language": "en",
+              "umprn": "",
+              "dataset": "paf"
+            }
+          ],
+          "code": 2000,
+          "message": "Success",
+          "limit": 100,
+          "page": 0,
+          "total": 1
+        },
         "required": [
           "message",
           "code",
-          "result"
+          "result",
+          "limit",
+          "page",
+          "total"
         ],
         "properties": {
           "result": {
@@ -5083,7 +5283,6 @@
           },
           "code": {
             "type": "integer",
-            "format": "int32",
             "enum": [
               2000
             ]
@@ -5093,6 +5292,21 @@
             "enum": [
               "Success"
             ]
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10,
+            "default": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100
+          },
+          "total": {
+            "type": "integer"
           }
         }
       },
@@ -5202,6 +5416,53 @@
       "UDPRNResponse": {
         "title": "UDPRN Response",
         "type": "object",
+        "example": {
+          "result": {
+            "postcode": "SW1A 2AA",
+            "postcode_inward": "2AA",
+            "postcode_outward": "SW1A",
+            "post_town": "London",
+            "dependant_locality": "",
+            "double_dependant_locality": "",
+            "thoroughfare": "Downing Street",
+            "dependant_thoroughfare": "",
+            "building_number": "10",
+            "building_name": "",
+            "sub_building_name": "",
+            "po_box": "",
+            "department_name": "",
+            "organisation_name": "Prime Minister & First Lord Of The Treasury",
+            "udprn": 23747771,
+            "postcode_type": "L",
+            "su_organisation_indicator": "",
+            "delivery_point_suffix": "1A",
+            "line_1": "Prime Minister & First Lord Of The Treasury",
+            "line_2": "10 Downing Street",
+            "line_3": "",
+            "premise": "10",
+            "longitude": -0.12767,
+            "latitude": 51.503541,
+            "eastings": 530047,
+            "northings": 179951,
+            "country": "England",
+            "traditional_county": "Greater London",
+            "administrative_county": "",
+            "postal_county": "London",
+            "county": "London",
+            "district": "Westminster",
+            "ward": "St. James's",
+            "uprn": "100023336956",
+            "id": "paf_23747771",
+            "country_iso": "GBR",
+            "country_iso_2": "GB",
+            "county_code": "",
+            "language": "en",
+            "umprn": "",
+            "dataset": "paf"
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -5234,8 +5495,55 @@
         }
       },
       "UMPRNResponse": {
-        "title": "UDPRN Response",
+        "title": "Multiple Residence (UMPRN) Address Response",
         "type": "object",
+        "example": {
+          "result": {
+            "postcode": "CV4 7AL",
+            "postcode_inward": "7AL",
+            "postcode_outward": "CV4",
+            "post_town": "Coventry",
+            "dependant_locality": "",
+            "double_dependant_locality": "",
+            "thoroughfare": "Gibbet Hill Road",
+            "dependant_thoroughfare": "",
+            "building_number": "",
+            "building_name": "Block 1 Arthur Vick",
+            "sub_building_name": "Room 249a",
+            "po_box": "",
+            "department_name": "",
+            "organisation_name": "",
+            "udprn": 5770157,
+            "postcode_type": "S",
+            "su_organisation_indicator": "",
+            "delivery_point_suffix": "1A",
+            "line_1": "Room 249a, Block 1 Arthur Vick",
+            "line_2": "Gibbet Hill Road",
+            "line_3": "",
+            "premise": "Room 249a, Block 1 Arthur Vick",
+            "longitude": -1.5648072,
+            "latitude": 52.3858227,
+            "eastings": 429716,
+            "northings": 276509,
+            "country": "England",
+            "traditional_county": "Warwickshire",
+            "administrative_county": "",
+            "postal_county": "West Midlands",
+            "county": "West Midlands",
+            "district": "Coventry",
+            "ward": "Wainbody",
+            "uprn": "200001572050",
+            "id": "mr_50906058",
+            "country_iso": "GBR",
+            "country_iso_2": "GB",
+            "county_code": "",
+            "language": "en",
+            "umprn": 50906058,
+            "dataset": "mr"
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -5243,11 +5551,7 @@
         ],
         "properties": {
           "result": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MrAddress"
-              }
-            ]
+            "$ref": "#/components/schemas/MrAddress"
           },
           "code": {
             "type": "integer",
@@ -5375,12 +5679,6 @@
             ]
           }
         }
-      },
-      "UserTokenParam": {
-        "title": "User Token",
-        "type": "string",
-        "description": "A secret key used for sensitive operations on your account and API Keys.\n\nYour user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).\n\nTypically beings `uk_...`\n",
-        "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
       },
       "ApiKeyDailyLimit": {
         "title": "API Key Daily Limit",
@@ -5630,32 +5928,6 @@
             ]
           }
         }
-      },
-      "StartParam": {
-        "title": "Start Time",
-        "type": "integer",
-        "format": "int32",
-        "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.\n",
-        "example": 1418556452651
-      },
-      "EndParam": {
-        "title": "End Time",
-        "type": "integer",
-        "format": "int32",
-        "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
-        "example": 1418556477882
-      },
-      "TagsParam": {
-        "title": "Tags",
-        "type": "string",
-        "description": "A comma separated list of tags to query over. \n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
-        "example": "foo,bar"
-      },
-      "LicenseeParam": {
-        "title": "Licensee Key",
-        "type": "string",
-        "description": "Uniquely identifies a licensee\n",
-        "example": "sk_hk71kco54zGSGvF9eXXrvvnMOLLNh"
       },
       "KeyUsageResult": {
         "title": "Key Usage",
@@ -6043,129 +6315,6 @@
           }
         ]
       },
-      "LimitParam": {
-        "title": "Limit",
-        "description": "Specifies the maximum number of suggestions to retrieve.\n\nBy default the limit is 10, unless a postcode is queried (then all addresses at that postcode will be returned). Limit can be shortened to `l=`\n",
-        "minimum": 1,
-        "maximum": 100,
-        "default": 10,
-        "example": 5,
-        "type": "integer",
-        "format": "int32"
-      },
-      "PostcodeOutwardParam": {
-        "title": "Postcode Outward",
-        "type": "string",
-        "description": "Filter by outward code.",
-        "example": "1AA"
-      },
-      "PostcodeParam": {
-        "title": "Postcode",
-        "type": "string",
-        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "SW1A 2AA"
-      },
-      "PostcodeAreaParam": {
-        "title": "Postcode Area",
-        "type": "string",
-        "description": "Filter by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "SW"
-      },
-      "PostcodeSectorParam": {
-        "title": "Postcode Sector",
-        "type": "string",
-        "description": "Filter by postcode sector, the outward code plus first numeric of the inward code. ",
-        "example": "SW1A 2"
-      },
-      "PostTownParam": {
-        "title": "Post Town",
-        "type": "string",
-        "description": "Filter by town. ",
-        "example": "London"
-      },
-      "UPRNParam": {
-        "title": "UPRN",
-        "type": "integer",
-        "description": "Filters by UPRN. Does not accept comma separated terms. Only a single term is permitted",
-        "example": "100023336956"
-      },
-      "CountryParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Filter by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.",
-        "example": "England"
-      },
-      "PostcodeTypeParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Filter by Postcode Type. Useful for separating organisational and residential addresses",
-        "example": "L"
-      },
-      "SmallUserParam": {
-        "title": "SU Organisation Indicator",
-        "type": "string",
-        "description": "Filter by Organisation Indicator. Useful for separating organisational and residential addresses",
-        "example": "Y"
-      },
-      "BoxParam": {
-        "title": "Box",
-        "type": "string",
-        "description": "Restrict search to a geospatial box determined by the \"top-left\" and \"bottom-right\" gelocations.   Only one geospatial box can be provided.",
-        "example": "2.095,57.15,-2.096,57.14"
-      },
-      "BiasPostcodeOutwardParam": {
-        "title": "Bias Postcode Outward",
-        "type": "string",
-        "description": "Bias by outward code"
-      },
-      "BiasPostcodeParam": {
-        "title": "Bias Postcode",
-        "type": "string",
-        "description": "Bias by postcode. Can be combined with query to perform a postcode + building number/name search.",
-        "example": "/addresses?postcode=SW1A2AA&q=10"
-      },
-      "BiasPostcodeAreaParam": {
-        "title": "Bias Postcode Area",
-        "type": "string",
-        "description": "Bias by postcode area, the first one or two non-numeric characters of a postcode.",
-        "example": "The postcode area of SW1A 2AA and N1 6RT are SW and N respectively"
-      },
-      "BiasPostcodeSectorParam": {
-        "title": "Bias Postcode Sector",
-        "type": "string",
-        "description": "Bias by postcode sector, the outward code plus first numeric of the inward code.",
-        "example": "SW1A 2AA is SW1A 2"
-      },
-      "BiasPosttownParam": {
-        "title": "Bias Post Town",
-        "type": "string",
-        "description": "Bias by town."
-      },
-      "BiasThoroughfareParam": {
-        "title": "Bias Thoroughfare",
-        "type": "string",
-        "description": "Bias by street name."
-      },
-      "BiasCountryParam": {
-        "title": "Bias Country",
-        "type": "string",
-        "description": "Bias by country. Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man."
-      },
-      "BiasLonLatParam": {
-        "title": "Bias Lon/Lat",
-        "type": "string",
-        "description": "Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided",
-        "example": "-2.095,57.15,100"
-      },
-      "BiasIpParam": {
-        "title": "Bias query by Geolocation of IP",
-        "type": "string",
-        "enum": [
-          "true"
-        ],
-        "description": "Biases search based on approximate geolocation of IP address.\nSet `bias_ip=true` to enable.",
-        "example": "true"
-      },
       "AddressSuggestion": {
         "title": "Address Suggestion",
         "description": "Represents an address suggestion for any address in the world",
@@ -6175,6 +6324,11 @@
           "suggestion",
           "urls"
         ],
+        "example": {
+          "id": "usps_V210079628|10||3797",
+          "suggestion": "10 Downing St, Montpelier, VT, 05602",
+          "urls": null
+        },
         "properties": {
           "id": {
             "$ref": "#/components/schemas/ID"
@@ -6182,7 +6336,7 @@
           "suggestion": {
             "type": "string",
             "description": "Address Suggestion to be displayed to the user",
-            "example": "Flat 6, 12 Roskear, Camborne, TR14"
+            "example": "10 Downing St, Montpelier, VT, 05602"
           },
           "urls": {
             "type": "object"
@@ -6193,6 +6347,14 @@
         "title": "UK Address Suggestion",
         "description": "Represents a possible address given an autocomplete query.\n\nUK Address Suggestions will return a UDPRN attribute if it references a deliverable endpoint found on Royal Mail's Postcode Address File dataset.\n\nUK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.\n",
         "type": "object",
+        "example": {
+          "id": "paf_23747771",
+          "suggestion": "Prime Minister & First Lord Of The Treasury, 10 Downing Street, London, SW1A",
+          "udprn": "23747771,",
+          "urls": {
+            "udprn": "/v1/udprn/23747771"
+          }
+        },
         "required": [
           "id",
           "suggestion",
@@ -6250,6 +6412,24 @@
             "type": "object",
             "required": [
               "hits"
+            ],
+            "example": [
+              {
+                "id": "paf_23747771",
+                "suggestion": "Prime Minister & First Lord Of The Treasury, 10 Downing Street, London, SW1A",
+                "udprn": 23747771,
+                "urls": {
+                  "udprn": "/v1/udprn/23747771"
+                }
+              },
+              {
+                "id": "paf_26245117",
+                "suggestion": "Flat 10, Downing Court, Grenville Street, London, WC1N",
+                "udprn": 26245117,
+                "urls": {
+                  "udprn": "/v1/udprn/26245117"
+                }
+              }
             ],
             "properties": {
               "hits": {
@@ -6652,13 +6832,16 @@
               },
               {
                 "$ref": "#/components/schemas/AbAddress"
+              },
+              {
+                "$ref": "#/components/schemas/HereAddress"
               }
             ]
           }
         }
       },
       "UsaResolveAddressResponse": {
-        "title": "Address Resolution Response (USA)",
+        "title": "Address Retrieve Response (USA)",
         "type": "object",
         "required": [
           "message",
@@ -6690,24 +6873,6 @@
             ]
           }
         }
-      },
-      "AddressLongitudeParam": {
-        "title": "Longitude",
-        "type": "number",
-        "format": "float",
-        "description": "Longitude query for reverse geocoding.\n\nAn accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.\n",
-        "minimum": -90,
-        "maximum": 90,
-        "example": -0.12767
-      },
-      "AddressLatitudeParam": {
-        "title": "Latitude",
-        "type": "number",
-        "format": "float",
-        "description": "Latitude query for reverse geocoding.\n\nAn accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.\n",
-        "minimum": -90,
-        "maximum": 90,
-        "example": 51.503541
       },
       "AddressResponse": {
         "title": "Address Search Response",
@@ -6792,18 +6957,6 @@
           }
         }
       },
-      "CountryIsoParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\nFilter by multiple countries with a comma separated list. E.g. `GBR,IRL`",
-        "example": "GBR"
-      },
-      "BiasCountryIsoParam": {
-        "title": "Country",
-        "type": "string",
-        "description": "Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\nBias by multiple countries with a comma separated list. E.g. `GBR,IRL`",
-        "example": "GBR"
-      },
       "place_name": {
         "title": "Place Name",
         "type": "string",
@@ -6855,6 +7008,32 @@
       "PlaceResponse": {
         "title": "Place Search Response",
         "type": "object",
+        "example": {
+          "result": {
+            "hits": [
+              {
+                "id": "geonames_2643743",
+                "name": "London",
+                "descriptive_name": "London, Greater London, England",
+                "country_iso": "GBR"
+              },
+              {
+                "id": "geonames_4517009",
+                "name": "London",
+                "descriptive_name": "London, Madison County, Ohio",
+                "country_iso": "USA"
+              },
+              {
+                "id": "geonames_4298960",
+                "name": "London",
+                "descriptive_name": "London, Laurel County, Kentucky",
+                "country_iso": "USA"
+              }
+            ]
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -6897,7 +7076,7 @@
       },
       "GeonamesPlace": {
         "title": "GeoNames Place",
-        "description": "Full GeoNames place specification",
+        "description": "Full GeoNames place specification\n",
         "required": [
           "geonameid",
           "name",
@@ -7092,8 +7271,6 @@
               "modification_date": {
                 "type": "string",
                 "description": "Datetime format",
-                "minLength": 10,
-                "maxLength": 10,
                 "example": "2015-03-09"
               },
               "dataset": {
@@ -7170,6 +7347,159 @@
       "ResolvePlaceResponse": {
         "title": "Place Resolution Response",
         "type": "object",
+        "example": {
+          "result": {
+            "id": "geonames_2643743",
+            "dataset": "geonames",
+            "name": "London",
+            "descriptive_name": "London, Greater London, England",
+            "language": "en",
+            "longitude": -0.12574,
+            "latitude": 51.50853,
+            "country_iso": "GBR",
+            "native": {
+              "admin1_code": "ENG",
+              "admin2_name": "Greater London",
+              "geonameid": 2643743,
+              "timezone": "Europe/London",
+              "latitude": 51.50853,
+              "language": "en",
+              "dem": 25,
+              "admin4_code": "",
+              "admin1_geonameid": 6269131,
+              "alternatenames": [
+                "ILondon",
+                "LON",
+                "Lakana",
+                "Landan",
+                "Landen",
+                "Ljondan",
+                "Llundain",
+                "Lodoni",
+                "Londain",
+                "Londan",
+                "Londar",
+                "Londe",
+                "Londen",
+                "Londin",
+                "Londinium",
+                "Londino",
+                "Londn",
+                "London",
+                "London osh",
+                "Londona",
+                "Londonas",
+                "Londoni",
+                "Londono",
+                "Londons",
+                "Londonu",
+                "Londra",
+                "Londres",
+                "Londrez",
+                "Londri",
+                "Londro",
+                "Londye",
+                "Londyn",
+                "Londýn",
+                "Lonn",
+                "Lontoo",
+                "Loundres",
+                "Luan GJon",
+                "Lun-tun",
+                "Lunden",
+                "Lundra",
+                "Lundun",
+                "Lundunir",
+                "Lundúnir",
+                "Lung-dung",
+                "Lunnainn",
+                "Lunnin",
+                "Lunnon",
+                "Luân Đôn",
+                "Lùn-tûn",
+                "Lùng-dŭng",
+                "Lûn-tun",
+                "Lākana",
+                "Lůndůn",
+                "Lọndọnu",
+                "Ranana",
+                "Rānana",
+                "ilantan",
+                "ladana",
+                "landan",
+                "landana",
+                "leondeon",
+                "lndn",
+                "london",
+                "londoni",
+                "lun dui",
+                "lun dun",
+                "lwndwn",
+                "lxndxn",
+                "rondon",
+                "Łondra",
+                "Λονδίνο",
+                "Лондан",
+                "Лондон",
+                "Лондон ош",
+                "Лондонъ",
+                "Лёндан",
+                "Լոնդոն",
+                "לאנדאן",
+                "לונדון",
+                "لأندأن",
+                "لندن",
+                "لوندون",
+                "لەندەن",
+                "ܠܘܢܕܘܢ",
+                "लंडन",
+                "लंदन",
+                "लण्डन",
+                "लन्डन्",
+                "लन्दन",
+                "লন্ডন",
+                "ਲੰਡਨ",
+                "લંડન",
+                "ଲ୍ଡନ",
+                "இலண்டன்",
+                "లండన్",
+                "ಲಂಡನ್",
+                "ലണ്ടൻ",
+                "ලන්ඩන්",
+                "ลอนดอน",
+                "ລອນດອນ",
+                "ལོན་ཊོན།",
+                "လန်ဒန်မြို့",
+                "ლონდონი",
+                "ለንደን",
+                "ᎫᎴ ᏗᏍᎪᏂᎯᏱ",
+                "ロンドン",
+                "伦敦",
+                "倫敦",
+                "런던"
+              ],
+              "cc2": [],
+              "admin2_code": "GLA",
+              "modification_date": "2022-03-09T00:00:00.000Z",
+              "asciiname": "London",
+              "id": "geonames_2643743",
+              "feature_code": "PPLC",
+              "country_iso": "GBR",
+              "longitude": -0.12574,
+              "elevation": null,
+              "admin2_geonameid": 2648110,
+              "admin1_name": "England",
+              "population": "8961989",
+              "country_code": "GB",
+              "feature_class": "P",
+              "name": "London",
+              "admin3_code": "",
+              "dataset": "geonames"
+            }
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -7190,11 +7520,7 @@
             ]
           },
           "result": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Place"
-              }
-            ]
+            "$ref": "#/components/schemas/Place"
           }
         }
       },
@@ -7494,12 +7820,6 @@
           }
         }
       },
-      "ConfigParam": {
-        "title": "Configuration Name",
-        "type": "string",
-        "description": "User provided configuration object name",
-        "example": "idpc-be"
-      },
       "NotFoundResponse": {
         "title": "Not Found Response",
         "allOf": [
@@ -7649,6 +7969,18 @@
       "EmailResponse": {
         "title": "Email Verification Response",
         "type": "object",
+        "example": {
+          "result": {
+            "result": "deliverable",
+            "deliverable": true,
+            "catchall": false,
+            "free": false,
+            "role": true,
+            "disposable": false
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -7879,6 +8211,30 @@
       "PhoneNumberResponse": {
         "title": "Phone Number Verification Response",
         "type": "object",
+        "example": {
+          "result": {
+            "valid": true,
+            "national_format": "020 7112 8019",
+            "international_format": "+44 20 7112 8019",
+            "iso_country": "GBR",
+            "iso_country_2": "GB",
+            "country": "United Kingdom",
+            "current_carrier": {
+              "network_code": null,
+              "name": "Invomo Ltd",
+              "country": "GB",
+              "network_type": "landline"
+            },
+            "original_carrier": {
+              "network_code": null,
+              "name": "Invomo Ltd",
+              "country": "GB",
+              "network_type": "landline"
+            }
+          },
+          "code": 2000,
+          "message": "Success"
+        },
         "required": [
           "message",
           "code",
@@ -7910,6 +8266,460 @@
           }
         }
       }
+    },
+    "parameters": {
+      "ApiKeyParam": {
+        "description": "**API Key**\n\nYour unique identifier that allows access to our APIs.\n\nBegins `ak_`. Available from your dashboard\n",
+        "example": "ak_test",
+        "explode": false,
+        "in": "query",
+        "name": "api_key",
+        "schema": {
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "FilterParam": {
+        "name": "filter",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Restrict Result Fields**\n\nComma separated whitelist of address elements to return. \n\nE.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response\n",
+        "example": "line_1,line_2,line_3"
+      },
+      "PageParam": {
+        "name": "page",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 0,
+          "format": "int32"
+        },
+        "description": "**Page**\n\n0 indexed indicator of the page of results to receive. Virtually all postcode results are returned on page 0. \n\nA small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).\n",
+        "example": 1
+      },
+      "TagsParam": {
+        "name": "Tags",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "A comma separated list of tags to query over.\n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
+        "example": "foo,bar"
+      },
+      "ApiKeyPathParam": {
+        "name": "key",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "ak_test",
+        "description": "**API Key**\n\nThe API Key to retrieve. Begins `ak_`.\n"
+      },
+      "UserTokenParam": {
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "name": "user_token",
+        "description": "**Private User Token**\n\nA secret key used for sensitive operations on your account and API Keys.\n\nYour user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).\n\nTypically beings `uk_...`\n",
+        "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
+      },
+      "StartParam": {
+        "name": "Start Time",
+        "style": "form",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 0
+        },
+        "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.\n",
+        "example": 1418556452651
+      },
+      "EndParam": {
+        "name": "End Time",
+        "style": "form",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 0
+        },
+        "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
+        "example": 1418556477882
+      },
+      "LicenseeParam": {
+        "example": "sl_hk71kco54zGSGvF9eXXrvvnMOLLNh",
+        "description": "**Licensee Key**\n\nUniquely identifies a licensee.\n",
+        "explode": false,
+        "in": "query",
+        "name": "licensee",
+        "schema": {
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "ContextParam": {
+        "name": "context",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "example": "GBR",
+        "description": "**Context**\n\nLimits search results, typically within g country.\n",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10,
+          "type": "integer",
+          "format": "int32"
+        },
+        "example": 5,
+        "description": "**Limit**\n\nSpecifies the maximum number of records to retrieve.\n\nBy default the limit is 10. Requesting a larger result set will result in more latency\n"
+      },
+      "BiasLonLatParam": {
+        "name": "bias_lonlat",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Geolocation**\n\nBias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`. \nUses the format bias_lonlat=[longitude],[latitude],[radius in metres]\nOnly one geospatial bias may be provided\n",
+        "example": "-2.095,57.15,100"
+      },
+      "BiasIpParam": {
+        "name": "bias_ip",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "required": false,
+        "description": "**Bias by Geolocation of IP**\n\nBiases search based on approximate geolocation of IP address.\n\nSet `bias_ip=true` to enable.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "true"
+          ]
+        }
+      },
+      "BoxParam": {
+        "name": "box",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Bounding Box**\n\nRestrict search to a geospatial box determined by the \"top-left\" and \"bottom-right\" gelocations.  \nOnly one geospatial box can be provided.\n",
+        "example": "2.095,57.15,-2.096,57.14"
+      },
+      "PostcodeOutwardParam": {
+        "name": "postcode_outward",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Outward Code**\n\nRestrict result set to addresses with a matching outward code.\n\nThe outward code is the first half of a postcode. E.g. the outward code for `SW1A 2AA` is `SW1A`.\n",
+        "example": "SW1A"
+      },
+      "PostcodeParam": {
+        "name": "postcode",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by postcode**\nRestrict result set to matching postcodes only.\nCan be combined with query to perform a postcode and building number or name search.",
+        "example": "SW1A 2AA"
+      },
+      "PostcodeAreaParam": {
+        "name": "postcode_area",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Postcode Area**\n\nPostcode area represents the first one or two non-numeric characters of a postcode. E.g. the postcode area of `SW1A 2AA` is `SW`.\n\nCan be combined with query to perform a postcode and building search.\n",
+        "example": "SW"
+      },
+      "PostcodeSectorParam": {
+        "name": "postcode_sector",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Postcode Sector**\n\nPostcode sector is the outward code plus first numeric of the inward code. E.g. postcode sector of `SW1A 2AA` is `SW1A 2`\n",
+        "example": "SW1A 2"
+      },
+      "PostTownParam": {
+        "name": "post_town",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Town or City**\n\nRestrict addresses to matching town, city or other locality identifier.\n",
+        "example": "London"
+      },
+      "UPRNParam": {
+        "name": "uprn",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "**Filter by UPRN**\n\nDoes not accept comma separated terms. Only a single term is permitted\n",
+        "example": "100023336956"
+      },
+      "CountryParam": {
+        "name": "country",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by country**\n\nFilters by country name.\n\nIn the context of GBR, country values are not United Kingdom. Instead they are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.\n",
+        "example": "England"
+      },
+      "PostcodeTypeParam": {
+        "name": "postcode_type",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Postcode Type**\n\nFilter by Postcode Type. Useful for separating organisational and residential addresses\n"
+      },
+      "SmallUserParam": {
+        "name": "su_organisation_indicator",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Organisation Indicator**\n\nUseful for separating organisational and residential addresses\n",
+        "example": "Y"
+      },
+      "BiasPostcodeOutwardParam": {
+        "name": "bias_postcode_outward",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Outward Code**\nBoosts addresses with a matching outward code.\nOutward code is the first have of a postcode. For instance, the outward code of `SW1A 2AA` is `SW1A`",
+        "example": "SW1A"
+      },
+      "BiasPostcodeParam": {
+        "name": "bias_postcode",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by postcode**\nBoost addresses which match postcode.\nCan be combined with query to perform a postcode and building number or name search.",
+        "example": "SW1A2AA"
+      },
+      "BiasPostcodeAreaParam": {
+        "name": "bias_postcode_area",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Postcode Area**\n\nBoosts if the first one or two non-numeric characters of a postcode match\n\nThe postcode area of SW1A 2AA and N1 6RT are SW and N respectively\n",
+        "example": "SW"
+      },
+      "BiasPostcodeSectorParam": {
+        "name": "bias_postcode_sector",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Postcode Sector**\n\nBoost postcode sector matches. The postcode sector comprises the outward code plus first numeric of the inward code.\n",
+        "example": "SW1A 2"
+      },
+      "BiasPosttownParam": {
+        "name": "bias_post_town",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Town or City**\n\nBiases results to matching town, city or other locality name.\n"
+      },
+      "BiasThoroughfareParam": {
+        "name": "bias_thoroughfare",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Street**\n\nBias by street or thoroughfare name.\n"
+      },
+      "BiasCountryParam": {
+        "name": "bias_country",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Bias by Country**\n\nPossible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.\n"
+      },
+      "AddressLongitudeParam": {
+        "name": "lon",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "number",
+          "format": "float",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "description": "**Longitude**\n\nLongitude query for reverse geocoding.\n\nAn accompanying latitude (lat=) query must be submitted for a valid reverse geocode query.\n",
+        "example": -0.12767
+      },
+      "AddressLatitudeParam": {
+        "name": "lat",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "number",
+          "format": "float",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "description": "**Latitude**\n\nLatitude query for reverse geocoding.\n\nAn accompanying longitude (lon=) query must be submitted for a valid reverse geocode query.\n",
+        "example": 51.503541
+      },
+      "CountryIsoParam": {
+        "name": "country_iso",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Filter by Country**\n\nFilter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\n\nFilter by multiple countries with a comma separated list. E.g. `GBR,IRL`\n",
+        "example": "GBR"
+      },
+      "BiasCountryIsoParam": {
+        "name": "bias_country_iso",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "description": "**Bias by Country**\nBias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.\nBias by multiple countries with a comma separated list. E.g. `GBR,IRL`",
+        "example": "GBR",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "LicenseePathParam": {
+        "name": "licensee",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "sl_hk71kco54zGSGvF9eXXrvvnMOLLNh",
+        "description": "**Licensee Key**\n\nUniquely identifies a licensee.\n"
+      },
+      "ConfigParam": {
+        "name": "config",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Configuration Name**\n\nUser provided configuration object name.\n",
+        "example": "idpc-be"
+      }
     }
-  }
+  },
+  "x-tagGroups": [
+    {
+      "name": "Address Search",
+      "tags": [
+        "Address Search",
+        "UK"
+      ]
+    },
+    {
+      "name": "Place Search",
+      "tags": [
+        "Place Search"
+      ]
+    },
+    {
+      "name": "Management",
+      "tags": [
+        "Keys",
+        "Licensees",
+        "Configs",
+        "Emails",
+        "Phone Numbers"
+      ]
+    },
+    {
+      "name": "Models",
+      "tags": [
+        "suggestion",
+        "usps_address",
+        "uk_address",
+        "ab_address",
+        "ecaf_address",
+        "ecad_address",
+        "geonames_place"
+      ]
+    }
+  ]
 }
