@@ -2640,24 +2640,63 @@ components:
         Language represented by 2 letter ISO Code (639-1)
       enum:
         - en
-        - cy
-        - ga
-        - fo
-        - pt
-        - es
-        - fr
-        - fi
+        - ar
+        - az
+        - be
+        - bg
+        - bn
+        - bs
         - ca
-        - wa
-        - it
-        - nl
-        - de
+        - cs
+        - cy
         - da
-        - 'no'
-        - mt
-        - sv
-        - is
+        - de
+        - el
+        - es
+        - et
+        - fi
+        - fo
+        - fr
+        - ga
+        - gn
+        - he
+        - hi
         - hr
+        - hu
+        - hy
+        - id
+        - is
+        - it
+        - ka
+        - kk
+        - km
+        - kn
+        - lt
+        - lv
+        - mk
+        - mn
+        - ms
+        - mt
+        - my
+        - nl
+        - 'no'
+        - pl
+        - pt
+        - ro
+        - ru
+        - sk
+        - sl
+        - sq
+        - sr
+        - sv
+        - ta
+        - th
+        - tr
+        - uk
+        - uz
+        - vi
+        - wa
+        - zh
     AddressBaseCore:
       title: AddressBase Core
       description: Represents a GB address in Ordnance Survey's AddressBase Core dataset
@@ -2951,6 +2990,16 @@ components:
         - ecad
         - ab
         - herewe
+        - heret
+        - heresa
+        - hereo
+        - herena
+        - heremea
+        - herem
+        - herei
+        - herehk
+        - hereee
+        - hereap
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -2991,6 +3040,130 @@ components:
         - DEU
         - ESP
         - SJM
+        - BRN
+        - IDN
+        - KHM
+        - MMR
+        - MYS
+        - PHL
+        - SGP
+        - THA
+        - TLS
+        - VNM
+        - ALB
+        - ARM
+        - AZE
+        - BGR
+        - BIH
+        - BLR
+        - CYP
+        - CZE
+        - EST
+        - GEO
+        - GRC
+        - HRV
+        - HUN
+        - KAZ
+        - KGZ
+        - KOS
+        - LTU
+        - LVA
+        - MDA
+        - MKD
+        - MNE
+        - POL
+        - ROU
+        - RUS
+        - SRB
+        - SVK
+        - SVN
+        - TUR
+        - UKR
+        - UZB
+        - HKG
+        - BGD
+        - IND
+        - LKA
+        - MAC
+        - AGO
+        - ARE
+        - BFA
+        - BHR
+        - BWA
+        - CMR
+        - EGY
+        - GHA
+        - ISR
+        - JOR
+        - KEN
+        - KWT
+        - LBN
+        - LSO
+        - MAR
+        - MOZ
+        - MUS
+        - MYT
+        - NAM
+        - NGA
+        - OMN
+        - QAT
+        - REU
+        - SAU
+        - SEN
+        - SWZ
+        - TUN
+        - ZAF
+        - ZMB
+        - ZWE
+        - BHS
+        - BLZ
+        - BMU
+        - CAN
+        - CRI
+        - CYM
+        - DOM
+        - GTM
+        - HND
+        - HTI
+        - JAM
+        - MEX
+        - NIC
+        - PAN
+        - SLV
+        - VGB
+        - AUS
+        - CCK
+        - CXR
+        - FJI
+        - NCL
+        - NFK
+        - NZL
+        - PYF
+        - TON
+        - VUT
+        - ABW
+        - ARG
+        - BLM
+        - BOL
+        - BRA
+        - BRB
+        - CHL
+        - COL
+        - CUW
+        - DMA
+        - ECU
+        - GLP
+        - GUF
+        - GUY
+        - MAF
+        - MTQ
+        - PER
+        - PRY
+        - SUR
+        - TTO
+        - URY
+        - VEN
+        - TWN
     CountryISO2:
       title: ISO Country Code (2)
       type: string
@@ -3031,6 +3204,131 @@ components:
         - DE
         - ES
         - SJ
+        - BS
+        - BZ
+        - BM
+        - CA
+        - CR
+        - KY
+        - DO
+        - GT
+        - HN
+        - HT
+        - JM
+        - MX
+        - NI
+        - PA
+        - SV
+        - VG
+        - AU
+        - CC
+        - CX
+        - FJ
+        - NC
+        - NF
+        - NZ
+        - PF
+        - TO
+        - VU
+        - AW
+        - AR
+        - BL
+        - BO
+        - BR
+        - BB
+        - CL
+        - CO
+        - CW
+        - DM
+        - EC
+        - GP
+        - GD
+        - GF
+        - GY
+        - MF
+        - MQ
+        - PE
+        - PY
+        - SR
+        - TT
+        - UY
+        - VE
+        - TW
+        - BN
+        - ID
+        - KH
+        - MM
+        - MY
+        - PH
+        - SG
+        - TH
+        - TL
+        - VN
+        - AL
+        - AM
+        - AZ
+        - BG
+        - BA
+        - BY
+        - CY
+        - CZ
+        - EE
+        - GE
+        - GR
+        - HR
+        - HU
+        - KZ
+        - KG
+        - XK
+        - LT
+        - LV
+        - MD
+        - MK
+        - ME
+        - PL
+        - RO
+        - RU
+        - RS
+        - SK
+        - SI
+        - TR
+        - UA
+        - UZ
+        - HK
+        - BD
+        - IN
+        - LK
+        - MO
+        - AO
+        - AE
+        - BF
+        - BH
+        - BW
+        - CM
+        - EG
+        - GH
+        - IL
+        - JO
+        - KE
+        - KW
+        - LB
+        - LS
+        - MA
+        - MZ
+        - MU
+        - YT
+        - NA
+        - NG
+        - OM
+        - QA
+        - RE
+        - SA
+        - SN
+        - SZ
+        - TN
+        - ZA
+        - ZM
+        - ZW
     Country:
       title: Country
       type: string
@@ -3075,6 +3373,131 @@ components:
         - Germany
         - Spain
         - Svalbard and Jan Mayen
+        - Bahamas
+        - Belize
+        - Bermuda
+        - Canada
+        - Costa Rica
+        - Cayman Islands
+        - Dominican Republic
+        - Guatemala
+        - Honduras
+        - Haiti
+        - Jamaica
+        - Mexico
+        - Nicaragua
+        - Panama
+        - El Salvador
+        - British Virgin Islands
+        - Australia
+        - Cocos (Keeling) Islands
+        - Christmas Island
+        - Fiji
+        - New Caledonia
+        - Norfolk Island
+        - New Zealand
+        - French Polynesia
+        - Tonga
+        - Vanuatu
+        - Aruba
+        - Argentina
+        - Saint Barthélemy
+        - Bolivia
+        - Brazil
+        - Barbados
+        - Chile
+        - Colombia
+        - Curaçao
+        - Dominica
+        - Ecuador
+        - Guadeloupe
+        - Grenada
+        - French Guiana
+        - Guyana
+        - Saint Martin (French part)
+        - Martinique
+        - Peru
+        - Paraguay
+        - Suriname
+        - Trinidad and Tobago
+        - Uruguay
+        - Venezuela
+        - Taiwan
+        - Brunei Darussalam
+        - Indonesia
+        - Cambodia
+        - Myanmar
+        - Malaysia
+        - Philippines
+        - Singapore
+        - Thailand
+        - Timor-Leste
+        - Vietnam
+        - Albania
+        - Armenia
+        - Azerbaijan
+        - Bulgaria
+        - Bosnia and Herzegovina
+        - Belarus
+        - Cyprus
+        - Czech Republic
+        - Estonia
+        - Georgia
+        - Greece
+        - Croatia
+        - Hungary
+        - Kazakhstan
+        - Kyrgyzstan
+        - Kosovo
+        - Lithuania
+        - Latvia
+        - Moldova
+        - North Macedonia
+        - Montenegro
+        - Poland
+        - Romania
+        - Russia
+        - Serbia
+        - Slovakia
+        - Slovenia
+        - Turkey
+        - Ukraine
+        - Uzbekistan
+        - Hong Kong
+        - Bangladesh
+        - India
+        - Sri Lanka
+        - Macau
+        - Angola
+        - United Arab Emirates
+        - Burkina Faso
+        - Bahrain
+        - Botswana
+        - Cameroon
+        - Egypt
+        - Ghana
+        - Israel
+        - Jordan
+        - Kenya
+        - Kuwait
+        - Lebanon
+        - Lesotho
+        - Morocco
+        - Mozambique
+        - Mauritius
+        - Mayotte
+        - Namibia
+        - Nigeria
+        - Oman
+        - Qatar
+        - Réunion
+        - Saudi Arabia
+        - Senegal
+        - Eswatini
+        - Tunisia
+        - South Africa
+        - Zambia
+        - Zimbabwe
     EircBase:
       required:
         - id
