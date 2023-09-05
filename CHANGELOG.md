@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/ideal-postcodes/openapi/compare/4.0.1...4.1.0) (2023-09-05)
+
+
+### Features
+
+* **Keys:** Add new keys endpoint ([61c71d3](https://github.com/ideal-postcodes/openapi/commit/61c71d3f781f3ea1a4881c26acd4e42f081abc80))
+
 ## [4.0.1](https://github.com/ideal-postcodes/openapi/compare/4.0.0...4.0.1) (2023-07-07)
 
 
