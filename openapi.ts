@@ -100,6 +100,8 @@ export interface paths {
   "/keys/{key}/details": {
     /** Returns private data on the key including remaining lookups, available datasets and usage limits. */
     get: operations["KeyDetails"];
+    /** Update API Key Details */
+    put: operations["UpdateKeyDetails"];
   };
   "/keys/{key}/usage": {
     /**
@@ -2836,7 +2838,7 @@ export interface components {
        * `null` means the limit is currently disabled.
        * @example 1000
        */
-      limit: number;
+      limit: number | null;
       /**
        * Format: int32
        * @description Number of lookups performed today which count towards your daily limit.
@@ -2853,7 +2855,7 @@ export interface components {
        * disabled.
        * @example 30
        */
-      limit: number;
+      limit: number | null;
     };
     /** API Key Notifications */
     ApiKeyNotifications: {
@@ -2883,6 +2885,10 @@ export interface components {
       mr: boolean;
       /** @description UK Not Yet Built Dataset */
       nyb: boolean;
+      /** @description UK AddressBase dataset */
+      ab: boolean;
+      /** @description Northern Ireland Pointer Dataset */
+      nip: boolean;
       /**
        * @description US Address Dataset
        * @example true
@@ -2893,10 +2899,70 @@ export interface components {
       /** @description IE Base Address File. Eircode Address File */
       ecaf: boolean;
       /**
+       * @description Asia Pacific Address File
+       * @example true
+       */
+      hereap: boolean;
+      /**
+       * @description Hong Kong Address File
+       * @example true
+       */
+      herehk: boolean;
+      /**
+       * @description India Address File
+       * @example true
+       */
+      herei: boolean;
+      /**
+       * @description Macau Address File
+       * @example true
+       */
+      herem: boolean;
+      /**
+       * @description Middle East and Africa Address File
+       * @example true
+       */
+      heremea: boolean;
+      /**
+       * @description North America Address File
+       * @example true
+       */
+      herena: boolean;
+      /**
+       * @description Oceania Address File
+       * @example true
+       */
+      hereo: boolean;
+      /**
+       * @description South America Address File
+       * @example true
+       */
+      heresa: boolean;
+      /**
+       * @description Taiwan Address File
+       * @example true
+       */
+      heret: boolean;
+      /**
+       * @description Eastern Europe Address File
+       * @example true
+       */
+      hereee: boolean;
+      /**
        * @description Western Europe Address File
        * @example true
        */
-      herewe?: boolean;
+      herewe: boolean;
+      /**
+       * @description Phone validation is enabled
+       * @example true
+       */
+      phone: boolean;
+      /**
+       * @description Email validation is enabled
+       * @example true
+       */
+      email: boolean;
     };
     /**
      * API Key Automated Topup
@@ -2918,7 +2984,7 @@ export interface components {
        * used.
        * @example 2022-01-06T11:41:27.092Z
        */
-      expires: string;
+      expires: string | null;
       /**
        * Format: int32
        * @description Number of procured lookups from this purchase.
@@ -2943,13 +3009,18 @@ export interface components {
       individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
       /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
       allowed_urls: string[];
-      notifications?: components["schemas"]["ApiKeyNotifications"];
-      datasets?: components["schemas"]["ApiKeyDatasets"];
+      /**
+       * @description Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage
+       * @default 28
+       */
+      redact_days: number;
+      notifications: components["schemas"]["ApiKeyNotifications"];
+      datasets: components["schemas"]["ApiKeyDatasets"];
       automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
       /** @description Current balance purchases attached to key. */
       current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
-    } & {
-      notificatinos: unknown;
+      /** @description Accept IP addresses forwarded in the `IDPC-Source-IP` header */
+      ip_forwarding: boolean;
     };
     /** API Key Details Response */
     ApiKeyDetailsResponse: {
@@ -2961,6 +3032,126 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
+    };
+    /** API Key Details Update */
+    ApiKeyDetailsEditable: {
+      /** Daily Rate Limit */
+      daily_limit?: {
+        /**
+         * Format: int32
+         * @description `number` or `null`. The daily lookup limit currently set on your key.
+         * `null` means the limit is currently disabled.
+         * @example 1000
+         */
+        limit?: number | null;
+      };
+      /** API Key Individual Limit */
+      individual_limit?: {
+        /**
+         * Format: int32
+         * @description `number` or `null` Limit set on the number of lookups that can be
+         * performed from a single IP address. `null` means the limit is currently
+         * disabled.
+         * @example 30
+         */
+        limit?: number | null;
+      };
+      /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. Up to 10 allowed. */
+      allowed_urls?: string[];
+      /**
+       * @description Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage
+       * @default 28
+       */
+      redact_days?: number;
+      /** API Key Notifications */
+      notifications?: {
+        /** @description A list of email addresses designated by you to receive notifications about this key. Up to 5 allowed. */
+        emails?: string[];
+        /** @description Indicates whether email notifications are enabled. */
+        enabled?: boolean;
+      };
+      /** @description Accept IP addresses forwarded in the `IDPC-Source-IP` header */
+      ip_forwarding?: boolean;
+      /**
+       * API Key Dataset Availability
+       * @description Indicates which datasets are available and added by default to the address responses
+       */
+      datasets?: {
+        /** @description UK Property Alias dataset */
+        pafa?: boolean;
+        /** @description UK Welsh Language Dataset */
+        pafw?: boolean;
+        /**
+         * @description US Address Dataset
+         * @example true
+         */
+        usps?: boolean;
+        /**
+         * @description Asia Pacific Address File
+         * @example true
+         */
+        hereap?: boolean;
+        /**
+         * @description Hong Kong Address File
+         * @example true
+         */
+        herehk?: boolean;
+        /**
+         * @description India Address File
+         * @example true
+         */
+        herei?: boolean;
+        /**
+         * @description Macau Address File
+         * @example true
+         */
+        herem?: boolean;
+        /**
+         * @description Middle East and Africa Address File
+         * @example true
+         */
+        heremea?: boolean;
+        /**
+         * @description North America Address File
+         * @example true
+         */
+        herena?: boolean;
+        /**
+         * @description Oceania Address File
+         * @example true
+         */
+        hereo?: boolean;
+        /**
+         * @description South America Address File
+         * @example true
+         */
+        heresa?: boolean;
+        /**
+         * @description Taiwan Address File
+         * @example true
+         */
+        heret?: boolean;
+        /**
+         * @description Eastern Europe Address File
+         * @example true
+         */
+        hereee?: boolean;
+        /**
+         * @description Western Europe Address File
+         * @example true
+         */
+        herewe?: boolean;
+        /**
+         * @description Phone validation is enabled
+         * @example true
+         */
+        phone?: boolean;
+        /**
+         * @description Email validation is enabled
+         * @example true
+         */
+        email?: boolean;
+      };
     };
     /** Key Usage */
     KeyUsageResult: {
@@ -3691,7 +3882,7 @@ export interface components {
          * @description The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active
          * @example 10000
          */
-        limit?: number;
+        limit?: number | null;
       };
     };
     /** Licensee */
@@ -4645,6 +4836,62 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["ErrorResponse"];
         };
+      };
+    };
+  };
+  /** Update API Key Details */
+  UpdateKeyDetails: {
+    parameters: {
+      path: {
+        /**
+         * **API Key**
+         *
+         * The API Key to retrieve. Begins `ak_`.
+         */
+        key: components["parameters"]["ApiKeyPathParam"];
+      };
+      query: {
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApiKeyDetailsResponse"];
+        };
+      };
+      /** Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Unauthorised */
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** Resource not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ApiKeyDetailsEditable"];
       };
     };
   };
@@ -6119,6 +6366,12 @@ export interface operations {
           "application/json": components["schemas"]["BadRequestResponse"];
         };
       };
+      /** Unauthorized */
+      401: {
+        content: {
+          "application/json": components["schemas"]["UnauthorizedResponse"];
+        };
+      };
     };
   };
   /** Query for and validate phone numbers. */
@@ -6162,6 +6415,12 @@ export interface operations {
       400: {
         content: {
           "application/json": components["schemas"]["BadRequestResponse"];
+        };
+      };
+      /** Unauthorized */
+      401: {
+        content: {
+          "application/json": components["schemas"]["UnauthorizedResponse"];
         };
       };
       /** Rate Limit Timeout */

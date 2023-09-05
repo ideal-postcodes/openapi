@@ -540,6 +540,74 @@
           }
         },
         "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Keys"
+        ],
+        "summary": "Update Details",
+        "description": "Update API Key Details",
+        "operationId": "UpdateKeyDetails",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKeyPathParam"
+          },
+          {
+            "$ref": "#/components/parameters/UserTokenParam"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyDetailsEditable"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyDetailsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/keys/{key}/usage": {
@@ -2277,6 +2345,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
@@ -2380,6 +2458,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
                 }
               }
             }
@@ -6113,10 +6201,11 @@
         "properties": {
           "limit": {
             "x-nullable": true,
+            "nullable": true,
             "minimum": 0,
             "example": 1000,
             "type": "integer",
-            "description": "`number` or `null`. The daily lookup limit currently set on your key. \n`null` means the limit is currently disabled.",
+            "description": "`number` or `null`. The daily lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
             "format": "int32"
           },
           "consumed": {
@@ -6139,8 +6228,9 @@
             "minimum": 0,
             "example": 30,
             "x-nullable": true,
+            "nullable": true,
             "type": "integer",
-            "description": "`number` or `null` Limit set on the number of lookups that can be \nperformed from a single IP address. `null` means the limit is currently \ndisabled.",
+            "description": "`number` or `null` Limit set on the number of lookups that can be\nperformed from a single IP address. `null` means the limit is currently\ndisabled.",
             "format": "int32"
           }
         }
@@ -6177,9 +6267,24 @@
           "nyb",
           "pafa",
           "pafw",
+          "ab",
+          "nip",
           "ecad",
           "ecaf",
-          "usps"
+          "usps",
+          "herewe",
+          "hereap",
+          "hereee",
+          "herehk",
+          "herei",
+          "herem",
+          "heremea",
+          "herena",
+          "hereo",
+          "heresa",
+          "heret",
+          "email",
+          "phone"
         ],
         "properties": {
           "paf": {
@@ -6207,6 +6312,16 @@
             "description": "UK Not Yet Built Dataset",
             "example": false
           },
+          "ab": {
+            "type": "boolean",
+            "description": "UK AddressBase dataset",
+            "example": false
+          },
+          "nip": {
+            "type": "boolean",
+            "description": "Northern Ireland Pointer Dataset",
+            "example": false
+          },
           "usps": {
             "type": "boolean",
             "description": "US Address Dataset",
@@ -6222,9 +6337,69 @@
             "description": "IE Base Address File. Eircode Address File",
             "example": false
           },
+          "hereap": {
+            "type": "boolean",
+            "description": "Asia Pacific Address File",
+            "example": true
+          },
+          "herehk": {
+            "type": "boolean",
+            "description": "Hong Kong Address File",
+            "example": true
+          },
+          "herei": {
+            "type": "boolean",
+            "description": "India Address File",
+            "example": true
+          },
+          "herem": {
+            "type": "boolean",
+            "description": "Macau Address File",
+            "example": true
+          },
+          "heremea": {
+            "type": "boolean",
+            "description": "Middle East and Africa Address File",
+            "example": true
+          },
+          "herena": {
+            "type": "boolean",
+            "description": "North America Address File",
+            "example": true
+          },
+          "hereo": {
+            "type": "boolean",
+            "description": "Oceania Address File",
+            "example": true
+          },
+          "heresa": {
+            "type": "boolean",
+            "description": "South America Address File",
+            "example": true
+          },
+          "heret": {
+            "type": "boolean",
+            "description": "Taiwan Address File",
+            "example": true
+          },
+          "hereee": {
+            "type": "boolean",
+            "description": "Eastern Europe Address File",
+            "example": true
+          },
           "herewe": {
             "type": "boolean",
             "description": "Western Europe Address File",
+            "example": true
+          },
+          "phone": {
+            "type": "boolean",
+            "description": "Phone validation is enabled",
+            "example": true
+          },
+          "email": {
+            "type": "boolean",
+            "description": "Email validation is enabled",
             "example": true
           }
         }
@@ -6255,9 +6430,10 @@
         "properties": {
           "expires": {
             "x-nullable": true,
+            "nullable": true,
             "type": "string",
             "example": "2022-01-06T11:41:27.092Z",
-            "description": "`string` or `null` The date when this purchase will expire in simplified \nextended ISO format (ISO 8601). This is typically 365 days from the time \nof first use. This field will be `null` if the purchase has not yet been \nused."
+            "description": "`string` or `null` The date when this purchase will expire in simplified\nextended ISO format (ISO 8601). This is typically 365 days from the time\nof first use. This field will be `null` if the purchase has not yet been\nused."
           },
           "purchased": {
             "minimum": 0,
@@ -6283,9 +6459,12 @@
           "daily_limit",
           "individual_limit",
           "allowed_urls",
-          "notificatinos",
+          "redact_days",
+          "notifications",
           "automated_topups",
-          "current_purchases"
+          "current_purchases",
+          "ip_forwarding",
+          "datasets"
         ],
         "properties": {
           "lookups_remaining": {
@@ -6307,6 +6486,11 @@
             },
             "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled."
           },
+          "redact_days": {
+            "type": "integer",
+            "default": 28,
+            "description": "Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage"
+          },
           "notifications": {
             "$ref": "#/components/schemas/ApiKeyNotifications"
           },
@@ -6322,6 +6506,11 @@
               "$ref": "#/components/schemas/ApiKeyCurrentPurchase"
             },
             "description": "Current balance purchases attached to key."
+          },
+          "ip_forwarding": {
+            "type": "boolean",
+            "default": false,
+            "description": "Accept IP addresses forwarded in the `IDPC-Source-IP` header"
           }
         }
       },
@@ -6349,6 +6538,169 @@
             "enum": [
               "Success"
             ]
+          }
+        }
+      },
+      "ApiKeyDetailsEditable": {
+        "title": "API Key Details Update",
+        "type": "object",
+        "properties": {
+          "daily_limit": {
+            "title": "Daily Rate Limit",
+            "type": "object",
+            "properties": {
+              "limit": {
+                "x-nullable": true,
+                "nullable": true,
+                "minimum": 0,
+                "example": 1000,
+                "type": "integer",
+                "description": "`number` or `null`. The daily lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
+                "format": "int32"
+              }
+            }
+          },
+          "individual_limit": {
+            "title": "API Key Individual Limit",
+            "type": "object",
+            "properties": {
+              "limit": {
+                "minimum": 0,
+                "example": 30,
+                "x-nullable": true,
+                "nullable": true,
+                "type": "integer",
+                "description": "`number` or `null` Limit set on the number of lookups that can be\nperformed from a single IP address. `null` means the limit is currently\ndisabled.",
+                "format": "int32"
+              }
+            }
+          },
+          "allowed_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^[^\\s]+$"
+            },
+            "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled. Up to 10 allowed."
+          },
+          "redact_days": {
+            "type": "integer",
+            "default": 28,
+            "minimum": 0,
+            "maximum": 1095,
+            "description": "Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage"
+          },
+          "notifications": {
+            "title": "API Key Notifications",
+            "type": "object",
+            "properties": {
+              "emails": {
+                "type": "array",
+                "description": "A list of email addresses designated by you to receive notifications about this key. Up to 5 allowed.",
+                "items": {
+                  "type": "string",
+                  "pattern": "^\\S{1,100}@\\S{1,100}$",
+                  "example": "person@example.com"
+                }
+              },
+              "enabled": {
+                "description": "Indicates whether email notifications are enabled.",
+                "type": "boolean"
+              }
+            }
+          },
+          "ip_forwarding": {
+            "type": "boolean",
+            "default": false,
+            "description": "Accept IP addresses forwarded in the `IDPC-Source-IP` header"
+          },
+          "datasets": {
+            "title": "API Key Dataset Availability",
+            "description": "Indicates which datasets are available and added by default to the address responses",
+            "type": "object",
+            "properties": {
+              "pafa": {
+                "type": "boolean",
+                "description": "UK Property Alias dataset",
+                "example": false
+              },
+              "pafw": {
+                "type": "boolean",
+                "description": "UK Welsh Language Dataset",
+                "example": false
+              },
+              "usps": {
+                "type": "boolean",
+                "description": "US Address Dataset",
+                "example": true
+              },
+              "hereap": {
+                "type": "boolean",
+                "description": "Asia Pacific Address File",
+                "example": true
+              },
+              "herehk": {
+                "type": "boolean",
+                "description": "Hong Kong Address File",
+                "example": true
+              },
+              "herei": {
+                "type": "boolean",
+                "description": "India Address File",
+                "example": true
+              },
+              "herem": {
+                "type": "boolean",
+                "description": "Macau Address File",
+                "example": true
+              },
+              "heremea": {
+                "type": "boolean",
+                "description": "Middle East and Africa Address File",
+                "example": true
+              },
+              "herena": {
+                "type": "boolean",
+                "description": "North America Address File",
+                "example": true
+              },
+              "hereo": {
+                "type": "boolean",
+                "description": "Oceania Address File",
+                "example": true
+              },
+              "heresa": {
+                "type": "boolean",
+                "description": "South America Address File",
+                "example": true
+              },
+              "heret": {
+                "type": "boolean",
+                "description": "Taiwan Address File",
+                "example": true
+              },
+              "hereee": {
+                "type": "boolean",
+                "description": "Eastern Europe Address File",
+                "example": true
+              },
+              "herewe": {
+                "type": "boolean",
+                "description": "Western Europe Address File",
+                "example": true
+              },
+              "phone": {
+                "type": "boolean",
+                "description": "Phone validation is enabled",
+                "example": true
+              },
+              "email": {
+                "type": "boolean",
+                "description": "Email validation is enabled",
+                "example": true
+              }
+            }
           }
         }
       },
@@ -7981,6 +8333,7 @@
               "limit": {
                 "example": 10000,
                 "x-nullable": true,
+                "nullable": true,
                 "minimum": 0,
                 "format": "int32",
                 "type": "number",
