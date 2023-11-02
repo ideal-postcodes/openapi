@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/ideal-postcodes/openapi/compare/4.1.0...4.1.1) (2023-11-02)
+
+
+### Bug Fixes
+
+* **Languages:** Add new supported language ([af87339](https://github.com/ideal-postcodes/openapi/commit/af873390473e05a47f1bd208c816217f8a137fbd))
+
 # [4.1.0](https://github.com/ideal-postcodes/openapi/compare/4.0.1...4.1.0) (2023-09-05)
 
 
