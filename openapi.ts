@@ -1080,6 +1080,7 @@ export interface components {
      *   - `ecad` (IRL) Eircode ECAD
      *   - `usps` (USA) USPS Zip+4
      *   - `herewe` (Western Europe) Western Europe Dataset
+     *   - `gnaf` (Australia) Geoscape Geocoded National Address File
      * @enum {string}
      */
     Dataset:
@@ -1102,7 +1103,8 @@ export interface components {
       | "herei"
       | "herehk"
       | "hereee"
-      | "hereap";
+      | "hereap"
+      | "gnaf";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -2466,6 +2468,266 @@ export interface components {
       /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
       builtup_name: string;
     };
+    GnafAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "gnaf";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "AUS";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "AU";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Australia";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "en";
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_detail_pid: string;
+      /**
+       * Format: date
+       * @description Date this record was created.
+       */
+      date_created: string;
+      /**
+       * Format: date
+       * @description Date this record was last modified (not retired/recreated in line with ICSM standard).
+       */
+      date_last_modified: string;
+      /**
+       * Format: date
+       * @description Date this record was retired.
+       */
+      date_retired: string;
+      /** @description Combines both building/property name fields. Field length: up to 200 alphanumeric characters (AS4590:2006 5.7). */
+      building_name: string;
+      /** @description Lot number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.8.1). */
+      lot_number_prefix: string;
+      /** @description Lot number. Field length: up to five alphanumeric characters (AS4590:2006 5.8.1). */
+      lot_number: string;
+      /** @description Lot number suffix. Field length: up to two alphanumeric characters (AS4590:2006 5.8.1). */
+      lot_number_suffix: string;
+      /** @description Specification of the type of a separately identifiable portion within a building/complex. Field Length: up to seven upper case alpha characters (AS4590:2006 5.5.1.1). */
+      flat_type_code: string;
+      /** @description Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
+      flat_number_prefix: string;
+      /** @description Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2). */
+      flat_number: number;
+      /** @description Flat/unit number suffix Field length: up to two  alphanumeric characters (AS4590:2006 5.5.1.2). */
+      flat_number_suffix: string;
+      /** @description Level type. Field length: up to four alphanumeric characters (AS4590:2006 5.5.2.1). */
+      level_type_code: string;
+      /** @description Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
+      level_number_prefix: string;
+      /** @description Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2). */
+      level_number: number;
+      /** @description Level number suffix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
+      level_number_suffix: string;
+      /** @description Prefix for the first (or only) number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.1). */
+      number_first_prefix: string;
+      /** @description Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1). */
+      number_first: number;
+      /** @description Suffix for the first (or only) number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.1). */
+      number_first_suffix: string;
+      /** @description Prefix for the last number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.2). */
+      number_last_prefix: string;
+      /** @description Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2). */
+      number_last: number;
+      /** @description Suffix for the last number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.2). */
+      number_last_suffix: string;
+      /** @description Street/Locality of this address - not mandatory N as some records in G-F may not require street (e.g. remote rural property). */
+      street_locality_pid: string;
+      /** @description A general field to capture various references to address locations alongside another physical location. Field length: up to 45 alphanumeric characters (AS4590:2006 5.16). */
+      location_description: string;
+      /** @description The unique identifier for the locality. */
+      locality_pid: string;
+      /** @description A = Alias record, P = Principal record. */
+      alias_principal: string;
+      /** @description Postcodes are optional as prescribed by AS4819 and AS4590:2006 5.13. */
+      postcode: string;
+      /** @description Private street information. This is not broken up into name/type/suffix. Field length: up to 75 alphanumeric characters. This is not currently populated. */
+      private_street: string;
+      /** @description Generic parcel id field derived from the Geoscape Australia’s Cadastre parcel where available. */
+      legal_parcel_id: string;
+      /** @description Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.). */
+      confidence: number;
+      /** @description Address site Persistent Identifier. */
+      address_site_pid: string;
+      /** @description Binary indicator of the level of geocoding this address has. e.g. 0 = 000 = (No geocode), 1 = 001 = (No Locality geocode, No Street geocode, Address geocode), etc. */
+      level_geocoded_code: number;
+      /** @description Property persistent identifier referenced to relevant cadastral model. This field is not currently populated. */
+      property_pid: string;
+      /** @description This field stores the property identifier provided by the jurisdiction for the property associated with the address. This identifier is the same as the CONTRIBUTOR_ID in the Property product. */
+      gnaf_property_pid: string;
+      /** @description Indicator that identifies if the address is P (Primary) or S (secondary). */
+      primary_secondary: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_alias_pid: string;
+      /** @description Persistent identifier (i.e. ADDRESS_DETAIL_PID) of the principal address. */
+      principal_pid: string;
+      /** @description Persistent identifier (i.e. ADDRESS_DETAIL_PID) of the alias address. */
+      alias_pid: string;
+      /** @description Alias type (e.g. "Synonym"). */
+      alias_type_code: string;
+      /** @description Comment about the alias (e.g. Corner address). */
+      alias_comment: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_default_geocode_pid: string;
+      /** @description Unique abbreviation for the geocode type. */
+      geocode_type_code: string;
+      /** @description Latitude */
+      default_latitude: number;
+      /** @description Longitude */
+      default_longitude: number;
+      /** @description The Identifier is unique to the record within the table. The ID is prefixed with the state or territory abbreviation, e.g. NSW123456. */
+      address_feature_id: string;
+      /** @description The Persistent Identifier is the unique identifier for the addressable object this record represents. The PID allows for tracking change to the ADDRESS_DETAIL_PID associated with an addressable object over time. The PID is prefixed with AF and the state or territory abbreviation, e.g. AFNSW123456. */
+      address_feature_pid: string;
+      /** @description The code indicating the type of change, for example, LOC-STN for locality name and street name change. */
+      address_change_type_code: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_mesh_block_2016_pid: string;
+      /** @description Code for mesh block match e.g. 1. */
+      mb_2016_match_code: string;
+      /** @description Mesh block 2016 Persistent Identifier. */
+      mb_2016_pid: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_mesh_block_2021_pid: string;
+      /** @description Code for mesh block match e.g. 1. */
+      mb_2021_match_code: string;
+      /** @description Mesh block 2021 Persistent Identifier. */
+      mb_2021_pid: string;
+      /** @description The name of the locality or suburb. */
+      locality_name: string;
+      /** @description Required to differentiate localities of the same name within a state. */
+      primary_postcode: string;
+      /** @description Describes the class of locality (e.g. Gazetted, topographic feature etc.). Lookup to locality class. */
+      locality_class_code: string;
+      /** @description State persistent identifier. */
+      state_pid: string;
+      /** @description Internal identifier used in the management of G-NAF. */
+      gnaf_locality_pid: string;
+      /** @description = 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
+      locality_gnaf_reliability_code: number;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      locality_alias_pid: string;
+      /** @description The alias name for the locality or suburb. */
+      locality_alias_name: string;
+      /** @description Postcode. */
+      locality_alias_postcode: string;
+      /** @description Alias type code for the locality. */
+      locality_alias_type_code: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      locality_neighbour_pid: string;
+      /** @description The neighbour locality persistent identifier. */
+      neighbour_locality_pid: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      locality_point_pid: string;
+      /** @description Planimetric accuracy of geocode (if known). */
+      locality_planimetric_accuracy: number;
+      /** @description Locality latitude */
+      locality_latitude: number;
+      /** @description Locality longitude */
+      locality_longitude: number;
+      /** @description The 2016 mesh block code. */
+      mb_2016_code: string;
+      /** @description The 2021 mesh block code. */
+      mb_2021_code: string;
+      /** @description The Persistent Identifier is unique to the real Y world feature this record represents. */
+      primary_secondary_pid: string;
+      /** @description Persistent identifier for the primary address. Defined as a principal address which does not have a flat number or level number but which matches the secondary address in all other respects OR is designated as owning secondary addresses by Geoscape (e.g. involves private road in complex development). */
+      primary_pid: string;
+      /** @description Secondary persistent identifier for the Secondary address - defined as any address where flat number or level number information is not null, i.e. includes PREFIX, NUMBER or SUFFIX, OR is designated as being linked to a primary address by Geoscape (e.g. involves private road in complex development). */
+      secondary_pid: string;
+      /**
+       * @description Code of 1 OR 2 when the root address:-
+       *
+       * Code 1: Automatically generated when the primary and secondary addresses share the same street number, street name (and type) and locality name components.
+       *
+       * Code 2: Manually generated where the primary and secondary addresses MAY or MAY NOT share the same street number, street name (and type) and locality name components
+       */
+      ps_join_type_code: number;
+      /** @description Details of join type can be given. */
+      ps_join_comment: string;
+      /** @description The state or territory name. All in uppercase. E.g. TASMANIA. */
+      state_name: string;
+      /** @description The state or territory abbreviation. */
+      state_abbreviation: string;
+      /** @description Defines whether this street represents a confirmed or unconfirmed street. */
+      street_class_code: string;
+      /** @description Street name. e.g. "POPLAR". */
+      street_name: string;
+      /** @description The street type code. e.g. "PLACE". */
+      street_type_code: string;
+      /** @description The street suffix code. e.g. "WEST". */
+      street_suffix_code: string;
+      /** @description Internal identifier used in the management of G-NAF. */
+      gnaf_street_pid: string;
+      /** @description The street confidence level. */
+      gnaf_street_confidence: number;
+      /** @description Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
+      street_locality_gnaf_reliability_code: number;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      street_locality_alias_pid: string;
+      /** @description The street alias name. e.g. "POPLAR". */
+      street_locality_alias_street_name: string;
+      /** @description The street type code. e.g. "PLACE". */
+      street_locality_alias_street_type_code: string;
+      /** @description The street suffix code. e.g. "WEST". */
+      street_locality_alias_street_suffix_code: string;
+      /** @description The alias type code. */
+      street_locality_alias_type_code: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      street_locality_point_pid: string;
+      /** @description Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier. */
+      boundary_extent: number;
+      /** @description Planimetric accuracy of geocode (if known). */
+      street_locality_planimetric_accuracy: number;
+      /** @description Street locality latitude */
+      street_locality_latitude: number;
+      /** @description Street locality longitude */
+      street_locality_longitude: number;
+      /** @description Address type (e.g. "Postal", Physical"). */
+      address_type?: string;
+      /** @description Address site name. Field length: 200 alphanumeric characters. */
+      address_site_name?: string;
+      /** @description The Persistent Identifier is unique to the real world feature this record represents. */
+      address_site_geocode_pid?: string;
+      /** @description An identifier that relates to this specific geocoded site (e.g. "Transformer 75658"). */
+      geocode_site_name?: string;
+      /** @description Additional textual data e.g. "Warning: Access to water riser is located at rear of building via SMITH LANE". */
+      geocode_site_description?: string;
+      /** @description Unique abbreviation for geocode feature. (e.g. "PRCL") (SAWG 7.4.1). */
+      site_geocode_type_code?: string;
+      /** @description Spatial precision of the geocode expressed N as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
+      reliability_code?: number;
+      /** @description Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier. */
+      site_boundary_extent?: number;
+      /** @description Planimetric accuracy. */
+      site_planimetric_accuracy?: number;
+      /** @description Elevation. This field is not currently populated. */
+      elevation?: number;
+      /** @description Site longitude */
+      site_longitude?: number;
+      /** @description Site latitude */
+      site_latitude?: number;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -2522,7 +2784,8 @@ export interface components {
         | components["schemas"]["EcadAddress"]
         | components["schemas"]["EcafAddress"]
         | components["schemas"]["UspsAddress"]
-        | components["schemas"]["HereAddress"];
+        | components["schemas"]["HereAddress"]
+        | components["schemas"]["GnafAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -2900,6 +3163,11 @@ export interface components {
       ecad: boolean;
       /** @description IE Base Address File. Eircode Address File */
       ecaf: boolean;
+      /**
+       * @description Australia Geocoded National Address File
+       * @example true
+       */
+      gnaf?: boolean;
       /**
        * @description Asia Pacific Address File
        * @example true
@@ -3571,7 +3839,8 @@ export interface components {
         | components["schemas"]["PafAliasAddress"]
         | components["schemas"]["WelshPafAddress"]
         | components["schemas"]["AbAddress"]
-        | components["schemas"]["HereAddress"];
+        | components["schemas"]["HereAddress"]
+        | components["schemas"]["GnafAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
