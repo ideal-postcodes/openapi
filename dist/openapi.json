@@ -6783,6 +6783,249 @@
           }
         }
       },
+      "UsaCassVerifiedAddress": {
+        "title": "United States CASS Verified Address",
+        "description": "Address retrieved using CASS compliant address verification process",
+        "required": [
+          "address1",
+          "address2",
+          "address3",
+          "area_code",
+          "carrier_route",
+          "check_digit",
+          "city",
+          "city_abbreviation",
+          "congressional_district",
+          "country_code",
+          "county",
+          "day_light_savings",
+          "delivery_point",
+          "dpv",
+          "dpvcmra",
+          "dpv_footnotes",
+          "dpvfp",
+          "dpv_no_stat",
+          "dpv_vacant",
+          "elot",
+          "finance_number",
+          "fips_county_code",
+          "firm",
+          "footnotes",
+          "geo_coded",
+          "lacs_indicator",
+          "lacs_link_footnote",
+          "lacs_link_indicator",
+          "latitude",
+          "longitude",
+          "parsed_pmb_designator",
+          "parsed_pmb_number",
+          "parsed_post_directional",
+          "parsed_pre_directional",
+          "parsed_primary_number",
+          "parsed_street_name",
+          "parsed_suffix",
+          "parsed_unit_designator",
+          "parsed_unit_number",
+          "rdi",
+          "record_type",
+          "secondary_address_info",
+          "state",
+          "suite_link_footnote",
+          "time_zone",
+          "urbanization",
+          "zip_code"
+        ],
+        "properties": {
+          "address1": {
+            "type": "string",
+            "description": "Primary delivery address\n"
+          },
+          "address2": {
+            "type": "string",
+            "description": "Secondary address information\n"
+          },
+          "address3": {
+            "type": "string",
+            "description": "Additional secondary address information\n"
+          },
+          "area_code": {
+            "type": "string",
+            "description": "Area code\n"
+          },
+          "carrier_route": {
+            "type": "string",
+            "description": "Data required to perform a Carrier Route sort\n"
+          },
+          "check_digit": {
+            "type": "string",
+            "description": "Character following the 5- or 9-digit ZIP Code\n"
+          },
+          "city": {
+            "type": "string",
+            "description": "City name\n"
+          },
+          "city_abbreviation": {
+            "type": "string",
+            "description": "City Abbreviation\n"
+          },
+          "congressional_district": {
+            "type": "string",
+            "description": "Identifies the Congressional District\n"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO3166 country code\n"
+          },
+          "county": {
+            "type": "string",
+            "description": "Name of the county\n"
+          },
+          "day_light_savings": {
+            "type": "string",
+            "description": "Daylight saving time indicator\n"
+          },
+          "delivery_point": {
+            "type": "string",
+            "description": "Last 2 digits of the primary street address number or Post Office™ box\n"
+          },
+          "dpv": {
+            "type": "string",
+            "description": "DPV Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).\n"
+          },
+          "dpv_cmra": {
+            "type": "string",
+            "description": "DPV CMRA code. Possible values: 'Y' (Yes), 'N' (No).\n"
+          },
+          "dpv_footnotes": {
+            "type": "string",
+            "description": "DPV Footnotes\n"
+          },
+          "dpv_fp": {
+            "type": "string",
+            "description": "False Positive Indicator from the DPV lookup. Possible values: 'Y' (Yes), 'N' (No), ' ' (Space).\n"
+          },
+          "dpv_no_stat": {
+            "type": "string",
+            "description": "DPV NoStat code\n"
+          },
+          "dpv_vacant": {
+            "type": "string",
+            "description": "DPV Vacant code\n"
+          },
+          "elot": {
+            "type": "string",
+            "description": "Enhanced Line of Travel\n"
+          },
+          "finance_number": {
+            "type": "number",
+            "description": "Internal accounting number used by the USPS\n"
+          },
+          "fips_county_code": {
+            "type": "string",
+            "description": "Federal Information Processing Standard code for a county\n"
+          },
+          "firm": {
+            "type": "string",
+            "description": "Company name in a business address\n"
+          },
+          "footnotes": {
+            "type": "string",
+            "description": "Letter codes returned by ZIP + 4® encoding\n"
+          },
+          "geo_coded": {
+            "type": "string",
+            "description": "Indicates whether the address was geo-coded. Possible values: 'Y' (Yes), 'N' (No).\n"
+          },
+          "lacs_indicator": {
+            "type": "string",
+            "description": "Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).\n"
+          },
+          "lacs_link_footnote": {
+            "type": "string",
+            "description": "LACSLink Footnote\n"
+          },
+          "lacs_link_indicator": {
+            "type": "string",
+            "description": "LACSLink Indicator\n"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude of the encoded address\n"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude of the encoded address\n"
+          },
+          "parsed_pmb_designator": {
+            "type": "string",
+            "description": "Information if a PMB is found in an address\n"
+          },
+          "parsed_pmb_number": {
+            "type": "string",
+            "description": "Information if a PMB is found in an address\n"
+          },
+          "parsed_post_directional": {
+            "type": "string",
+            "description": "Notation following the street name indicating street direction\n"
+          },
+          "parsed_pre_directional": {
+            "type": "string",
+            "description": "Notation preceding the street name indicating street direction\n"
+          },
+          "parsed_primary_number": {
+            "type": "number",
+            "description": "Number preceding the street name\n"
+          },
+          "parsed_street_name": {
+            "type": "string",
+            "description": "Street name\n"
+          },
+          "parsed_suffix": {
+            "type": "string",
+            "description": "Part of the delivery address line following the street name\n"
+          },
+          "parsed_unit_designator": {
+            "type": "string",
+            "description": "Identification of the secondary address unit\n"
+          },
+          "parsed_unit_number": {
+            "type": "number",
+            "description": "Apartment or suite number\n"
+          },
+          "rdi": {
+            "type": "string",
+            "description": "Reserved for future use\n"
+          },
+          "record_type": {
+            "type": "string",
+            "description": "Type of address record (Street, PO Box, High-rise, etc.)\n"
+          },
+          "secondary_address_info": {
+            "type": "string",
+            "description": "Additional secondary address information\n"
+          },
+          "state": {
+            "type": "string",
+            "description": "Standard two-letter state abbreviation\n"
+          },
+          "suite_link_footnote": {
+            "type": "string",
+            "description": "Results of the SuiteLink lookup. Possible values: ' ' (Space), '00' (Double Zero), 'A' (A).\n"
+          },
+          "time_zone": {
+            "type": "string",
+            "description": "Time zone\n"
+          },
+          "urbanization": {
+            "type": "string",
+            "description": "Urban name required in the address of all mail being delivered to Puerto Rico\n"
+          },
+          "zip_code": {
+            "type": "string",
+            "description": "5-digit ZIP Code™ and the four additional digits\n"
+          }
+        }
+      },
       "GbrCleanseMatch": {
         "title": "Address Match",
         "type": "object",
@@ -6821,6 +7064,9 @@
               },
               {
                 "$ref": "#/components/schemas/WelshPafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UsaCassVerifiedAddress"
               }
             ]
           },

@@ -3195,6 +3195,109 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
+    /**
+     * United States CASS Verified Address
+     * @description Address retrieved using CASS compliant address verification process
+     */
+    UsaCassVerifiedAddress: {
+      /** @description Primary delivery address */
+      address1: string;
+      /** @description Secondary address information */
+      address2: string;
+      /** @description Additional secondary address information */
+      address3: string;
+      /** @description Area code */
+      area_code: string;
+      /** @description Data required to perform a Carrier Route sort */
+      carrier_route: string;
+      /** @description Character following the 5- or 9-digit ZIP Code */
+      check_digit: string;
+      /** @description City name */
+      city: string;
+      /** @description City Abbreviation */
+      city_abbreviation: string;
+      /** @description Identifies the Congressional District */
+      congressional_district: string;
+      /** @description ISO3166 country code */
+      country_code: string;
+      /** @description Name of the county */
+      county: string;
+      /** @description Daylight saving time indicator */
+      day_light_savings: string;
+      /** @description Last 2 digits of the primary street address number or Post Office™ box */
+      delivery_point: string;
+      /** @description DPV Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No). */
+      dpv: string;
+      /** @description DPV CMRA code. Possible values: 'Y' (Yes), 'N' (No). */
+      dpv_cmra?: string;
+      /** @description DPV Footnotes */
+      dpv_footnotes: string;
+      /** @description False Positive Indicator from the DPV lookup. Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). */
+      dpv_fp?: string;
+      /** @description DPV NoStat code */
+      dpv_no_stat: string;
+      /** @description DPV Vacant code */
+      dpv_vacant: string;
+      /** @description Enhanced Line of Travel */
+      elot: string;
+      /** @description Internal accounting number used by the USPS */
+      finance_number: number;
+      /** @description Federal Information Processing Standard code for a county */
+      fips_county_code: string;
+      /** @description Company name in a business address */
+      firm: string;
+      /** @description Letter codes returned by ZIP + 4® encoding */
+      footnotes: string;
+      /** @description Indicates whether the address was geo-coded. Possible values: 'Y' (Yes), 'N' (No). */
+      geo_coded: string;
+      /** @description Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No). */
+      lacs_indicator: string;
+      /** @description LACSLink Footnote */
+      lacs_link_footnote: string;
+      /** @description LACSLink Indicator */
+      lacs_link_indicator: string;
+      /** @description Latitude of the encoded address */
+      latitude: number;
+      /** @description Longitude of the encoded address */
+      longitude: number;
+      /** @description Information if a PMB is found in an address */
+      parsed_pmb_designator: string;
+      /** @description Information if a PMB is found in an address */
+      parsed_pmb_number: string;
+      /** @description Notation following the street name indicating street direction */
+      parsed_post_directional: string;
+      /** @description Notation preceding the street name indicating street direction */
+      parsed_pre_directional: string;
+      /** @description Number preceding the street name */
+      parsed_primary_number: number;
+      /** @description Street name */
+      parsed_street_name: string;
+      /** @description Part of the delivery address line following the street name */
+      parsed_suffix: string;
+      /** @description Identification of the secondary address unit */
+      parsed_unit_designator: string;
+      /** @description Apartment or suite number */
+      parsed_unit_number: number;
+      /** @description Reserved for future use */
+      rdi: string;
+      /** @description Type of address record (Street, PO Box, High-rise, etc.) */
+      record_type: string;
+      /** @description Additional secondary address information */
+      secondary_address_info: string;
+      /** @description Standard two-letter state abbreviation */
+      state: string;
+      /** @description Results of the SuiteLink lookup. Possible values: ' ' (Space), '00' (Double Zero), 'A' (A). */
+      suite_link_footnote: string;
+      /** @description Time zone */
+      time_zone: string;
+      /** @description Urban name required in the address of all mail being delivered to Puerto Rico */
+      urbanization: string;
+      /** @description 5-digit ZIP Code™ and the four additional digits */
+      zip_code: string;
+    } & {
+      dpvcmra: unknown;
+      dpvfp: unknown;
+    };
     /** Address Match */
     GbrCleanseMatch: {
       /** @description Originally submitted query */
@@ -3205,7 +3308,8 @@ export interface components {
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
-        | components["schemas"]["WelshPafAddress"];
+        | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["UsaCassVerifiedAddress"];
       /** @description The number of addresses we matched to the input. We return the closest match by default. */
       count: number;
       /** @description A score represented as number between 1 and 0. Fit compares the address elements present in your query against the matching address elements. It does not incorporate elements you have not presented in the score. A partial address (e.g. 12 Pye Green Road) will have a fit of 1 even though it is missing post town and postcode. Its confidence score will be less than 1 however because it is missing some crucial elements. */
