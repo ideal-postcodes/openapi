@@ -2477,19 +2477,37 @@ export interface components {
        *
        * @enum {undefined}
        */
-      country_iso: "AUS";
+      country_iso: "AUS" | "CCK" | "CXR" | "NFK";
       /**
        * @description  2 letter country code (ISO 3166-1)
        *
        * @enum {string}
        */
-      country_iso_2: "AU";
+      country_iso_2: "AU" | "CC" | "CX" | "NF";
       /**
        * @description   Full country names (ISO 3166)
        *
        * @enum {string}
        */
-      country: "Australia";
+      country:
+        | "Australia"
+        | "Cocos (Keeling) Islands"
+        | "Christmas Island"
+        | "Norfolk Island";
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 30 Hampton Cct
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       */
+      line_2: string;
       /**
        * @description Language represented by 2 letter ISO Code (639-1)
        *
@@ -2535,28 +2553,24 @@ export interface components {
       flat_type_code: string;
       /** @description Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
       flat_number_prefix: string;
-      /** @description Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2). */
-      flat_number: number;
+      flat_number: string | number;
       /** @description Flat/unit number suffix Field length: up to two  alphanumeric characters (AS4590:2006 5.5.1.2). */
       flat_number_suffix: string;
       /** @description Level type. Field length: up to four alphanumeric characters (AS4590:2006 5.5.2.1). */
       level_type_code: string;
       /** @description Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
       level_number_prefix: string;
-      /** @description Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2). */
-      level_number: number;
+      level_number: string | number;
       /** @description Level number suffix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2). */
       level_number_suffix: string;
       /** @description Prefix for the first (or only) number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.1). */
       number_first_prefix: string;
-      /** @description Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1). */
-      number_first: number;
+      number_first: string | number;
       /** @description Suffix for the first (or only) number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.1). */
       number_first_suffix: string;
       /** @description Prefix for the last number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.2). */
       number_last_prefix: string;
-      /** @description Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2). */
-      number_last: number;
+      number_last: string | number;
       /** @description Suffix for the last number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.2). */
       number_last_suffix: string;
       /** @description Street/Locality of this address - not mandatory N as some records in G-F may not require street (e.g. remote rural property). */
@@ -2569,8 +2583,7 @@ export interface components {
       private_street: string;
       /** @description Generic parcel id field derived from the Geoscape Australia’s Cadastre parcel where available. */
       legal_parcel_id: string;
-      /** @description Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.). */
-      confidence: number;
+      confidence: string | number;
       /** @description Binary indicator of the level of geocoding this address has. e.g. 0 = 000 = (No geocode), 1 = 001 = (No Locality geocode, No Street geocode, Address geocode), etc. */
       level_geocoded_code: number;
       /** @description Indicator that identifies if the address is P (Primary) or S (secondary). */
@@ -2579,10 +2592,8 @@ export interface components {
       alias_type_code: string;
       /** @description Unique abbreviation for the geocode type. */
       geocode_type_code: string;
-      /** @description Latitude */
-      default_latitude: number;
-      /** @description Longitude */
-      default_longitude: number;
+      default_latitude: string | number;
+      default_longitude: string | number;
       /** @description The code indicating the type of change, for example, LOC-STN for locality name and street name change. */
       address_change_type_code: string;
       /** @description Code for mesh block match e.g. 1. */
@@ -2598,41 +2609,35 @@ export interface components {
       /** @description Unique abbreviation for geocode feature. (e.g. "PRCL") (SAWG 7.4.1). */
       site_geocode_type_code: string;
       /** @description Spatial precision of the geocode expressed N as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
-      reliability_code: number;
+      reliability_code: string;
       /** @description Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier. */
-      site_boundary_extent: number;
+      site_boundary_extent: string;
       /** @description Planimetric accuracy. */
-      site_planimetric_accuracy: number;
+      site_planimetric_accuracy: string;
       /** @description Elevation. This field is not currently populated. */
-      elevation: number;
+      elevation: string;
       /** @description Site longitude */
-      site_longitude: number;
+      site_longitude: string;
       /** @description Site latitude */
-      site_latitude: number;
-      /** @description The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address. */
-      geocode_type_priority_order: number;
-      /** @description The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address. */
-      site_geocode_priority_order: number;
+      site_latitude: string;
+      geocode_type_priority_order: string | number;
+      site_geocode_priority_order: string | number;
       /** @description The name of the locality or suburb. */
       locality_name: string;
       /** @description Required to differentiate localities of the same name within a state. */
       primary_postcode: string;
       /** @description Describes the class of locality (e.g. Gazetted, topographic feature etc.). Lookup to locality class. */
       locality_class_code: string;
-      /** @description = 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
-      locality_gnaf_reliability_code: number;
+      locality_gnaf_reliability_code: string | number;
       /** @description The alias name for the locality or suburb. */
       locality_alias_name: string;
       /** @description Postcode. */
       locality_alias_postcode: string;
       /** @description Alias type code for the locality. */
       locality_alias_type_code: string;
-      /** @description Planimetric accuracy of geocode (if known). */
-      locality_planimetric_accuracy: number;
-      /** @description Locality latitude */
-      locality_latitude: number;
-      /** @description Locality longitude */
-      locality_longitude: number;
+      locality_planimetric_accuracy: string | number;
+      locality_latitude: string | number;
+      locality_longitude: string | number;
       /** @description The 2016 mesh block code. */
       mb_2016_code: string;
       /** @description The 2021 mesh block code. */
@@ -2644,7 +2649,7 @@ export interface components {
        *
        * Code 2: Manually generated where the primary and secondary addresses MAY or MAY NOT share the same street number, street name (and type) and locality name components
        */
-      ps_join_type_code: number;
+      ps_join_type_code: string;
       /** @description The state or territory name. All in uppercase. E.g. TASMANIA. */
       state_name: string;
       /** @description The state or territory abbreviation. */
@@ -2657,10 +2662,8 @@ export interface components {
       street_type_code: string;
       /** @description The street suffix code. e.g. "WEST". */
       street_suffix_code: string;
-      /** @description The street confidence level. */
-      gnaf_street_confidence: number;
-      /** @description Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode). */
-      street_locality_gnaf_reliability_code: number;
+      gnaf_street_confidence: string | number;
+      street_locality_gnaf_reliability_code: string | number;
       /** @description The street alias name. e.g. "POPLAR". */
       street_locality_alias_street_name: string;
       /** @description The street type code. e.g. "PLACE". */
@@ -2669,14 +2672,10 @@ export interface components {
       street_locality_alias_street_suffix_code: string;
       /** @description The alias type code. */
       street_locality_alias_type_code: string;
-      /** @description Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier. */
-      street_locality_boundary_extent: number;
-      /** @description Planimetric accuracy of geocode (if known). */
-      street_locality_planimetric_accuracy: number;
-      /** @description Street locality latitude */
-      street_locality_latitude: number;
-      /** @description Street locality longitude */
-      street_locality_longitude: number;
+      street_locality_boundary_extent: string | number;
+      street_locality_planimetric_accuracy: string | number;
+      street_locality_latitude: string | number;
+      street_locality_longitude: string | number;
       /** @description Abbreviation of street type */
       street_type_name: string;
       /** @description Abbreviation of street type */
