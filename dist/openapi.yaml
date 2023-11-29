@@ -3033,6 +3033,7 @@ components:
           - `ecad` (IRL) Eircode ECAD
           - `usps` (USA) USPS Zip+4
           - `herewe` (Western Europe) Western Europe Dataset
+          - `gnaf` (Australia) Geoscape Geocoded National Address File
       enum:
         - paf
         - pafw
@@ -3054,6 +3055,7 @@ components:
         - herehk
         - hereee
         - hereap
+        - gnaf
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -4739,6 +4741,464 @@ components:
               type: string
               description: Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.
               example: ''
+    GnafAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - longitude
+        - latitude
+        - address_detail_pid
+        - date_created
+        - date_last_modified
+        - date_retired
+        - building_name
+        - lot_number_prefix
+        - lot_number
+        - lot_number_suffix
+        - flat_type_code
+        - flat_number_prefix
+        - flat_number
+        - flat_number_suffix
+        - level_type_code
+        - level_number_prefix
+        - level_number
+        - level_number_suffix
+        - number_first_prefix
+        - number_first
+        - number_first_suffix
+        - number_last_prefix
+        - number_last
+        - number_last_suffix
+        - street_locality_pid
+        - alias_principal
+        - postcode
+        - private_street
+        - legal_parcel_id
+        - confidence
+        - level_geocoded_code
+        - primary_secondary
+        - alias_type_code
+        - geocode_type_code
+        - default_latitude
+        - default_longitude
+        - address_change_type_code
+        - mb_2016_match_code
+        - mb_2021_match_code
+        - address_type
+        - address_site_name
+        - geocode_site_name
+        - site_geocode_type_code
+        - reliability_code
+        - site_boundary_extent
+        - site_planimetric_accuracy
+        - elevation
+        - site_longitude
+        - site_latitude
+        - geocode_type_priority_order
+        - site_geocode_priority_order
+        - locality_name
+        - primary_postcode
+        - locality_class_code
+        - locality_gnaf_reliability_code
+        - locality_alias_name
+        - locality_alias_postcode
+        - locality_alias_type_code
+        - locality_planimetric_accuracy
+        - locality_latitude
+        - locality_longitude
+        - mb_2016_code
+        - mb_2021_code
+        - ps_join_type_code
+        - state_name
+        - state_abbreviation
+        - street_class_code
+        - street_name
+        - street_type_code
+        - street_suffix_code
+        - gnaf_street_confidence
+        - street_locality_gnaf_reliability_code
+        - street_locality_alias_street_name
+        - street_locality_alias_street_type_code
+        - street_locality_alias_street_suffix_code
+        - street_locality_alias_type_code
+        - street_locality_boundary_extent
+        - street_locality_planimetric_accuracy
+        - street_locality_latitude
+        - street_locality_longitude
+        - street_type_name
+        - street_locality_alias_street_type_name
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - gnaf
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - AUS
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - AU
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Australia
+        language:
+          enum:
+            - en
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        address_detail_pid:
+          type: string
+          description: |
+            The Persistent Identifier is unique to the real world feature this record represents.
+        date_created:
+          type: string
+          format: date
+          description: |
+            Date this record was created.
+        date_last_modified:
+          type: string
+          format: date
+          description: |
+            Date this record was last modified (not retired/recreated in line with ICSM standard).
+        date_retired:
+          type: string
+          format: date
+          description: |
+            Date this record was retired.
+        building_name:
+          type: string
+          description: |
+            Combines both building/property name fields. Field length: up to 200 alphanumeric characters (AS4590:2006 5.7).
+        lot_number_prefix:
+          type: string
+          description: |
+            Lot number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.8.1).
+        lot_number:
+          type: string
+          description: |
+            Lot number. Field length: up to five alphanumeric characters (AS4590:2006 5.8.1).
+        lot_number_suffix:
+          type: string
+          description: |
+            Lot number suffix. Field length: up to two alphanumeric characters (AS4590:2006 5.8.1).
+        flat_type_code:
+          type: string
+          description: |
+            Specification of the type of a separately identifiable portion within a building/complex. Field Length: up to seven upper case alpha characters (AS4590:2006 5.5.1.1).
+        flat_number_prefix:
+          type: string
+          description: |
+            Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).
+        flat_number:
+          type: number
+          description: |
+            Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2).
+        flat_number_suffix:
+          type: string
+          description: |
+            Flat/unit number suffix Field length: up to two  alphanumeric characters (AS4590:2006 5.5.1.2).
+        level_type_code:
+          type: string
+          description: |
+            Level type. Field length: up to four alphanumeric characters (AS4590:2006 5.5.2.1).
+        level_number_prefix:
+          type: string
+          description: |
+            Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).
+        level_number:
+          type: number
+          description: |
+            Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2).
+        level_number_suffix:
+          type: string
+          description: |
+            Level number suffix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).
+        number_first_prefix:
+          type: string
+          description: |
+            Prefix for the first (or only) number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.1).
+        number_first:
+          type: number
+          description: |
+            Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1).
+        number_first_suffix:
+          type: string
+          description: |
+            Suffix for the first (or only) number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.1).
+        number_last_prefix:
+          type: string
+          description: |
+            Prefix for the last number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.2).
+        number_last:
+          type: number
+          description: |
+            Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2).
+        number_last_suffix:
+          type: string
+          description: |
+            Suffix for the last number in range. Field length: up to two uppercase alphanumeric characters (AS4590:2006 5.5.3.2).
+        street_locality_pid:
+          type: string
+          description: |
+            Street/Locality of this address - not mandatory N as some records in G-F may not require street (e.g. remote rural property).
+        alias_principal:
+          type: string
+          description: |
+            A = Alias record, P = Principal record.
+        postcode:
+          type: string
+          description: |
+            Postcodes are optional as prescribed by AS4819 and AS4590:2006 5.13.
+        private_street:
+          type: string
+          description: |
+            Private street information. This is not broken up into name/type/suffix. Field length: up to 75 alphanumeric characters. This is not currently populated.
+        legal_parcel_id:
+          type: string
+          description: |
+            Generic parcel id field derived from the Geoscape Australia’s Cadastre parcel where available.
+        confidence:
+          type: number
+          description: |
+            Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.).
+        level_geocoded_code:
+          type: number
+          description: |
+            Binary indicator of the level of geocoding this address has. e.g. 0 = 000 = (No geocode), 1 = 001 = (No Locality geocode, No Street geocode, Address geocode), etc.
+        primary_secondary:
+          type: string
+          description: |
+            Indicator that identifies if the address is P (Primary) or S (secondary).
+        alias_type_code:
+          type: string
+          description: |
+            Alias type (e.g. "Synonym").
+        geocode_type_code:
+          type: string
+          description: |
+            Unique abbreviation for the geocode type.
+        default_latitude:
+          type: number
+          description: |
+            Latitude
+        default_longitude:
+          type: number
+          description: |
+            Longitude
+        address_change_type_code:
+          type: string
+          description: |
+            The code indicating the type of change, for example, LOC-STN for locality name and street name change.
+        mb_2016_match_code:
+          type: string
+          description: |
+            Code for mesh block match e.g. 1.
+        mb_2021_match_code:
+          type: string
+          description: |
+            Code for mesh block match e.g. 1.
+        address_type:
+          type: string
+          description: |
+            Address type (e.g. "Postal", Physical").
+        address_site_name:
+          type: string
+          description: |
+            Address site name. Field length: 200 alphanumeric characters.
+        geocode_site_name:
+          type: string
+          description: |
+            An identifier that relates to this specific geocoded site (e.g. "Transformer 75658").
+        site_geocode_type_code:
+          type: string
+          description: |
+            Unique abbreviation for geocode feature. (e.g. "PRCL") (SAWG 7.4.1).
+        reliability_code:
+          type: number
+          description: |
+            Spatial precision of the geocode expressed N as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
+        site_boundary_extent:
+          type: number
+          description: |
+            Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.
+        site_planimetric_accuracy:
+          type: number
+          description: |
+            Planimetric accuracy.
+        elevation:
+          type: number
+          description: |
+            Elevation. This field is not currently populated.
+        site_longitude:
+          type: number
+          description: |
+            Site longitude
+        site_latitude:
+          type: number
+          description: |
+            Site latitude
+        geocode_type_priority_order:
+          type: number
+          description: |
+            The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
+        site_geocode_priority_order:
+          type: number
+          description: |
+            The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
+        locality_name:
+          type: string
+          description: |
+            The name of the locality or suburb.
+        primary_postcode:
+          type: string
+          description: |
+            Required to differentiate localities of the same name within a state.
+        locality_class_code:
+          type: string
+          description: |
+            Describes the class of locality (e.g. Gazetted, topographic feature etc.). Lookup to locality class.
+        locality_gnaf_reliability_code:
+          type: number
+          description: |
+            = 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
+        locality_alias_name:
+          type: string
+          description: |
+            The alias name for the locality or suburb.
+        locality_alias_postcode:
+          type: string
+          description: |
+            Postcode.
+        locality_alias_type_code:
+          type: string
+          description: |
+            Alias type code for the locality.
+        locality_planimetric_accuracy:
+          type: number
+          description: |
+            Planimetric accuracy of geocode (if known).
+        locality_latitude:
+          type: number
+          description: |
+            Locality latitude
+        locality_longitude:
+          type: number
+          description: |
+            Locality longitude
+        mb_2016_code:
+          type: string
+          description: |
+            The 2016 mesh block code.
+        mb_2021_code:
+          type: string
+          description: |
+            The 2021 mesh block code.
+        ps_join_type_code:
+          type: number
+          description: |
+            Code of 1 OR 2 when the root address:-
+
+            Code 1: Automatically generated when the primary and secondary addresses share the same street number, street name (and type) and locality name components.
+
+            Code 2: Manually generated where the primary and secondary addresses MAY or MAY NOT share the same street number, street name (and type) and locality name components
+        state_name:
+          type: string
+          description: |
+            The state or territory name. All in uppercase. E.g. TASMANIA.
+        state_abbreviation:
+          type: string
+          description: |
+            The state or territory abbreviation.
+        street_class_code:
+          type: string
+          description: |
+            Defines whether this street represents a confirmed or unconfirmed street.
+        street_name:
+          type: string
+          description: |
+            Street name. e.g. "POPLAR".
+        street_type_code:
+          type: string
+          description: |
+            The street type code. e.g. "PLACE".
+        street_suffix_code:
+          type: string
+          description: |
+            The street suffix code. e.g. "WEST".
+        gnaf_street_confidence:
+          type: number
+          description: |
+            The street confidence level.
+        street_locality_gnaf_reliability_code:
+          type: number
+          description: |
+            Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
+        street_locality_alias_street_name:
+          type: string
+          description: |
+            The street alias name. e.g. "POPLAR".
+        street_locality_alias_street_type_code:
+          type: string
+          description: |
+            The street type code. e.g. "PLACE".
+        street_locality_alias_street_suffix_code:
+          type: string
+          description: |
+            The street suffix code. e.g. "WEST".
+        street_locality_alias_type_code:
+          type: string
+          description: |
+            The alias type code.
+        street_locality_boundary_extent:
+          type: number
+          description: |
+            Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.
+        street_locality_planimetric_accuracy:
+          type: number
+          description: |
+            Planimetric accuracy of geocode (if known).
+        street_locality_latitude:
+          type: number
+          description: |
+            Street locality latitude
+        street_locality_longitude:
+          type: number
+          description: |
+            Street locality longitude
+        street_type_name:
+          type: string
+          description: |
+            Abbreviation of street type
+        street_locality_alias_street_type_name:
+          type: string
+          description: |
+            Abbreviation of street type
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -4842,6 +5302,7 @@ components:
             - $ref: '#/components/schemas/EcafAddress'
             - $ref: '#/components/schemas/UspsAddress'
             - $ref: '#/components/schemas/HereAddress'
+            - $ref: '#/components/schemas/GnafAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -5484,6 +5945,10 @@ components:
           type: boolean
           description: IE Base Address File. Eircode Address File
           example: false
+        gnaf:
+          type: boolean
+          description: Australia Geocoded National Address File
+          example: true
         hereap:
           type: boolean
           description: Asia Pacific Address File
@@ -6428,6 +6893,7 @@ components:
             - $ref: '#/components/schemas/WelshPafAddress'
             - $ref: '#/components/schemas/AbAddress'
             - $ref: '#/components/schemas/HereAddress'
+            - $ref: '#/components/schemas/GnafAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
