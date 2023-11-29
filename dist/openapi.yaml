@@ -4748,6 +4748,8 @@ components:
         - country
         - country_iso
         - country_iso_2
+        - line_1
+        - line_2
         - language
         - address
         - longitude
@@ -4844,18 +4846,41 @@ components:
               3 letter country code (ISO 3166-1)
           enum:
             - AUS
+            - CCK
+            - CXR
+            - NFK
         country_iso_2:
           type: string
           description: |2
              2 letter country code (ISO 3166-1)
           enum:
             - AU
+            - CC
+            - CX
+            - NF
         country:
           type: string
           description: |2
               Full country names (ISO 3166)
           enum:
             - Australia
+            - Cocos (Keeling) Islands
+            - Christmas Island
+            - Norfolk Island
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: 30 Hampton Cct
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: ''
         language:
           enum:
             - en
@@ -4916,9 +4941,12 @@ components:
           description: |
             Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).
         flat_number:
-          type: number
-          description: |
-            Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2).
         flat_number_suffix:
           type: string
           description: |
@@ -4932,9 +4960,12 @@ components:
           description: |
             Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).
         level_number:
-          type: number
-          description: |
-            Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2).
         level_number_suffix:
           type: string
           description: |
@@ -4944,9 +4975,12 @@ components:
           description: |
             Prefix for the first (or only) number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.1).
         number_first:
-          type: number
-          description: |
-            Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1).
         number_first_suffix:
           type: string
           description: |
@@ -4956,9 +4990,12 @@ components:
           description: |
             Prefix for the last number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.2).
         number_last:
-          type: number
-          description: |
-            Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2).
         number_last_suffix:
           type: string
           description: |
@@ -4984,9 +5021,12 @@ components:
           description: |
             Generic parcel id field derived from the Geoscape Australia’s Cadastre parcel where available.
         confidence:
-          type: number
-          description: |
-            Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.).
         level_geocoded_code:
           type: number
           description: |
@@ -5004,13 +5044,19 @@ components:
           description: |
             Unique abbreviation for the geocode type.
         default_latitude:
-          type: number
-          description: |
-            Latitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Latitude
         default_longitude:
-          type: number
-          description: |
-            Longitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Longitude
         address_change_type_code:
           type: string
           description: |
@@ -5040,37 +5086,43 @@ components:
           description: |
             Unique abbreviation for geocode feature. (e.g. "PRCL") (SAWG 7.4.1).
         reliability_code:
-          type: number
+          type: string
           description: |
             Spatial precision of the geocode expressed N as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
         site_boundary_extent:
-          type: number
+          type: string
           description: |
             Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.
         site_planimetric_accuracy:
-          type: number
+          type: string
           description: |
             Planimetric accuracy.
         elevation:
-          type: number
+          type: string
           description: |
             Elevation. This field is not currently populated.
         site_longitude:
-          type: number
+          type: string
           description: |
             Site longitude
         site_latitude:
-          type: number
+          type: string
           description: |
             Site latitude
         geocode_type_priority_order:
-          type: number
-          description: |
-            The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
         site_geocode_priority_order:
-          type: number
-          description: |
-            The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.
         locality_name:
           type: string
           description: |
@@ -5084,9 +5136,12 @@ components:
           description: |
             Describes the class of locality (e.g. Gazetted, topographic feature etc.). Lookup to locality class.
         locality_gnaf_reliability_code:
-          type: number
-          description: |
-            = 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                = 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
         locality_alias_name:
           type: string
           description: |
@@ -5100,17 +5155,26 @@ components:
           description: |
             Alias type code for the locality.
         locality_planimetric_accuracy:
-          type: number
-          description: |
-            Planimetric accuracy of geocode (if known).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Planimetric accuracy of geocode (if known).
         locality_latitude:
-          type: number
-          description: |
-            Locality latitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Locality latitude
         locality_longitude:
-          type: number
-          description: |
-            Locality longitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Locality longitude
         mb_2016_code:
           type: string
           description: |
@@ -5120,7 +5184,7 @@ components:
           description: |
             The 2021 mesh block code.
         ps_join_type_code:
-          type: number
+          type: string
           description: |
             Code of 1 OR 2 when the root address:-
 
@@ -5152,13 +5216,19 @@ components:
           description: |
             The street suffix code. e.g. "WEST".
         gnaf_street_confidence:
-          type: number
-          description: |
-            The street confidence level.
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The street confidence level.
         street_locality_gnaf_reliability_code:
-          type: number
-          description: |
-            Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).
         street_locality_alias_street_name:
           type: string
           description: |
@@ -5176,21 +5246,33 @@ components:
           description: |
             The alias type code.
         street_locality_boundary_extent:
-          type: number
-          description: |
-            Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.
         street_locality_planimetric_accuracy:
-          type: number
-          description: |
-            Planimetric accuracy of geocode (if known).
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Planimetric accuracy of geocode (if known).
         street_locality_latitude:
-          type: number
-          description: |
-            Street locality latitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Street locality latitude
         street_locality_longitude:
-          type: number
-          description: |
-            Street locality longitude
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Street locality longitude
         street_type_name:
           type: string
           description: |

@@ -5400,6 +5400,8 @@
           "country",
           "country_iso",
           "country_iso_2",
+          "line_1",
+          "line_2",
           "language",
           "address",
           "longitude",
@@ -5498,22 +5500,41 @@
           "country_iso": {
             "description": "  3 letter country code (ISO 3166-1)\n",
             "enum": [
-              "AUS"
+              "AUS",
+              "CCK",
+              "CXR",
+              "NFK"
             ]
           },
           "country_iso_2": {
             "type": "string",
             "description": " 2 letter country code (ISO 3166-1)\n",
             "enum": [
-              "AU"
+              "AU",
+              "CC",
+              "CX",
+              "NF"
             ]
           },
           "country": {
             "type": "string",
             "description": "  Full country names (ISO 3166)\n",
             "enum": [
-              "Australia"
+              "Australia",
+              "Cocos (Keeling) Islands",
+              "Christmas Island",
+              "Norfolk Island"
             ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "30 Hampton Cct"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": ""
           },
           "language": {
             "enum": [
@@ -5576,8 +5597,16 @@
             "description": "Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).\n"
           },
           "flat_number": {
-            "type": "number",
-            "description": "Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Flat/unit number. Field length: up to five numeric characters (AS4590:2006 5.5.1.2).\n"
+              }
+            ]
           },
           "flat_number_suffix": {
             "type": "string",
@@ -5592,8 +5621,16 @@
             "description": "Level number prefix. Field length: up to two alphanumeric characters (AS4590:2006 5.5.2.2).\n"
           },
           "level_number": {
-            "type": "number",
-            "description": "Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Level number. Field length: up to three numeric characters (AS4590:2006 5.5.2.2).\n"
+              }
+            ]
           },
           "level_number_suffix": {
             "type": "string",
@@ -5604,8 +5641,16 @@
             "description": "Prefix for the first (or only) number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.1).\n"
           },
           "number_first": {
-            "type": "number",
-            "description": "Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Identifies first (or only) street number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.1).\n"
+              }
+            ]
           },
           "number_first_suffix": {
             "type": "string",
@@ -5616,8 +5661,16 @@
             "description": "Prefix for the last number in range. Field length: up to three uppercase alphanumeric characters (AS4590:2006 5.5.3.2).\n"
           },
           "number_last": {
-            "type": "number",
-            "description": "Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Identifies last number in range. Field length: up to six numeric characters (AS4590:2006 5.5.3.2).\n"
+              }
+            ]
           },
           "number_last_suffix": {
             "type": "string",
@@ -5644,8 +5697,16 @@
             "description": "Generic parcel id field derived from the Geoscape Australia’s Cadastre parcel where available.\n"
           },
           "confidence": {
-            "type": "number",
-            "description": "Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Reflects how many contributor databases this address appears in (0 = 1 database, 1 = 2 database etc.).\n"
+              }
+            ]
           },
           "level_geocoded_code": {
             "type": "number",
@@ -5664,12 +5725,28 @@
             "description": "Unique abbreviation for the geocode type.\n"
           },
           "default_latitude": {
-            "type": "number",
-            "description": "Latitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Latitude\n"
+              }
+            ]
           },
           "default_longitude": {
-            "type": "number",
-            "description": "Longitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Longitude\n"
+              }
+            ]
           },
           "address_change_type_code": {
             "type": "string",
@@ -5700,36 +5777,52 @@
             "description": "Unique abbreviation for geocode feature. (e.g. \"PRCL\") (SAWG 7.4.1).\n"
           },
           "reliability_code": {
-            "type": "number",
+            "type": "string",
             "description": "Spatial precision of the geocode expressed N as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).\n"
           },
           "site_boundary_extent": {
-            "type": "number",
+            "type": "string",
             "description": "Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.\n"
           },
           "site_planimetric_accuracy": {
-            "type": "number",
+            "type": "string",
             "description": "Planimetric accuracy.\n"
           },
           "elevation": {
-            "type": "number",
+            "type": "string",
             "description": "Elevation. This field is not currently populated.\n"
           },
           "site_longitude": {
-            "type": "number",
+            "type": "string",
             "description": "Site longitude\n"
           },
           "site_latitude": {
-            "type": "number",
+            "type": "string",
             "description": "Site latitude\n"
           },
           "geocode_type_priority_order": {
-            "type": "number",
-            "description": "The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.\n"
+              }
+            ]
           },
           "site_geocode_priority_order": {
-            "type": "number",
-            "description": "The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The priority order enables a default geocode to be assigned to each address which represents the geocode of the highest precision currently assigned to an address.\n"
+              }
+            ]
           },
           "locality_name": {
             "type": "string",
@@ -5744,8 +5837,16 @@
             "description": "Describes the class of locality (e.g. Gazetted, topographic feature etc.). Lookup to locality class.\n"
           },
           "locality_gnaf_reliability_code": {
-            "type": "number",
-            "description": "= 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "= 5 if suburb locality, else = 6. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).\n"
+              }
+            ]
           },
           "locality_alias_name": {
             "type": "string",
@@ -5760,16 +5861,40 @@
             "description": "Alias type code for the locality.\n"
           },
           "locality_planimetric_accuracy": {
-            "type": "number",
-            "description": "Planimetric accuracy of geocode (if known).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Planimetric accuracy of geocode (if known).\n"
+              }
+            ]
           },
           "locality_latitude": {
-            "type": "number",
-            "description": "Locality latitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Locality latitude\n"
+              }
+            ]
           },
           "locality_longitude": {
-            "type": "number",
-            "description": "Locality longitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Locality longitude\n"
+              }
+            ]
           },
           "mb_2016_code": {
             "type": "string",
@@ -5780,7 +5905,7 @@
             "description": "The 2021 mesh block code.\n"
           },
           "ps_join_type_code": {
-            "type": "number",
+            "type": "string",
             "description": "Code of 1 OR 2 when the root address:-\n\nCode 1: Automatically generated when the primary and secondary addresses share the same street number, street name (and type) and locality name components.\n\nCode 2: Manually generated where the primary and secondary addresses MAY or MAY NOT share the same street number, street name (and type) and locality name components\n"
           },
           "state_name": {
@@ -5808,12 +5933,28 @@
             "description": "The street suffix code. e.g. \"WEST\".\n"
           },
           "gnaf_street_confidence": {
-            "type": "number",
-            "description": "The street confidence level.\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The street confidence level.\n"
+              }
+            ]
           },
           "street_locality_gnaf_reliability_code": {
-            "type": "number",
-            "description": "Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Always = 4. Spatial precision of the geocode expressed as number in the range, 1 (unique identification of feature) to 6 (feature associated to region i.e. postcode).\n"
+              }
+            ]
           },
           "street_locality_alias_street_name": {
             "type": "string",
@@ -5832,20 +5973,52 @@
             "description": "The alias type code.\n"
           },
           "street_locality_boundary_extent": {
-            "type": "number",
-            "description": "Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Measurement (metres) of a geocode from other geocodes associated with the same address persistent identifier.\n"
+              }
+            ]
           },
           "street_locality_planimetric_accuracy": {
-            "type": "number",
-            "description": "Planimetric accuracy of geocode (if known).\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Planimetric accuracy of geocode (if known).\n"
+              }
+            ]
           },
           "street_locality_latitude": {
-            "type": "number",
-            "description": "Street locality latitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Street locality latitude\n"
+              }
+            ]
           },
           "street_locality_longitude": {
-            "type": "number",
-            "description": "Street locality longitude\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Street locality longitude\n"
+              }
+            ]
           },
           "street_type_name": {
             "type": "string",
