@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/ideal-postcodes/openapi/compare/4.2.0...4.2.1) (2023-11-29)
+
+
+### Bug Fixes
+
+* **Australia:** Fix GNAF schema ([d61d229](https://github.com/ideal-postcodes/openapi/commit/d61d229e5c693d736b39af07dec3758f75291ad6))
+
 # [4.2.0](https://github.com/ideal-postcodes/openapi/compare/4.1.1...4.2.0) (2023-11-29)
 
 
