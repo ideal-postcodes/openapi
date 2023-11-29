@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/ideal-postcodes/openapi/compare/4.1.1...4.2.0) (2023-11-29)
+
+
+### Features
+
+* **Australia:** Add GNAF dataset ([644a8c7](https://github.com/ideal-postcodes/openapi/commit/644a8c7697507d203f1a65d070ae61bd4f1cab28))
+
 ## [4.1.1](https://github.com/ideal-postcodes/openapi/compare/4.1.0...4.1.1) (2023-11-02)
 
 
