@@ -3374,6 +3374,11 @@ export interface components {
          * @example true
          */
         email?: boolean;
+        /**
+         * @description Autralia Geoscape Geocoded National Address File
+         * @example true
+         */
+        gnaf?: boolean;
       };
     };
     /** Key Usage */

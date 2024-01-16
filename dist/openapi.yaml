@@ -6348,6 +6348,10 @@ components:
               type: boolean
               description: Email validation is enabled
               example: true
+            gnaf:
+              type: boolean
+              description: Autralia Geoscape Geocoded National Address File
+              example: true
     KeyUsageResult:
       title: Key Usage
       type: object
