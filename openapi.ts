@@ -1098,6 +1098,7 @@ export interface components {
       | "heresa"
       | "hereo"
       | "herena"
+      | "heremeas"
       | "heremea"
       | "herem"
       | "herei"
@@ -1269,7 +1270,94 @@ export interface components {
       | "TTO"
       | "URY"
       | "VEN"
-      | "TWN";
+      | "TWN"
+      | "CHN"
+      | "JPN"
+      | "KOR"
+      | "LAO"
+      | "MNG"
+      | "PNG"
+      | "PRK"
+      | "SLB"
+      | "TJK"
+      | "TKM"
+      | "BTN"
+      | "IOT"
+      | "LKA"
+      | "MDV"
+      | "NPL"
+      | "PAK"
+      | "AFG"
+      | "BDI"
+      | "BEN"
+      | "CAF"
+      | "CIV"
+      | "COD"
+      | "COG"
+      | "COM"
+      | "CPV"
+      | "DJI"
+      | "DZA"
+      | "ERI"
+      | "ESH"
+      | "ETH"
+      | "GAB"
+      | "GIN"
+      | "GMB"
+      | "GNB"
+      | "GNQ"
+      | "IRN"
+      | "IRQ"
+      | "LBR"
+      | "LBY"
+      | "MDG"
+      | "MLI"
+      | "MRT"
+      | "MWI"
+      | "NER"
+      | "RWA"
+      | "SHN"
+      | "SLE"
+      | "SOM"
+      | "SSD"
+      | "STP"
+      | "SYC"
+      | "TCD"
+      | "TGO"
+      | "TZA"
+      | "UGA"
+      | "SDN"
+      | "SYR"
+      | "YEM"
+      | "CUB"
+      | "SPM"
+      | "TCA"
+      | "COK"
+      | "KIR"
+      | "NIU"
+      | "NRU"
+      | "PCN"
+      | "TKL"
+      | "TUV"
+      | "WLF"
+      | "WSM"
+      | "AIA"
+      | "ATG"
+      | "BES"
+      | "FLK"
+      | "GRD"
+      | "KNA"
+      | "LCA"
+      | "MSR"
+      | "SGS"
+      | "SXM"
+      | "VCT"
+      | "ASM"
+      | "FSM"
+      | "MHL"
+      | "MNP"
+      | "PLW"
+      | "VIR";
     /**
      * ISO Country Code (2)
      * @description  2 letter country code (ISO 3166-1)
@@ -1435,7 +1523,93 @@ export interface components {
       | "TN"
       | "ZA"
       | "ZM"
-      | "ZW";
+      | "ZW"
+      | "CN"
+      | "JP"
+      | "KR"
+      | "LA"
+      | "MN"
+      | "PG"
+      | "KP"
+      | "SB"
+      | "TJ"
+      | "TM"
+      | "BT"
+      | "IO"
+      | "LK"
+      | "MV"
+      | "NP"
+      | "PK"
+      | "AF"
+      | "BI"
+      | "BJ"
+      | "CF"
+      | "CI"
+      | "CD"
+      | "CG"
+      | "KM"
+      | "CV"
+      | "DJ"
+      | "DZ"
+      | "ER"
+      | "EH"
+      | "ET"
+      | "GA"
+      | "GN"
+      | "GM"
+      | "GW"
+      | "GQ"
+      | "IR"
+      | "IQ"
+      | "LR"
+      | "LY"
+      | "MG"
+      | "ML"
+      | "MR"
+      | "MW"
+      | "NE"
+      | "RW"
+      | "SH"
+      | "SL"
+      | "SO"
+      | "SS"
+      | "ST"
+      | "SC"
+      | "TD"
+      | "TG"
+      | "TZ"
+      | "UG"
+      | "SD"
+      | "SY"
+      | "YE"
+      | "CU"
+      | "PM"
+      | "TC"
+      | "CK"
+      | "KI"
+      | "NU"
+      | "NR"
+      | "PN"
+      | "TK"
+      | "TV"
+      | "WF"
+      | "WS"
+      | "AI"
+      | "AG"
+      | "BQ"
+      | "FK"
+      | "KN"
+      | "LC"
+      | "MS"
+      | "GS"
+      | "SX"
+      | "VC"
+      | "AS"
+      | "FM"
+      | "MH"
+      | "MP"
+      | "PW"
+      | "VI";
     /**
      * Country
      * @description   Full country names (ISO 3166)
@@ -1605,7 +1779,94 @@ export interface components {
       | "Tunisia"
       | "South Africa"
       | "Zambia"
-      | "Zimbabwe";
+      | "Zimbabwe"
+      | "China"
+      | "Japan"
+      | "South Korea"
+      | "Laos"
+      | "Mongolia"
+      | "Papua New Guinea"
+      | "North Korea"
+      | "Solomon Islands"
+      | "Tajikistan"
+      | "Turkmenistan"
+      | "Bhutan"
+      | "British Indian Ocean Territory"
+      | "Sri Lanka"
+      | "Maldives"
+      | "Nepal"
+      | "Pakistan"
+      | "Afghanistan"
+      | "Burundi"
+      | "Benin"
+      | "Central African Republic"
+      | "Côte d'Ivoire"
+      | "Democratic Republic of the Congo"
+      | "Republic of the Congo"
+      | "Comoros"
+      | "Cape Verde"
+      | "Djibouti"
+      | "Algeria"
+      | "Eritrea"
+      | "Western Sahara"
+      | "Ethiopia"
+      | "Gabon"
+      | "Guinea"
+      | "Gambia"
+      | "Guinea-Bissau"
+      | "Equatorial Guinea"
+      | "Iran"
+      | "Iraq"
+      | "Liberia"
+      | "Libya"
+      | "Madagascar"
+      | "Mali"
+      | "Mauritania"
+      | "Malawi"
+      | "Niger"
+      | "Rwanda"
+      | "Saint Helena"
+      | "Sierra Leone"
+      | "Somalia"
+      | "South Sudan"
+      | "São Tomé and Príncipe"
+      | "Seychelles"
+      | "Chad"
+      | "Togo"
+      | "Tanzania"
+      | "Uganda"
+      | "Sudan"
+      | "Syria"
+      | "Yemen"
+      | "Cuba"
+      | "Saint Pierre and Miquelon"
+      | "Turks and Caicos Islands"
+      | "Cook Islands"
+      | "Kiribati"
+      | "Niue"
+      | "Nauru"
+      | "Pitcairn Islands"
+      | "Tokelau"
+      | "Tuvalu"
+      | "Vanuatu"
+      | "Wallis and Futuna"
+      | "Samoa"
+      | "Anguilla"
+      | "Antigua and Barbuda"
+      | "Bonaire, Sint Eustatius and Saba"
+      | "Falkland Islands (Malvinas)"
+      | "Saint Kitts and Nevis"
+      | "Saint Lucia"
+      | "Montserrat"
+      | "South Georgia and the South Sandwich Islands"
+      | "Sint Maarten (Dutch part)"
+      | "Saint Vincent and the Grenadines"
+      | "American Samoa"
+      | "Federated States of Micronesia"
+      | "Marshall Islands"
+      | "Northern Mariana Islands"
+      | "Palau"
+      | "United States Virgin Islands";
     EircBase: {
       id: components["schemas"]["ID"];
       /** @description Source of address */
@@ -2361,6 +2622,7 @@ export interface components {
         | "heresa"
         | "hereo"
         | "herena"
+        | "heremeas"
         | "heremea"
         | "herem"
         | "herei"
@@ -3120,7 +3382,7 @@ export interface components {
        * @description Australia Geocoded National Address File
        * @example true
        */
-      gnaf?: boolean;
+      gnaf: boolean;
       /**
        * @description Asia Pacific Address File
        * @example true
@@ -3146,6 +3408,11 @@ export interface components {
        * @example true
        */
       heremea: boolean;
+      /**
+       * @description Middle East and Africa Standalone Intermediate Maps Address File
+       * @example true
+       */
+      heremeas: boolean;
       /**
        * @description North America Address File
        * @example true
@@ -3335,6 +3602,11 @@ export interface components {
          */
         heremea?: boolean;
         /**
+         * @description Middle East and Africa Extended File
+         * @example true
+         */
+        heremeas?: boolean;
+        /**
          * @description North America Address File
          * @example true
          */
@@ -3374,6 +3646,11 @@ export interface components {
          * @example true
          */
         email?: boolean;
+        /**
+         * @description Australia Geoscape Geocoded National Address File
+         * @example true
+         */
+        gnaf?: boolean;
       };
     };
     /** Key Usage */
@@ -3416,6 +3693,106 @@ export interface components {
       /** @enum {string} */
       message: "Success";
     };
+    /**
+     * United States CASS Verified Address
+     * @description Address retrieved using CASS compliant address verification process
+     */
+    UsaCassVerifiedAddress: {
+      /** @description Primary delivery address */
+      address1: string;
+      /** @description Secondary address information */
+      address2: string;
+      /** @description Additional secondary address information */
+      address3: string;
+      /** @description Area code */
+      area_code: string;
+      /** @description Data required to perform a Carrier Route sort */
+      carrier_route: string;
+      /** @description Character following the 5- or 9-digit ZIP Code */
+      check_digit: string;
+      /** @description City name */
+      city: string;
+      /** @description City Abbreviation. Empty string if not present */
+      city_abbreviation: string;
+      /** @description Identifies the Congressional District. Empty string if not present */
+      congressional_district: string;
+      /** @description ISO3166 country code. Empty string if not present */
+      country_code: string;
+      /** @description Name of the county */
+      county: string;
+      /** @description Daylight saving time indicator */
+      day_light_savings: string;
+      /** @description Last 2 digits of the primary street address number or Post Office™ box */
+      delivery_point: string;
+      /** @description DPV Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No). */
+      dpv: string;
+      /** @description DPV CMRA code. Possible values: 'Y' (Yes), 'N' (No). */
+      dpv_cmra: string;
+      /** @description DPV Footnotes. Empty string if not present */
+      dpv_footnotes: string;
+      /** @description False Positive Indicator from the DPV lookup. Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present */
+      dpv_fp: string;
+      /** @description DPV NoStat code. Empty string if not present */
+      dpv_no_stat: string;
+      /** @description DPV Vacant code. Empty string if not present */
+      dpv_vacant: string;
+      /** @description Enhanced Line of Travel */
+      elot: string;
+      /** @description Internal accounting number used by the USPS. Empty string if not present */
+      finance_number: string | number;
+      /** @description Federal Information Processing Standard code for a county. Empty string if not present */
+      fips_county_code: string;
+      /** @description Company name in a business address */
+      firm: string;
+      /** @description Letter codes returned by ZIP + 4® encoding. Empty string if not present */
+      footnotes: string;
+      /** @description Indicates whether the address was geo-coded. Possible values: 'Y' (Yes), 'N' (No). */
+      geo_coded: string;
+      /** @description Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No). */
+      lacs_indicator: string;
+      /** @description LACSLink Footnote. Empty string if not present */
+      lacs_link_footnote: string;
+      /** @description LACSLink Indicator. Empty string if not present */
+      lacs_link_indicator: string;
+      /** @description Latitude of the encoded address. Empty string if not present */
+      latitude: string | number;
+      /** @description Longitude of the encoded address. Empty string if not present */
+      longitude: string | number;
+      /** @description Information if a PMB is found in an address. Empty string if not present */
+      parsed_pmb_designator: string;
+      /** @description Information if a PMB is found in an address. Empty string if not present */
+      parsed_pmb_number: string | number;
+      /** @description Notation following the street name indicating street direction. Empty string if not present */
+      parsed_post_directional: string | number;
+      /** @description Notation preceding the street name indicating street direction. Empty string if not present */
+      parsed_pre_directional: string;
+      /** @description Number preceding the street name. Empty string if not present */
+      parsed_primary_number: string | number;
+      /** @description Street name. Empty string if not present */
+      parsed_street_name: string;
+      /** @description Part of the delivery address line following the street name. Empty string if not present */
+      parsed_suffix: string;
+      /** @description Identification of the secondary address unit. Empty string if not present */
+      parsed_unit_designator: string;
+      /** @description Apartment or suite number. Empty string if not present */
+      parsed_unit_number: string;
+      /** @description Reserved for future use. Empty string if not present */
+      rdi: string;
+      /** @description Type of address record (Street, PO Box, High-rise, etc.) */
+      record_type: string;
+      /** @description Additional secondary address information. Empty string if not present */
+      secondary_address_info: string;
+      /** @description Standard two-letter state abbreviation */
+      state: string;
+      /** @description Results of the SuiteLink lookup. Possible values: ' ' (Space), '00' (Double Zero), 'A' (A). Empty string if not present */
+      suite_link_footnote: string;
+      /** @description Time zone. Empty string if not present */
+      time_zone: string;
+      /** @description Urban name required in the address of all mail being delivered to Puerto Rico. Empty string if not present */
+      urbanization: string;
+      /** @description 5-digit ZIP Code™ and the four additional digits */
+      zip_code: string;
+    };
     /** Address Match */
     GbrCleanseMatch: {
       /** @description Originally submitted query */
@@ -3426,7 +3803,8 @@ export interface components {
         | components["schemas"]["MrAddress"]
         | components["schemas"]["NybAddress"]
         | components["schemas"]["PafAliasAddress"]
-        | components["schemas"]["WelshPafAddress"];
+        | components["schemas"]["WelshPafAddress"]
+        | components["schemas"]["UsaCassVerifiedAddress"];
       /** @description The number of addresses we matched to the input. We return the closest match by default. */
       count: number;
       /** @description A score represented as number between 1 and 0. Fit compares the address elements present in your query against the matching address elements. It does not incorporate elements you have not presented in the score. A partial address (e.g. 12 Pye Green Road) will have a fit of 1 even though it is missing post town and postcode. Its confidence score will be less than 1 however because it is missing some crucial elements. */
@@ -5310,6 +5688,32 @@ export interface operations {
            * @example 10 Downing Street, London, SW2A 2BN
            */
           query: string;
+          /**
+           * @description Optionally specify postal code for the address.
+           *
+           * @example SW1A 2BN
+           */
+          postcode?: string;
+          /**
+           * @description Optionally specify the city or town of the address.
+           *
+           * For UK verifications, this should be the "post town" of the address.
+           *
+           * For USA verifications, this should be the city of the address.
+           *
+           * @example London
+           */
+          post_town?: string;
+          /**
+           * @description Optionally specify the county or state of the address.
+           *
+           * For UK verifications, we recommend omitting this field as county data is unreliable.
+           *
+           * For USA verifications, this should be the state of the address.
+           *
+           * @example Kent
+           */
+          county?: string;
         };
       };
     };
