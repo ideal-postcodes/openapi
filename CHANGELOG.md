@@ -1,3 +1,10 @@
+# [4.3.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.2.1...4.3.0-beta.1) (2024-01-23)
+
+
+### Features
+
+* **Rest of World:** Add additional countries ([dd13654](https://github.com/ideal-postcodes/openapi/commit/dd13654b0499e8c76dcce6c3f06906476b3dc093))
+
 ## [4.2.1](https://github.com/ideal-postcodes/openapi/compare/4.2.0...4.2.1) (2023-11-29)
 
 
