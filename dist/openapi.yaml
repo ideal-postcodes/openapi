@@ -4395,27 +4395,45 @@ components:
       description: |2
           Full country names (ISO 3166)
       enum:
-        - United States
+        - American Samoa
+        - Federated States of Micronesia
         - Guam
+        - Marshall Islands
+        - Northern Mariana Islands
+        - Palau
         - Puerto Rico
+        - United States
+        - United States Virgin Islands
     usps_country_iso:
       title: ISO Country Code (3)
       type: string
       description: |2
           3 letter country code (ISO 3166-1)
       enum:
-        - USA
-        - PRI
+        - ASM
+        - FSM
         - GUM
+        - MHL
+        - MNP
+        - PLW
+        - PRI
+        - USA
+        - VIR
     usps_country_iso_2:
       title: ISO Country Code (2)
       type: string
       description: |2
          2 letter country code (ISO 3166-1)
       enum:
-        - US
-        - PR
+        - AS
+        - FM
         - GU
+        - MH
+        - MP
+        - PR
+        - PW
+        - US
+        - VI
     usps_language:
       title: Language
       type: string
@@ -4955,17 +4973,23 @@ components:
                 Can be empty string `""` if not present.
               example: '1'
             delivery_latitude:
-              type: number
-              description: Latitude defining the arrival position of the Point Address.
-              example: 45.28447
-              minimum: -90
-              maximum: 90
+              oneOf:
+                - type: string
+                  description: Empty string `""` if not available
+                - type: number
+                  minimum: -90
+                  maximum: 90
+                  description: Latitude defining the arrival position of the Point Address.
+                  example: 45.28441
             delivery_longitude:
-              type: number
-              description: Longitude defining the arrival position of the Point Address.
-              example: 12.00821
-              minimum: -180
-              maximum: 180
+              oneOf:
+                - type: string
+                  description: Empty string `""` if not available
+                - type: number
+                  minimum: -180
+                  maximum: 180
+                  description: Longitude defining the arrival position of the Point Address.
+                  example: 12.00825
             building_name:
               type: string
               description: |
@@ -4982,10 +5006,7 @@ components:
                 - type: number
                   minimum: -90
                   maximum: 90
-                  description: |-
-                    Latitude of the display position for the Point Address.
-
-                    Can be empty string `""` if not present.
+                  description: Latitude of the display position for the Point Address.
                   example: 45.28441
             longitude:
               oneOf:

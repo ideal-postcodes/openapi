@@ -2294,21 +2294,48 @@ export interface components {
      *
      * @enum {string}
      */
-    usps_country: "United States" | "Guam" | "Puerto Rico";
+    usps_country:
+      | "American Samoa"
+      | "Federated States of Micronesia"
+      | "Guam"
+      | "Marshall Islands"
+      | "Northern Mariana Islands"
+      | "Palau"
+      | "Puerto Rico"
+      | "United States"
+      | "United States Virgin Islands";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    usps_country_iso: "USA" | "PRI" | "GUM";
+    usps_country_iso:
+      | "ASM"
+      | "FSM"
+      | "GUM"
+      | "MHL"
+      | "MNP"
+      | "PLW"
+      | "PRI"
+      | "USA"
+      | "VIR";
     /**
      * ISO Country Code (2)
      * @description  2 letter country code (ISO 3166-1)
      *
      * @enum {string}
      */
-    usps_country_iso_2: "US" | "PR" | "GU";
+    usps_country_iso_2:
+      | "AS"
+      | "FM"
+      | "GU"
+      | "MH"
+      | "MP"
+      | "PR"
+      | "PW"
+      | "US"
+      | "VI";
     /**
      * Language
      * @description Language represented by 2 letter ISO Code (639-1)
@@ -2682,16 +2709,8 @@ export interface components {
        * @example 1
        */
       address_type?: string;
-      /**
-       * @description Latitude defining the arrival position of the Point Address.
-       * @example 45.28447
-       */
-      delivery_latitude: number;
-      /**
-       * @description Longitude defining the arrival position of the Point Address.
-       * @example 12.00821
-       */
-      delivery_longitude: number;
+      delivery_latitude: string | number;
+      delivery_longitude: string | number;
       /**
        * @description Name of the Building to which the Point Address is associated.
        *

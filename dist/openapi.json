@@ -4965,9 +4965,15 @@
         "type": "string",
         "description": "  Full country names (ISO 3166)\n",
         "enum": [
-          "United States",
+          "American Samoa",
+          "Federated States of Micronesia",
           "Guam",
-          "Puerto Rico"
+          "Marshall Islands",
+          "Northern Mariana Islands",
+          "Palau",
+          "Puerto Rico",
+          "United States",
+          "United States Virgin Islands"
         ]
       },
       "usps_country_iso": {
@@ -4975,9 +4981,15 @@
         "type": "string",
         "description": "  3 letter country code (ISO 3166-1)\n",
         "enum": [
-          "USA",
+          "ASM",
+          "FSM",
+          "GUM",
+          "MHL",
+          "MNP",
+          "PLW",
           "PRI",
-          "GUM"
+          "USA",
+          "VIR"
         ]
       },
       "usps_country_iso_2": {
@@ -4985,9 +4997,15 @@
         "type": "string",
         "description": " 2 letter country code (ISO 3166-1)\n",
         "enum": [
-          "US",
+          "AS",
+          "FM",
+          "GU",
+          "MH",
+          "MP",
           "PR",
-          "GU"
+          "PW",
+          "US",
+          "VI"
         ]
       },
       "usps_language": {
@@ -5582,18 +5600,34 @@
                 "example": "1"
               },
               "delivery_latitude": {
-                "type": "number",
-                "description": "Latitude defining the arrival position of the Point Address.",
-                "example": 45.28447,
-                "minimum": -90,
-                "maximum": 90
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Latitude defining the arrival position of the Point Address.",
+                    "example": 45.28441
+                  }
+                ]
               },
               "delivery_longitude": {
-                "type": "number",
-                "description": "Longitude defining the arrival position of the Point Address.",
-                "example": 12.00821,
-                "minimum": -180,
-                "maximum": 180
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Empty string `\"\"` if not available"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude defining the arrival position of the Point Address.",
+                    "example": 12.00825
+                  }
+                ]
               },
               "building_name": {
                 "type": "string",
@@ -5612,7 +5646,7 @@
                     "type": "number",
                     "minimum": -90,
                     "maximum": 90,
-                    "description": "Latitude of the display position for the Point Address.\n\nCan be empty string `\"\"` if not present.",
+                    "description": "Latitude of the display position for the Point Address.",
                     "example": 45.28441
                   }
                 ]
