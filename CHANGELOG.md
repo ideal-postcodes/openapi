@@ -1,3 +1,10 @@
+# [4.3.0-beta.2](https://github.com/ideal-postcodes/openapi/compare/4.3.0-beta.1...4.3.0-beta.2) (2024-02-19)
+
+
+### Bug Fixes
+
+* **USPS:** Add missing countries ([5ba5418](https://github.com/ideal-postcodes/openapi/commit/5ba5418cd3646551c4ab4b99d44517a7731b1ea9))
+
 # [4.3.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.2.1...4.3.0-beta.1) (2024-01-23)
 
 
