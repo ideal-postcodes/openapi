@@ -1,3 +1,10 @@
+# [4.4.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.3.0...4.4.0-beta.1) (2024-04-29)
+
+
+### Features
+
+* **Netherlands:** Add Kadaster ([30c03d8](https://github.com/ideal-postcodes/openapi/commit/30c03d8ad216bcbc72ad3d2d7f64af9bf200d68e))
+
 # [4.3.0](https://github.com/ideal-postcodes/openapi/compare/4.2.1...4.3.0) (2024-02-19)
 
 

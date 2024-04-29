@@ -795,6 +795,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - $ref: '#/components/parameters/TagsParam'
+        - $ref: '#/components/parameters/ContextParam'
       requestBody:
         required: true
         content:
@@ -3057,6 +3058,7 @@ components:
           - `usps` (USA) USPS Zip+4
           - `herewe` (Western Europe) Western Europe Dataset
           - `gnaf` (Australia) Geoscape Geocoded National Address File
+          - `kadaster` (NLD) Kadaster BAG 2.0 Address File
       enum:
         - paf
         - pafw
@@ -3080,6 +3082,7 @@ components:
         - hereee
         - hereap
         - gnaf
+        - kadaster
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -5588,6 +5591,483 @@ components:
           type: string
           description: |
             Abbreviation of street type
+    KadasterAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - line_1
+        - language
+        - address
+        - identificatie
+        - latitude
+        - longitude
+        - gebruiksdoel
+        - oppervlakte
+        - status
+        - geconstateerd
+        - documentdatum
+        - documentnummer
+        - voorkomenidentificatie
+        - begin_geldigheid
+        - eind_geldigheid
+        - tijdstip_registratie
+        - eind_registratie
+        - tijdstip_registratie_lv
+        - tijdstip_eind_registratie_lv
+        - nummeraanduidingen_identificatie
+        - nummeraanduidingen_huisnummer
+        - nummeraanduidingen_huisnummertoevoeging
+        - nummeraanduidingen_huisletter
+        - nummeraanduidingen_postcode
+        - nummeraanduidingen_type_adresseerbaar_object
+        - nummeraanduidingen_status
+        - nummeraanduidingen_geconstateerd
+        - nummeraanduidingen_documentdatum
+        - nummeraanduidingen_documentnummer
+        - nummeraanduidingen_voorkomenidentificatie
+        - nummeraanduidingen_begin_geldigheid
+        - nummeraanduidingen_eind_geldigheid
+        - nummeraanduidingen_tijdstip_registratie
+        - nummeraanduidingen_eind_registratie
+        - nummeraanduidingen_tijdstip_registratie_lv
+        - nummeraanduidingen_tijdstip_eind_registratie_lv
+        - pand_identificatie
+        - pand_oorspronkelijk_bouwjaar
+        - pand_status
+        - pand_geconstateerd
+        - pand_documentdatum
+        - pand_documentnummer
+        - pand_voorkomenidentificatie
+        - pand_begin_geldigheid
+        - pand_eind_geldigheid
+        - pand_tijdstip_registratie
+        - pand_eind_registratie
+        - pand_tijdstip_registratie_lv
+        - pand_tijdstip_eind_registratie_lv
+        - openbare_ruimte_identificatie
+        - openbare_ruimte_naam
+        - openbare_ruimte_type
+        - openbare_ruimte_status
+        - openbare_ruimte_geconstateerd
+        - openbare_ruimte_documentdatum
+        - openbare_ruimte_documentnummer
+        - openbare_ruimte_voorkomenidentificatie
+        - openbare_ruimte_begin_geldigheid
+        - openbare_ruimte_eind_geldigheid
+        - openbare_ruimte_tijdstip_registratie
+        - openbare_ruimte_eind_registratie
+        - openbare_ruimte_tijdstip_registratie_lv
+        - openbare_ruimte_tijdstip_eind_registratie_lv
+        - openbare_ruimte_verkorte_naam
+        - woonplaats_identificatie
+        - woonplaats_naam
+        - woonplaats_status
+        - woonplaats_geconstateerd
+        - woonplaats_documentdatum
+        - woonplaats_documentnummer
+        - woonplaats_voorkomenidentificatie
+        - woonplaats_begin_geldigheid
+        - woonplaats_eind_geldigheid
+        - woonplaats_tijdstip_registratie
+        - woonplaats_eind_registratie
+        - woonplaats_tijdstip_registratie_lv
+        - woonplaats_tijdstip_eind_registratie_lv
+        - provincie
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - kadaster
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - NLD
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - NL
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Netherlands
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Herengracht 255
+        language:
+          enum:
+            - nl
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '255'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        identificatie:
+          type: string
+          description: |
+            The unique identifier of a BAG verblijfsobject.
+        gebruiksdoel:
+          type: string
+          description: |
+            The purpose of use of the verblijfsobject.
+        oppervlakte:
+          type: number
+          description: |
+            The area of the verblijfsobject in square metres.
+        status:
+          type: string
+          description: |
+            Verblijfsobject status.
+        geconstateerd:
+          type: boolean
+          description: |
+            Indicates that a verblijfsobject has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.
+        documentdatum:
+          type: string
+          format: date
+          description: |
+            Date on which the verblijfsobject source document was created.
+        documentnummer:
+          type: string
+          description: |
+            The unique identifier of the verblijfsobject source document.
+        voorkomenidentificatie:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The identifier of this instance of the verblijfsobject history.
+        begin_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is valid in reality in accordance with the effective date in the source document.
+        eind_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is no longer valid in reality. Empty string `""` if not applicable.
+        tijdstip_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is registered by the bronhouder.
+        eind_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+        tijdstip_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is registered in the Landelijke Voorziening BAG.
+        tijdstip_eind_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a verblijfsobject is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+        nummeraanduidingen_identificatie:
+          type: string
+          description: |
+            The unique identifier of a BAG nummeraanduiding object.
+        nummeraanduidingen_huisnummer:
+          type: string
+          description: |
+            The house number assigned to a nummeraanduiding object by or on behalf of the municipal council.
+        nummeraanduidingen_huisnummertoevoeging:
+          type: string
+          description: |
+            A further addition to a house number or a combination of house number and house letter granted by or on behalf of the municipal council with regard to a nummeraanduiding object.
+        nummeraanduidingen_huisletter:
+          type: string
+          description: |
+            An addition to a house number in the form of an alphanumeric character assigned by or on behalf of the municipal council with regard to a nummeraanduiding object.
+        nummeraanduidingen_postcode:
+          type: string
+          description: |
+            A code determined by PostNL associated with a specific combination of a street name and a house number.
+        nummeraanduidingen_type_adresseerbaar_object:
+          type: string
+          description: |
+            The nature of the nummeraanduiding object.
+        nummeraanduidingen_status:
+          type: string
+          description: |
+            The status of the nummeraanduiding object.
+        nummeraanduidingen_geconstateerd:
+          type: boolean
+          description: |
+            Indicates that a nummeraanduidingen object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.
+        nummeraanduidingen_documentdatum:
+          type: string
+          format: date
+          description: |
+            Date on which the nummeraanduidingen object source document was created.
+        nummeraanduidingen_documentnummer:
+          type: string
+          description: |
+            The unique identifier of the nummeraanduidingen object source document.
+        nummeraanduidingen_voorkomenidentificatie:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The identifier of this instance of the nummeraanduidingen object history.
+        nummeraanduidingen_begin_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is valid in reality in accordance with the effective date in the source document.
+        nummeraanduidingen_eind_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is no longer valid in reality. Empty string `""` if not applicable.
+        nummeraanduidingen_tijdstip_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is registered by the bronhouder.
+        nummeraanduidingen_eind_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+        nummeraanduidingen_tijdstip_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is registered in the Landelijke Voorziening BAG.
+        nummeraanduidingen_tijdstip_eind_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a nummeraanduidingen object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+        pand_identificatie:
+          type: string
+          description: |
+            The unique identifier of a BAG pand object.
+        pand_oorspronkelijk_bouwjaar:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The year in which a building was or will be originally completed.
+        pand_status:
+          type: string
+          description: |
+            The status of the pand object.
+        pand_geconstateerd:
+          type: boolean
+          description: |
+            Indicates that a pand object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.
+        pand_documentdatum:
+          type: string
+          format: date
+          description: |
+            Date on which the pand object source document was created.
+        pand_documentnummer:
+          type: string
+          description: |
+            The unique identifier of the pand object source document.
+        pand_voorkomenidentificatie:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The identifier of this instance of the pand object history.
+        pand_begin_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is valid in reality in accordance with the effective date in the source document.
+        pand_eind_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is no longer valid in reality. Empty string `""` if not applicable.
+        pand_tijdstip_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is registered by the bronhouder.
+        pand_eind_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+        pand_tijdstip_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is registered in the Landelijke Voorziening BAG.
+        pand_tijdstip_eind_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a pand object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+        openbare_ruimte_identificatie:
+          type: string
+          description: |
+            The unique identifier of a BAG openbare ruimte object.
+        openbare_ruimte_naam:
+          type: string
+          description: |
+            The name assigned to an openbare ruimte object by or on behalf of the municipal council.
+        openbare_ruimte_type:
+          type: string
+          description: |
+            The nature of the openbare ruimte object.
+        openbare_ruimte_status:
+          type: string
+          description: |
+            The status of the openbare ruimte object.
+        openbare_ruimte_geconstateerd:
+          type: boolean
+          description: |
+            Indicates that an openbare ruimte object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.
+        openbare_ruimte_documentdatum:
+          type: string
+          format: date
+          description: |
+            Date on which the openbare ruimte object source document was created.
+        openbare_ruimte_documentnummer:
+          type: string
+          description: |
+            The unique identifier of the openbare ruimte object source document.
+        openbare_ruimte_voorkomenidentificatie:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The identifier of this instance of the openbare ruimte object history.
+        openbare_ruimte_begin_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is valid in reality in accordance with the effective date in the source document.
+        openbare_ruimte_eind_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is no longer valid in reality. Empty string `""` if not applicable.
+        openbare_ruimte_tijdstip_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is registered by the bronhouder.
+        openbare_ruimte_eind_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+        openbare_ruimte_tijdstip_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is registered in the Landelijke Voorziening BAG.
+        openbare_ruimte_tijdstip_eind_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of an openbare ruimte object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+        openbare_ruimte_verkorte_naam:
+          type: string
+          description: |
+            An abbreviated name assigned to an openbare ruimte object if its name is longer than 24 characters.
+        woonplaats_identificatie:
+          type: string
+          description: |
+            The unique identifier of a BAG woonplaats object.
+        woonplaats_naam:
+          type: string
+          description: |
+            The name assigned to a woonplaats object by or on behalf of the municipal council.
+        woonplaats_status:
+          type: string
+          description: |
+            The status of the woonplaats object.
+        woonplaats_geconstateerd:
+          type: boolean
+          description: |
+            Indicates that a woonplaats object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.
+        woonplaats_documentdatum:
+          type: string
+          format: date
+          description: |
+            Date on which the woonplaats object source document was created.
+        woonplaats_documentnummer:
+          type: string
+          description: |
+            The unique identifier of the woonplaats object source document.
+        woonplaats_voorkomenidentificatie:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                The identifier of this instance of the woonplaats object history.
+        woonplaats_begin_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is valid in reality in accordance with the effective date in the source document.
+        woonplaats_eind_geldigheid:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is no longer valid in reality. Empty string `""` if not applicable.
+        woonplaats_tijdstip_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is registered by the bronhouder.
+        woonplaats_eind_registratie:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+        woonplaats_tijdstip_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is registered in the Landelijke Voorziening BAG.
+        woonplaats_tijdstip_eind_registratie_lv:
+          type: string
+          format: date
+          description: |
+            The time at which a version of a woonplaats object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+        provincie:
+          type: string
+          description: |
+            The province name.
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -5692,6 +6172,7 @@ components:
             - $ref: '#/components/schemas/UspsAddress'
             - $ref: '#/components/schemas/HereAddress'
             - $ref: '#/components/schemas/GnafAddress'
+            - $ref: '#/components/schemas/KadasterAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -6295,6 +6776,7 @@ components:
         - email
         - phone
         - gnaf
+        - kadaster
       properties:
         paf:
           type: boolean
@@ -6395,6 +6877,10 @@ components:
         email:
           type: boolean
           description: Email validation is enabled
+          example: true
+        kadaster:
+          type: boolean
+          description: Kadaster BAG 2.0 Address File
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -6644,6 +7130,10 @@ components:
             gnaf:
               type: boolean
               description: Australia Geoscape Geocoded National Address File
+              example: true
+            kadaster:
+              type: boolean
+              description: Kadaster BAG 2.0 Address File
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -7552,6 +8042,7 @@ components:
             - $ref: '#/components/schemas/AbAddress'
             - $ref: '#/components/schemas/HereAddress'
             - $ref: '#/components/schemas/GnafAddress'
+            - $ref: '#/components/schemas/KadasterAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
@@ -8371,6 +8862,7 @@ components:
         - free
         - disposable
         - catchall
+        - suggestions
       properties:
         result:
           type: string
@@ -8392,6 +8884,13 @@ components:
         catchall:
           type: boolean
           description: Returns `true` if this domain accepts all emails regardless of username
+        suggestions:
+          type: array
+          items:
+            type: string
+          description: Returns an array of suggested email addresses if the email address is not deliverable. The suggested emails are not validated.
+          example:
+            - corrected_email@example.com
     UnknownEmail:
       title: Unknown Email Object
       type: object
@@ -8402,6 +8901,7 @@ components:
         - free
         - disposable
         - catchall
+        - suggestions
       properties:
         result:
           type: string
@@ -8442,6 +8942,11 @@ components:
           description: Catch-all status is not known
           enum:
             - null
+        suggestions:
+          type: array
+          items:
+            type: string
+          description: Suggestions will be empty
     EmailResponse:
       title: Email Verification Response
       type: object
