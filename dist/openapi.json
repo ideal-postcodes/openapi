@@ -745,6 +745,9 @@
           },
           {
             "$ref": "#/components/parameters/TagsParam"
+          },
+          {
+            "$ref": "#/components/parameters/ContextParam"
           }
         ],
         "requestBody": {
@@ -3647,7 +3650,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `gnaf` (Australia) Geoscape Geocoded National Address File",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `gnaf` (Australia) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File",
         "enum": [
           "paf",
           "pafw",
@@ -3670,7 +3673,8 @@
           "herehk",
           "hereee",
           "hereap",
-          "gnaf"
+          "gnaf",
+          "kadaster"
         ]
       },
       "CountryISO": {
@@ -6341,6 +6345,521 @@
           }
         }
       },
+      "KadasterAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "line_1",
+          "language",
+          "address",
+          "identificatie",
+          "latitude",
+          "longitude",
+          "gebruiksdoel",
+          "oppervlakte",
+          "status",
+          "geconstateerd",
+          "documentdatum",
+          "documentnummer",
+          "voorkomenidentificatie",
+          "begin_geldigheid",
+          "eind_geldigheid",
+          "tijdstip_registratie",
+          "eind_registratie",
+          "tijdstip_registratie_lv",
+          "tijdstip_eind_registratie_lv",
+          "nummeraanduidingen_identificatie",
+          "nummeraanduidingen_huisnummer",
+          "nummeraanduidingen_huisnummertoevoeging",
+          "nummeraanduidingen_huisletter",
+          "nummeraanduidingen_postcode",
+          "nummeraanduidingen_type_adresseerbaar_object",
+          "nummeraanduidingen_status",
+          "nummeraanduidingen_geconstateerd",
+          "nummeraanduidingen_documentdatum",
+          "nummeraanduidingen_documentnummer",
+          "nummeraanduidingen_voorkomenidentificatie",
+          "nummeraanduidingen_begin_geldigheid",
+          "nummeraanduidingen_eind_geldigheid",
+          "nummeraanduidingen_tijdstip_registratie",
+          "nummeraanduidingen_eind_registratie",
+          "nummeraanduidingen_tijdstip_registratie_lv",
+          "nummeraanduidingen_tijdstip_eind_registratie_lv",
+          "pand_identificatie",
+          "pand_oorspronkelijk_bouwjaar",
+          "pand_status",
+          "pand_geconstateerd",
+          "pand_documentdatum",
+          "pand_documentnummer",
+          "pand_voorkomenidentificatie",
+          "pand_begin_geldigheid",
+          "pand_eind_geldigheid",
+          "pand_tijdstip_registratie",
+          "pand_eind_registratie",
+          "pand_tijdstip_registratie_lv",
+          "pand_tijdstip_eind_registratie_lv",
+          "openbare_ruimte_identificatie",
+          "openbare_ruimte_naam",
+          "openbare_ruimte_type",
+          "openbare_ruimte_status",
+          "openbare_ruimte_geconstateerd",
+          "openbare_ruimte_documentdatum",
+          "openbare_ruimte_documentnummer",
+          "openbare_ruimte_voorkomenidentificatie",
+          "openbare_ruimte_begin_geldigheid",
+          "openbare_ruimte_eind_geldigheid",
+          "openbare_ruimte_tijdstip_registratie",
+          "openbare_ruimte_eind_registratie",
+          "openbare_ruimte_tijdstip_registratie_lv",
+          "openbare_ruimte_tijdstip_eind_registratie_lv",
+          "openbare_ruimte_verkorte_naam",
+          "woonplaats_identificatie",
+          "woonplaats_naam",
+          "woonplaats_status",
+          "woonplaats_geconstateerd",
+          "woonplaats_documentdatum",
+          "woonplaats_documentnummer",
+          "woonplaats_voorkomenidentificatie",
+          "woonplaats_begin_geldigheid",
+          "woonplaats_eind_geldigheid",
+          "woonplaats_tijdstip_registratie",
+          "woonplaats_eind_registratie",
+          "woonplaats_tijdstip_registratie_lv",
+          "woonplaats_tijdstip_eind_registratie_lv",
+          "provincie"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "kadaster"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "NLD"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "NL"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Netherlands"
+            ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Herengracht 255"
+          },
+          "language": {
+            "enum": [
+              "nl"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "255"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "identificatie": {
+            "type": "string",
+            "description": "The unique identifier of a BAG verblijfsobject.\n"
+          },
+          "gebruiksdoel": {
+            "type": "string",
+            "description": "The purpose of use of the verblijfsobject.\n"
+          },
+          "oppervlakte": {
+            "type": "number",
+            "description": "The area of the verblijfsobject in square metres.\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "Verblijfsobject status.\n"
+          },
+          "geconstateerd": {
+            "type": "boolean",
+            "description": "Indicates that a verblijfsobject has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.\n"
+          },
+          "documentdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the verblijfsobject source document was created.\n"
+          },
+          "documentnummer": {
+            "type": "string",
+            "description": "The unique identifier of the verblijfsobject source document.\n"
+          },
+          "voorkomenidentificatie": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The identifier of this instance of the verblijfsobject history.\n"
+              }
+            ]
+          },
+          "begin_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is valid in reality in accordance with the effective date in the source document.\n"
+          },
+          "eind_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is no longer valid in reality. Empty string `\"\"` if not applicable.\n"
+          },
+          "tijdstip_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is registered by the bronhouder.\n"
+          },
+          "eind_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is no longer valid according to the bronhouder. Empty string `\"\"` if not applicable.\n"
+          },
+          "tijdstip_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is registered in the Landelijke Voorziening BAG.\n"
+          },
+          "tijdstip_eind_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a verblijfsobject is no longer valid in the Landelijke Voorziening BAG. Empty string `\"\"` if not applicable.\n"
+          },
+          "nummeraanduidingen_identificatie": {
+            "type": "string",
+            "description": "The unique identifier of a BAG nummeraanduiding object.\n"
+          },
+          "nummeraanduidingen_huisnummer": {
+            "type": "string",
+            "description": "The house number assigned to a nummeraanduiding object by or on behalf of the municipal council.\n"
+          },
+          "nummeraanduidingen_huisnummertoevoeging": {
+            "type": "string",
+            "description": "A further addition to a house number or a combination of house number and house letter granted by or on behalf of the municipal council with regard to a nummeraanduiding object.\n"
+          },
+          "nummeraanduidingen_huisletter": {
+            "type": "string",
+            "description": "An addition to a house number in the form of an alphanumeric character assigned by or on behalf of the municipal council with regard to a nummeraanduiding object.\n"
+          },
+          "nummeraanduidingen_postcode": {
+            "type": "string",
+            "description": "A code determined by PostNL associated with a specific combination of a street name and a house number.\n"
+          },
+          "nummeraanduidingen_type_adresseerbaar_object": {
+            "type": "string",
+            "description": "The nature of the nummeraanduiding object.\n"
+          },
+          "nummeraanduidingen_status": {
+            "type": "string",
+            "description": "The status of the nummeraanduiding object.\n"
+          },
+          "nummeraanduidingen_geconstateerd": {
+            "type": "boolean",
+            "description": "Indicates that a nummeraanduidingen object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.\n"
+          },
+          "nummeraanduidingen_documentdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the nummeraanduidingen object source document was created.\n"
+          },
+          "nummeraanduidingen_documentnummer": {
+            "type": "string",
+            "description": "The unique identifier of the nummeraanduidingen object source document.\n"
+          },
+          "nummeraanduidingen_voorkomenidentificatie": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The identifier of this instance of the nummeraanduidingen object history.\n"
+              }
+            ]
+          },
+          "nummeraanduidingen_begin_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is valid in reality in accordance with the effective date in the source document.\n"
+          },
+          "nummeraanduidingen_eind_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is no longer valid in reality. Empty string `\"\"` if not applicable.\n"
+          },
+          "nummeraanduidingen_tijdstip_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is registered by the bronhouder.\n"
+          },
+          "nummeraanduidingen_eind_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is no longer valid according to the bronhouder. Empty string `\"\"` if not applicable.\n"
+          },
+          "nummeraanduidingen_tijdstip_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is registered in the Landelijke Voorziening BAG.\n"
+          },
+          "nummeraanduidingen_tijdstip_eind_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a nummeraanduidingen object is no longer valid in the Landelijke Voorziening BAG. Empty string `\"\"` if not applicable.\n"
+          },
+          "pand_identificatie": {
+            "type": "string",
+            "description": "The unique identifier of a BAG pand object.\n"
+          },
+          "pand_oorspronkelijk_bouwjaar": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The year in which a building was or will be originally completed.\n"
+              }
+            ]
+          },
+          "pand_status": {
+            "type": "string",
+            "description": "The status of the pand object.\n"
+          },
+          "pand_geconstateerd": {
+            "type": "boolean",
+            "description": "Indicates that a pand object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.\n"
+          },
+          "pand_documentdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the pand object source document was created.\n"
+          },
+          "pand_documentnummer": {
+            "type": "string",
+            "description": "The unique identifier of the pand object source document.\n"
+          },
+          "pand_voorkomenidentificatie": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The identifier of this instance of the pand object history.\n"
+              }
+            ]
+          },
+          "pand_begin_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is valid in reality in accordance with the effective date in the source document.\n"
+          },
+          "pand_eind_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is no longer valid in reality. Empty string `\"\"` if not applicable.\n"
+          },
+          "pand_tijdstip_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is registered by the bronhouder.\n"
+          },
+          "pand_eind_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is no longer valid according to the bronhouder. Empty string `\"\"` if not applicable.\n"
+          },
+          "pand_tijdstip_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is registered in the Landelijke Voorziening BAG.\n"
+          },
+          "pand_tijdstip_eind_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a pand object is no longer valid in the Landelijke Voorziening BAG. Empty string `\"\"` if not applicable.\n"
+          },
+          "openbare_ruimte_identificatie": {
+            "type": "string",
+            "description": "The unique identifier of a BAG openbare ruimte object.\n"
+          },
+          "openbare_ruimte_naam": {
+            "type": "string",
+            "description": "The name assigned to an openbare ruimte object by or on behalf of the municipal council.\n"
+          },
+          "openbare_ruimte_type": {
+            "type": "string",
+            "description": "The nature of the openbare ruimte object.\n"
+          },
+          "openbare_ruimte_status": {
+            "type": "string",
+            "description": "The status of the openbare ruimte object.\n"
+          },
+          "openbare_ruimte_geconstateerd": {
+            "type": "boolean",
+            "description": "Indicates that an openbare ruimte object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.\n"
+          },
+          "openbare_ruimte_documentdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the openbare ruimte object source document was created.\n"
+          },
+          "openbare_ruimte_documentnummer": {
+            "type": "string",
+            "description": "The unique identifier of the openbare ruimte object source document.\n"
+          },
+          "openbare_ruimte_voorkomenidentificatie": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The identifier of this instance of the openbare ruimte object history.\n"
+              }
+            ]
+          },
+          "openbare_ruimte_begin_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is valid in reality in accordance with the effective date in the source document.\n"
+          },
+          "openbare_ruimte_eind_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is no longer valid in reality. Empty string `\"\"` if not applicable.\n"
+          },
+          "openbare_ruimte_tijdstip_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is registered by the bronhouder.\n"
+          },
+          "openbare_ruimte_eind_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is no longer valid according to the bronhouder. Empty string `\"\"` if not applicable.\n"
+          },
+          "openbare_ruimte_tijdstip_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is registered in the Landelijke Voorziening BAG.\n"
+          },
+          "openbare_ruimte_tijdstip_eind_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of an openbare ruimte object is no longer valid in the Landelijke Voorziening BAG. Empty string `\"\"` if not applicable.\n"
+          },
+          "openbare_ruimte_verkorte_naam": {
+            "type": "string",
+            "description": "An abbreviated name assigned to an openbare ruimte object if its name is longer than 24 characters.\n"
+          },
+          "woonplaats_identificatie": {
+            "type": "string",
+            "description": "The unique identifier of a BAG woonplaats object.\n"
+          },
+          "woonplaats_naam": {
+            "type": "string",
+            "description": "The name assigned to a woonplaats object by or on behalf of the municipal council.\n"
+          },
+          "woonplaats_status": {
+            "type": "string",
+            "description": "The status of the woonplaats object.\n"
+          },
+          "woonplaats_geconstateerd": {
+            "type": "boolean",
+            "description": "Indicates that a woonplaats object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration.\n"
+          },
+          "woonplaats_documentdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the woonplaats object source document was created.\n"
+          },
+          "woonplaats_documentnummer": {
+            "type": "string",
+            "description": "The unique identifier of the woonplaats object source document.\n"
+          },
+          "woonplaats_voorkomenidentificatie": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The identifier of this instance of the woonplaats object history.\n"
+              }
+            ]
+          },
+          "woonplaats_begin_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is valid in reality in accordance with the effective date in the source document.\n"
+          },
+          "woonplaats_eind_geldigheid": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is no longer valid in reality. Empty string `\"\"` if not applicable.\n"
+          },
+          "woonplaats_tijdstip_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is registered by the bronhouder.\n"
+          },
+          "woonplaats_eind_registratie": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is no longer valid according to the bronhouder. Empty string `\"\"` if not applicable.\n"
+          },
+          "woonplaats_tijdstip_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is registered in the Landelijke Voorziening BAG.\n"
+          },
+          "woonplaats_tijdstip_eind_registratie_lv": {
+            "type": "string",
+            "format": "date",
+            "description": "The time at which a version of a woonplaats object is no longer valid in the Landelijke Voorziening BAG. Empty string `\"\"` if not applicable.\n"
+          },
+          "provincie": {
+            "type": "string",
+            "description": "The province name.\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -6469,6 +6988,9 @@
               },
               {
                 "$ref": "#/components/schemas/GnafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KadasterAddress"
               }
             ]
           },
@@ -7240,7 +7762,8 @@
           "heret",
           "email",
           "phone",
-          "gnaf"
+          "gnaf",
+          "kadaster"
         ],
         "properties": {
           "paf": {
@@ -7366,6 +7889,11 @@
           "email": {
             "type": "boolean",
             "description": "Email validation is enabled",
+            "example": true
+          },
+          "kadaster": {
+            "type": "boolean",
+            "description": "Kadaster BAG 2.0 Address File",
             "example": true
           }
         }
@@ -7674,6 +8202,11 @@
               "gnaf": {
                 "type": "boolean",
                 "description": "Australia Geoscape Geocoded National Address File",
+                "example": true
+              },
+              "kadaster": {
+                "type": "boolean",
+                "description": "Kadaster BAG 2.0 Address File",
                 "example": true
               }
             }
@@ -8878,6 +9411,9 @@
               },
               {
                 "$ref": "#/components/schemas/GnafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KadasterAddress"
               }
             ]
           }
@@ -9913,7 +10449,8 @@
           "role",
           "free",
           "disposable",
-          "catchall"
+          "catchall",
+          "suggestions"
         ],
         "properties": {
           "result": {
@@ -9942,6 +10479,16 @@
           "catchall": {
             "type": "boolean",
             "description": "Returns `true` if this domain accepts all emails regardless of username"
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Returns an array of suggested email addresses if the email address is not deliverable. The suggested emails are not validated.",
+            "example": [
+              "corrected_email@example.com"
+            ]
           }
         }
       },
@@ -9954,7 +10501,8 @@
           "role",
           "free",
           "disposable",
-          "catchall"
+          "catchall",
+          "suggestions"
         ],
         "properties": {
           "result": {
@@ -10007,6 +10555,13 @@
             "enum": [
               null
             ]
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Suggestions will be empty"
           }
         }
       },

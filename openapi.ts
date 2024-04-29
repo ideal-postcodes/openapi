@@ -412,6 +412,7 @@ export interface components {
     /**
      * Line 3
      * @description Third address line. May be empty.
+     * @example
      */
     paf_line3: string;
     /**
@@ -483,11 +484,13 @@ export interface components {
     /**
      * Dependant Locality
      * @description When the same thoroughfare name reoccurs in a Post town, it may not be possible to make it dependant on a dependant thoroughfare. In this case the thoroughfare is dependant on a locality. For example if we want to find 1 Back Lane in Huddersfield we see that there are three.
+     * @example
      */
     paf_dependant_locality: string;
     /**
      * Double Dependant Locality
      * @description Used to supplement Dependant Locality. A Double Dependant Locality supplied along with a Dependant Locality if the Dependant Locality exists twice in the same locality.
+     * @example
      */
     paf_double_dependant_locality: string;
     /**
@@ -499,6 +502,7 @@ export interface components {
     /**
      * Dependant Thoroughfare
      * @description Used to supplement thoroughfare. When a thoroughfare name is used twice in the same Post Town, the dependant thoroughfare is added to uniquely indentify a delivery point.
+     * @example
      */
     paf_dependant_thoroughfare: string;
     /**
@@ -518,6 +522,7 @@ export interface components {
      *   - 12A
      *   - K
      *   - Victoria House
+     * @example
      */
     paf_building_name: string;
     /**
@@ -535,6 +540,7 @@ export interface components {
     /**
      * Department Name
      * @description Used to supplment Organisation Name to identify a deparment within the organisation.
+     * @example
      */
     paf_department_name: string;
     /**
@@ -576,6 +582,7 @@ export interface components {
      * A Unitary Authority name, where one is present. If there is no Unitary Authority, the County name is used. This information is not static, because County boundaries may change due to administrative changes. Data
      *
      * source: ONS
+     * @example
      */
     paf_administrative_county: string;
     /**
@@ -658,6 +665,7 @@ export interface components {
       /**
        * County Code
        * @description Short code representing the county or province. May be empty (`""`)
+       * @example
        */
       county_code: string;
       uprn: components["schemas"]["paf_uprn"];
@@ -1081,6 +1089,7 @@ export interface components {
      *   - `usps` (USA) USPS Zip+4
      *   - `herewe` (Western Europe) Western Europe Dataset
      *   - `gnaf` (Australia) Geoscape Geocoded National Address File
+     *   - `kadaster` (NLD) Kadaster BAG 2.0 Address File
      * @enum {string}
      */
     Dataset:
@@ -1105,7 +1114,8 @@ export interface components {
       | "herehk"
       | "hereee"
       | "hereap"
-      | "gnaf";
+      | "gnaf"
+      | "kadaster";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -2673,24 +2683,32 @@ export interface components {
        * @description Second address line.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       line_2: string;
       /**
        * @description Third address line.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       line_3: string;
       /**
        * @description Fourth address line.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       line_4: string;
       /**
        * @description Fifth address line.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       line_5: string;
       /**
@@ -2715,6 +2733,8 @@ export interface components {
        * @description Name of the Building to which the Point Address is associated.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       building_name: string;
       latitude: string | number;
@@ -2746,7 +2766,10 @@ export interface components {
        * @example Brugine
        */
       order8_name: string;
-      /** @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display. */
+      /**
+       * @description Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.
+       * @example
+       */
       builtup_name: string;
     };
     GnafAddress: {
@@ -2787,6 +2810,8 @@ export interface components {
        * @description Second address line.
        *
        * Can be empty string `""` if not present.
+       *
+       * @example
        */
       line_2: string;
       /**
@@ -2962,6 +2987,298 @@ export interface components {
       /** @description Abbreviation of street type */
       street_locality_alias_street_type_name: string;
     };
+    KadasterAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "kadaster";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "NLD";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "NL";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Netherlands";
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Herengracht 255
+       */
+      line_1: string;
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "nl";
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified street.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 255
+       */
+      address: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description The unique identifier of a BAG verblijfsobject. */
+      identificatie: string;
+      /** @description The purpose of use of the verblijfsobject. */
+      gebruiksdoel: string;
+      /** @description The area of the verblijfsobject in square metres. */
+      oppervlakte: number;
+      /** @description Verblijfsobject status. */
+      status: string;
+      /** @description Indicates that a verblijfsobject has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration. */
+      geconstateerd: boolean;
+      /**
+       * Format: date
+       * @description Date on which the verblijfsobject source document was created.
+       */
+      documentdatum: string;
+      /** @description The unique identifier of the verblijfsobject source document. */
+      documentnummer: string;
+      voorkomenidentificatie: string | number;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is valid in reality in accordance with the effective date in the source document.
+       */
+      begin_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is no longer valid in reality. Empty string `""` if not applicable.
+       */
+      eind_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is registered by the bronhouder.
+       */
+      tijdstip_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+       */
+      eind_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is registered in the Landelijke Voorziening BAG.
+       */
+      tijdstip_registratie_lv: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a verblijfsobject is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+       */
+      tijdstip_eind_registratie_lv: string;
+      /** @description The unique identifier of a BAG nummeraanduiding object. */
+      nummeraanduidingen_identificatie: string;
+      /** @description The house number assigned to a nummeraanduiding object by or on behalf of the municipal council. */
+      nummeraanduidingen_huisnummer: string;
+      /** @description A further addition to a house number or a combination of house number and house letter granted by or on behalf of the municipal council with regard to a nummeraanduiding object. */
+      nummeraanduidingen_huisnummertoevoeging: string;
+      /** @description An addition to a house number in the form of an alphanumeric character assigned by or on behalf of the municipal council with regard to a nummeraanduiding object. */
+      nummeraanduidingen_huisletter: string;
+      /** @description A code determined by PostNL associated with a specific combination of a street name and a house number. */
+      nummeraanduidingen_postcode: string;
+      /** @description The nature of the nummeraanduiding object. */
+      nummeraanduidingen_type_adresseerbaar_object: string;
+      /** @description The status of the nummeraanduiding object. */
+      nummeraanduidingen_status: string;
+      /** @description Indicates that a nummeraanduidingen object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration. */
+      nummeraanduidingen_geconstateerd: boolean;
+      /**
+       * Format: date
+       * @description Date on which the nummeraanduidingen object source document was created.
+       */
+      nummeraanduidingen_documentdatum: string;
+      /** @description The unique identifier of the nummeraanduidingen object source document. */
+      nummeraanduidingen_documentnummer: string;
+      nummeraanduidingen_voorkomenidentificatie: string | number;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is valid in reality in accordance with the effective date in the source document.
+       */
+      nummeraanduidingen_begin_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is no longer valid in reality. Empty string `""` if not applicable.
+       */
+      nummeraanduidingen_eind_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is registered by the bronhouder.
+       */
+      nummeraanduidingen_tijdstip_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+       */
+      nummeraanduidingen_eind_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is registered in the Landelijke Voorziening BAG.
+       */
+      nummeraanduidingen_tijdstip_registratie_lv: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a nummeraanduidingen object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+       */
+      nummeraanduidingen_tijdstip_eind_registratie_lv: string;
+      /** @description The unique identifier of a BAG pand object. */
+      pand_identificatie: string;
+      pand_oorspronkelijk_bouwjaar: string | number;
+      /** @description The status of the pand object. */
+      pand_status: string;
+      /** @description Indicates that a pand object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration. */
+      pand_geconstateerd: boolean;
+      /**
+       * Format: date
+       * @description Date on which the pand object source document was created.
+       */
+      pand_documentdatum: string;
+      /** @description The unique identifier of the pand object source document. */
+      pand_documentnummer: string;
+      pand_voorkomenidentificatie: string | number;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is valid in reality in accordance with the effective date in the source document.
+       */
+      pand_begin_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is no longer valid in reality. Empty string `""` if not applicable.
+       */
+      pand_eind_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is registered by the bronhouder.
+       */
+      pand_tijdstip_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+       */
+      pand_eind_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is registered in the Landelijke Voorziening BAG.
+       */
+      pand_tijdstip_registratie_lv: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a pand object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+       */
+      pand_tijdstip_eind_registratie_lv: string;
+      /** @description The unique identifier of a BAG openbare ruimte object. */
+      openbare_ruimte_identificatie: string;
+      /** @description The name assigned to an openbare ruimte object by or on behalf of the municipal council. */
+      openbare_ruimte_naam: string;
+      /** @description The nature of the openbare ruimte object. */
+      openbare_ruimte_type: string;
+      /** @description The status of the openbare ruimte object. */
+      openbare_ruimte_status: string;
+      /** @description Indicates that an openbare ruimte object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration. */
+      openbare_ruimte_geconstateerd: boolean;
+      /**
+       * Format: date
+       * @description Date on which the openbare ruimte object source document was created.
+       */
+      openbare_ruimte_documentdatum: string;
+      /** @description The unique identifier of the openbare ruimte object source document. */
+      openbare_ruimte_documentnummer: string;
+      openbare_ruimte_voorkomenidentificatie: string | number;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is valid in reality in accordance with the effective date in the source document.
+       */
+      openbare_ruimte_begin_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is no longer valid in reality. Empty string `""` if not applicable.
+       */
+      openbare_ruimte_eind_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is registered by the bronhouder.
+       */
+      openbare_ruimte_tijdstip_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+       */
+      openbare_ruimte_eind_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is registered in the Landelijke Voorziening BAG.
+       */
+      openbare_ruimte_tijdstip_registratie_lv: string;
+      /**
+       * Format: date
+       * @description The time at which a version of an openbare ruimte object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+       */
+      openbare_ruimte_tijdstip_eind_registratie_lv: string;
+      /** @description An abbreviated name assigned to an openbare ruimte object if its name is longer than 24 characters. */
+      openbare_ruimte_verkorte_naam: string;
+      /** @description The unique identifier of a BAG woonplaats object. */
+      woonplaats_identificatie: string;
+      /** @description The name assigned to a woonplaats object by or on behalf of the municipal council. */
+      woonplaats_naam: string;
+      /** @description The status of the woonplaats object. */
+      woonplaats_status: string;
+      /** @description Indicates that a woonplaats object has been included in the registry as a result of an observation, without there being a regular source document for this inclusion at the time of registration. */
+      woonplaats_geconstateerd: boolean;
+      /**
+       * Format: date
+       * @description Date on which the woonplaats object source document was created.
+       */
+      woonplaats_documentdatum: string;
+      /** @description The unique identifier of the woonplaats object source document. */
+      woonplaats_documentnummer: string;
+      woonplaats_voorkomenidentificatie: string | number;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is valid in reality in accordance with the effective date in the source document.
+       */
+      woonplaats_begin_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is no longer valid in reality. Empty string `""` if not applicable.
+       */
+      woonplaats_eind_geldigheid: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is registered by the bronhouder.
+       */
+      woonplaats_tijdstip_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is no longer valid according to the bronhouder. Empty string `""` if not applicable.
+       */
+      woonplaats_eind_registratie: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is registered in the Landelijke Voorziening BAG.
+       */
+      woonplaats_tijdstip_registratie_lv: string;
+      /**
+       * Format: date
+       * @description The time at which a version of a woonplaats object is no longer valid in the Landelijke Voorziening BAG. Empty string `""` if not applicable.
+       */
+      woonplaats_tijdstip_eind_registratie_lv: string;
+      /** @description The province name. */
+      provincie: string;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -2981,11 +3298,13 @@ export interface components {
       /**
        * Address Second Line
        * @description Second line of the address. Can be blank
+       * @example
        */
       line_2: string;
       /**
        * Address Third Line
        * @description Third line of the address. Can also be blank
+       * @example
        */
       line_3: string;
       /**
@@ -3019,7 +3338,8 @@ export interface components {
         | components["schemas"]["EcafAddress"]
         | components["schemas"]["UspsAddress"]
         | components["schemas"]["HereAddress"]
-        | components["schemas"]["GnafAddress"];
+        | components["schemas"]["GnafAddress"]
+        | components["schemas"]["KadasterAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -3150,7 +3470,58 @@ export interface components {
     };
     /**
      * Postcode Response
-     * @example [object Object]
+     * @example {
+     *   "result": [
+     *     {
+     *       "postcode": "SW1A 2AA",
+     *       "postcode_inward": "2AA",
+     *       "postcode_outward": "SW1A",
+     *       "post_town": "London",
+     *       "dependant_locality": "",
+     *       "double_dependant_locality": "",
+     *       "thoroughfare": "Downing Street",
+     *       "dependant_thoroughfare": "",
+     *       "building_number": "10",
+     *       "building_name": "",
+     *       "sub_building_name": "",
+     *       "po_box": "",
+     *       "department_name": "",
+     *       "organisation_name": "Prime Minister & First Lord Of The Treasury",
+     *       "udprn": 23747771,
+     *       "postcode_type": "L",
+     *       "su_organisation_indicator": "",
+     *       "delivery_point_suffix": "1A",
+     *       "line_1": "Prime Minister & First Lord Of The Treasury",
+     *       "line_2": "10 Downing Street",
+     *       "line_3": "",
+     *       "premise": "10",
+     *       "longitude": -0.12767,
+     *       "latitude": 51.503541,
+     *       "eastings": 530047,
+     *       "northings": 179951,
+     *       "country": "England",
+     *       "traditional_county": "Greater London",
+     *       "administrative_county": "",
+     *       "postal_county": "London",
+     *       "county": "London",
+     *       "district": "Westminster",
+     *       "ward": "St. James's",
+     *       "uprn": "100023336956",
+     *       "id": "paf_23747771",
+     *       "country_iso": "GBR",
+     *       "country_iso_2": "GB",
+     *       "county_code": "",
+     *       "language": "en",
+     *       "umprn": "",
+     *       "dataset": "paf"
+     *     }
+     *   ],
+     *   "code": 2000,
+     *   "message": "Success",
+     *   "limit": 100,
+     *   "page": 0,
+     *   "total": 1
+     * }
      */
     PostcodeResponse: {
       /**
@@ -3171,6 +3542,7 @@ export interface components {
       code: 2000;
       /** @enum {string} */
       message: "Success";
+      /** @default 0 */
       page: number;
       /** @default 100 */
       limit: number;
@@ -3224,7 +3596,53 @@ export interface components {
     };
     /**
      * UDPRN Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "postcode": "SW1A 2AA",
+     *     "postcode_inward": "2AA",
+     *     "postcode_outward": "SW1A",
+     *     "post_town": "London",
+     *     "dependant_locality": "",
+     *     "double_dependant_locality": "",
+     *     "thoroughfare": "Downing Street",
+     *     "dependant_thoroughfare": "",
+     *     "building_number": "10",
+     *     "building_name": "",
+     *     "sub_building_name": "",
+     *     "po_box": "",
+     *     "department_name": "",
+     *     "organisation_name": "Prime Minister & First Lord Of The Treasury",
+     *     "udprn": 23747771,
+     *     "postcode_type": "L",
+     *     "su_organisation_indicator": "",
+     *     "delivery_point_suffix": "1A",
+     *     "line_1": "Prime Minister & First Lord Of The Treasury",
+     *     "line_2": "10 Downing Street",
+     *     "line_3": "",
+     *     "premise": "10",
+     *     "longitude": -0.12767,
+     *     "latitude": 51.503541,
+     *     "eastings": 530047,
+     *     "northings": 179951,
+     *     "country": "England",
+     *     "traditional_county": "Greater London",
+     *     "administrative_county": "",
+     *     "postal_county": "London",
+     *     "county": "London",
+     *     "district": "Westminster",
+     *     "ward": "St. James's",
+     *     "uprn": "100023336956",
+     *     "id": "paf_23747771",
+     *     "country_iso": "GBR",
+     *     "country_iso_2": "GB",
+     *     "county_code": "",
+     *     "language": "en",
+     *     "umprn": "",
+     *     "dataset": "paf"
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     UDPRNResponse: {
       result:
@@ -3240,7 +3658,53 @@ export interface components {
     };
     /**
      * Multiple Residence (UMPRN) Address Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "postcode": "CV4 7AL",
+     *     "postcode_inward": "7AL",
+     *     "postcode_outward": "CV4",
+     *     "post_town": "Coventry",
+     *     "dependant_locality": "",
+     *     "double_dependant_locality": "",
+     *     "thoroughfare": "Gibbet Hill Road",
+     *     "dependant_thoroughfare": "",
+     *     "building_number": "",
+     *     "building_name": "Block 1 Arthur Vick",
+     *     "sub_building_name": "Room 249a",
+     *     "po_box": "",
+     *     "department_name": "",
+     *     "organisation_name": "",
+     *     "udprn": 5770157,
+     *     "postcode_type": "S",
+     *     "su_organisation_indicator": "",
+     *     "delivery_point_suffix": "1A",
+     *     "line_1": "Room 249a, Block 1 Arthur Vick",
+     *     "line_2": "Gibbet Hill Road",
+     *     "line_3": "",
+     *     "premise": "Room 249a, Block 1 Arthur Vick",
+     *     "longitude": -1.5648072,
+     *     "latitude": 52.3858227,
+     *     "eastings": 429716,
+     *     "northings": 276509,
+     *     "country": "England",
+     *     "traditional_county": "Warwickshire",
+     *     "administrative_county": "",
+     *     "postal_county": "West Midlands",
+     *     "county": "West Midlands",
+     *     "district": "Coventry",
+     *     "ward": "Wainbody",
+     *     "uprn": "200001572050",
+     *     "id": "mr_50906058",
+     *     "country_iso": "GBR",
+     *     "country_iso_2": "GB",
+     *     "county_code": "",
+     *     "language": "en",
+     *     "umprn": 50906058,
+     *     "dataset": "mr"
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     UMPRNResponse: {
       result: components["schemas"]["MrAddress"];
@@ -3373,29 +3837,50 @@ export interface components {
        * @example true
        */
       paf: boolean;
-      /** @description UK Property Alias dataset */
+      /**
+       * @description UK Property Alias dataset
+       * @example false
+       */
       pafa: boolean;
-      /** @description UK Welsh Language Dataset */
+      /**
+       * @description UK Welsh Language Dataset
+       * @example false
+       */
       pafw: boolean;
       /**
        * @description UK Multiple Residence Dataset
        * @example true
        */
       mr: boolean;
-      /** @description UK Not Yet Built Dataset */
+      /**
+       * @description UK Not Yet Built Dataset
+       * @example false
+       */
       nyb: boolean;
-      /** @description UK AddressBase dataset */
+      /**
+       * @description UK AddressBase dataset
+       * @example false
+       */
       ab: boolean;
-      /** @description Northern Ireland Pointer Dataset */
+      /**
+       * @description Northern Ireland Pointer Dataset
+       * @example false
+       */
       nip: boolean;
       /**
        * @description US Address Dataset
        * @example true
        */
       usps: boolean;
-      /** @description IE Address File. Eircode Address Database */
+      /**
+       * @description IE Address File. Eircode Address Database
+       * @example false
+       */
       ecad: boolean;
-      /** @description IE Base Address File. Eircode Address File */
+      /**
+       * @description IE Base Address File. Eircode Address File
+       * @example false
+       */
       ecaf: boolean;
       /**
        * @description Australia Geocoded National Address File
@@ -3472,6 +3957,11 @@ export interface components {
        * @example true
        */
       email: boolean;
+      /**
+       * @description Kadaster BAG 2.0 Address File
+       * @example true
+       */
+      kadaster: boolean;
     };
     /**
      * API Key Automated Topup
@@ -3528,7 +4018,10 @@ export interface components {
       automated_topups: components["schemas"]["ApiKeyAutomatedTopup"];
       /** @description Current balance purchases attached to key. */
       current_purchases: components["schemas"]["ApiKeyCurrentPurchase"][];
-      /** @description Accept IP addresses forwarded in the `IDPC-Source-IP` header */
+      /**
+       * @description Accept IP addresses forwarded in the `IDPC-Source-IP` header
+       * @default false
+       */
       ip_forwarding: boolean;
     };
     /** API Key Details Response */
@@ -3579,16 +4072,25 @@ export interface components {
         /** @description Indicates whether email notifications are enabled. */
         enabled?: boolean;
       };
-      /** @description Accept IP addresses forwarded in the `IDPC-Source-IP` header */
+      /**
+       * @description Accept IP addresses forwarded in the `IDPC-Source-IP` header
+       * @default false
+       */
       ip_forwarding?: boolean;
       /**
        * API Key Dataset Availability
        * @description Indicates which datasets are available and added by default to the address responses
        */
       datasets?: {
-        /** @description UK Property Alias dataset */
+        /**
+         * @description UK Property Alias dataset
+         * @example false
+         */
         pafa?: boolean;
-        /** @description UK Welsh Language Dataset */
+        /**
+         * @description UK Welsh Language Dataset
+         * @example false
+         */
         pafw?: boolean;
         /**
          * @description US Address Dataset
@@ -3670,6 +4172,11 @@ export interface components {
          * @example true
          */
         gnaf?: boolean;
+        /**
+         * @description Kadaster BAG 2.0 Address File
+         * @example true
+         */
+        kadaster?: boolean;
       };
     };
     /** Key Usage */
@@ -3931,7 +4438,11 @@ export interface components {
     /**
      * Address Suggestion
      * @description Represents an address suggestion for any address in the world
-     * @example [object Object]
+     * @example {
+     *   "id": "usps_V210079628|10||3797",
+     *   "suggestion": "10 Downing St, Montpelier, VT, 05602",
+     *   "urls": null
+     * }
      */
     AddressSuggestion: {
       id: components["schemas"]["ID"];
@@ -3950,7 +4461,14 @@ export interface components {
      *
      * UK Address Suggestion will return a UMPRN if it references a multiple occupancy premise found on Royal Mail's Multiple Residence dataset.
      *
-     * @example [object Object]
+     * @example {
+     *   "id": "paf_23747771",
+     *   "suggestion": "Prime Minister & First Lord Of The Treasury, 10 Downing Street, London, SW1A",
+     *   "udprn": "23747771,",
+     *   "urls": {
+     *     "udprn": "/v1/udprn/23747771"
+     *   }
+     * }
      */
     UkAddressSuggestion: {
       id: components["schemas"]["ID"];
@@ -3981,7 +4499,26 @@ export interface components {
     };
     /** Address Autocomplete Response */
     AutocompleteResponse: {
-      /** @example [object Object],[object Object] */
+      /**
+       * @example [
+       *   {
+       *     "id": "paf_23747771",
+       *     "suggestion": "Prime Minister & First Lord Of The Treasury, 10 Downing Street, London, SW1A",
+       *     "udprn": 23747771,
+       *     "urls": {
+       *       "udprn": "/v1/udprn/23747771"
+       *     }
+       *   },
+       *   {
+       *     "id": "paf_26245117",
+       *     "suggestion": "Flat 10, Downing Court, Grenville Street, London, WC1N",
+       *     "udprn": 26245117,
+       *     "urls": {
+       *       "udprn": "/v1/udprn/26245117"
+       *     }
+       *   }
+       * ]
+       */
       result: {
         hits: (
           | components["schemas"]["AddressSuggestion"]
@@ -4190,7 +4727,8 @@ export interface components {
         | components["schemas"]["WelshPafAddress"]
         | components["schemas"]["AbAddress"]
         | components["schemas"]["HereAddress"]
-        | components["schemas"]["GnafAddress"];
+        | components["schemas"]["GnafAddress"]
+        | components["schemas"]["KadasterAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
@@ -4232,7 +4770,11 @@ export interface components {
          * @example 10
          */
         limit: number;
-        /** Format: int32 */
+        /**
+         * Format: int32
+         * @default 0
+         * @example 0
+         */
         page: number;
       };
     };
@@ -4276,7 +4818,32 @@ export interface components {
     };
     /**
      * Place Search Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "hits": [
+     *       {
+     *         "id": "geonames_2643743",
+     *         "name": "London",
+     *         "descriptive_name": "London, Greater London, England",
+     *         "country_iso": "GBR"
+     *       },
+     *       {
+     *         "id": "geonames_4517009",
+     *         "name": "London",
+     *         "descriptive_name": "London, Madison County, Ohio",
+     *         "country_iso": "USA"
+     *       },
+     *       {
+     *         "id": "geonames_4298960",
+     *         "name": "London",
+     *         "descriptive_name": "London, Laurel County, Kentucky",
+     *         "country_iso": "USA"
+     *       }
+     *     ]
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     PlaceResponse: {
       /**
@@ -4463,7 +5030,159 @@ export interface components {
     };
     /**
      * Place Resolution Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "id": "geonames_2643743",
+     *     "dataset": "geonames",
+     *     "name": "London",
+     *     "descriptive_name": "London, Greater London, England",
+     *     "language": "en",
+     *     "longitude": -0.12574,
+     *     "latitude": 51.50853,
+     *     "country_iso": "GBR",
+     *     "native": {
+     *       "admin1_code": "ENG",
+     *       "admin2_name": "Greater London",
+     *       "geonameid": 2643743,
+     *       "timezone": "Europe/London",
+     *       "latitude": 51.50853,
+     *       "language": "en",
+     *       "dem": 25,
+     *       "admin4_code": "",
+     *       "admin1_geonameid": 6269131,
+     *       "alternatenames": [
+     *         "ILondon",
+     *         "LON",
+     *         "Lakana",
+     *         "Landan",
+     *         "Landen",
+     *         "Ljondan",
+     *         "Llundain",
+     *         "Lodoni",
+     *         "Londain",
+     *         "Londan",
+     *         "Londar",
+     *         "Londe",
+     *         "Londen",
+     *         "Londin",
+     *         "Londinium",
+     *         "Londino",
+     *         "Londn",
+     *         "London",
+     *         "London osh",
+     *         "Londona",
+     *         "Londonas",
+     *         "Londoni",
+     *         "Londono",
+     *         "Londons",
+     *         "Londonu",
+     *         "Londra",
+     *         "Londres",
+     *         "Londrez",
+     *         "Londri",
+     *         "Londro",
+     *         "Londye",
+     *         "Londyn",
+     *         "Londýn",
+     *         "Lonn",
+     *         "Lontoo",
+     *         "Loundres",
+     *         "Luan GJon",
+     *         "Lun-tun",
+     *         "Lunden",
+     *         "Lundra",
+     *         "Lundun",
+     *         "Lundunir",
+     *         "Lundúnir",
+     *         "Lung-dung",
+     *         "Lunnainn",
+     *         "Lunnin",
+     *         "Lunnon",
+     *         "Luân Đôn",
+     *         "Lùn-tûn",
+     *         "Lùng-dŭng",
+     *         "Lûn-tun",
+     *         "Lākana",
+     *         "Lůndůn",
+     *         "Lọndọnu",
+     *         "Ranana",
+     *         "Rānana",
+     *         "ilantan",
+     *         "ladana",
+     *         "landan",
+     *         "landana",
+     *         "leondeon",
+     *         "lndn",
+     *         "london",
+     *         "londoni",
+     *         "lun dui",
+     *         "lun dun",
+     *         "lwndwn",
+     *         "lxndxn",
+     *         "rondon",
+     *         "Łondra",
+     *         "Λονδίνο",
+     *         "Лондан",
+     *         "Лондон",
+     *         "Лондон ош",
+     *         "Лондонъ",
+     *         "Лёндан",
+     *         "Լոնդոն",
+     *         "לאנדאן",
+     *         "לונדון",
+     *         "لأندأن",
+     *         "لندن",
+     *         "لوندون",
+     *         "لەندەن",
+     *         "ܠܘܢܕܘܢ",
+     *         "लंडन",
+     *         "लंदन",
+     *         "लण्डन",
+     *         "लन्डन्",
+     *         "लन्दन",
+     *         "লন্ডন",
+     *         "ਲੰਡਨ",
+     *         "લંડન",
+     *         "ଲ୍ଡନ",
+     *         "இலண்டன்",
+     *         "లండన్",
+     *         "ಲಂಡನ್",
+     *         "ലണ്ടൻ",
+     *         "ලන්ඩන්",
+     *         "ลอนดอน",
+     *         "ລອນດອນ",
+     *         "ལོན་ཊོན།",
+     *         "လန်ဒန်မြို့",
+     *         "ლონდონი",
+     *         "ለንደን",
+     *         "ᎫᎴ ᏗᏍᎪᏂᎯᏱ",
+     *         "ロンドン",
+     *         "伦敦",
+     *         "倫敦",
+     *         "런던"
+     *       ],
+     *       "cc2": [],
+     *       "admin2_code": "GLA",
+     *       "modification_date": "2022-03-09T00:00:00.000Z",
+     *       "asciiname": "London",
+     *       "id": "geonames_2643743",
+     *       "feature_code": "PPLC",
+     *       "country_iso": "GBR",
+     *       "longitude": -0.12574,
+     *       "elevation": null,
+     *       "admin2_geonameid": 2648110,
+     *       "admin1_name": "England",
+     *       "population": "8961989",
+     *       "country_code": "GB",
+     *       "feature_class": "P",
+     *       "name": "London",
+     *       "admin3_code": "",
+     *       "dataset": "geonames"
+     *     }
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     ResolvePlaceResponse: {
       /**
@@ -4679,6 +5398,13 @@ export interface components {
       role: boolean;
       /** @description Returns `true` if this domain accepts all emails regardless of username */
       catchall: boolean;
+      /**
+       * @description Returns an array of suggested email addresses if the email address is not deliverable. The suggested emails are not validated.
+       * @example [
+       *   "corrected_email@example.com"
+       * ]
+       */
+      suggestions: string[];
     };
     /** Unknown Email Object */
     UnknownEmail: {
@@ -4709,10 +5435,23 @@ export interface components {
        * @enum {boolean|null}
        */
       catchall: null | null;
+      /** @description Suggestions will be empty */
+      suggestions: string[];
     };
     /**
      * Email Verification Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "result": "deliverable",
+     *     "deliverable": true,
+     *     "catchall": false,
+     *     "free": false,
+     *     "role": true,
+     *     "disposable": false
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     EmailResponse: {
       /**
@@ -4843,7 +5582,30 @@ export interface components {
     };
     /**
      * Phone Number Verification Response
-     * @example [object Object]
+     * @example {
+     *   "result": {
+     *     "valid": true,
+     *     "national_format": "020 7112 8019",
+     *     "international_format": "+44 20 7112 8019",
+     *     "iso_country": "GBR",
+     *     "iso_country_2": "GB",
+     *     "country": "United Kingdom",
+     *     "current_carrier": {
+     *       "network_code": null,
+     *       "name": "Invomo Ltd",
+     *       "country": "GB",
+     *       "network_type": "landline"
+     *     },
+     *     "original_carrier": {
+     *       "network_code": null,
+     *       "name": "Invomo Ltd",
+     *       "country": "GB",
+     *       "network_type": "landline"
+     *     }
+     *   },
+     *   "code": 2000,
+     *   "message": "Success"
+     * }
      */
     PhoneNumberResponse: {
       /**
@@ -5670,6 +6432,12 @@ export interface operations {
          * If multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `"foo,bar"` will only query requests which tagged both `"foo"` and `"bar"`.
          */
         Tags?: components["parameters"]["TagsParam"];
+        /**
+         * **Context**
+         *
+         * Limits search results, typically within g country.
+         */
+        context?: components["parameters"]["ContextParam"];
       };
     };
     responses: {
