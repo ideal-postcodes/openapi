@@ -1,3 +1,10 @@
+# [4.5.0](https://github.com/ideal-postcodes/openapi/compare/4.4.0...4.5.0) (2024-04-30)
+
+
+### Features
+
+* **Norway:** Add Kartverket dataset ([33af702](https://github.com/ideal-postcodes/openapi/commit/33af7025c7a9a0cb66265295ed94017649ae803f))
+
 # [4.5.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.4.0...4.5.0-beta.1) (2024-04-30)
 
 
