@@ -2344,7 +2344,8 @@
                         "catchall": false,
                         "free": false,
                         "role": true,
-                        "disposable": false
+                        "disposable": false,
+                        "suggestions": []
                       },
                       "code": 2000,
                       "message": "Success"
@@ -3650,7 +3651,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `usps` (USA) USPS Zip+4\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `gnaf` (Australia) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3674,7 +3675,8 @@
           "hereee",
           "hereap",
           "gnaf",
-          "kadaster"
+          "kadaster",
+          "kartverket"
         ]
       },
       "CountryISO": {
@@ -6860,6 +6862,400 @@
           }
         }
       },
+      "KartverketAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "line_1",
+          "line_2",
+          "language",
+          "address",
+          "latitude",
+          "longitude",
+          "lokal_id",
+          "kommunenummer",
+          "kommunenavn",
+          "adressetype",
+          "adressetilleggsnavn",
+          "adressetilleggsnavn_kilde",
+          "adressekode",
+          "adressenavn",
+          "nummer",
+          "bokstav",
+          "gardsnummer",
+          "bruksnummer",
+          "festenummer",
+          "seksjonsnummer",
+          "undernummer",
+          "adresse_tekst",
+          "adresse_tekst_uten_adressetilleggsnavn",
+          "bruksenhet_id",
+          "bruksenhetsnummer_tekst",
+          "offisiell_adresse_tekst",
+          "offisiell_adresse_tekst_uten_adressetilleggsnavn",
+          "epsg_kode",
+          "nord",
+          "oest",
+          "postnummer",
+          "poststed",
+          "grunnkretsnummer",
+          "grunnkretsnavn",
+          "soknenummer",
+          "soknenavn",
+          "organisasjonsnummer",
+          "tettstednummer",
+          "tettstednavn",
+          "valgkretsnummer",
+          "valgkretsnavn",
+          "oppdateringsdato",
+          "datauttaksdato",
+          "adresse_id",
+          "uuid_adresse",
+          "uuid_bruksenhet",
+          "atkomst_id",
+          "uuid_atkomst",
+          "atkomst_nord",
+          "atkomst_oest",
+          "sommeratkomst_id",
+          "uuid_sommeratkomst",
+          "sommeratkomst_nord",
+          "sommeratkomst_oest",
+          "vinteratkomst_id",
+          "uuid_vinteratkomst",
+          "vinteratkomst_nord",
+          "vinteratkomst_oest",
+          "fylke",
+          "landsdel"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "kartverket"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "NOR",
+              "SJM"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "NO",
+              "SJ"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Norway",
+              "Svalbard and Jan Mayen"
+            ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Lerkevegen 5"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": ""
+          },
+          "language": {
+            "enum": [
+              "no"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "lokal_id": {
+            "type": "string",
+            "description": "Local identifier assigned by the data supplier.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "kommunenummer": {
+            "type": "string",
+            "description": "Kommune (municipality) number.\n"
+          },
+          "kommunenavn": {
+            "type": "string",
+            "description": "Kommune (municipality) name.\n"
+          },
+          "adressetype": {
+            "type": "string",
+            "description": "`vegadresse` = street address, `matrikkeladresse` = land registry address\n"
+          },
+          "adressetilleggsnavn": {
+            "type": "string",
+            "description": "A local place name used in a road address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adressetilleggsnavn_kilde": {
+            "type": "string",
+            "description": "Code for adressetilleggsnavn origin.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adressekode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "A number that uniquely identifies addressable streets, roads, paths, places and areas that are entered in the land register.\n"
+              }
+            ]
+          },
+          "adressenavn": {
+            "type": "string",
+            "description": "Name of street, road, path, place or area entered in the land register.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "nummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "A number that uniquely identifies properties, facilities, buildings or entrances to buildings within an addressable street, road, path, place or area.\n"
+              }
+            ]
+          },
+          "bokstav": {
+            "type": "string",
+            "description": "A subsequent letter that may be used in addition to a number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "gardsnummer": {
+            "type": "number",
+            "description": "The number of a farm unit in the land register, unique within each municipality.\n"
+          },
+          "bruksnummer": {
+            "type": "number",
+            "description": "A unique identification number automatically assigned to each individual unit within a farm.\n"
+          },
+          "festenummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The number of a fixture within a gardsnummer/bruksnummer.\n"
+              }
+            ]
+          },
+          "seksjonsnummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "The number of a section within a gardsnummer/bruksnummer and possibly a festenummer.\n"
+              }
+            ]
+          },
+          "undernummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "A sub-number within a gardsnummer, bruksnummer and festenummer.\n"
+              }
+            ]
+          },
+          "adresse_tekst": {
+            "type": "string",
+            "description": "Official address text without bruksenhetsnummer, unique within a kommune.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adresse_tekst_uten_adressetilleggsnavn": {
+            "type": "string",
+            "description": "Official address text without bruksenhetsnummer and adressetilleggsnavn, unique within a kommune.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bruksenhet_id": {
+            "type": "string",
+            "description": "Local identifier for a unit within a building.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bruksenhetsnummer_tekst": {
+            "type": "string",
+            "description": "Unit number, e.g. an apartment in a multi-dwelling building.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "offisiell_adresse_tekst": {
+            "type": "string",
+            "description": "Official address text with bruksenhetsnummer, unique within a kommune.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "offisiell_adresse_tekst_uten_adressetilleggsnavn": {
+            "type": "string",
+            "description": "Official address text with bruksenhetsnummer and without adressetilleggsnavn, unique within a kommune.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "epsg_kode": {
+            "type": "number",
+            "description": "EPSG code = `25833`.\n"
+          },
+          "nord": {
+            "type": "string",
+            "description": "Northward coordinate of address.\n"
+          },
+          "oest": {
+            "type": "string",
+            "description": "Eastward coordinate of address.\n"
+          },
+          "postnummer": {
+            "type": "string",
+            "description": "Postal code.\n"
+          },
+          "poststed": {
+            "type": "string",
+            "description": "Name of postal town according to Posten.\n"
+          },
+          "grunnkretsnummer": {
+            "type": "string",
+            "description": "Identifier consisting of 8 digits, where the first four are the kommunenummer, the next two are the delområdenummer and the last two indicate the grunnkrets.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "grunnkretsnavn": {
+            "type": "string",
+            "description": "Official grunnkrets name from Statistics Norway (SSB).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "soknenummer": {
+            "type": "string",
+            "description": "Unique 8 digit identifier of a parish.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "soknenavn": {
+            "type": "string",
+            "description": "Parish name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "organisasjonsnummer": {
+            "type": "string",
+            "description": "Unique identifier of organisation in the Brønnøysund Register.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "tettstednummer": {
+            "type": "string",
+            "description": "4 digit code for tettsted (urban settlement).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "tettstednavn": {
+            "type": "string",
+            "description": "Name of tettsted (urban settlement).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "valgkretsnummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available"
+              },
+              {
+                "type": "number",
+                "description": "Constituency code within a kommune.\n"
+              }
+            ]
+          },
+          "valgkretsnavn": {
+            "type": "string",
+            "description": "Name of constituency.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "oppdateringsdato": {
+            "type": "string",
+            "description": "Date of last change to the object data.\n"
+          },
+          "datauttaksdato": {
+            "type": "string",
+            "description": "Date of extraction from database.\n"
+          },
+          "adresse_id": {
+            "type": "string",
+            "description": "Address local identifier assigned by the data supplier.\n"
+          },
+          "uuid_adresse": {
+            "type": "string",
+            "description": "Address identifier realized as UUID managed by the cadastral system.\n"
+          },
+          "uuid_bruksenhet": {
+            "type": "string",
+            "description": "Unit of usage identifier realized as UUID managed by the cadastral system.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "atkomst_id": {
+            "type": "string",
+            "description": "Local identifier for means of access to a property.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "uuid_atkomst": {
+            "type": "string",
+            "description": "Identifier of the means of access to a property realized as UUID in the cadastral system.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "atkomst_nord": {
+            "type": "string",
+            "description": "Northward coordinate of the means of access to a property.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "atkomst_oest": {
+            "type": "string",
+            "description": "Eastward coordinate of the means of access to a property.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sommeratkomst_id": {
+            "type": "string",
+            "description": "Local identifier for means of access to a property in summer.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "uuid_sommeratkomst": {
+            "type": "string",
+            "description": "Identifier of the means of access to a property in summer realized as UUID in the cadastral system.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sommeratkomst_nord": {
+            "type": "string",
+            "description": "Northward coordinate of the means of access to a property in summer.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sommeratkomst_oest": {
+            "type": "string",
+            "description": "Eastward coordinate of the means of access to a property in summer.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vinteratkomst_id": {
+            "type": "string",
+            "description": "Local identifier for means of access to a property in winter.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "uuid_vinteratkomst": {
+            "type": "string",
+            "description": "Identifier of the means of access to a property in winter realized as UUID in the cadastral system.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vinteratkomst_nord": {
+            "type": "string",
+            "description": "Northward coordinate of the means of access to a property in winter.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vinteratkomst_oest": {
+            "type": "string",
+            "description": "Eastward coordinate of the means of access to a property in winter.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "fylke": {
+            "type": "string",
+            "description": "Name of county.\n"
+          },
+          "landsdel": {
+            "type": "string",
+            "description": "Name of region.\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -6991,6 +7387,9 @@
               },
               {
                 "$ref": "#/components/schemas/KadasterAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KartverketAddress"
               }
             ]
           },
@@ -7763,7 +8162,8 @@
           "email",
           "phone",
           "gnaf",
-          "kadaster"
+          "kadaster",
+          "kartverket"
         ],
         "properties": {
           "paf": {
@@ -7808,17 +8208,17 @@
           },
           "ecad": {
             "type": "boolean",
-            "description": "IE Address File. Eircode Address Database",
+            "description": "Republic of Ireland: Eircode Address Database",
             "example": false
           },
           "ecaf": {
             "type": "boolean",
-            "description": "IE Base Address File. Eircode Address File",
+            "description": "Republic of Ireland: Eircode Address File",
             "example": false
           },
           "gnaf": {
             "type": "boolean",
-            "description": "Australia Geocoded National Address File",
+            "description": "Australia: Geocoded National Address File",
             "example": true
           },
           "hereap": {
@@ -7893,7 +8293,11 @@
           },
           "kadaster": {
             "type": "boolean",
-            "description": "Kadaster BAG 2.0 Address File",
+            "description": "Netherlands: Kadaster BAG 2.0 Address File"
+          },
+          "kartverket": {
+            "type": "boolean",
+            "description": "Norway: Karverket Address File",
             "example": true
           }
         }
@@ -8201,12 +8605,17 @@
               },
               "gnaf": {
                 "type": "boolean",
-                "description": "Australia Geoscape Geocoded National Address File",
+                "description": "Australia: Geoscape Geocoded National Address File",
                 "example": true
               },
               "kadaster": {
                 "type": "boolean",
-                "description": "Kadaster BAG 2.0 Address File",
+                "description": "Netherlands: Kadaster BAG 2.0 Address File",
+                "example": true
+              },
+              "kartverket": {
+                "type": "boolean",
+                "description": "Norway: Kartverket Address File",
                 "example": true
               }
             }
@@ -9414,6 +9823,9 @@
               },
               {
                 "$ref": "#/components/schemas/KadasterAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KartverketAddress"
               }
             ]
           }
@@ -10575,7 +10987,8 @@
             "catchall": false,
             "free": false,
             "role": true,
-            "disposable": false
+            "disposable": false,
+            "suggestions": []
           },
           "code": 2000,
           "message": "Success"

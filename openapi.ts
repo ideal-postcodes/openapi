@@ -1079,6 +1079,7 @@ export interface components {
      * @description Indicates the provenance of an address.
      *
      *   - `paf` (GBR) Postcode Address File
+     *   - `usps` (USA) USPS Zip+4
      *   - `mr` (GBR) Multiple Residence File
      *   - `nyb` (GBR) Not Yet Built File
      *   - `pafa` (GBR) Alias File
@@ -1086,10 +1087,20 @@ export interface components {
      *   - `ab` (GBR) AddressBase Core
      *   - `ecaf` (IRL) Eircode ECAF
      *   - `ecad` (IRL) Eircode ECAD
-     *   - `usps` (USA) USPS Zip+4
      *   - `herewe` (Western Europe) Western Europe Dataset
-     *   - `gnaf` (Australia) Geoscape Geocoded National Address File
+     *   - `heret` (Taiwan) Taiwan Dataset
+     *   - `heresa` (South America) South America Dataset
+     *   - `hereo` (Oceania) Oceania Dataset
+     *   - `herena` (North America) North America Dataset
+     *   - `herei` (India) India Dataset
+     *   - `heremea` (Middle East and Africa) Middle East and Africa Dataset
+     *   - `herem` (Macau) Macau Dataset
+     *   - `herehk` (Hong Kong) Hong Kong Dataset
+     *   - `hereee` (Eastern Europe) Eastern Europe Dataset
+     *   - `hereap` (Asia Pacific) Asia Pacific Dataset
+     *   - `gnaf` (AUS) Geoscape Geocoded National Address File
      *   - `kadaster` (NLD) Kadaster BAG 2.0 Address File
+     *   - `kartverket` (NOR) Norway Dataset
      * @enum {string}
      */
     Dataset:
@@ -1115,7 +1126,8 @@ export interface components {
       | "hereee"
       | "hereap"
       | "gnaf"
-      | "kadaster";
+      | "kadaster"
+      | "kartverket";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -3279,6 +3291,291 @@ export interface components {
       /** @description The province name. */
       provincie: string;
     };
+    KartverketAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "kartverket";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "NOR" | "SJM";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "NO" | "SJ";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Norway" | "Svalbard and Jan Mayen";
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Lerkevegen 5
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example
+       */
+      line_2: string;
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "no";
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified street.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
+       */
+      address: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /**
+       * @description Local identifier assigned by the data supplier.
+       *
+       * Can be empty string `""` if not present.
+       */
+      lokal_id: string;
+      /** @description Kommune (municipality) number. */
+      kommunenummer: string;
+      /** @description Kommune (municipality) name. */
+      kommunenavn: string;
+      /** @description `vegadresse` = street address, `matrikkeladresse` = land registry address */
+      adressetype: string;
+      /**
+       * @description A local place name used in a road address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adressetilleggsnavn: string;
+      /**
+       * @description Code for adressetilleggsnavn origin.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adressetilleggsnavn_kilde: string;
+      adressekode: string | number;
+      /**
+       * @description Name of street, road, path, place or area entered in the land register.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adressenavn: string;
+      nummer: string | number;
+      /**
+       * @description A subsequent letter that may be used in addition to a number.
+       *
+       * Can be empty string `""` if not present.
+       */
+      bokstav: string;
+      /** @description The number of a farm unit in the land register, unique within each municipality. */
+      gardsnummer: number;
+      /** @description A unique identification number automatically assigned to each individual unit within a farm. */
+      bruksnummer: number;
+      festenummer: string | number;
+      seksjonsnummer: string | number;
+      undernummer: string | number;
+      /**
+       * @description Official address text without bruksenhetsnummer, unique within a kommune.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adresse_tekst: string;
+      /**
+       * @description Official address text without bruksenhetsnummer and adressetilleggsnavn, unique within a kommune.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adresse_tekst_uten_adressetilleggsnavn: string;
+      /**
+       * @description Local identifier for a unit within a building.
+       *
+       * Can be empty string `""` if not present.
+       */
+      bruksenhet_id: string;
+      /**
+       * @description Unit number, e.g. an apartment in a multi-dwelling building.
+       *
+       * Can be empty string `""` if not present.
+       */
+      bruksenhetsnummer_tekst: string;
+      /**
+       * @description Official address text with bruksenhetsnummer, unique within a kommune.
+       *
+       * Can be empty string `""` if not present.
+       */
+      offisiell_adresse_tekst: string;
+      /**
+       * @description Official address text with bruksenhetsnummer and without adressetilleggsnavn, unique within a kommune.
+       *
+       * Can be empty string `""` if not present.
+       */
+      offisiell_adresse_tekst_uten_adressetilleggsnavn: string;
+      /** @description EPSG code = `25833`. */
+      epsg_kode: number;
+      /** @description Northward coordinate of address. */
+      nord: string;
+      /** @description Eastward coordinate of address. */
+      oest: string;
+      /** @description Postal code. */
+      postnummer: string;
+      /** @description Name of postal town according to Posten. */
+      poststed: string;
+      /**
+       * @description Identifier consisting of 8 digits, where the first four are the kommunenummer, the next two are the delområdenummer and the last two indicate the grunnkrets.
+       *
+       * Can be empty string `""` if not present.
+       */
+      grunnkretsnummer: string;
+      /**
+       * @description Official grunnkrets name from Statistics Norway (SSB).
+       *
+       * Can be empty string `""` if not present.
+       */
+      grunnkretsnavn: string;
+      /**
+       * @description Unique 8 digit identifier of a parish.
+       *
+       * Can be empty string `""` if not present.
+       */
+      soknenummer: string;
+      /**
+       * @description Parish name.
+       *
+       * Can be empty string `""` if not present.
+       */
+      soknenavn: string;
+      /**
+       * @description Unique identifier of organisation in the Brønnøysund Register.
+       *
+       * Can be empty string `""` if not present.
+       */
+      organisasjonsnummer: string;
+      /**
+       * @description 4 digit code for tettsted (urban settlement).
+       *
+       * Can be empty string `""` if not present.
+       */
+      tettstednummer: string;
+      /**
+       * @description Name of tettsted (urban settlement).
+       *
+       * Can be empty string `""` if not present.
+       */
+      tettstednavn: string;
+      valgkretsnummer: string | number;
+      /**
+       * @description Name of constituency.
+       *
+       * Can be empty string `""` if not present.
+       */
+      valgkretsnavn: string;
+      /** @description Date of last change to the object data. */
+      oppdateringsdato: string;
+      /** @description Date of extraction from database. */
+      datauttaksdato: string;
+      /** @description Address local identifier assigned by the data supplier. */
+      adresse_id: string;
+      /** @description Address identifier realized as UUID managed by the cadastral system. */
+      uuid_adresse: string;
+      /**
+       * @description Unit of usage identifier realized as UUID managed by the cadastral system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      uuid_bruksenhet: string;
+      /**
+       * @description Local identifier for means of access to a property.
+       *
+       * Can be empty string `""` if not present.
+       */
+      atkomst_id: string;
+      /**
+       * @description Identifier of the means of access to a property realized as UUID in the cadastral system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      uuid_atkomst: string;
+      /**
+       * @description Northward coordinate of the means of access to a property.
+       *
+       * Can be empty string `""` if not present.
+       */
+      atkomst_nord: string;
+      /**
+       * @description Eastward coordinate of the means of access to a property.
+       *
+       * Can be empty string `""` if not present.
+       */
+      atkomst_oest: string;
+      /**
+       * @description Local identifier for means of access to a property in summer.
+       *
+       * Can be empty string `""` if not present.
+       */
+      sommeratkomst_id: string;
+      /**
+       * @description Identifier of the means of access to a property in summer realized as UUID in the cadastral system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      uuid_sommeratkomst: string;
+      /**
+       * @description Northward coordinate of the means of access to a property in summer.
+       *
+       * Can be empty string `""` if not present.
+       */
+      sommeratkomst_nord: string;
+      /**
+       * @description Eastward coordinate of the means of access to a property in summer.
+       *
+       * Can be empty string `""` if not present.
+       */
+      sommeratkomst_oest: string;
+      /**
+       * @description Local identifier for means of access to a property in winter.
+       *
+       * Can be empty string `""` if not present.
+       */
+      vinteratkomst_id: string;
+      /**
+       * @description Identifier of the means of access to a property in winter realized as UUID in the cadastral system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      uuid_vinteratkomst: string;
+      /**
+       * @description Northward coordinate of the means of access to a property in winter.
+       *
+       * Can be empty string `""` if not present.
+       */
+      vinteratkomst_nord: string;
+      /**
+       * @description Eastward coordinate of the means of access to a property in winter.
+       *
+       * Can be empty string `""` if not present.
+       */
+      vinteratkomst_oest: string;
+      /** @description Name of county. */
+      fylke: string;
+      /** @description Name of region. */
+      landsdel: string;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -3339,7 +3636,8 @@ export interface components {
         | components["schemas"]["UspsAddress"]
         | components["schemas"]["HereAddress"]
         | components["schemas"]["GnafAddress"]
-        | components["schemas"]["KadasterAddress"];
+        | components["schemas"]["KadasterAddress"]
+        | components["schemas"]["KartverketAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -3873,17 +4171,17 @@ export interface components {
        */
       usps: boolean;
       /**
-       * @description IE Address File. Eircode Address Database
+       * @description Republic of Ireland: Eircode Address Database
        * @example false
        */
       ecad: boolean;
       /**
-       * @description IE Base Address File. Eircode Address File
+       * @description Republic of Ireland: Eircode Address File
        * @example false
        */
       ecaf: boolean;
       /**
-       * @description Australia Geocoded National Address File
+       * @description Australia: Geocoded National Address File
        * @example true
        */
       gnaf: boolean;
@@ -3957,11 +4255,13 @@ export interface components {
        * @example true
        */
       email: boolean;
+      /** @description Netherlands: Kadaster BAG 2.0 Address File */
+      kadaster: boolean;
       /**
-       * @description Kadaster BAG 2.0 Address File
+       * @description Norway: Karverket Address File
        * @example true
        */
-      kadaster: boolean;
+      kartverket: boolean;
     };
     /**
      * API Key Automated Topup
@@ -4168,15 +4468,20 @@ export interface components {
          */
         email?: boolean;
         /**
-         * @description Australia Geoscape Geocoded National Address File
+         * @description Australia: Geoscape Geocoded National Address File
          * @example true
          */
         gnaf?: boolean;
         /**
-         * @description Kadaster BAG 2.0 Address File
+         * @description Netherlands: Kadaster BAG 2.0 Address File
          * @example true
          */
         kadaster?: boolean;
+        /**
+         * @description Norway: Kartverket Address File
+         * @example true
+         */
+        kartverket?: boolean;
       };
     };
     /** Key Usage */
@@ -4728,7 +5033,8 @@ export interface components {
         | components["schemas"]["AbAddress"]
         | components["schemas"]["HereAddress"]
         | components["schemas"]["GnafAddress"]
-        | components["schemas"]["KadasterAddress"];
+        | components["schemas"]["KadasterAddress"]
+        | components["schemas"]["KartverketAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
@@ -5447,7 +5753,8 @@ export interface components {
      *     "catchall": false,
      *     "free": false,
      *     "role": true,
-     *     "disposable": false
+     *     "disposable": false,
+     *     "suggestions": []
      *   },
      *   "code": 2000,
      *   "message": "Success"
