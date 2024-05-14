@@ -747,7 +747,13 @@
             "$ref": "#/components/parameters/TagsParam"
           },
           {
-            "$ref": "#/components/parameters/ContextParam"
+            "name": "context",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identify the country of the address to cleanse. Defaults to UK (GBR)\n",
+            "example": "usa"
           }
         ],
         "requestBody": {
@@ -832,6 +838,117 @@
             "lang": "cURL",
             "label": "CLI",
             "source": "curl -k -G 'https://api.ideal-postcodes.co.uk/v1/cleanse/addresses' \\\n  -H 'Authorization: api_key=\"ak_test\"'\n  -H 'Content-Type: application/json'\n  -d '{\"query\": \"10 downing street sw1a\"}'\n"
+          }
+        ]
+      }
+    },
+    "/verify/addresses": {
+      "post": {
+        "tags": [
+          "US"
+        ],
+        "summary": "Verify Address",
+        "description": "The address verify API validates, corrects, and standardizes individual addresses based on USPS's Coding Accuracy Support System (CASS).\n\nThe address verify API accepts the 3 combination of inputs:\n\n- Free-form address submitted as a single string in `query`\n  - Example: \"123 Main St, Springfield, CO 81073-1119\"\n- Only free-form and zip code address components submitted as separate parameters:\n  - `query` for the street address\n  - `zip_code` for the ZIP code\n  - Example:\n    - `query`: \"123 Main St, Springfield CO\"\n    - `zip_code`: \"81073-1119\"\n- Only free-form, city and state address components submitted as separate parameters:\n  - `query` for the street address\n  - `city` for the city\n  - `state` for the state\n  - Example:\n    - `query`: \"123 Main St\"\n    - `city`: \"Springfield\"\n    - `state`: \"CO\"\n",
+        "operationId": "AddressVerify",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKeyParam"
+          },
+          {
+            "$ref": "#/components/parameters/TagsParam"
+          },
+          {
+            "name": "context",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identify the country of the address to verify. Defaults to United States (USA)\n",
+            "example": "usa"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "query"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "Freeform address input to verify.\n\nCan be submitted standalone, or with the following address components:\n- `zip_code`\n- `city` and `state`\n",
+                    "example": "123 Main St, Springfield, CO 81073"
+                  },
+                  "zip_code": {
+                    "type": "string",
+                    "description": "Specify the zip code of an address. The following formats are accepted: `81073-1119`, `810731119`, `81073`.\n",
+                    "example": "81073-1119"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "City of an address. For the US, this should be the city name.\n",
+                    "example": "Springfield"
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State of an address. For the US, this should be in the 2 letter state abbreviation format.\n",
+                    "example": "CO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate Limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitedResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl -k -G 'https://api.ideal-postcodes.co.uk/v1/verify/addresses' \\\n  -H 'Authorization: api_key=\"ak_test\"'\n  -H 'Content-Type: application/json'\n  -d '{\"query\": \"123 Main St, Springfield, IL 62701\" }'\n"
           }
         ]
       }
@@ -8755,35 +8872,42 @@
         "properties": {
           "address1": {
             "type": "string",
-            "description": "Primary delivery address\n"
+            "description": "Primary delivery address\n",
+            "example": "101 Cauther Ln"
           },
           "address2": {
             "type": "string",
-            "description": "Secondary address information\n"
+            "description": "Secondary address information\n",
+            "example": ""
           },
           "address3": {
             "type": "string",
-            "description": "Additional secondary address information\n"
+            "description": "Additional secondary address information\n",
+            "example": ""
           },
           "area_code": {
             "type": "string",
-            "description": "Area code\n"
+            "description": "Area code\n",
+            "example": 575
           },
           "carrier_route": {
             "type": "string",
-            "description": "Data required to perform a Carrier Route sort\n"
+            "description": "Data required to perform a Carrier Route sort\n",
+            "example": "C019"
           },
           "check_digit": {
             "type": "string",
-            "description": "Character following the 5- or 9-digit ZIP Code\n"
+            "description": "Character following the 5 or 9 digit ZIP Code\n",
+            "example": "4"
           },
           "city": {
             "type": "string",
-            "description": "City name\n"
+            "description": "City name\nexample: \"Alamogordo\"\n"
           },
           "city_abbreviation": {
             "type": "string",
-            "description": "City Abbreviation. Empty string if not present\n"
+            "description": "City Abbreviation. Empty string if not present\n",
+            "example": ""
           },
           "congressional_district": {
             "type": "string",
@@ -8791,47 +8915,69 @@
           },
           "country_code": {
             "type": "string",
-            "description": "ISO3166 country code. Empty string if not present\n"
+            "description": "ISO3166 country code. Empty string if not present\n",
+            "example": "US"
           },
           "county": {
             "type": "string",
-            "description": "Name of the county\n"
+            "description": "Name of the county\n",
+            "example": "Otero"
           },
           "day_light_savings": {
-            "type": "string",
-            "description": "Daylight saving time indicator\n"
+            "type": "boolean",
+            "description": "Daylight saving time indicator\n",
+            "example": true
           },
           "delivery_point": {
             "type": "string",
-            "description": "Last 2 digits of the primary street address number or Post Office™ box\n"
+            "description": "Last 2 digits of the primary street address number or Post Office box\n",
+            "example": "10"
           },
           "dpv": {
             "type": "string",
-            "description": "DPV Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).\n"
+            "description": "Delivery Point Validation (DPV) Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).\n",
+            "enum": [
+              "Y",
+              "S",
+              "D"
+            ]
           },
           "dpv_cmra": {
             "type": "string",
-            "description": "DPV CMRA code. Possible values: 'Y' (Yes), 'N' (No).\n"
+            "description": "Delivery Point Validation (DPV) CMRA code. Possible values: 'Y' (Yes), 'N' (No).\n",
+            "enum": [
+              "Y",
+              "N"
+            ]
           },
           "dpv_footnotes": {
             "type": "string",
-            "description": "DPV Footnotes. Empty string if not present\n"
+            "description": "Delivery Point Validation (DPV) Footnotes. Empty string if not present\n",
+            "example": "AABB"
           },
           "dpv_fp": {
             "type": "string",
-            "description": "False Positive Indicator from the DPV lookup. Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present\n"
+            "description": "False Positive Indicator from the Delivery Point Validation (DPV) lookup.\n\nPossible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present\n",
+            "enum": [
+              "Y",
+              "N",
+              ""
+            ]
           },
           "dpv_no_stat": {
             "type": "string",
-            "description": "DPV NoStat code. Empty string if not present\n"
+            "description": "Delivery Point Validation (DPV) NoStat code. Empty string if not present\n",
+            "example": "N"
           },
           "dpv_vacant": {
             "type": "string",
-            "description": "DPV Vacant code. Empty string if not present\n"
+            "description": "Delivery Point Validation (DPV) Vacant code. Empty string if not present\n",
+            "example": "N"
           },
           "elot": {
             "type": "string",
-            "description": "Enhanced Line of Travel\n"
+            "description": "Enhanced Line of Travel\n",
+            "example": "0133A"
           },
           "finance_number": {
             "oneOf": [
@@ -8842,35 +8988,44 @@
                 "type": "number"
               }
             ],
-            "description": "Internal accounting number used by the USPS. Empty string if not present\n"
+            "description": "Internal accounting number used by the USPS. Empty string if not present\n",
+            "example": 340105
           },
           "fips_county_code": {
             "type": "string",
-            "description": "Federal Information Processing Standard code for a county. Empty string if not present\n"
+            "description": "Federal Information Processing Standard code for a county. Empty string if not present\n",
+            "example": "035"
           },
           "firm": {
             "type": "string",
-            "description": "Company name in a business address\n"
+            "description": "Company name in a business address\n",
+            "example": ""
           },
           "footnotes": {
             "type": "string",
             "description": "Letter codes returned by ZIP + 4® encoding. Empty string if not present\n"
           },
           "geo_coded": {
-            "type": "string",
-            "description": "Indicates whether the address was geo-coded. Possible values: 'Y' (Yes), 'N' (No).\n"
+            "type": "boolean",
+            "description": "Indicates whether the address was geo-coded\n"
           },
           "lacs_indicator": {
             "type": "string",
-            "description": "Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).\n"
+            "description": "Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).\n",
+            "enum": [
+              "L",
+              ""
+            ]
           },
           "lacs_link_footnote": {
             "type": "string",
-            "description": "LACSLink Footnote. Empty string if not present\n"
+            "description": "LACSLink Footnote. Empty string if not present\n",
+            "example": ""
           },
           "lacs_link_indicator": {
             "type": "string",
-            "description": "LACSLink Indicator. Empty string if not present\n"
+            "description": "LACSLink Indicator. Empty string if not present\n",
+            "example": ""
           },
           "latitude": {
             "oneOf": [
@@ -8881,7 +9036,8 @@
                 "type": "number"
               }
             ],
-            "description": "Latitude of the encoded address. Empty string if not present\n"
+            "description": "Latitude of the encoded address. Empty string if not present\n",
+            "example": 32.91278
           },
           "longitude": {
             "oneOf": [
@@ -8892,11 +9048,13 @@
                 "type": "number"
               }
             ],
-            "description": "Longitude of the encoded address. Empty string if not present\n"
+            "description": "Longitude of the encoded address. Empty string if not present\n",
+            "example": -105.94904
           },
           "parsed_pmb_designator": {
             "type": "string",
-            "description": "Information if a PMB is found in an address. Empty string if not present\n"
+            "description": "Information if a Private Mail Box (PMB) is found in an address. Empty string if not present\n",
+            "example": ""
           },
           "parsed_pmb_number": {
             "oneOf": [
@@ -8907,7 +9065,8 @@
                 "type": "number"
               }
             ],
-            "description": "Information if a PMB is found in an address. Empty string if not present\n"
+            "description": "Information if a Private Mail Box (PMB) is found in an address. Empty string if not present\n",
+            "example": ""
           },
           "parsed_post_directional": {
             "oneOf": [
@@ -8918,11 +9077,13 @@
                 "type": "number"
               }
             ],
-            "description": "Notation following the street name indicating street direction. Empty string if not present\n"
+            "description": "Notation following the street name indicating street direction. Empty string if not present\n",
+            "example": ""
           },
           "parsed_pre_directional": {
             "type": "string",
-            "description": "Notation preceding the street name indicating street direction. Empty string if not present\n"
+            "description": "Notation preceding the street name indicating street direction. Empty string if not present\n",
+            "example": ""
           },
           "parsed_primary_number": {
             "oneOf": [
@@ -8933,55 +9094,77 @@
                 "type": "number"
               }
             ],
-            "description": "Number preceding the street name. Empty string if not present\n"
+            "description": "Number preceding the street name. Empty string if not present\n",
+            "example": ""
           },
           "parsed_street_name": {
             "type": "string",
-            "description": "Street name. Empty string if not present\n"
+            "description": "Street name. Empty string if not present\n",
+            "example": ""
           },
           "parsed_suffix": {
             "type": "string",
-            "description": "Part of the delivery address line following the street name. Empty string if not present\n"
+            "description": "Part of the delivery address line following the street name. Empty string if not present\n",
+            "example": ""
           },
           "parsed_unit_designator": {
             "type": "string",
-            "description": "Identification of the secondary address unit. Empty string if not present\n"
+            "description": "Identification of the secondary address unit. Empty string if not present\n",
+            "example": ""
           },
           "parsed_unit_number": {
             "type": "string",
-            "description": "Apartment or suite number. Empty string if not present\n"
+            "description": "Apartment or suite number. Empty string if not present\n",
+            "example": ""
           },
           "rdi": {
             "type": "string",
-            "description": "Reserved for future use. Empty string if not present\n"
+            "description": "Reserved for future use. Empty string if not present\n",
+            "example": "Y"
           },
           "record_type": {
             "type": "string",
-            "description": "Type of address record (Street, PO Box, High-rise, etc.)\n"
+            "description": "Type of address record (Street, PO Box, High-rise, etc.)\n",
+            "example": "S"
           },
           "secondary_address_info": {
             "type": "string",
-            "description": "Additional secondary address information. Empty string if not present\n"
+            "description": "Additional secondary address information. Empty string if not present\n",
+            "example": ""
           },
           "state": {
             "type": "string",
-            "description": "Standard two-letter state abbreviation\n"
+            "description": "Standard two-letter state abbreviation\n",
+            "example": "NM"
           },
           "suite_link_footnote": {
             "type": "string",
-            "description": "Results of the SuiteLink lookup. Possible values: ' ' (Space), '00' (Double Zero), 'A' (A). Empty string if not present\n"
+            "description": "Results of the SuiteLink lookup.\n\nPossible values: ' ' (Space), '00' (Double Zero), 'A' (A). Empty string if not present\n",
+            "enum": [
+              "",
+              "00",
+              "A"
+            ]
           },
           "time_zone": {
             "type": "string",
-            "description": "Time zone. Empty string if not present\n"
+            "description": "Time zone. Empty string if not present\n",
+            "example": "MST"
           },
           "urbanization": {
             "type": "string",
-            "description": "Urban name required in the address of all mail being delivered to Puerto Rico. Empty string if not present\n"
+            "description": "Urban name required in the address of all mail being delivered to Puerto Rico. Empty string if not present\n",
+            "example": ""
           },
           "zip_code": {
             "type": "string",
-            "description": "5-digit ZIP Code™ and the four additional digits\n"
+            "description": "5-digit ZIP Code and the four additional digits\n",
+            "example": "88310-5631"
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": "2 letter country ISO code\n",
+            "example": "US"
           }
         }
       },
@@ -9296,6 +9479,246 @@
             }
           }
         ]
+      },
+      "UsaVerifyMatch": {
+        "title": "Address Match",
+        "type": "object",
+        "required": [
+          "query",
+          "query_city",
+          "query_state",
+          "query_zip_code",
+          "match",
+          "count",
+          "fit",
+          "confidence",
+          "address1",
+          "address2",
+          "city",
+          "state",
+          "zip_code"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Originally submitted query"
+          },
+          "query_city": {
+            "type": "string",
+            "description": "Originally submitted city. If not provided this may be inferred from the query"
+          },
+          "query_state": {
+            "type": "string",
+            "description": "Originally submitted state. If not provided this may be inferred from the query"
+          },
+          "query_zip_code": {
+            "type": "string",
+            "description": "Originally submitted zip_code. If not provided this may be inferred from the query"
+          },
+          "match": {
+            "description": "Nearest matching address",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UsaCassVerifiedAddress"
+              },
+              {
+                "$ref": "#/components/schemas/PafAddress"
+              },
+              {
+                "$ref": "#/components/schemas/MrAddress"
+              },
+              {
+                "$ref": "#/components/schemas/NybAddress"
+              },
+              {
+                "$ref": "#/components/schemas/PafAliasAddress"
+              },
+              {
+                "$ref": "#/components/schemas/WelshPafAddress"
+              }
+            ]
+          },
+          "count": {
+            "type": "number",
+            "description": "The number of addresses we matched to the input. We return the closest match by default.\n",
+            "maximum": 10,
+            "minimum": 0
+          },
+          "fit": {
+            "type": "number",
+            "description": "A score represented as number between 1 and 0. Fit compares the address elements present in your query against the matching address elements. It does not incorporate elements you have not presented in the score. A partial address (e.g. 12 Pye Green Road) will have a fit of 1 even though it is missing post town and postcode. Its confidence score will be less than 1 however because it is missing some crucial elements.\n",
+            "maximum": 1,
+            "minimum": 0
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "description": "A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements.\n"
+          },
+          "address1": {
+            "type": "string",
+            "description": "Primary delivery address\n",
+            "example": "123 Main St"
+          },
+          "address2": {
+            "type": "string",
+            "description": "Secondary address information\n",
+            "example": ""
+          },
+          "city": {
+            "type": "string",
+            "description": "City name\n",
+            "example": "Springfield"
+          },
+          "state": {
+            "type": "string",
+            "description": "State name\n",
+            "example": "CO"
+          },
+          "zip_code": {
+            "type": "string",
+            "description": "Zip code\n",
+            "example": "81073-1119"
+          }
+        }
+      },
+      "UsaVerifyNoMatch": {
+        "type": "object",
+        "title": "No Address Match",
+        "required": [
+          "query",
+          "query_city",
+          "query_state",
+          "query_zip_code",
+          "match",
+          "count",
+          "fit",
+          "confidence",
+          "address1",
+          "address2",
+          "city",
+          "state",
+          "zip_code"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Originally submitted query"
+          },
+          "query_city": {
+            "type": "string",
+            "description": "Originally submitted city. If not provided this may be inferred from the query"
+          },
+          "query_state": {
+            "type": "string",
+            "description": "Originally submitted state. If not provided this may be inferred from the query"
+          },
+          "query_zip_code": {
+            "type": "string",
+            "description": "Originally submitted zip_code. If not provided this may be inferred from the query"
+          },
+          "match": {
+            "description": "Nearest matching address",
+            "type": "object",
+            "nullable": true,
+            "enum": [
+              null
+            ]
+          },
+          "count": {
+            "type": "number",
+            "description": "",
+            "enum": [
+              0
+            ]
+          },
+          "fit": {
+            "type": "number",
+            "format": "float",
+            "description": "",
+            "enum": [
+              0
+            ]
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "description": "",
+            "enum": [
+              0
+            ]
+          },
+          "address1": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          },
+          "address2": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          },
+          "city": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          },
+          "state": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          },
+          "zip_code": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          }
+        }
+      },
+      "VerifyResponse": {
+        "title": "Address Verify Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          },
+          "result": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UsaVerifyMatch"
+              },
+              {
+                "$ref": "#/components/schemas/UsaVerifyNoMatch"
+              }
+            ]
+          }
+        }
       },
       "AddressSuggestion": {
         "title": "Address Suggestion",
@@ -11318,7 +11741,7 @@
         "example": 1
       },
       "TagsParam": {
-        "name": "Tags",
+        "name": "tags",
         "in": "query",
         "style": "form",
         "explode": false,
@@ -11326,7 +11749,7 @@
         "schema": {
           "type": "string"
         },
-        "description": "A comma separated list of tags to query over.\n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
+        "description": "** Tags **\nA comma separated list of tags to query over.\n\nUseful if you want to specify the circumstances in which the request was made.\n\nIf multiple tags are specified, the response will only comprise of requests for which all the tags are satisfied - i.e. searching `\"foo,bar\"` will only query requests which tagged both `\"foo\"` and `\"bar\"`.\n",
         "example": "foo,bar"
       },
       "ApiKeyPathParam": {
@@ -11393,7 +11816,7 @@
         "style": "form",
         "explode": false,
         "example": "GBR",
-        "description": "**Context**\n\nLimits search results, typically within g country.\n",
+        "description": "**Context**\n\nLimits search results, typically within a country.\n",
         "schema": {
           "type": "string"
         }

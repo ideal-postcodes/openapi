@@ -795,7 +795,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - $ref: '#/components/parameters/TagsParam'
-        - $ref: '#/components/parameters/ContextParam'
+        - name: context
+          in: query
+          schema:
+            type: string
+          description: |
+            Identify the country of the address to cleanse. Defaults to UK (GBR)
+          example: usa
       requestBody:
         required: true
         content:
@@ -866,6 +872,109 @@ paths:
               -H 'Authorization: api_key="ak_test"'
               -H 'Content-Type: application/json'
               -d '{"query": "10 downing street sw1a"}'
+  /verify/addresses:
+    post:
+      tags:
+        - US
+      summary: Verify Address
+      description: |
+        The address verify API validates, corrects, and standardizes individual addresses based on USPS's Coding Accuracy Support System (CASS).
+
+        The address verify API accepts the 3 combination of inputs:
+
+        - Free-form address submitted as a single string in `query`
+          - Example: "123 Main St, Springfield, CO 81073-1119"
+        - Only free-form and zip code address components submitted as separate parameters:
+          - `query` for the street address
+          - `zip_code` for the ZIP code
+          - Example:
+            - `query`: "123 Main St, Springfield CO"
+            - `zip_code`: "81073-1119"
+        - Only free-form, city and state address components submitted as separate parameters:
+          - `query` for the street address
+          - `city` for the city
+          - `state` for the state
+          - Example:
+            - `query`: "123 Main St"
+            - `city`: "Springfield"
+            - `state`: "CO"
+      operationId: AddressVerify
+      parameters:
+        - $ref: '#/components/parameters/ApiKeyParam'
+        - $ref: '#/components/parameters/TagsParam'
+        - name: context
+          in: query
+          schema:
+            type: string
+          description: |
+            Identify the country of the address to verify. Defaults to United States (USA)
+          example: usa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: |
+                    Freeform address input to verify.
+
+                    Can be submitted standalone, or with the following address components:
+                    - `zip_code`
+                    - `city` and `state`
+                  example: 123 Main St, Springfield, CO 81073
+                zip_code:
+                  type: string
+                  description: |
+                    Specify the zip code of an address. The following formats are accepted: `81073-1119`, `810731119`, `81073`.
+                  example: 81073-1119
+                city:
+                  type: string
+                  description: |
+                    City of an address. For the US, this should be the city name.
+                  example: Springfield
+                state:
+                  type: string
+                  description: |
+                    State of an address. For the US, this should be in the 2 letter state abbreviation format.
+                  example: CO
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '429':
+          description: Rate Limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedResponse'
+      x-codeSamples:
+        - lang: cURL
+          label: CLI
+          source: |
+            curl -k -G 'https://api.ideal-postcodes.co.uk/v1/verify/addresses' \
+              -H 'Authorization: api_key="ak_test"'
+              -H 'Content-Type: application/json'
+              -d '{"query": "123 Main St, Springfield, IL 62701" }'
   /autocomplete/addresses:
     get:
       tags:
@@ -7695,34 +7804,42 @@ components:
           type: string
           description: |
             Primary delivery address
+          example: 101 Cauther Ln
         address2:
           type: string
           description: |
             Secondary address information
+          example: ''
         address3:
           type: string
           description: |
             Additional secondary address information
+          example: ''
         area_code:
           type: string
           description: |
             Area code
+          example: 575
         carrier_route:
           type: string
           description: |
             Data required to perform a Carrier Route sort
+          example: C019
         check_digit:
           type: string
           description: |
-            Character following the 5- or 9-digit ZIP Code
+            Character following the 5 or 9 digit ZIP Code
+          example: '4'
         city:
           type: string
           description: |
             City name
+            example: "Alamogordo"
         city_abbreviation:
           type: string
           description: |
             City Abbreviation. Empty string if not present
+          example: ''
         congressional_district:
           type: string
           description: |
@@ -7731,166 +7848,224 @@ components:
           type: string
           description: |
             ISO3166 country code. Empty string if not present
+          example: US
         county:
           type: string
           description: |
             Name of the county
+          example: Otero
         day_light_savings:
-          type: string
+          type: boolean
           description: |
             Daylight saving time indicator
+          example: true
         delivery_point:
           type: string
           description: |
-            Last 2 digits of the primary street address number or Post Office™ box
+            Last 2 digits of the primary street address number or Post Office box
+          example: '10'
         dpv:
           type: string
           description: |
-            DPV Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).
+            Delivery Point Validation (DPV) Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).
+          enum:
+            - 'Y'
+            - S
+            - D
         dpv_cmra:
           type: string
           description: |
-            DPV CMRA code. Possible values: 'Y' (Yes), 'N' (No).
+            Delivery Point Validation (DPV) CMRA code. Possible values: 'Y' (Yes), 'N' (No).
+          enum:
+            - 'Y'
+            - 'N'
         dpv_footnotes:
           type: string
           description: |
-            DPV Footnotes. Empty string if not present
+            Delivery Point Validation (DPV) Footnotes. Empty string if not present
+          example: AABB
         dpv_fp:
           type: string
           description: |
-            False Positive Indicator from the DPV lookup. Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present
+            False Positive Indicator from the Delivery Point Validation (DPV) lookup.
+
+            Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present
+          enum:
+            - 'Y'
+            - 'N'
+            - ''
         dpv_no_stat:
           type: string
           description: |
-            DPV NoStat code. Empty string if not present
+            Delivery Point Validation (DPV) NoStat code. Empty string if not present
+          example: 'N'
         dpv_vacant:
           type: string
           description: |
-            DPV Vacant code. Empty string if not present
+            Delivery Point Validation (DPV) Vacant code. Empty string if not present
+          example: 'N'
         elot:
           type: string
           description: |
             Enhanced Line of Travel
+          example: 0133A
         finance_number:
           oneOf:
             - type: string
             - type: number
           description: |
             Internal accounting number used by the USPS. Empty string if not present
+          example: 340105
         fips_county_code:
           type: string
           description: |
             Federal Information Processing Standard code for a county. Empty string if not present
+          example: '035'
         firm:
           type: string
           description: |
             Company name in a business address
+          example: ''
         footnotes:
           type: string
           description: |
             Letter codes returned by ZIP + 4® encoding. Empty string if not present
         geo_coded:
-          type: string
+          type: boolean
           description: |
-            Indicates whether the address was geo-coded. Possible values: 'Y' (Yes), 'N' (No).
+            Indicates whether the address was geo-coded
         lacs_indicator:
           type: string
           description: |
             Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).
+          enum:
+            - L
+            - ''
         lacs_link_footnote:
           type: string
           description: |
             LACSLink Footnote. Empty string if not present
+          example: ''
         lacs_link_indicator:
           type: string
           description: |
             LACSLink Indicator. Empty string if not present
+          example: ''
         latitude:
           oneOf:
             - type: string
             - type: number
           description: |
             Latitude of the encoded address. Empty string if not present
+          example: 32.91278
         longitude:
           oneOf:
             - type: string
             - type: number
           description: |
             Longitude of the encoded address. Empty string if not present
+          example: -105.94904
         parsed_pmb_designator:
           type: string
           description: |
-            Information if a PMB is found in an address. Empty string if not present
+            Information if a Private Mail Box (PMB) is found in an address. Empty string if not present
+          example: ''
         parsed_pmb_number:
           oneOf:
             - type: string
             - type: number
           description: |
-            Information if a PMB is found in an address. Empty string if not present
+            Information if a Private Mail Box (PMB) is found in an address. Empty string if not present
+          example: ''
         parsed_post_directional:
           oneOf:
             - type: string
             - type: number
           description: |
             Notation following the street name indicating street direction. Empty string if not present
+          example: ''
         parsed_pre_directional:
           type: string
           description: |
             Notation preceding the street name indicating street direction. Empty string if not present
+          example: ''
         parsed_primary_number:
           oneOf:
             - type: string
             - type: number
           description: |
             Number preceding the street name. Empty string if not present
+          example: ''
         parsed_street_name:
           type: string
           description: |
             Street name. Empty string if not present
+          example: ''
         parsed_suffix:
           type: string
           description: |
             Part of the delivery address line following the street name. Empty string if not present
+          example: ''
         parsed_unit_designator:
           type: string
           description: |
             Identification of the secondary address unit. Empty string if not present
+          example: ''
         parsed_unit_number:
           type: string
           description: |
             Apartment or suite number. Empty string if not present
+          example: ''
         rdi:
           type: string
           description: |
             Reserved for future use. Empty string if not present
+          example: 'Y'
         record_type:
           type: string
           description: |
             Type of address record (Street, PO Box, High-rise, etc.)
+          example: S
         secondary_address_info:
           type: string
           description: |
             Additional secondary address information. Empty string if not present
+          example: ''
         state:
           type: string
           description: |
             Standard two-letter state abbreviation
+          example: NM
         suite_link_footnote:
           type: string
           description: |
-            Results of the SuiteLink lookup. Possible values: ' ' (Space), '00' (Double Zero), 'A' (A). Empty string if not present
+            Results of the SuiteLink lookup.
+
+            Possible values: ' ' (Space), '00' (Double Zero), 'A' (A). Empty string if not present
+          enum:
+            - ''
+            - '00'
+            - A
         time_zone:
           type: string
           description: |
             Time zone. Empty string if not present
+          example: MST
         urbanization:
           type: string
           description: |
             Urban name required in the address of all mail being delivered to Puerto Rico. Empty string if not present
+          example: ''
         zip_code:
           type: string
           description: |
-            5-digit ZIP Code™ and the four additional digits
+            5-digit ZIP Code and the four additional digits
+          example: 88310-5631
+        country_iso_2:
+          type: string
+          description: |
+            2 letter country ISO code
+          example: US
     GbrCleanseMatch:
       title: Address Match
       type: object
@@ -8116,6 +8291,192 @@ components:
             message:
               type: string
               description: Request is being rate limited
+    UsaVerifyMatch:
+      title: Address Match
+      type: object
+      required:
+        - query
+        - query_city
+        - query_state
+        - query_zip_code
+        - match
+        - count
+        - fit
+        - confidence
+        - address1
+        - address2
+        - city
+        - state
+        - zip_code
+      properties:
+        query:
+          type: string
+          description: Originally submitted query
+        query_city:
+          type: string
+          description: Originally submitted city. If not provided this may be inferred from the query
+        query_state:
+          type: string
+          description: Originally submitted state. If not provided this may be inferred from the query
+        query_zip_code:
+          type: string
+          description: Originally submitted zip_code. If not provided this may be inferred from the query
+        match:
+          description: Nearest matching address
+          oneOf:
+            - $ref: '#/components/schemas/UsaCassVerifiedAddress'
+            - $ref: '#/components/schemas/PafAddress'
+            - $ref: '#/components/schemas/MrAddress'
+            - $ref: '#/components/schemas/NybAddress'
+            - $ref: '#/components/schemas/PafAliasAddress'
+            - $ref: '#/components/schemas/WelshPafAddress'
+        count:
+          type: number
+          description: |
+            The number of addresses we matched to the input. We return the closest match by default.
+          maximum: 10
+          minimum: 0
+        fit:
+          type: number
+          description: |
+            A score represented as number between 1 and 0. Fit compares the address elements present in your query against the matching address elements. It does not incorporate elements you have not presented in the score. A partial address (e.g. 12 Pye Green Road) will have a fit of 1 even though it is missing post town and postcode. Its confidence score will be less than 1 however because it is missing some crucial elements.
+          maximum: 1
+          minimum: 0
+        confidence:
+          type: number
+          maximum: 1
+          minimum: 0
+          description: |
+            A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements.
+        address1:
+          type: string
+          description: |
+            Primary delivery address
+          example: 123 Main St
+        address2:
+          type: string
+          description: |
+            Secondary address information
+          example: ''
+        city:
+          type: string
+          description: |
+            City name
+          example: Springfield
+        state:
+          type: string
+          description: |
+            State name
+          example: CO
+        zip_code:
+          type: string
+          description: |
+            Zip code
+          example: 81073-1119
+    UsaVerifyNoMatch:
+      type: object
+      title: No Address Match
+      required:
+        - query
+        - query_city
+        - query_state
+        - query_zip_code
+        - match
+        - count
+        - fit
+        - confidence
+        - address1
+        - address2
+        - city
+        - state
+        - zip_code
+      properties:
+        query:
+          type: string
+          description: Originally submitted query
+        query_city:
+          type: string
+          description: Originally submitted city. If not provided this may be inferred from the query
+        query_state:
+          type: string
+          description: Originally submitted state. If not provided this may be inferred from the query
+        query_zip_code:
+          type: string
+          description: Originally submitted zip_code. If not provided this may be inferred from the query
+        match:
+          description: Nearest matching address
+          type: object
+          nullable: true
+          enum:
+            - null
+        count:
+          type: number
+          description: ''
+          enum:
+            - 0
+        fit:
+          type: number
+          format: float
+          description: ''
+          enum:
+            - 0
+        confidence:
+          type: number
+          format: float
+          description: ''
+          enum:
+            - 0
+        address1:
+          type: string
+          description: |
+            Empty if no match
+          enum:
+            - ''
+        address2:
+          type: string
+          description: |
+            Empty if no match
+          enum:
+            - ''
+        city:
+          type: string
+          description: |
+            Empty if no match
+          enum:
+            - ''
+        state:
+          type: string
+          description: |
+            Empty if no match
+          enum:
+            - ''
+        zip_code:
+          type: string
+          description: |
+            Empty if no match
+          enum:
+            - ''
+    VerifyResponse:
+      title: Address Verify Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
+        message:
+          type: string
+          enum:
+            - Success
+        result:
+          oneOf:
+            - $ref: '#/components/schemas/UsaVerifyMatch'
+            - $ref: '#/components/schemas/UsaVerifyNoMatch'
     AddressSuggestion:
       title: Address Suggestion
       description: Represents an address suggestion for any address in the world
@@ -9670,7 +10031,7 @@ components:
         A small number of Multiple Residence postcodes may need pagination (i.e. have more than 100 premises).
       example: 1
     TagsParam:
-      name: Tags
+      name: tags
       in: query
       style: form
       explode: false
@@ -9678,6 +10039,7 @@ components:
       schema:
         type: string
       description: |
+        ** Tags **
         A comma separated list of tags to query over.
 
         Useful if you want to specify the circumstances in which the request was made.
@@ -9756,7 +10118,7 @@ components:
       description: |
         **Context**
 
-        Limits search results, typically within g country.
+        Limits search results, typically within a country.
       schema:
         type: string
     LimitParam:
