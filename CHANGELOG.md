@@ -1,3 +1,10 @@
+# [4.6.0](https://github.com/ideal-postcodes/openapi/compare/4.5.0...4.6.0) (2024-05-14)
+
+
+### Features
+
+* **Verify:** Add USPS Verification API ([19c08ab](https://github.com/ideal-postcodes/openapi/commit/19c08abd19694a20d71e4784ed8a602fd567cb68))
+
 # [4.6.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.5.0...4.6.0-beta.1) (2024-05-14)
 
 
