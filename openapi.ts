@@ -4952,13 +4952,13 @@ export interface components {
     };
     /** Address Match */
     UsaVerifyMatch: {
-      /** @description Originally submitted query */
+      /** @description Submitted query */
       query: string;
-      /** @description Originally submitted city. If not provided this may be inferred from the query */
+      /** @description Submitted city */
       query_city: string;
-      /** @description Originally submitted state. If not provided this may be inferred from the query */
+      /** @description Submitted state */
       query_state: string;
-      /** @description Originally submitted zip_code. If not provided this may be inferred from the query */
+      /** @description Submitted zip_code */
       query_zip_code: string;
       /** @description Nearest matching address */
       match:
@@ -4979,13 +4979,13 @@ export interface components {
        *
        * @example 123 Main St
        */
-      address1: string;
+      address_line_one: string;
       /**
        * @description Secondary address information
        *
        * @example
        */
-      address2: string;
+      address_line_two: string;
       /**
        * @description City name
        *
@@ -5004,6 +5004,12 @@ export interface components {
        * @example 81073-1119
        */
       zip_code: string;
+      /**
+       * @description 2 letter ISO country code
+       *
+       * @example US
+       */
+      iso_country_2: string;
     };
     /** No Address Match */
     UsaVerifyNoMatch: {
@@ -5037,13 +5043,13 @@ export interface components {
        *
        * @enum {string}
        */
-      address1: "";
+      address_line_one: "";
       /**
        * @description Empty if no match
        *
        * @enum {string}
        */
-      address2: "";
+      address_line_two: "";
       /**
        * @description Empty if no match
        *
@@ -5062,6 +5068,12 @@ export interface components {
        * @enum {string}
        */
       zip_code: "";
+      /**
+       * @description Empty if no match
+       *
+       * @enum {string}
+       */
+      iso_country_2: "";
     };
     /** Address Verify Response */
     VerifyResponse: {

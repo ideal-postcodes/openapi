@@ -9492,28 +9492,29 @@
           "count",
           "fit",
           "confidence",
-          "address1",
-          "address2",
+          "address_line_one",
+          "address_line_two",
           "city",
           "state",
-          "zip_code"
+          "zip_code",
+          "iso_country_2"
         ],
         "properties": {
           "query": {
             "type": "string",
-            "description": "Originally submitted query"
+            "description": "Submitted query"
           },
           "query_city": {
             "type": "string",
-            "description": "Originally submitted city. If not provided this may be inferred from the query"
+            "description": "Submitted city"
           },
           "query_state": {
             "type": "string",
-            "description": "Originally submitted state. If not provided this may be inferred from the query"
+            "description": "Submitted state"
           },
           "query_zip_code": {
             "type": "string",
-            "description": "Originally submitted zip_code. If not provided this may be inferred from the query"
+            "description": "Submitted zip_code"
           },
           "match": {
             "description": "Nearest matching address",
@@ -9556,12 +9557,12 @@
             "minimum": 0,
             "description": "A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements.\n"
           },
-          "address1": {
+          "address_line_one": {
             "type": "string",
             "description": "Primary delivery address\n",
             "example": "123 Main St"
           },
-          "address2": {
+          "address_line_two": {
             "type": "string",
             "description": "Secondary address information\n",
             "example": ""
@@ -9580,6 +9581,11 @@
             "type": "string",
             "description": "Zip code\n",
             "example": "81073-1119"
+          },
+          "iso_country_2": {
+            "type": "string",
+            "description": "2 letter ISO country code\n",
+            "example": "US"
           }
         }
       },
@@ -9595,11 +9601,12 @@
           "count",
           "fit",
           "confidence",
-          "address1",
-          "address2",
+          "address_line_one",
+          "address_line_two",
           "city",
           "state",
-          "zip_code"
+          "zip_code",
+          "iso_country_2"
         ],
         "properties": {
           "query": {
@@ -9649,14 +9656,14 @@
               0
             ]
           },
-          "address1": {
+          "address_line_one": {
             "type": "string",
             "description": "Empty if no match\n",
             "enum": [
               ""
             ]
           },
-          "address2": {
+          "address_line_two": {
             "type": "string",
             "description": "Empty if no match\n",
             "enum": [
@@ -9678,6 +9685,13 @@
             ]
           },
           "zip_code": {
+            "type": "string",
+            "description": "Empty if no match\n",
+            "enum": [
+              ""
+            ]
+          },
+          "iso_country_2": {
             "type": "string",
             "description": "Empty if no match\n",
             "enum": [
