@@ -1,3 +1,10 @@
+## [4.6.1](https://github.com/ideal-postcodes/openapi/compare/4.6.0...4.6.1) (2024-05-16)
+
+
+### Bug Fixes
+
+* **Verify:** Correct field names ([b1b52fe](https://github.com/ideal-postcodes/openapi/commit/b1b52fee96a99ec11829f67c455d0cfb13c1b16d))
+
 ## [4.6.1-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.6.0...4.6.1-beta.1) (2024-05-14)
 
 
