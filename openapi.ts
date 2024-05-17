@@ -5015,11 +5015,11 @@ export interface components {
     UsaVerifyNoMatch: {
       /** @description Originally submitted query */
       query: string;
-      /** @description Originally submitted city. If not provided this may be inferred from the query */
+      /** @description Originally submitted city */
       query_city: string;
-      /** @description Originally submitted state. If not provided this may be inferred from the query */
+      /** @description Originally submitted state */
       query_state: string;
-      /** @description Originally submitted zip_code. If not provided this may be inferred from the query */
+      /** @description Originally submitted zip_code */
       query_zip_code: string;
       /**
        * @description Nearest matching address
@@ -6338,15 +6338,19 @@ export interface components {
      */
     UserTokenParam: string;
     /**
-     * @description A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
+     * @description **Start Timestamp**
+     *
+     * A start date/time in the form of a UNIX Timestamp in milliseconds. E.g. `1418556452651`
      *
      * @example 1418556452651
      */
     StartParam: number;
     /**
-     * @description An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
+     * @description **End Timestamp**
      *
-     * @example 1418556477882
+     * An end date/time in the form of a UNIX Timestamp in milliseconds. E.g.  `1418556477882`
+     *
+     * @example 1418556492651
      */
     EndParam: number;
     /**
@@ -6957,10 +6961,28 @@ export interface operations {
         key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`. */
-        "Start Time"?: components["parameters"]["StartParam"];
-        /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
-        "End Time"?: components["parameters"]["EndParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
+        /**
+         * **Start Timestamp**
+         *
+         * A start date/time in the form of a UNIX Timestamp in milliseconds. E.g. `1418556452651`
+         */
+        start?: components["parameters"]["StartParam"];
+        /**
+         * **End Timestamp**
+         *
+         * An end date/time in the form of a UNIX Timestamp in milliseconds. E.g.  `1418556477882`
+         */
+        end?: components["parameters"]["EndParam"];
         /**
          * ** Tags **
          * A comma separated list of tags to query over.
@@ -7027,10 +7049,28 @@ export interface operations {
         key: components["parameters"]["ApiKeyPathParam"];
       };
       query: {
-        /** A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`. */
-        "Start Time"?: components["parameters"]["StartParam"];
-        /** An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`. */
-        "End Time"?: components["parameters"]["EndParam"];
+        /**
+         * **Private User Token**
+         *
+         * A secret key used for sensitive operations on your account and API Keys.
+         *
+         * Your user token can be retrieved and managed from your [accounts page](https://ideal-postcodes.co.uk/account).
+         *
+         * Typically beings `uk_...`
+         */
+        user_token?: components["parameters"]["UserTokenParam"];
+        /**
+         * **Start Timestamp**
+         *
+         * A start date/time in the form of a UNIX Timestamp in milliseconds. E.g. `1418556452651`
+         */
+        start?: components["parameters"]["StartParam"];
+        /**
+         * **End Timestamp**
+         *
+         * An end date/time in the form of a UNIX Timestamp in milliseconds. E.g.  `1418556477882`
+         */
+        end?: components["parameters"]["EndParam"];
         /**
          * **Licensee Key**
          *
