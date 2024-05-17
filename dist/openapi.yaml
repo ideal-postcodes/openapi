@@ -681,6 +681,7 @@ paths:
         Append `tags` to scope the number of lookups to those with matching tag values. E.g. `tags=foo,bar` will only count transactions that match `foo` and `bar`.
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
+        - $ref: '#/components/parameters/UserTokenParam'
         - $ref: '#/components/parameters/StartParam'
         - $ref: '#/components/parameters/EndParam'
         - $ref: '#/components/parameters/TagsParam'
@@ -738,6 +739,7 @@ paths:
         You may prevent PII collection altogether by setting the interval to `0` days.
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
+        - $ref: '#/components/parameters/UserTokenParam'
         - $ref: '#/components/parameters/StartParam'
         - $ref: '#/components/parameters/EndParam'
         - $ref: '#/components/parameters/LicenseeParam'
@@ -8403,13 +8405,13 @@ components:
           description: Originally submitted query
         query_city:
           type: string
-          description: Originally submitted city. If not provided this may be inferred from the query
+          description: Originally submitted city
         query_state:
           type: string
-          description: Originally submitted state. If not provided this may be inferred from the query
+          description: Originally submitted state
         query_zip_code:
           type: string
-          description: Originally submitted zip_code. If not provided this may be inferred from the query
+          description: Originally submitted zip_code
         match:
           description: Nearest matching address
           type: object
@@ -10089,7 +10091,7 @@ components:
         Typically beings `uk_...`
       example: uk_B59ScW1p1HHouf1VqclEPZUx
     StartParam:
-      name: Start Time
+      name: start
       style: form
       in: query
       schema:
@@ -10097,10 +10099,12 @@ components:
         format: int64
         minimum: 0
       description: |
-        A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.
+        **Start Timestamp**
+
+        A start date/time in the form of a UNIX Timestamp in milliseconds. E.g. `1418556452651`
       example: 1418556452651
     EndParam:
-      name: End Time
+      name: end
       style: form
       in: query
       schema:
@@ -10108,8 +10112,10 @@ components:
         format: int64
         minimum: 0
       description: |
-        An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.
-      example: 1418556477882
+        **End Timestamp**
+
+        An end date/time in the form of a UNIX Timestamp in milliseconds. E.g.  `1418556477882`
+      example: 1418556492651
     LicenseeParam:
       example: sl_hk71kco54zGSGvF9eXXrvvnMOLLNh
       description: |

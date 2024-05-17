@@ -1,3 +1,10 @@
+## [4.6.2-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.6.1...4.6.2-beta.1) (2024-05-17)
+
+
+### Bug Fixes
+
+* **Keys APIs:** Fix user_token, start and end params ([ff4249e](https://github.com/ideal-postcodes/openapi/commit/ff4249edd4682bcf2047fea429b3819ccd084621))
+
 ## [4.6.1](https://github.com/ideal-postcodes/openapi/compare/4.6.0...4.6.1) (2024-05-16)
 
 

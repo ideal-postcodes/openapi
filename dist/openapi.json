@@ -623,6 +623,9 @@
             "$ref": "#/components/parameters/ApiKeyPathParam"
           },
           {
+            "$ref": "#/components/parameters/UserTokenParam"
+          },
+          {
             "$ref": "#/components/parameters/StartParam"
           },
           {
@@ -682,6 +685,9 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
+          },
+          {
+            "$ref": "#/components/parameters/UserTokenParam"
           },
           {
             "$ref": "#/components/parameters/StartParam"
@@ -9615,15 +9621,15 @@
           },
           "query_city": {
             "type": "string",
-            "description": "Originally submitted city. If not provided this may be inferred from the query"
+            "description": "Originally submitted city"
           },
           "query_state": {
             "type": "string",
-            "description": "Originally submitted state. If not provided this may be inferred from the query"
+            "description": "Originally submitted state"
           },
           "query_zip_code": {
             "type": "string",
-            "description": "Originally submitted zip_code. If not provided this may be inferred from the query"
+            "description": "Originally submitted zip_code"
           },
           "match": {
             "description": "Nearest matching address",
@@ -11790,7 +11796,7 @@
         "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
       },
       "StartParam": {
-        "name": "Start Time",
+        "name": "start",
         "style": "form",
         "in": "query",
         "schema": {
@@ -11798,11 +11804,11 @@
           "format": "int64",
           "minimum": 0
         },
-        "description": "A start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556452651`.\n",
+        "description": "**Start Timestamp**\n\nA start date/time in the form of a UNIX Timestamp in milliseconds. E.g. `1418556452651`\n",
         "example": 1418556452651
       },
       "EndParam": {
-        "name": "End Time",
+        "name": "end",
         "style": "form",
         "in": "query",
         "schema": {
@@ -11810,8 +11816,8 @@
           "format": "int64",
           "minimum": 0
         },
-        "description": "An start date/time in the form of a UNIX Timestamp in milliseconds, e.g.  `1418556477882`.\n",
-        "example": 1418556477882
+        "description": "**End Timestamp**\n\nAn end date/time in the form of a UNIX Timestamp in milliseconds. E.g.  `1418556477882`\n",
+        "example": 1418556492651
       },
       "LicenseeParam": {
         "example": "sl_hk71kco54zGSGvF9eXXrvvnMOLLNh",
