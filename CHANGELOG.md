@@ -1,3 +1,10 @@
+# [4.7.0](https://github.com/ideal-postcodes/openapi/compare/4.6.2...4.7.0) (2024-05-21)
+
+
+### Features
+
+* **Verify:** Improve documentation ([dfba777](https://github.com/ideal-postcodes/openapi/commit/dfba7770097fde63ca90cbf202228ce7174e10dd))
+
 # [4.7.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.6.2...4.7.0-beta.1) (2024-05-21)
 
 
