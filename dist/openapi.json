@@ -8843,7 +8843,6 @@
           "dpv",
           "dpv_cmra",
           "dpv_footnotes",
-          "dpv_fp",
           "dpv_no_stat",
           "dpv_vacant",
           "elot",
@@ -8868,7 +8867,6 @@
           "parsed_unit_number",
           "rdi",
           "record_type",
-          "secondary_address_info",
           "state",
           "suite_link_footnote",
           "time_zone",
@@ -8893,7 +8891,7 @@
           },
           "area_code": {
             "type": "string",
-            "description": "Area code\n",
+            "description": "Area code. Also known as Numbering Plan Area (NPA) https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes\n",
             "example": 575
           },
           "carrier_route": {
@@ -8903,7 +8901,7 @@
           },
           "check_digit": {
             "type": "string",
-            "description": "Character following the 5 or 9 digit ZIP Code\n",
+            "description": "Character following the 5 or 9 digit ZIP Code. Part of the 11-digit barcode\n",
             "example": "4"
           },
           "city": {
@@ -8941,48 +8939,50 @@
           },
           "dpv": {
             "type": "string",
-            "description": "Delivery Point Validation (DPV) Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).\n",
+            "description": "Delivery Point Validation (DPV) Confirmation code.\n\nPossible values:\n  - 'Y' Primary and secondary address information was validated\n  - 'S' Extraneous or incorrect secondary address present\n  - 'D' Secondary address information missing\n  - 'N' Primary and secondary address information was not validated\n  - ''  Address was not submitted to DPV lookup. Address was not ZIP+4 matched.\n",
             "enum": [
               "Y",
               "S",
-              "D"
+              "D",
+              "N",
+              ""
             ]
           },
           "dpv_cmra": {
             "type": "string",
-            "description": "Delivery Point Validation (DPV) CMRA code. Possible values: 'Y' (Yes), 'N' (No).\n",
-            "enum": [
-              "Y",
-              "N"
-            ]
-          },
-          "dpv_footnotes": {
-            "type": "string",
-            "description": "Delivery Point Validation (DPV) Footnotes. Empty string if not present\n",
-            "example": "AABB"
-          },
-          "dpv_fp": {
-            "type": "string",
-            "description": "False Positive Indicator from the Delivery Point Validation (DPV) lookup.\n\nPossible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present\n",
+            "description": "Delivery Point Validation (DPV) CMRA code.\n\nIndicates if the address is linked to a Commercial Mail Receiving Agency (CMRA), such as the UPS Store or Mailboxes Etc., where USPS mail can be sent or received.\n\nPossible values:\n- 'Y' Address is associated with a CMRA\n- 'N' Address is not associated with a CMRA\n- '' Empty string if address is not DPV validated.\n",
             "enum": [
               "Y",
               "N",
               ""
             ]
           },
+          "dpv_footnotes": {
+            "type": "string",
+            "description": "Delivery Point Validation (DPV) Footnotes. Empty string if not present\n\nPossible values:\n- 'AA' ZIP+4 matched.\n- 'A1' ZIP+4 did not match.\n- 'BB' Primary and secondary address information was DPV validated.\n- 'CC' Primary address information was DPV validated. Input secondary address information dropped.\n- 'F1' Military address.\n- 'G1' General delivery address.\n- 'N1' Primary address information was DPV validated. Highrise address with missing secondary address information.\n- 'M1' Primary number missing from address.\n- 'M3' Primary number invalid.\n- 'P1' Box number missing.\n- 'P3' Box number invalid.\n- 'RR' Validated CMRA address with PMB information.\n- 'R1' Validated CMRA address without PMB information.\n- 'U1' Unique 5-digit ZIP code.\n",
+            "example": "AABB"
+          },
           "dpv_no_stat": {
             "type": "string",
-            "description": "Delivery Point Validation (DPV) NoStat code. Empty string if not present\n",
-            "example": "N"
+            "description": "Delivery Point Validation (DPV) NoStat code.\n\nIndicates whether the address is a vacant property, it receives mail as a part of a drop, or it does not have an established delivery yet.\n\nPossible values:\n- 'Y'\tConfirmed\n- 'N'\tNot confirmed\n- '' Empty string if address is not DPV validated.\n",
+            "enum": [
+              "Y",
+              "N",
+              ""
+            ]
           },
           "dpv_vacant": {
             "type": "string",
-            "description": "Delivery Point Validation (DPV) Vacant code. Empty string if not present\n",
-            "example": "N"
+            "description": "Delivery Point Validation (DPV) Vacant code.\n\nUSPS records indicate that although this may be a valid address, the residence or business is vacant.\n\nPossible values:\n- 'Y' Confirmed vacant\n- 'N' Not confirmed vacant\n- '' Empty string if address is not DPV validated.\n",
+            "enum": [
+              "Y",
+              "N",
+              ""
+            ]
           },
           "elot": {
             "type": "string",
-            "description": "Enhanced Line of Travel\n",
+            "description": "Enhanced Line of Travel. For arranging records in the order that a route is served by a carrier. eLOT sequencing, when combined with Carrier Route codes, may allow Enhanced Carrier Route (ECR) discounts to be claimed.\n",
             "example": "0133A"
           },
           "finance_number": {
@@ -8994,7 +8994,7 @@
                 "type": "number"
               }
             ],
-            "description": "Internal accounting number used by the USPS. Empty string if not present\n",
+            "description": "Internal accounting number used by the USPS® when Post Offices or ZIP Codes are discontinued and reassigned. The finance number reflects the geographic grouping of ZIP + 4 areas in which these changes can be made.\n\nEmpty string if not present\n",
             "example": 340105
           },
           "fips_county_code": {
@@ -9009,7 +9009,7 @@
           },
           "footnotes": {
             "type": "string",
-            "description": "Letter codes returned by ZIP + 4® encoding. Empty string if not present\n"
+            "description": "Letter codes returned by ZIP+4 encoding. Empty string if not present\n"
           },
           "geo_coded": {
             "type": "boolean",
@@ -9017,7 +9017,7 @@
           },
           "lacs_indicator": {
             "type": "string",
-            "description": "Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).\n",
+            "description": "Indicates whether a record may benefit from LACS processing.\n\nPossible values:\n- 'L' Yes\n- '' No\n",
             "enum": [
               "L",
               ""
@@ -9025,13 +9025,25 @@
           },
           "lacs_link_footnote": {
             "type": "string",
-            "description": "LACSLink Footnote. Empty string if not present\n",
-            "example": ""
+            "description": "LACSLink Footnote. Return Code returned by the LACSLink process when an accurate address match could not be made. These codes help identify the type of move and the type of deficiency in the record which prevents a match.\nPossible values:\n- 'A' Address matched\n- '00' No match\n- '09' The input record matched to a record in the master file, but the old address is a highrise default\n- '14' The input record matched to a record in the master file. The new address could not be converted to a deliverable address\n- '92' LACSLink Record: Secondary Number Dropped from Input Address - The input record matched to a master file record, but the input address had a secondary number and the master file record did not. The record is a ZIP + 4 street level or high-rise match\n- '' Address not submitted to LACSLink lookup\n",
+            "enum": [
+              "A",
+              "00",
+              "09",
+              "14",
+              "92",
+              ""
+            ]
           },
           "lacs_link_indicator": {
             "type": "string",
-            "description": "LACSLink Indicator. Empty string if not present\n",
-            "example": ""
+            "description": "LACSLink Indicator. Indicates whether the input address matched a record in the LACSLink database.\n\nPossible values:\n- 'Y' Matched a record in the master file\n- 'S' The input record matched a master file record, but the input address included a secondary number that the master file record lacked\n- 'N' No match\n- '' Empty string if not prese\n",
+            "enum": [
+              "Y",
+              "S",
+              "N",
+              ""
+            ]
           },
           "latitude": {
             "oneOf": [
@@ -9130,13 +9142,19 @@
           },
           "record_type": {
             "type": "string",
-            "description": "Type of address record (Street, PO Box, High-rise, etc.)\n",
-            "example": "S"
-          },
-          "secondary_address_info": {
-            "type": "string",
-            "description": "Additional secondary address information. Empty string if not present\n",
-            "example": ""
+            "description": "Type of address record.\n\nPossible values:\n- 'C'\tMulti-Carrier\n- 'F'\tFirm\n- 'G'\tGeneral Delivery\n- 'H'\tHigh-rise or Apartment Building\n- 'M'\tMilitary\n- 'P'\tPO Box\n- 'R'\tRoute (Rural Route/Highway Contract)\n- 'S'\tStreet\n- 'U'\tUnique 5-Digit\n",
+            "enum": [
+              "C",
+              "F",
+              "G",
+              "H",
+              "M",
+              "P",
+              "R",
+              "S",
+              "U",
+              ""
+            ]
           },
           "state": {
             "type": "string",
@@ -9498,12 +9516,13 @@
           "count",
           "fit",
           "confidence",
+          "match_information",
           "address_line_one",
           "address_line_two",
           "city",
           "state",
           "zip_code",
-          "iso_country_2"
+          "country_iso_2"
         ],
         "properties": {
           "query": {
@@ -9563,6 +9582,11 @@
             "minimum": 0,
             "description": "A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements.\n"
           },
+          "match_information": {
+            "type": "string",
+            "description": "Additional information about the match.\n\nThis information is for human consumption and may not be present in all responses.\n",
+            "example": "Single Response - The delivery address was found in the National Database and no further information was required."
+          },
           "address_line_one": {
             "type": "string",
             "description": "Primary delivery address\n",
@@ -9588,7 +9612,7 @@
             "description": "Zip code\n",
             "example": "81073-1119"
           },
-          "iso_country_2": {
+          "country_iso_2": {
             "type": "string",
             "description": "2 letter ISO country code\n",
             "example": "US"

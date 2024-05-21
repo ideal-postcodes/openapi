@@ -4573,7 +4573,7 @@ export interface components {
        */
       address3: string;
       /**
-       * @description Area code
+       * @description Area code. Also known as Numbering Plan Area (NPA) https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
        *
        * @example 575
        */
@@ -4585,7 +4585,7 @@ export interface components {
        */
       carrier_route: string;
       /**
-       * @description Character following the 5 or 9 digit ZIP Code
+       * @description Character following the 5 or 9 digit ZIP Code. Part of the 11-digit barcode
        *
        * @example 4
        */
@@ -4628,51 +4628,89 @@ export interface components {
        */
       delivery_point: string;
       /**
-       * @description Delivery Point Validation (DPV) Confirmation code. Possible values: 'Y' (Yes), 'S' (Suspicious), 'D' (No).
+       * @description Delivery Point Validation (DPV) Confirmation code.
+       *
+       * Possible values:
+       *   - 'Y' Primary and secondary address information was validated
+       *   - 'S' Extraneous or incorrect secondary address present
+       *   - 'D' Secondary address information missing
+       *   - 'N' Primary and secondary address information was not validated
+       *   - ''  Address was not submitted to DPV lookup. Address was not ZIP+4 matched.
        *
        * @enum {string}
        */
-      dpv: "Y" | "S" | "D";
+      dpv: "Y" | "S" | "D" | "N" | "";
       /**
-       * @description Delivery Point Validation (DPV) CMRA code. Possible values: 'Y' (Yes), 'N' (No).
+       * @description Delivery Point Validation (DPV) CMRA code.
+       *
+       * Indicates if the address is linked to a Commercial Mail Receiving Agency (CMRA), such as the UPS Store or Mailboxes Etc., where USPS mail can be sent or received.
+       *
+       * Possible values:
+       * - 'Y' Address is associated with a CMRA
+       * - 'N' Address is not associated with a CMRA
+       * - '' Empty string if address is not DPV validated.
        *
        * @enum {string}
        */
-      dpv_cmra: "Y" | "N";
+      dpv_cmra: "Y" | "N" | "";
       /**
        * @description Delivery Point Validation (DPV) Footnotes. Empty string if not present
+       *
+       * Possible values:
+       * - 'AA' ZIP+4 matched.
+       * - 'A1' ZIP+4 did not match.
+       * - 'BB' Primary and secondary address information was DPV validated.
+       * - 'CC' Primary address information was DPV validated. Input secondary address information dropped.
+       * - 'F1' Military address.
+       * - 'G1' General delivery address.
+       * - 'N1' Primary address information was DPV validated. Highrise address with missing secondary address information.
+       * - 'M1' Primary number missing from address.
+       * - 'M3' Primary number invalid.
+       * - 'P1' Box number missing.
+       * - 'P3' Box number invalid.
+       * - 'RR' Validated CMRA address with PMB information.
+       * - 'R1' Validated CMRA address without PMB information.
+       * - 'U1' Unique 5-digit ZIP code.
        *
        * @example AABB
        */
       dpv_footnotes: string;
       /**
-       * @description False Positive Indicator from the Delivery Point Validation (DPV) lookup.
+       * @description Delivery Point Validation (DPV) NoStat code.
        *
-       * Possible values: 'Y' (Yes), 'N' (No), ' ' (Space). Empty string if not present
+       * Indicates whether the address is a vacant property, it receives mail as a part of a drop, or it does not have an established delivery yet.
+       *
+       * Possible values:
+       * - 'Y'	Confirmed
+       * - 'N'	Not confirmed
+       * - '' Empty string if address is not DPV validated.
        *
        * @enum {string}
        */
-      dpv_fp: "Y" | "N" | "";
+      dpv_no_stat: "Y" | "N" | "";
       /**
-       * @description Delivery Point Validation (DPV) NoStat code. Empty string if not present
+       * @description Delivery Point Validation (DPV) Vacant code.
        *
-       * @example N
-       */
-      dpv_no_stat: string;
-      /**
-       * @description Delivery Point Validation (DPV) Vacant code. Empty string if not present
+       * USPS records indicate that although this may be a valid address, the residence or business is vacant.
        *
-       * @example N
+       * Possible values:
+       * - 'Y' Confirmed vacant
+       * - 'N' Not confirmed vacant
+       * - '' Empty string if address is not DPV validated.
+       *
+       * @enum {string}
        */
-      dpv_vacant: string;
+      dpv_vacant: "Y" | "N" | "";
       /**
-       * @description Enhanced Line of Travel
+       * @description Enhanced Line of Travel. For arranging records in the order that a route is served by a carrier. eLOT sequencing, when combined with Carrier Route codes, may allow Enhanced Carrier Route (ECR) discounts to be claimed.
        *
        * @example 0133A
        */
       elot: string;
       /**
-       * @description Internal accounting number used by the USPS. Empty string if not present
+       * @description Internal accounting number used by the USPS® when Post Offices or ZIP Codes are discontinued and reassigned. The finance number reflects the geographic grouping of ZIP + 4 areas in which these changes can be made.
+       *
+       * Empty string if not present
        *
        * @example 340105
        */
@@ -4689,28 +4727,45 @@ export interface components {
        * @example
        */
       firm: string;
-      /** @description Letter codes returned by ZIP + 4® encoding. Empty string if not present */
+      /** @description Letter codes returned by ZIP+4 encoding. Empty string if not present */
       footnotes: string;
       /** @description Indicates whether the address was geo-coded */
       geo_coded: boolean;
       /**
-       * @description Indicates whether a record may benefit from LACS processing. Possible values: 'L' (Yes), ' ' (No).
+       * @description Indicates whether a record may benefit from LACS processing.
+       *
+       * Possible values:
+       * - 'L' Yes
+       * - '' No
        *
        * @enum {string}
        */
       lacs_indicator: "L" | "";
       /**
-       * @description LACSLink Footnote. Empty string if not present
+       * @description LACSLink Footnote. Return Code returned by the LACSLink process when an accurate address match could not be made. These codes help identify the type of move and the type of deficiency in the record which prevents a match.
+       * Possible values:
+       * - 'A' Address matched
+       * - '00' No match
+       * - '09' The input record matched to a record in the master file, but the old address is a highrise default
+       * - '14' The input record matched to a record in the master file. The new address could not be converted to a deliverable address
+       * - '92' LACSLink Record: Secondary Number Dropped from Input Address - The input record matched to a master file record, but the input address had a secondary number and the master file record did not. The record is a ZIP + 4 street level or high-rise match
+       * - '' Address not submitted to LACSLink lookup
        *
-       * @example
+       * @enum {string}
        */
-      lacs_link_footnote: string;
+      lacs_link_footnote: "A" | "00" | "09" | "14" | "92" | "";
       /**
-       * @description LACSLink Indicator. Empty string if not present
+       * @description LACSLink Indicator. Indicates whether the input address matched a record in the LACSLink database.
        *
-       * @example
+       * Possible values:
+       * - 'Y' Matched a record in the master file
+       * - 'S' The input record matched a master file record, but the input address included a secondary number that the master file record lacked
+       * - 'N' No match
+       * - '' Empty string if not prese
+       *
+       * @enum {string}
        */
-      lacs_link_indicator: string;
+      lacs_link_indicator: "Y" | "S" | "N" | "";
       /**
        * @description Latitude of the encoded address. Empty string if not present
        *
@@ -4784,17 +4839,22 @@ export interface components {
        */
       rdi: string;
       /**
-       * @description Type of address record (Street, PO Box, High-rise, etc.)
+       * @description Type of address record.
        *
-       * @example S
-       */
-      record_type: string;
-      /**
-       * @description Additional secondary address information. Empty string if not present
+       * Possible values:
+       * - 'C'	Multi-Carrier
+       * - 'F'	Firm
+       * - 'G'	General Delivery
+       * - 'H'	High-rise or Apartment Building
+       * - 'M'	Military
+       * - 'P'	PO Box
+       * - 'R'	Route (Rural Route/Highway Contract)
+       * - 'S'	Street
+       * - 'U'	Unique 5-Digit
        *
-       * @example
+       * @enum {string}
        */
-      secondary_address_info: string;
+      record_type: "C" | "F" | "G" | "H" | "M" | "P" | "R" | "S" | "U" | "";
       /**
        * @description Standard two-letter state abbreviation
        *
@@ -4975,6 +5035,14 @@ export interface components {
       /** @description A confidence score represented as number between 1 and 0. 1 indicates a full match. 0 indicates no complete matching elements. */
       confidence: number;
       /**
+       * @description Additional information about the match.
+       *
+       * This information is for human consumption and may not be present in all responses.
+       *
+       * @example Single Response - The delivery address was found in the National Database and no further information was required.
+       */
+      match_information: string;
+      /**
        * @description Primary delivery address
        *
        * @example 123 Main St
@@ -5009,7 +5077,7 @@ export interface components {
        *
        * @example US
        */
-      iso_country_2: string;
+      country_iso_2: string;
     };
     /** No Address Match */
     UsaVerifyNoMatch: {
