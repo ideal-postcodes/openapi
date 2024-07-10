@@ -1,3 +1,10 @@
+# [4.8.0](https://github.com/ideal-postcodes/openapi/compare/4.7.0...4.8.0) (2024-07-10)
+
+
+### Features
+
+* **Language:** Add Assamese (as) language ([7962e54](https://github.com/ideal-postcodes/openapi/commit/7962e54ceae11072fa652335ea7f3cd485c78b5a))
+
 # [4.7.0](https://github.com/ideal-postcodes/openapi/compare/4.6.2...4.7.0) (2024-05-21)
 
 
