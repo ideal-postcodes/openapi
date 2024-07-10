@@ -847,6 +847,7 @@ export interface components {
     Language:
       | "en"
       | "ar"
+      | "as"
       | "az"
       | "be"
       | "bg"

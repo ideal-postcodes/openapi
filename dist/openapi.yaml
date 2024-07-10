@@ -2829,6 +2829,7 @@ components:
       enum:
         - en
         - ar
+        - as
         - az
         - be
         - bg
