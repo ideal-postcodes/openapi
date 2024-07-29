@@ -8,7 +8,7 @@
     "@redocly/openapi-cli": "~1.0.0-beta.55",
     "@stoplight/prism-cli": "^5.0.0",
     "semantic-release": "~23.0.8",
-    "typescript": "~5.4.5"
+    "typescript": "~5.5.4"
   },
   "scripts": {
     "prepublish": "npm run build",
