@@ -1,3 +1,12 @@
+## [4.9.1](https://github.com/ideal-postcodes/openapi/compare/4.9.0...4.9.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* **Release:** Trigger new release ([d9bbada](https://github.com/ideal-postcodes/openapi/commit/d9bbadae958dc6bf206b4900d64c138f247ef697))
+* **Release:** Trigger new release ([f6782db](https://github.com/ideal-postcodes/openapi/commit/f6782db92c1d67909335c248af30ce3e5cda576a))
+* **Release:** Update GitHub action ([4850973](https://github.com/ideal-postcodes/openapi/commit/4850973f92246d50518ecf05ff5fd79cc1239b13))
+
 # [4.9.0](https://github.com/ideal-postcodes/openapi/compare/4.8.0...4.9.0) (2025-01-20)
 
 
