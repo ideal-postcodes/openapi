@@ -1,3 +1,10 @@
+# [4.9.0](https://github.com/ideal-postcodes/openapi/compare/4.8.0...4.9.0) (2025-01-20)
+
+
+### Features
+
+* **Denmark:** Add SDFI ([6602bd5](https://github.com/ideal-postcodes/openapi/commit/6602bd5d38cb8e586c5bd3dc42bb7e0755bab729))
+
 # [4.8.0](https://github.com/ideal-postcodes/openapi/compare/4.7.0...4.8.0) (2024-07-10)
 
 
