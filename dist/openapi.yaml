@@ -3183,6 +3183,7 @@ components:
           - `gnaf` (AUS) Geoscape Geocoded National Address File
           - `kadaster` (NLD) Kadaster BAG 2.0 Address File
           - `kartverket` (NOR) Norway Dataset
+          - `sdfi` (DNK) Denmark Dataset
       enum:
         - paf
         - pafw
@@ -3208,6 +3209,7 @@ components:
         - gnaf
         - kadaster
         - kartverket
+        - sdfi
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -6615,6 +6617,571 @@ components:
           type: string
           description: |
             Name of region.
+    SdfiAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - line_1
+        - line_2
+        - language
+        - address
+        - latitude
+        - longitude
+        - adresse_id
+        - kvhx
+        - kvh
+        - adgangsadresse
+        - status
+        - darstatus
+        - oprettet
+        - ændret
+        - ikrafttrædelse
+        - nedlagt
+        - vejkode
+        - vejnavn
+        - adresseringsvejnavn
+        - husnr
+        - etage
+        - dør
+        - supplerendebynavn_dagi_id
+        - supplerendebynavn
+        - postnr
+        - postnrnavn
+        - stormodtagerpostnr
+        - stormodtagerpostnrnavn
+        - betegnelse
+        - adressepunktændringsdato
+        - etrs89koordinat_øst
+        - etrs89koordinat_nord
+        - wgs84koordinat_bredde
+        - wgs84koordinat_længde
+        - højde
+        - nøjagtighed
+        - kilde
+        - tekniskstandard
+        - tekstretning
+        - ddkn_m100
+        - ddkn_km1
+        - ddkn_km10
+        - kommunekode
+        - kommunenavn
+        - landsdelsnuts3
+        - landsdelsnavn
+        - regionskode
+        - regionsnavn
+        - afstemningsområdenummer
+        - afstemningsområdenavn
+        - menighedsrådsafstemningsområdenummer
+        - menighedsrådsafstemningsområdenavn
+        - opstillingskredskode
+        - opstillingskredsnavn
+        - storkredsnummer
+        - storkredsnavn
+        - valglandsdelsbogstav
+        - valglandsdelsnavn
+        - sognekode
+        - sognenavn
+        - politikredskode
+        - politikredsnavn
+        - retskredskode
+        - retskredsnavn
+        - jordstykke_ejerlavkode
+        - jordstykke_ejerlavnavn
+        - jordstykke_matrikelnr
+        - jordstykke_esrejendomsnr
+        - ejerlavkode
+        - ejerlavnavn
+        - matrikelnr
+        - esrejendomsnr
+        - zone
+        - brofast
+        - adgangsadresseid
+        - adgangspunktid
+        - navngivenvej_id
+        - adgangsadresse_status
+        - adgangsadresse_darstatus
+        - adgangsadresse_oprettet
+        - adgangsadresse_ændret
+        - adgangsadresse_ikrafttrædelse
+        - adgangsadresse_nedlagt
+        - vejpunkt_id
+        - vejpunkt_ændret
+        - vejpunkt_kilde
+        - vejpunkt_nøjagtighed
+        - vejpunkt_tekniskstandard
+        - vejpunkt_x
+        - vejpunkt_y
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - sdfi
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - DNK
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - DK
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Denmark
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Bakkevej 3
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: Pindstrup
+        language:
+          enum:
+            - da
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        adresse_id:
+          type: string
+          description: |
+            Unique address identifier assigned by the data supplier.
+        kvhx:
+          type: string
+          description: |
+            Unique composite key for the address, containing codes for the municipality, road section, house number, floor and door.
+
+            Can be empty string `""` if not present.
+        kvh:
+          type: string
+          description: |
+            Composite key for the address, containing codes for the municipality, road section and house number.
+
+            Can be empty string `""` if not present.
+        adgangsadresse:
+          type: boolean
+          description: |
+            Indicates whether the address is an access address.
+        status:
+          type: string
+          description: |
+            `1` = final address, `3` = provisional address.
+        darstatus:
+          type: string
+          description: |
+            Status of the address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.
+        oprettet:
+          type: string
+          description: |
+            Date and time of address creation in Danmarks Adresseregister (DAR).
+
+            Can be empty string `""` if not present.
+        ændret:
+          type: string
+          description: |
+            Date and time of the last change to the address in Danmarks Adresseregister (DAR).
+
+            Can be empty string `""` if not present.
+        ikrafttrædelse:
+          type: string
+          description: |
+            Date and time at which the address became valid.
+
+            Can be empty string `""` if not present.
+        nedlagt:
+          type: string
+          description: |
+            Date and time from which the address is retired or suspended (may be in the future).
+
+            Can be empty string `""` if not present.
+        vejkode:
+          type: string
+          description: |
+            Four digit street identifier.
+        vejnavn:
+          type: string
+          description: |
+            Street name.
+        adresseringsvejnavn:
+          type: string
+          description: |
+            A possibly shortened version of the street name of no more than 20 characters, used where there is no space for the full street name.
+        husnr:
+          type: string
+          description: |
+            House number.
+        etage:
+          type: string
+          description: |
+            Floor designation.
+
+            Can be empty string `""` if not present.
+        dør:
+          type: string
+          description: |
+            Door designation.
+
+            Can be empty string `""` if not present.
+        supplerendebynavn_dagi_id:
+          type: string
+          description: |
+            Unique identifier in Danmarks Administrative Geografiske Inddeling (DAGI) of the supplementary town or city name.
+
+            Can be empty string `""` if not present.
+        supplerendebynavn:
+          type: string
+          description: |
+            Supplementary city name.
+
+            Can be empty string `""` if not present.
+        postnr:
+          type: string
+          description: |
+            Postal code.
+        postnrnavn:
+          type: string
+          description: |
+            The city or district name associated with the postal code.
+        stormodtagerpostnr:
+          type: string
+          description: |
+            Bulk recipient postal code (company postal code) which is associated with the address.
+
+            Can be empty string `""` if not present.
+        stormodtagerpostnrnavn:
+          type: string
+          description: |
+            The city or district name associated with the bulk recipient postal code.
+
+            Can be empty string `""` if not present.
+        betegnelse:
+          type: string
+          description: |
+            Full text of postal address.
+        adressepunktændringsdato:
+          type: string
+          description: |
+            Date and time of the last change to the address point.
+
+            Can be empty string `""` if not present.
+        etrs89koordinat_øst:
+          type: string
+          description: |
+            Easting coordinate for the address in the ETRS89 system.
+        etrs89koordinat_nord:
+          type: string
+          description: |
+            Northing coordinate for the address in the ETRS89 system.
+        wgs84koordinat_bredde:
+          description: |
+            Latitude of the address in the WGS84 system.
+
+            Can be empty string `""` if not present.
+          oneOf:
+            - type: string
+            - type: number
+              minimum: -90
+              maximum: 90
+              example: 55.06428998
+        wgs84koordinat_længde:
+          description: |
+            Longitude of the address in the WGS84 system.
+
+            Can be empty string `""` if not present.
+          oneOf:
+            - type: string
+            - type: number
+              minimum: -180
+              maximum: 180
+              example: 15.13688626
+        højde:
+          type: string
+          description: |
+            Height in metres from the mean water level in the seas on Denmark's coasts to ground level at the address, calculated according to the Danish Vertical Reference 1990 (DVR90).
+
+            Can be empty string `""` if not present.
+        nøjagtighed:
+          type: string
+          description: |
+            Code indicating the accuracy of the address point. `A` = accurate to within 2 metres, `B` = accurate to within 100 metres, `U` = no address point.
+        kilde:
+          type: string
+          description: |
+            Code indicating the source of the address point.
+
+            Can be empty string `""` if not present.
+        tekniskstandard:
+          type: string
+          description: |
+            Technical classification code for the location of an address point.
+        tekstretning:
+          type: string
+          description: |
+            Orientation for an address in gons, where a full circle is divided into 400 gons.
+        ddkn_m100:
+          type: string
+          description: |
+            Identifier of the 100m cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        ddkn_km1:
+          type: string
+          description: |
+            Identifier of the 1km cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        ddkn_km10:
+          type: string
+          description: |
+            Identifier of the 10km cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        kommunekode:
+          type: string
+          description: |
+            Four digit identifier of the municipality in which the address is located.
+        kommunenavn:
+          type: string
+          description: |
+            Name of the municipality in which the address is located.
+        landsdelsnuts3:
+          type: string
+          description: |
+            NUTS 3 code of the province in which the address is located.
+        landsdelsnavn:
+          type: string
+          description: |
+            Name of the province in which the address is located.
+        regionskode:
+          type: string
+          description: |
+            Four digit identifier of the region in which the address is located.
+        regionsnavn:
+          type: string
+          description: |
+            Name of the region in which the address is located.
+        afstemningsområdenummer:
+          type: string
+          description: |
+            Identifier of the polling district in which the address is located.
+        afstemningsområdenavn:
+          type: string
+          description: |
+            Unique name of the polling district in which the address is located.
+        menighedsrådsafstemningsområdenummer:
+          type: string
+          description: |
+            Identifier of the parish council polling district in which the address is located.
+
+            Can be empty string `""` if not present.
+        menighedsrådsafstemningsområdenavn:
+          type: string
+          description: |
+            Name of the parish council polling district in which the address is located.
+
+            Can be empty string `""` if not present.
+        opstillingskredskode:
+          type: string
+          description: |
+            Identifier of the local electoral district in which the address is located.
+        opstillingskredsnavn:
+          type: string
+          description: |
+            Name of the local electoral district in which the address is located.
+        storkredsnummer:
+          type: string
+          description: |
+            Identifier of the regional electoral district in which the address is located.
+        storkredsnavn:
+          type: string
+          description: |
+            Name of the regional electoral district in which the address is located.
+        valglandsdelsbogstav:
+          type: string
+          description: |
+            Letter identifier of the national electoral district in which the address is located: `A`, `B` or `C`.
+        valglandsdelsnavn:
+          type: string
+          description: |
+            Name of the national electoral district in which the address is located.
+        sognekode:
+          type: string
+          description: |
+            Identifier of the parish in which the address is located.
+        sognenavn:
+          type: string
+          description: |
+            Name of the parish in which the address is located.
+        politikredskode:
+          type: string
+          description: |
+            Identifier of the police district in which the address is located.
+        politikredsnavn:
+          type: string
+          description: |
+            Name of the police district in which the address is located.
+        retskredskode:
+          type: string
+          description: |
+            Four digit identifier of the judicial district in which the address is located.
+        retskredsnavn:
+          type: string
+          description: |
+            Name of the judicial district in which the address is located.
+        jordstykke_ejerlavkode:
+          type: string
+          description: |
+            Identifier of a cadastral unit with a single owner.
+
+            Can be empty string `""` if not present.
+        jordstykke_ejerlavnavn:
+          type: string
+          description: |
+            Name of a cadastral unit with a single owner.
+
+            Can be empty string `""` if not present.
+        jordstykke_matrikelnr:
+          type: string
+          description: |
+            Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        jordstykke_esrejendomsnr:
+          type: string
+          description: |
+            Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        ejerlavkode:
+          type: string
+          description: |
+            Identifier of a cadastral unit with a single owner (deprecated).
+
+            Can be empty string `""` if not present.
+        ejerlavnavn:
+          type: string
+          description: |
+            Name of a cadastral unit with a single owner (deprecated).
+
+            Can be empty string `""` if not present.
+        matrikelnr:
+          type: string
+          description: |
+            Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        esrejendomsnr:
+          type: string
+          description: |
+            Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        zone:
+          type: string
+          description: |
+            Status of the address zone: `Byzone`, `Sommerhusområde` or `Landzone`.
+        brofast:
+          type: boolean
+          description: |
+            Indicates whether the address is connected by a bridge.
+        adgangsadresseid:
+          type: string
+          description: |
+            Identifier of the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangspunktid:
+          type: string
+          description: |
+            Identifier of the access point for the address.
+        navngivenvej_id:
+          type: string
+          description: |
+            Identifier of the named road on which the access address is located.
+        adgangsadresse_status:
+          type: string
+          description: |
+            Status of the access address associated with the address: `1` = final address, `3` = provisional address.
+        adgangsadresse_darstatus:
+          type: string
+          description: |
+            Status of the access address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_oprettet:
+          type: string
+          description: |
+            Date and time of the creation of the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_ændret:
+          type: string
+          description: |
+            Date and time of the last change to the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_ikrafttrædelse:
+          type: string
+          description: |
+            Date and time at which the access address became valid.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_nedlagt:
+          type: string
+          description: |
+            Date and time from which the access address is retired or suspended (may be in the future).
+
+            Can be empty string `""` if not present.
+        vejpunkt_id:
+          type: string
+          description: |
+            Unique identifier of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_ændret:
+          type: string
+          description: |
+            Date and time of the last change in Danmarks Adresseregister (DAR) to the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+
+            Can be empty string `""` if not present.
+        vejpunkt_kilde:
+          type: string
+          description: |
+            Source of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_nøjagtighed:
+          type: string
+          description: |
+            Accuracy of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address: `A` = exact, `B` = approximate.
+        vejpunkt_tekniskstandard:
+          type: string
+          description: |
+            Technical classification code for the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_x:
+          type: string
+          description: |
+            Longitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_y:
+          type: string
+          description: |
+            Latitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -6721,6 +7288,7 @@ components:
             - $ref: '#/components/schemas/GnafAddress'
             - $ref: '#/components/schemas/KadasterAddress'
             - $ref: '#/components/schemas/KartverketAddress'
+            - $ref: '#/components/schemas/SdfiAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -7326,6 +7894,7 @@ components:
         - gnaf
         - kadaster
         - kartverket
+        - sdfi
       properties:
         paf:
           type: boolean
@@ -7433,6 +8002,10 @@ components:
         kartverket:
           type: boolean
           description: 'Norway: Karverket Address File'
+          example: true
+        sdfi:
+          type: boolean
+          description: 'Denmark: Danmarks Adresseregister (DAR)'
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -7690,6 +8263,10 @@ components:
             kartverket:
               type: boolean
               description: 'Norway: Kartverket Address File'
+              example: true
+            sdfi:
+              type: boolean
+              description: 'Denmark: SDFI Address File'
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -8939,6 +9516,7 @@ components:
             - $ref: '#/components/schemas/GnafAddress'
             - $ref: '#/components/schemas/KadasterAddress'
             - $ref: '#/components/schemas/KartverketAddress'
+            - $ref: '#/components/schemas/SdfiAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object

@@ -3775,7 +3775,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3800,7 +3800,8 @@
           "hereap",
           "gnaf",
           "kadaster",
-          "kartverket"
+          "kartverket",
+          "sdfi"
         ]
       },
       "CountryISO": {
@@ -7380,6 +7381,519 @@
           }
         }
       },
+      "SdfiAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "line_1",
+          "line_2",
+          "language",
+          "address",
+          "latitude",
+          "longitude",
+          "adresse_id",
+          "kvhx",
+          "kvh",
+          "adgangsadresse",
+          "status",
+          "darstatus",
+          "oprettet",
+          "ændret",
+          "ikrafttrædelse",
+          "nedlagt",
+          "vejkode",
+          "vejnavn",
+          "adresseringsvejnavn",
+          "husnr",
+          "etage",
+          "dør",
+          "supplerendebynavn_dagi_id",
+          "supplerendebynavn",
+          "postnr",
+          "postnrnavn",
+          "stormodtagerpostnr",
+          "stormodtagerpostnrnavn",
+          "betegnelse",
+          "adressepunktændringsdato",
+          "etrs89koordinat_øst",
+          "etrs89koordinat_nord",
+          "wgs84koordinat_bredde",
+          "wgs84koordinat_længde",
+          "højde",
+          "nøjagtighed",
+          "kilde",
+          "tekniskstandard",
+          "tekstretning",
+          "ddkn_m100",
+          "ddkn_km1",
+          "ddkn_km10",
+          "kommunekode",
+          "kommunenavn",
+          "landsdelsnuts3",
+          "landsdelsnavn",
+          "regionskode",
+          "regionsnavn",
+          "afstemningsområdenummer",
+          "afstemningsområdenavn",
+          "menighedsrådsafstemningsområdenummer",
+          "menighedsrådsafstemningsområdenavn",
+          "opstillingskredskode",
+          "opstillingskredsnavn",
+          "storkredsnummer",
+          "storkredsnavn",
+          "valglandsdelsbogstav",
+          "valglandsdelsnavn",
+          "sognekode",
+          "sognenavn",
+          "politikredskode",
+          "politikredsnavn",
+          "retskredskode",
+          "retskredsnavn",
+          "jordstykke_ejerlavkode",
+          "jordstykke_ejerlavnavn",
+          "jordstykke_matrikelnr",
+          "jordstykke_esrejendomsnr",
+          "ejerlavkode",
+          "ejerlavnavn",
+          "matrikelnr",
+          "esrejendomsnr",
+          "zone",
+          "brofast",
+          "adgangsadresseid",
+          "adgangspunktid",
+          "navngivenvej_id",
+          "adgangsadresse_status",
+          "adgangsadresse_darstatus",
+          "adgangsadresse_oprettet",
+          "adgangsadresse_ændret",
+          "adgangsadresse_ikrafttrædelse",
+          "adgangsadresse_nedlagt",
+          "vejpunkt_id",
+          "vejpunkt_ændret",
+          "vejpunkt_kilde",
+          "vejpunkt_nøjagtighed",
+          "vejpunkt_tekniskstandard",
+          "vejpunkt_x",
+          "vejpunkt_y"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "sdfi"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DNK"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DK"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Denmark"
+            ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Bakkevej 3"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Pindstrup"
+          },
+          "language": {
+            "enum": [
+              "da"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "adresse_id": {
+            "type": "string",
+            "description": "Unique address identifier assigned by the data supplier.\n"
+          },
+          "kvhx": {
+            "type": "string",
+            "description": "Unique composite key for the address, containing codes for the municipality, road section, house number, floor and door.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "kvh": {
+            "type": "string",
+            "description": "Composite key for the address, containing codes for the municipality, road section and house number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangsadresse": {
+            "type": "boolean",
+            "description": "Indicates whether the address is an access address.\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "`1` = final address, `3` = provisional address.\n"
+          },
+          "darstatus": {
+            "type": "string",
+            "description": "Status of the address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.\n"
+          },
+          "oprettet": {
+            "type": "string",
+            "description": "Date and time of address creation in Danmarks Adresseregister (DAR).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "ændret": {
+            "type": "string",
+            "description": "Date and time of the last change to the address in Danmarks Adresseregister (DAR).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "ikrafttrædelse": {
+            "type": "string",
+            "description": "Date and time at which the address became valid.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "nedlagt": {
+            "type": "string",
+            "description": "Date and time from which the address is retired or suspended (may be in the future).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vejkode": {
+            "type": "string",
+            "description": "Four digit street identifier.\n"
+          },
+          "vejnavn": {
+            "type": "string",
+            "description": "Street name.\n"
+          },
+          "adresseringsvejnavn": {
+            "type": "string",
+            "description": "A possibly shortened version of the street name of no more than 20 characters, used where there is no space for the full street name.\n"
+          },
+          "husnr": {
+            "type": "string",
+            "description": "House number.\n"
+          },
+          "etage": {
+            "type": "string",
+            "description": "Floor designation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "dør": {
+            "type": "string",
+            "description": "Door designation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "supplerendebynavn_dagi_id": {
+            "type": "string",
+            "description": "Unique identifier in Danmarks Administrative Geografiske Inddeling (DAGI) of the supplementary town or city name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "supplerendebynavn": {
+            "type": "string",
+            "description": "Supplementary city name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "postnr": {
+            "type": "string",
+            "description": "Postal code.\n"
+          },
+          "postnrnavn": {
+            "type": "string",
+            "description": "The city or district name associated with the postal code.\n"
+          },
+          "stormodtagerpostnr": {
+            "type": "string",
+            "description": "Bulk recipient postal code (company postal code) which is associated with the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "stormodtagerpostnrnavn": {
+            "type": "string",
+            "description": "The city or district name associated with the bulk recipient postal code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "betegnelse": {
+            "type": "string",
+            "description": "Full text of postal address.\n"
+          },
+          "adressepunktændringsdato": {
+            "type": "string",
+            "description": "Date and time of the last change to the address point.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "etrs89koordinat_øst": {
+            "type": "string",
+            "description": "Easting coordinate for the address in the ETRS89 system.\n"
+          },
+          "etrs89koordinat_nord": {
+            "type": "string",
+            "description": "Northing coordinate for the address in the ETRS89 system.\n"
+          },
+          "wgs84koordinat_bredde": {
+            "description": "Latitude of the address in the WGS84 system.\n\nCan be empty string `\"\"` if not present.\n",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90,
+                "example": 55.06428998
+              }
+            ]
+          },
+          "wgs84koordinat_længde": {
+            "description": "Longitude of the address in the WGS84 system.\n\nCan be empty string `\"\"` if not present.\n",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180,
+                "example": 15.13688626
+              }
+            ]
+          },
+          "højde": {
+            "type": "string",
+            "description": "Height in metres from the mean water level in the seas on Denmark's coasts to ground level at the address, calculated according to the Danish Vertical Reference 1990 (DVR90).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "nøjagtighed": {
+            "type": "string",
+            "description": "Code indicating the accuracy of the address point. `A` = accurate to within 2 metres, `B` = accurate to within 100 metres, `U` = no address point.\n"
+          },
+          "kilde": {
+            "type": "string",
+            "description": "Code indicating the source of the address point.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "tekniskstandard": {
+            "type": "string",
+            "description": "Technical classification code for the location of an address point.\n"
+          },
+          "tekstretning": {
+            "type": "string",
+            "description": "Orientation for an address in gons, where a full circle is divided into 400 gons.\n"
+          },
+          "ddkn_m100": {
+            "type": "string",
+            "description": "Identifier of the 100m cell in which the address is located in Det Danske Kvadratnet (DDKN).\n"
+          },
+          "ddkn_km1": {
+            "type": "string",
+            "description": "Identifier of the 1km cell in which the address is located in Det Danske Kvadratnet (DDKN).\n"
+          },
+          "ddkn_km10": {
+            "type": "string",
+            "description": "Identifier of the 10km cell in which the address is located in Det Danske Kvadratnet (DDKN).\n"
+          },
+          "kommunekode": {
+            "type": "string",
+            "description": "Four digit identifier of the municipality in which the address is located.\n"
+          },
+          "kommunenavn": {
+            "type": "string",
+            "description": "Name of the municipality in which the address is located.\n"
+          },
+          "landsdelsnuts3": {
+            "type": "string",
+            "description": "NUTS 3 code of the province in which the address is located.\n"
+          },
+          "landsdelsnavn": {
+            "type": "string",
+            "description": "Name of the province in which the address is located.\n"
+          },
+          "regionskode": {
+            "type": "string",
+            "description": "Four digit identifier of the region in which the address is located.\n"
+          },
+          "regionsnavn": {
+            "type": "string",
+            "description": "Name of the region in which the address is located.\n"
+          },
+          "afstemningsområdenummer": {
+            "type": "string",
+            "description": "Identifier of the polling district in which the address is located.\n"
+          },
+          "afstemningsområdenavn": {
+            "type": "string",
+            "description": "Unique name of the polling district in which the address is located.\n"
+          },
+          "menighedsrådsafstemningsområdenummer": {
+            "type": "string",
+            "description": "Identifier of the parish council polling district in which the address is located.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "menighedsrådsafstemningsområdenavn": {
+            "type": "string",
+            "description": "Name of the parish council polling district in which the address is located.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "opstillingskredskode": {
+            "type": "string",
+            "description": "Identifier of the local electoral district in which the address is located.\n"
+          },
+          "opstillingskredsnavn": {
+            "type": "string",
+            "description": "Name of the local electoral district in which the address is located.\n"
+          },
+          "storkredsnummer": {
+            "type": "string",
+            "description": "Identifier of the regional electoral district in which the address is located.\n"
+          },
+          "storkredsnavn": {
+            "type": "string",
+            "description": "Name of the regional electoral district in which the address is located.\n"
+          },
+          "valglandsdelsbogstav": {
+            "type": "string",
+            "description": "Letter identifier of the national electoral district in which the address is located: `A`, `B` or `C`.\n"
+          },
+          "valglandsdelsnavn": {
+            "type": "string",
+            "description": "Name of the national electoral district in which the address is located.\n"
+          },
+          "sognekode": {
+            "type": "string",
+            "description": "Identifier of the parish in which the address is located.\n"
+          },
+          "sognenavn": {
+            "type": "string",
+            "description": "Name of the parish in which the address is located.\n"
+          },
+          "politikredskode": {
+            "type": "string",
+            "description": "Identifier of the police district in which the address is located.\n"
+          },
+          "politikredsnavn": {
+            "type": "string",
+            "description": "Name of the police district in which the address is located.\n"
+          },
+          "retskredskode": {
+            "type": "string",
+            "description": "Four digit identifier of the judicial district in which the address is located.\n"
+          },
+          "retskredsnavn": {
+            "type": "string",
+            "description": "Name of the judicial district in which the address is located.\n"
+          },
+          "jordstykke_ejerlavkode": {
+            "type": "string",
+            "description": "Identifier of a cadastral unit with a single owner.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "jordstykke_ejerlavnavn": {
+            "type": "string",
+            "description": "Name of a cadastral unit with a single owner.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "jordstykke_matrikelnr": {
+            "type": "string",
+            "description": "Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "jordstykke_esrejendomsnr": {
+            "type": "string",
+            "description": "Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "ejerlavkode": {
+            "type": "string",
+            "description": "Identifier of a cadastral unit with a single owner (deprecated).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "ejerlavnavn": {
+            "type": "string",
+            "description": "Name of a cadastral unit with a single owner (deprecated).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "matrikelnr": {
+            "type": "string",
+            "description": "Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "esrejendomsnr": {
+            "type": "string",
+            "description": "Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "zone": {
+            "type": "string",
+            "description": "Status of the address zone: `Byzone`, `Sommerhusområde` or `Landzone`.\n"
+          },
+          "brofast": {
+            "type": "boolean",
+            "description": "Indicates whether the address is connected by a bridge.\n"
+          },
+          "adgangsadresseid": {
+            "type": "string",
+            "description": "Identifier of the access address associated with the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangspunktid": {
+            "type": "string",
+            "description": "Identifier of the access point for the address.\n"
+          },
+          "navngivenvej_id": {
+            "type": "string",
+            "description": "Identifier of the named road on which the access address is located.\n"
+          },
+          "adgangsadresse_status": {
+            "type": "string",
+            "description": "Status of the access address associated with the address: `1` = final address, `3` = provisional address.\n"
+          },
+          "adgangsadresse_darstatus": {
+            "type": "string",
+            "description": "Status of the access address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangsadresse_oprettet": {
+            "type": "string",
+            "description": "Date and time of the creation of the access address associated with the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangsadresse_ændret": {
+            "type": "string",
+            "description": "Date and time of the last change to the access address associated with the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangsadresse_ikrafttrædelse": {
+            "type": "string",
+            "description": "Date and time at which the access address became valid.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "adgangsadresse_nedlagt": {
+            "type": "string",
+            "description": "Date and time from which the access address is retired or suspended (may be in the future).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vejpunkt_id": {
+            "type": "string",
+            "description": "Unique identifier of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n"
+          },
+          "vejpunkt_ændret": {
+            "type": "string",
+            "description": "Date and time of the last change in Danmarks Adresseregister (DAR) to the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "vejpunkt_kilde": {
+            "type": "string",
+            "description": "Source of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n"
+          },
+          "vejpunkt_nøjagtighed": {
+            "type": "string",
+            "description": "Accuracy of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address: `A` = exact, `B` = approximate.\n"
+          },
+          "vejpunkt_tekniskstandard": {
+            "type": "string",
+            "description": "Technical classification code for the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n"
+          },
+          "vejpunkt_x": {
+            "type": "string",
+            "description": "Longitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n"
+          },
+          "vejpunkt_y": {
+            "type": "string",
+            "description": "Latitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -7514,6 +8028,9 @@
               },
               {
                 "$ref": "#/components/schemas/KartverketAddress"
+              },
+              {
+                "$ref": "#/components/schemas/SdfiAddress"
               }
             ]
           },
@@ -8287,7 +8804,8 @@
           "phone",
           "gnaf",
           "kadaster",
-          "kartverket"
+          "kartverket",
+          "sdfi"
         ],
         "properties": {
           "paf": {
@@ -8422,6 +8940,11 @@
           "kartverket": {
             "type": "boolean",
             "description": "Norway: Karverket Address File",
+            "example": true
+          },
+          "sdfi": {
+            "type": "boolean",
+            "description": "Denmark: Danmarks Adresseregister (DAR)",
             "example": true
           }
         }
@@ -8740,6 +9263,11 @@
               "kartverket": {
                 "type": "boolean",
                 "description": "Norway: Kartverket Address File",
+                "example": true
+              },
+              "sdfi": {
+                "type": "boolean",
+                "description": "Denmark: SDFI Address File",
                 "example": true
               }
             }
@@ -10294,6 +10822,9 @@
               },
               {
                 "$ref": "#/components/schemas/KartverketAddress"
+              },
+              {
+                "$ref": "#/components/schemas/SdfiAddress"
               }
             ]
           }
