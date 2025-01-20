@@ -1127,6 +1127,7 @@ export interface components {
      *   - `gnaf` (AUS) Geoscape Geocoded National Address File
      *   - `kadaster` (NLD) Kadaster BAG 2.0 Address File
      *   - `kartverket` (NOR) Norway Dataset
+     *   - `sdfi` (DNK) Denmark Dataset
      * @enum {string}
      */
     Dataset:
@@ -1153,7 +1154,8 @@ export interface components {
       | "hereap"
       | "gnaf"
       | "kadaster"
-      | "kartverket";
+      | "kartverket"
+      | "sdfi";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -3602,6 +3604,365 @@ export interface components {
       /** @description Name of region. */
       landsdel: string;
     };
+    SdfiAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "sdfi";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "DNK";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "DK";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Denmark";
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Bakkevej 3
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Pindstrup
+       */
+      line_2: string;
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "da";
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified street.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
+       */
+      address: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description Unique address identifier assigned by the data supplier. */
+      adresse_id: string;
+      /**
+       * @description Unique composite key for the address, containing codes for the municipality, road section, house number, floor and door.
+       *
+       * Can be empty string `""` if not present.
+       */
+      kvhx: string;
+      /**
+       * @description Composite key for the address, containing codes for the municipality, road section and house number.
+       *
+       * Can be empty string `""` if not present.
+       */
+      kvh: string;
+      /** @description Indicates whether the address is an access address. */
+      adgangsadresse: boolean;
+      /** @description `1` = final address, `3` = provisional address. */
+      status: string;
+      /** @description Status of the address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended. */
+      darstatus: string;
+      /**
+       * @description Date and time of address creation in Danmarks Adresseregister (DAR).
+       *
+       * Can be empty string `""` if not present.
+       */
+      oprettet: string;
+      /**
+       * @description Date and time of the last change to the address in Danmarks Adresseregister (DAR).
+       *
+       * Can be empty string `""` if not present.
+       */
+      ændret: string;
+      /**
+       * @description Date and time at which the address became valid.
+       *
+       * Can be empty string `""` if not present.
+       */
+      ikrafttrædelse: string;
+      /**
+       * @description Date and time from which the address is retired or suspended (may be in the future).
+       *
+       * Can be empty string `""` if not present.
+       */
+      nedlagt: string;
+      /** @description Four digit street identifier. */
+      vejkode: string;
+      /** @description Street name. */
+      vejnavn: string;
+      /** @description A possibly shortened version of the street name of no more than 20 characters, used where there is no space for the full street name. */
+      adresseringsvejnavn: string;
+      /** @description House number. */
+      husnr: string;
+      /**
+       * @description Floor designation.
+       *
+       * Can be empty string `""` if not present.
+       */
+      etage: string;
+      /**
+       * @description Door designation.
+       *
+       * Can be empty string `""` if not present.
+       */
+      dør: string;
+      /**
+       * @description Unique identifier in Danmarks Administrative Geografiske Inddeling (DAGI) of the supplementary town or city name.
+       *
+       * Can be empty string `""` if not present.
+       */
+      supplerendebynavn_dagi_id: string;
+      /**
+       * @description Supplementary city name.
+       *
+       * Can be empty string `""` if not present.
+       */
+      supplerendebynavn: string;
+      /** @description Postal code. */
+      postnr: string;
+      /** @description The city or district name associated with the postal code. */
+      postnrnavn: string;
+      /**
+       * @description Bulk recipient postal code (company postal code) which is associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      stormodtagerpostnr: string;
+      /**
+       * @description The city or district name associated with the bulk recipient postal code.
+       *
+       * Can be empty string `""` if not present.
+       */
+      stormodtagerpostnrnavn: string;
+      /** @description Full text of postal address. */
+      betegnelse: string;
+      /**
+       * @description Date and time of the last change to the address point.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adressepunktændringsdato: string;
+      /** @description Easting coordinate for the address in the ETRS89 system. */
+      etrs89koordinat_øst: string;
+      /** @description Northing coordinate for the address in the ETRS89 system. */
+      etrs89koordinat_nord: string;
+      /**
+       * @description Latitude of the address in the WGS84 system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      wgs84koordinat_bredde: string | number;
+      /**
+       * @description Longitude of the address in the WGS84 system.
+       *
+       * Can be empty string `""` if not present.
+       */
+      wgs84koordinat_længde: string | number;
+      /**
+       * @description Height in metres from the mean water level in the seas on Denmark's coasts to ground level at the address, calculated according to the Danish Vertical Reference 1990 (DVR90).
+       *
+       * Can be empty string `""` if not present.
+       */
+      højde: string;
+      /** @description Code indicating the accuracy of the address point. `A` = accurate to within 2 metres, `B` = accurate to within 100 metres, `U` = no address point. */
+      nøjagtighed: string;
+      /**
+       * @description Code indicating the source of the address point.
+       *
+       * Can be empty string `""` if not present.
+       */
+      kilde: string;
+      /** @description Technical classification code for the location of an address point. */
+      tekniskstandard: string;
+      /** @description Orientation for an address in gons, where a full circle is divided into 400 gons. */
+      tekstretning: string;
+      /** @description Identifier of the 100m cell in which the address is located in Det Danske Kvadratnet (DDKN). */
+      ddkn_m100: string;
+      /** @description Identifier of the 1km cell in which the address is located in Det Danske Kvadratnet (DDKN). */
+      ddkn_km1: string;
+      /** @description Identifier of the 10km cell in which the address is located in Det Danske Kvadratnet (DDKN). */
+      ddkn_km10: string;
+      /** @description Four digit identifier of the municipality in which the address is located. */
+      kommunekode: string;
+      /** @description Name of the municipality in which the address is located. */
+      kommunenavn: string;
+      /** @description NUTS 3 code of the province in which the address is located. */
+      landsdelsnuts3: string;
+      /** @description Name of the province in which the address is located. */
+      landsdelsnavn: string;
+      /** @description Four digit identifier of the region in which the address is located. */
+      regionskode: string;
+      /** @description Name of the region in which the address is located. */
+      regionsnavn: string;
+      /** @description Identifier of the polling district in which the address is located. */
+      afstemningsområdenummer: string;
+      /** @description Unique name of the polling district in which the address is located. */
+      afstemningsområdenavn: string;
+      /**
+       * @description Identifier of the parish council polling district in which the address is located.
+       *
+       * Can be empty string `""` if not present.
+       */
+      menighedsrådsafstemningsområdenummer: string;
+      /**
+       * @description Name of the parish council polling district in which the address is located.
+       *
+       * Can be empty string `""` if not present.
+       */
+      menighedsrådsafstemningsområdenavn: string;
+      /** @description Identifier of the local electoral district in which the address is located. */
+      opstillingskredskode: string;
+      /** @description Name of the local electoral district in which the address is located. */
+      opstillingskredsnavn: string;
+      /** @description Identifier of the regional electoral district in which the address is located. */
+      storkredsnummer: string;
+      /** @description Name of the regional electoral district in which the address is located. */
+      storkredsnavn: string;
+      /** @description Letter identifier of the national electoral district in which the address is located: `A`, `B` or `C`. */
+      valglandsdelsbogstav: string;
+      /** @description Name of the national electoral district in which the address is located. */
+      valglandsdelsnavn: string;
+      /** @description Identifier of the parish in which the address is located. */
+      sognekode: string;
+      /** @description Name of the parish in which the address is located. */
+      sognenavn: string;
+      /** @description Identifier of the police district in which the address is located. */
+      politikredskode: string;
+      /** @description Name of the police district in which the address is located. */
+      politikredsnavn: string;
+      /** @description Four digit identifier of the judicial district in which the address is located. */
+      retskredskode: string;
+      /** @description Name of the judicial district in which the address is located. */
+      retskredsnavn: string;
+      /**
+       * @description Identifier of a cadastral unit with a single owner.
+       *
+       * Can be empty string `""` if not present.
+       */
+      jordstykke_ejerlavkode: string;
+      /**
+       * @description Name of a cadastral unit with a single owner.
+       *
+       * Can be empty string `""` if not present.
+       */
+      jordstykke_ejerlavnavn: string;
+      /**
+       * @description Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+       *
+       * Can be empty string `""` if not present.
+       */
+      jordstykke_matrikelnr: string;
+      /**
+       * @description Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+       *
+       * Can be empty string `""` if not present.
+       */
+      jordstykke_esrejendomsnr: string;
+      /**
+       * @description Identifier of a cadastral unit with a single owner (deprecated).
+       *
+       * Can be empty string `""` if not present.
+       */
+      ejerlavkode: string;
+      /**
+       * @description Name of a cadastral unit with a single owner (deprecated).
+       *
+       * Can be empty string `""` if not present.
+       */
+      ejerlavnavn: string;
+      /**
+       * @description Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+       *
+       * Can be empty string `""` if not present.
+       */
+      matrikelnr: string;
+      /**
+       * @description Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+       *
+       * Can be empty string `""` if not present.
+       */
+      esrejendomsnr: string;
+      /** @description Status of the address zone: `Byzone`, `Sommerhusområde` or `Landzone`. */
+      zone: string;
+      /** @description Indicates whether the address is connected by a bridge. */
+      brofast: boolean;
+      /**
+       * @description Identifier of the access address associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresseid: string;
+      /** @description Identifier of the access point for the address. */
+      adgangspunktid: string;
+      /** @description Identifier of the named road on which the access address is located. */
+      navngivenvej_id: string;
+      /** @description Status of the access address associated with the address: `1` = final address, `3` = provisional address. */
+      adgangsadresse_status: string;
+      /**
+       * @description Status of the access address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresse_darstatus: string;
+      /**
+       * @description Date and time of the creation of the access address associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresse_oprettet: string;
+      /**
+       * @description Date and time of the last change to the access address associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresse_ændret: string;
+      /**
+       * @description Date and time at which the access address became valid.
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresse_ikrafttrædelse: string;
+      /**
+       * @description Date and time from which the access address is retired or suspended (may be in the future).
+       *
+       * Can be empty string `""` if not present.
+       */
+      adgangsadresse_nedlagt: string;
+      /** @description Unique identifier of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address. */
+      vejpunkt_id: string;
+      /**
+       * @description Date and time of the last change in Danmarks Adresseregister (DAR) to the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+       *
+       * Can be empty string `""` if not present.
+       */
+      vejpunkt_ændret: string;
+      /** @description Source of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address. */
+      vejpunkt_kilde: string;
+      /** @description Accuracy of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address: `A` = exact, `B` = approximate. */
+      vejpunkt_nøjagtighed: string;
+      /** @description Technical classification code for the geographic point on the road network that represents the starting point of the access route leading to the access point for the address. */
+      vejpunkt_tekniskstandard: string;
+      /** @description Longitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address. */
+      vejpunkt_x: string;
+      /** @description Latitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address. */
+      vejpunkt_y: string;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -3663,7 +4024,8 @@ export interface components {
         | components["schemas"]["HereAddress"]
         | components["schemas"]["GnafAddress"]
         | components["schemas"]["KadasterAddress"]
-        | components["schemas"]["KartverketAddress"];
+        | components["schemas"]["KartverketAddress"]
+        | components["schemas"]["SdfiAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -4288,6 +4650,11 @@ export interface components {
        * @example true
        */
       kartverket: boolean;
+      /**
+       * @description Denmark: Danmarks Adresseregister (DAR)
+       * @example true
+       */
+      sdfi: boolean;
     };
     /**
      * API Key Automated Topup
@@ -4508,6 +4875,11 @@ export interface components {
          * @example true
          */
         kartverket?: boolean;
+        /**
+         * @description Denmark: SDFI Address File
+         * @example true
+         */
+        sdfi?: boolean;
       };
     };
     /** Key Usage */
@@ -5451,7 +5823,8 @@ export interface components {
         | components["schemas"]["HereAddress"]
         | components["schemas"]["GnafAddress"]
         | components["schemas"]["KadasterAddress"]
-        | components["schemas"]["KartverketAddress"];
+        | components["schemas"]["KartverketAddress"]
+        | components["schemas"]["SdfiAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
