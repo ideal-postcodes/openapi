@@ -1,3 +1,10 @@
+## [4.9.2](https://github.com/ideal-postcodes/openapi/compare/4.9.1...4.9.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* **Release:** Trigger npm release ([ed7d92c](https://github.com/ideal-postcodes/openapi/commit/ed7d92c567508a373f23b321dd1cb10674f783ad))
+
 ## [4.9.1](https://github.com/ideal-postcodes/openapi/compare/4.9.0...4.9.1) (2025-01-20)
 
 
