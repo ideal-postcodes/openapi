@@ -3775,7 +3775,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3801,7 +3801,8 @@
           "gnaf",
           "kadaster",
           "kartverket",
-          "sdfi"
+          "sdfi",
+          "cannar"
         ]
       },
       "CountryISO": {
@@ -7894,6 +7895,271 @@
           }
         }
       },
+      "CannarAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "language",
+          "address",
+          "line_1",
+          "line_2",
+          "latitude",
+          "longitude",
+          "loc_guid",
+          "addr_guid",
+          "apt_no_label",
+          "civic_no",
+          "civic_no_suffix",
+          "official_street_name",
+          "official_street_type",
+          "official_street_dir",
+          "prov_code",
+          "csd_eng_name",
+          "csd_fre_name",
+          "csd_type_eng_code",
+          "csd_type_fre_code",
+          "mail_street_name",
+          "mail_street_type",
+          "mail_street_dir",
+          "mail_mun_name",
+          "mail_prov_abvn",
+          "mail_postal_code",
+          "bg_dls_lsd",
+          "bg_dls_qtr",
+          "bg_dls_sctn",
+          "bg_dls_twnshp",
+          "bg_dls_rng",
+          "bg_dls_mrd",
+          "bg_x",
+          "bg_y",
+          "bu_n_civic_add",
+          "bu_use",
+          "csd_code",
+          "fed_code",
+          "fed_eng_name",
+          "fed_fre_name",
+          "er_code",
+          "er_eng_name",
+          "er_fre_name",
+          "reppoint_latitude",
+          "reppoint_longitude"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "cannar"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "CAN"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "CA"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Canada"
+            ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "38 Deane St"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "RR 4"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "fr"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "loc_guid": {
+            "type": "string",
+            "description": "Globally unique identifier for location.\n"
+          },
+          "addr_guid": {
+            "type": "string",
+            "description": "Globally unique identifier for address.\n"
+          },
+          "apt_no_label": {
+            "type": "string",
+            "description": "Apartment or suite number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "civic_no": {
+            "type": "string",
+            "description": "The building number assigned to the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "civic_no_suffix": {
+            "type": "string",
+            "description": "A suffix attached to the civic number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "official_street_name": {
+            "type": "string",
+            "description": "Official street name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "official_street_type": {
+            "type": "string",
+            "description": "Official street designator.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "official_street_dir": {
+            "type": "string",
+            "description": "Official street direction.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "prov_code": {
+            "type": "string",
+            "description": "Province code.\n"
+          },
+          "csd_eng_name": {
+            "type": "string",
+            "description": "Census subdivision English name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "csd_fre_name": {
+            "type": "string",
+            "description": "Census subdivision French name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "csd_type_eng_code": {
+            "type": "string",
+            "description": "English code indicating the type of Census Subdivision.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "csd_type_fre_code": {
+            "type": "string",
+            "description": "French code indicating the type of Census Subdivision.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_street_name": {
+            "type": "string",
+            "description": "Name of the street used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_street_type": {
+            "type": "string",
+            "description": "Designator of the street used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_street_dir": {
+            "type": "string",
+            "description": "Direction of the street used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_mun_name": {
+            "type": "string",
+            "description": "Municipality name used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_prov_abvn": {
+            "type": "string",
+            "description": "Province abbreviation used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "mail_postal_code": {
+            "type": "string",
+            "description": "Postal code used in the mailing address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_lsd": {
+            "type": "string",
+            "description": "Legal Subdivision number within the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_qtr": {
+            "type": "string",
+            "description": "Quarter section within a section of the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_sctn": {
+            "type": "string",
+            "description": "Section number within a township of the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_twnshp": {
+            "type": "string",
+            "description": "Township number within the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_rng": {
+            "type": "string",
+            "description": "Range number within a meridian of the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_dls_mrd": {
+            "type": "string",
+            "description": "Meridian number within the Dominion Land Survey system for the address location.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_x": {
+            "type": "string",
+            "description": "Spatial X coordinate (GPS) of building. (ESPG 3347)\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bg_y": {
+            "type": "string",
+            "description": "Spatial Y coordinate (GPS) of building. (ESPG 3347)\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "bu_n_civic_add": {
+            "type": "string",
+            "description": "Additional delivery information for mailing address.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "PO Box 377"
+          },
+          "bu_use": {
+            "type": "string",
+            "description": "Building usage codes.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "csd_code": {
+            "type": "string",
+            "description": "Unique identifier code for a Census Subdivision (CSD).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "fed_code": {
+            "type": "string",
+            "description": "Unique identifier code for a federal electoral district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "fed_eng_name": {
+            "type": "string",
+            "description": "Name of the federal electoral district in English.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "fed_fre_name": {
+            "type": "string",
+            "description": "Name of the federal electoral district in French.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "er_code": {
+            "type": "string",
+            "description": "Unique identifier code for an economic region.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "er_eng_name": {
+            "type": "string",
+            "description": "Name of the economic region in English.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "er_fre_name": {
+            "type": "string",
+            "description": "Name of the economic region in French.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "reppoint_latitude": {
+            "type": "string",
+            "description": "Latitude coordinate (WGS84).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "reppoint_longitude": {
+            "type": "string",
+            "description": "Longitude coordinate (WGS84).\n\nCan be empty string `\"\"` if not present.\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -8031,6 +8297,9 @@
               },
               {
                 "$ref": "#/components/schemas/SdfiAddress"
+              },
+              {
+                "$ref": "#/components/schemas/CannarAddress"
               }
             ]
           },
@@ -8805,7 +9074,8 @@
           "gnaf",
           "kadaster",
           "kartverket",
-          "sdfi"
+          "sdfi",
+          "cannar"
         ],
         "properties": {
           "paf": {
@@ -8945,6 +9215,11 @@
           "sdfi": {
             "type": "boolean",
             "description": "Denmark: Danmarks Adresseregister (DAR)",
+            "example": true
+          },
+          "cannar": {
+            "type": "boolean",
+            "description": "Canada: Statistics Canada National Address Register",
             "example": true
           }
         }
@@ -9268,6 +9543,11 @@
               "sdfi": {
                 "type": "boolean",
                 "description": "Denmark: SDFI Address File",
+                "example": true
+              },
+              "cannar": {
+                "type": "boolean",
+                "description": "Canada: Statistics Canada National Address Register",
                 "example": true
               }
             }
@@ -10825,6 +11105,9 @@
               },
               {
                 "$ref": "#/components/schemas/SdfiAddress"
+              },
+              {
+                "$ref": "#/components/schemas/CannarAddress"
               }
             ]
           }
