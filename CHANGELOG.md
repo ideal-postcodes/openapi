@@ -1,3 +1,10 @@
+# [4.10.0](https://github.com/ideal-postcodes/openapi/compare/4.9.2...4.10.0) (2025-01-27)
+
+
+### Features
+
+* **Canada:** Add Canadian national address file ([b7130cd](https://github.com/ideal-postcodes/openapi/commit/b7130cd5ba657a99b6f6b3cebeb7b0edc8a34f57))
+
 ## [4.9.2](https://github.com/ideal-postcodes/openapi/compare/4.9.1...4.9.2) (2025-01-22)
 
 
