@@ -4225,18 +4225,8 @@ export interface components {
        * Can be empty string `""` if not present.
        */
       er_fre_name: string;
-      /**
-       * @description Latitude coordinate (WGS84).
-       *
-       * Can be empty string `""` if not present.
-       */
-      reppoint_latitude: string;
-      /**
-       * @description Longitude coordinate (WGS84).
-       *
-       * Can be empty string `""` if not present.
-       */
-      reppoint_longitude: string;
+      reppoint_latitude: components["schemas"]["Latitude"];
+      reppoint_longitude: components["schemas"]["Longitude"];
     };
     /**
      * Global Address
