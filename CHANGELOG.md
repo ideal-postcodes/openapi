@@ -1,3 +1,10 @@
+## [4.10.1](https://github.com/ideal-postcodes/openapi/compare/4.10.0...4.10.1) (2025-01-28)
+
+
+### Bug Fixes
+
+* **Canada:** Fix lon/lat types ([7871f7d](https://github.com/ideal-postcodes/openapi/commit/7871f7d76f9dfa5217726ec1be7647f07cde43e4))
+
 # [4.10.0](https://github.com/ideal-postcodes/openapi/compare/4.9.2...4.10.0) (2025-01-27)
 
 
