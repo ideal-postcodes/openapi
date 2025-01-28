@@ -8151,12 +8151,10 @@
             "description": "Name of the economic region in French.\n\nCan be empty string `\"\"` if not present.\n"
           },
           "reppoint_latitude": {
-            "type": "string",
-            "description": "Latitude coordinate (WGS84).\n\nCan be empty string `\"\"` if not present.\n"
+            "$ref": "#/components/schemas/Latitude"
           },
           "reppoint_longitude": {
-            "type": "string",
-            "description": "Longitude coordinate (WGS84).\n\nCan be empty string `\"\"` if not present.\n"
+            "$ref": "#/components/schemas/Longitude"
           }
         }
       },
