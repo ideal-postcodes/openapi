@@ -1045,6 +1045,9 @@
           },
           {
             "$ref": "#/components/parameters/BiasCountryParam"
+          },
+          {
+            "$ref": "#/components/parameters/SetParam"
           }
         ],
         "responses": {
@@ -12900,6 +12903,18 @@
           "type": "string"
         },
         "description": "**Bias by Country**\n\nPossible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.\n"
+      },
+      "SetParam": {
+        "name": "set",
+        "in": "query",
+        "style": "form",
+        "explode": false,
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "**Set**\n\nFilter addresses by specific criteria. Multiple sets can be combined by separating them with a comma.\n\nAvailable sets:\n\nAddress Type Filters:\n  - \"nopobox\"     : Excludes PO Box addresses\n  - \"nomilitary\"  : Excludes military addresses\n  - \"geocoded\"    : Only returns addresses with geocodes\n\nGeographic Filters:\n  - \"insular\"     : Only states and federal districts\n                    Excludes: American Samoa, Guam, Marshall Islands,\n                    Federated States of Micronesia, Northern Mariana Islands,\n                    Palau, Puerto Rico and Virgin Islands\n\n  - \"contiguous\"  : Only US mainland states\n                    Excludes: Alaska, Hawaii, American Samoa, Guam,\n                    Marshall Islands, Federated States of Micronesia,\n                    Northern Mariana Islands, Palau, Puerto Rico and Virgin Islands\n",
+        "example": "nopobox,nomilitary"
       },
       "AddressLongitudeParam": {
         "name": "lon",

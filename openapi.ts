@@ -7251,6 +7251,32 @@ export interface components {
      */
     BiasCountryParam: string;
     /**
+     * @description **Set**
+     *
+     * Filter addresses by specific criteria. Multiple sets can be combined by separating them with a comma.
+     *
+     * Available sets:
+     *
+     * Address Type Filters:
+     *   - "nopobox"     : Excludes PO Box addresses
+     *   - "nomilitary"  : Excludes military addresses
+     *   - "geocoded"    : Only returns addresses with geocodes
+     *
+     * Geographic Filters:
+     *   - "insular"     : Only states and federal districts
+     *                     Excludes: American Samoa, Guam, Marshall Islands,
+     *                     Federated States of Micronesia, Northern Mariana Islands,
+     *                     Palau, Puerto Rico and Virgin Islands
+     *
+     *   - "contiguous"  : Only US mainland states
+     *                     Excludes: Alaska, Hawaii, American Samoa, Guam,
+     *                     Marshall Islands, Federated States of Micronesia,
+     *                     Northern Mariana Islands, Palau, Puerto Rico and Virgin Islands
+     *
+     * @example nopobox,nomilitary
+     */
+    SetParam: string;
+    /**
      * @description **Longitude**
      *
      * Longitude query for reverse geocoding.
@@ -8226,6 +8252,30 @@ export interface operations {
          * Possible values are England, Scotland, Wales, Northern Ireland, Jersey, Guernsey and Isle of Man.
          */
         bias_country?: components["parameters"]["BiasCountryParam"];
+        /**
+         * **Set**
+         *
+         * Filter addresses by specific criteria. Multiple sets can be combined by separating them with a comma.
+         *
+         * Available sets:
+         *
+         * Address Type Filters:
+         *   - "nopobox"     : Excludes PO Box addresses
+         *   - "nomilitary"  : Excludes military addresses
+         *   - "geocoded"    : Only returns addresses with geocodes
+         *
+         * Geographic Filters:
+         *   - "insular"     : Only states and federal districts
+         *                     Excludes: American Samoa, Guam, Marshall Islands,
+         *                     Federated States of Micronesia, Northern Mariana Islands,
+         *                     Palau, Puerto Rico and Virgin Islands
+         *
+         *   - "contiguous"  : Only US mainland states
+         *                     Excludes: Alaska, Hawaii, American Samoa, Guam,
+         *                     Marshall Islands, Federated States of Micronesia,
+         *                     Northern Mariana Islands, Palau, Puerto Rico and Virgin Islands
+         */
+        set?: components["parameters"]["SetParam"];
       };
     };
     responses: {
