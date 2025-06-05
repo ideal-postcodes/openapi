@@ -1,3 +1,10 @@
+# [4.11.0](https://github.com/ideal-postcodes/openapi/compare/4.10.1...4.11.0) (2025-06-05)
+
+
+### Features
+
+* **OpenAPI:** Update to 4.11.0 ([fe1f1a8](https://github.com/ideal-postcodes/openapi/commit/fe1f1a89d09e20d6e99ffdad94e8d5dd4d8d3a12))
+
 ## [4.10.1](https://github.com/ideal-postcodes/openapi/compare/4.10.0...4.10.1) (2025-01-28)
 
 
