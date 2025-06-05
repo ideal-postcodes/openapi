@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 4.0.0
+  version: 4.11.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -16,6 +16,16 @@ info:
     We recommend using HTTPS only although HTTP is available.
 
     We use appropriate HTTP status codes where possible to indicate the request status.
+
+    ## OpenAPI Spec
+
+    Our OpenAPI specification is available at:
+
+    - [Github Repository](https://github.com/ideal-postcodes/openapi)
+    - [API Reference](https://openapi.ideal-postcodes.co.uk)
+    - [OpenAPI v3 JSON File](https://openapi.ideal-postcodes.co.uk/openapi.json)
+    - [OpenAPI v3 YAML File](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
+    - [NPM Package](https://www.npmjs.com/package/@ideal-postcodes/openapi)
 
     ## Rate Limiting
 
@@ -74,71 +84,6 @@ info:
     `2XX` status codes indicates success while `4XX` and `5XX` indicate client and server errors respectively.
 
     The second is the **API response code**, which can be found in the `code` property of the response body. This code will provide a more specific reason if a failure has occurred and can point you in the right direction when debugging.
-
-    Please use the glossary of code numbers and HTTP status codes below when debugging your requests.
-
-    ### 200 Request Success
-
-    | HTTP Code | API Code | Description                                  |
-    | --------- | -------- | -------------------------------------------- |
-    | 200       | 2000     | Success. Request was completed successfully. |
-
-    ### 400 Bad Request
-
-    The request could not be understood due to some input error.
-
-    | HTTP Code | API Code | Description                                                                                                                           |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-    | 400       | 4000     | Invalid syntax submitted. Some part of your request was malformed or did not match our specifications.                                |
-    | 400       | 4001     | Validation failed on your submitted data. Some of the data you provided did not meet our validation requirements, e.g. string length. |
-    | 400       | 4005     | Invalid start date. Please ensure start dates are provided as a UTC Timestamp in milliseconds.                                        |
-    | 400       | 4006     | Invalid end date. Please ensure end dates are provided as a UTC Timestamp in milliseconds.                                            |
-    | 400       | 4007     | Invalid date range. Check if your start and end dates are in the right order.                                                         |
-    | 400       | 4008     | Invalid date range. Check that your date range is 90 days or less.                                                                    |
-    | 400       | 4009     | Too many tags. Please specify no more than 3 tags to query.                                                                           |
-
-    ### 401 Unauthorised
-
-    Authorization credentials are not valid.
-
-    | HTTP Code | API Code | Description                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 401       | 4010     | Invalid Key. The `api_key` you provided is not valid.                                                                                                              |
-    | 401       | 4011     | Requesting URL not on whitelist. The cross domain request is not coming from a whitelisted URL. You can update or disable your allowed URLs via your Key settings. |
-    | 401       | 4012     | Failed user authentication. Invalid `user_token` presented.                                                                                                        |
-    | 401       | 4013     | Licensee Key is required. Sublicensed keys require you need to present licensee credentials via the `licensee` parameter.                                          |
-
-    ### 402 Request Failed
-
-    Your request is well-formed but are not able to complete your request for another reason.
-
-    | HTTP Code | API Code | Description                                                                                                                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 402       | 4020     | Key balance depleted. You're out of lookups on your API Key.                                                                                                                                                                                                       |
-    | 402       | 4021     | Limit reached. One of your lookup limits has been breached for today. This could either be your total daily limit on your key or the individual IP limit. You can either wait for for the limit to reset (after a day) or manually disable or increase your limit. |
-
-    ### 404 Resource Not Found
-
-    The resource you requested does not exist.
-
-    | HTTP Code | API Code | Description                                                                                   |
-    | --------- | -------- | --------------------------------------------------------------------------------------------- |
-    | 404       | 4040     | Postcode not found. The postcode you have submitted does not exist.                           |
-    | 404       | 4041     | User not found. Your user could not be identified given the credentials you presented.        |
-    | 404       | 4042     | Key not found. Your key could not be identified given the credentials you presented.          |
-    | 404       | 4044     | No UDPRN found. No address is associated with the UDPRN queried                               |
-    | 404       | 4045     | No licensee found. Your licensee could not be identified given the credentials you presented. |
-    | 404       | 4046     | No UMPRN found. No Multiple Residence premise is associated with the UMPRN queried.           |
-
-    ### 500 Server Error
-
-    A error occurred on our server.
-
-    | HTTP Code | API Code | Description                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 500       | 5000     | An error occurred on our end. These errors are logged and queued so we can understand what went wrong. However, if you need speedy resolution please email support |
-    | 500       | 5001     | Akin to 5000.                                                                                                                                                      |
-    | 500       | 5002     | The server took too long to process on our end, so we aborted the request. You may retry the request.                                                              |
   contact:
     email: support@ideal-postcodes.co.uk
     name: Support
