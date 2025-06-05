@@ -14,9 +14,9 @@
 ## Links
 
 - [Github Repository](https://github.com/ideal-postcodes/openapi)
-- [API Reference](https://openapi.ideal-postcodes.dev)
-- OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.dev/openapi.json)
-- OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.dev/openapi.yaml)
+- [API Reference](https://openapi.ideal-postcodes.co.uk)
+- OpenAPI v3 Raw Files: [JSON](https://openapi.ideal-postcodes.co.uk/openapi.json)
+- OpenAPI v3 Raw Files: [YAML](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
 - [NPM Package](https://www.npmjs.com/package/@ideal-postcodes/openapi)
 
 ## Getting Started
