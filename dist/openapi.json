@@ -3418,10 +3418,12 @@
           "id",
           "is",
           "it",
+          "ja",
           "ka",
           "kk",
           "km",
           "kn",
+          "ko",
           "lt",
           "lv",
           "mk",
@@ -3775,7 +3777,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset\n  - `fodbosa` (BEL) Belgium Dataset\n  - `mois` (KOR) South Korea Dataset\n  - `upujp` (JPN) Japan UPU Address File",
         "enum": [
           "paf",
           "pafw",
@@ -3802,7 +3804,10 @@
           "kadaster",
           "kartverket",
           "sdfi",
-          "cannar"
+          "cannar",
+          "fodbosa",
+          "mois",
+          "upujp"
         ]
       },
       "CountryISO": {
@@ -5649,7 +5654,13 @@
               "order1_name",
               "order2_name",
               "order8_name",
-              "builtup_name"
+              "builtup_name",
+              "poi_name",
+              "building_unit_name",
+              "level_name",
+              "unit_name",
+              "suppl_address_info",
+              "building_grp_name"
             ],
             "properties": {
               "id": {
@@ -5831,6 +5842,36 @@
                 "type": "string",
                 "description": "Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.",
                 "example": ""
+              },
+              "poi_name": {
+                "type": "string",
+                "description": "Name of the point of interest associated with the address.",
+                "example": "Abbazia San Severo"
+              },
+              "building_unit_name": {
+                "type": "string",
+                "description": "Name of the Building associated with a Micro Point Address.",
+                "example": "M193"
+              },
+              "level_name": {
+                "type": "string",
+                "description": "Name of floor or level within a building associated with a Micro Point Address.",
+                "example": "3"
+              },
+              "unit_name": {
+                "type": "string",
+                "description": "Name of the unit (suite, etc) associated with a Micro Point Address.",
+                "example": "30A"
+              },
+              "suppl_address_info": {
+                "type": "string",
+                "description": "Additional address or building information.",
+                "example": "Ballyboughal Post Office"
+              },
+              "building_grp_name": {
+                "type": "string",
+                "description": "Name of the group of buildings with which the address is associated.",
+                "example": "Windgate Cottages"
               }
             }
           }
@@ -8158,6 +8199,1389 @@
           }
         }
       },
+      "FodbosaAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "line_1",
+          "language",
+          "address",
+          "latitude",
+          "longitude",
+          "epsg_31370_x",
+          "epsg_31370_y",
+          "epsg_4326_lat",
+          "epsg_4326_lon",
+          "address_id",
+          "box_number",
+          "house_number",
+          "municipality_id",
+          "municipality_name_de",
+          "municipality_name_fr",
+          "municipality_name_nl",
+          "postcode",
+          "postname_fr",
+          "postname_nl",
+          "street_id",
+          "streetname_de",
+          "streetname_fr",
+          "streetname_nl",
+          "region_code",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "fodbosa"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "BEL"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "BE"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Belgium"
+            ]
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Kapellestraat 3"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "fr",
+              "nl"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "3"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "epsg_31370_x": {
+            "type": "string",
+            "description": "X coordinate of the address in the BD72 / Belgian Lambert 72 (EPSG:31370) coordinate system.\n"
+          },
+          "epsg_31370_y": {
+            "type": "string",
+            "description": "Y coordinate of the address in the BD72 / Belgian Lambert 72 (EPSG:31370) coordinate system.\n"
+          },
+          "epsg_4326_lat": {
+            "type": "string",
+            "description": "Latitude of the address in the WGS84 (EPSG:4326) coordinate system.\n"
+          },
+          "epsg_4326_lon": {
+            "type": "string",
+            "description": "Longitude of the address in the WGS84 (EPSG:4326) coordinate system.\n"
+          },
+          "address_id": {
+            "type": "string",
+            "description": "Address local identifier assigned by the data supplier.\n"
+          },
+          "box_number": {
+            "type": "string",
+            "description": "PO Box number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "house_number": {
+            "type": "string",
+            "description": "House number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "municipality_id": {
+            "type": "string",
+            "description": "Municipality local identifier assigned by the data supplier.\n"
+          },
+          "municipality_name_de": {
+            "type": "string",
+            "description": "Municipality name in German.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "municipality_name_fr": {
+            "type": "string",
+            "description": "Municipality name in French.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "municipality_name_nl": {
+            "type": "string",
+            "description": "Municipality name in Dutch.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "postcode": {
+            "type": "string",
+            "description": "Postal code.\n"
+          },
+          "postname_fr": {
+            "type": "string",
+            "description": "Name of postal area in French.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "postname_nl": {
+            "type": "string",
+            "description": "Name of postal area in Dutch.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "street_id": {
+            "type": "string",
+            "description": "Street local identifier assigned by the data supplier.\n"
+          },
+          "streetname_de": {
+            "type": "string",
+            "description": "Street name in German.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "streetname_fr": {
+            "type": "string",
+            "description": "Street name in French.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "streetname_nl": {
+            "type": "string",
+            "description": "Street name in Dutch.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "region_code": {
+            "type": "string",
+            "description": "ISO 3166-2 code of the region in which the address is located.\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the address: `current`, `proposed` or `retired`.\n"
+          }
+        }
+      },
+      "MoisAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "language",
+          "address",
+          "line_1",
+          "line_2",
+          "city",
+          "province",
+          "법정읍면동명",
+          "법정동코드",
+          "법정리명",
+          "비고1",
+          "비고2",
+          "변동전도로명주소",
+          "변경이력정보",
+          "변경이력사유",
+          "변경전_도로명주소",
+          "변경사유",
+          "변경사유코드",
+          "층일련번호",
+          "층명칭",
+          "대표지번여부",
+          "대표여부",
+          "다량배달처명",
+          "동일련번호",
+          "동명칭",
+          "도로명",
+          "도로명_로마자",
+          "도로명번호",
+          "도로명코드",
+          "도로명코드_고시일자",
+          "도로명코드_말소일자",
+          "읍면동구분",
+          "읍면동일련번호",
+          "읍면동코드",
+          "읍면동명",
+          "읍면동명_로마자",
+          "건축물대장_건물명",
+          "건물본번",
+          "건물부번",
+          "건물관리번호",
+          "기초구역번호",
+          "공동주택여부",
+          "고시일자",
+          "관리번호",
+          "행정동코드",
+          "행정동명",
+          "호일련번호",
+          "호명칭",
+          "호접미사일련번호",
+          "호접미사명칭",
+          "이동사유코드",
+          "일련번호",
+          "지번일련번호",
+          "지번본번_번지",
+          "지번부번_호",
+          "지하구분",
+          "지하여부",
+          "산여부",
+          "상위도로명",
+          "상위도로명번호",
+          "상세건물명",
+          "상세주소_부여여부",
+          "상세주소여부",
+          "사용여부",
+          "시도명",
+          "시도명_로마자",
+          "시군구_건물명",
+          "시군구코드",
+          "시군구명",
+          "시군구명_로마자",
+          "시군구용_건물명",
+          "우편일련번호",
+          "우편번호",
+          "우편번호_일련번호",
+          "영문_법정리명",
+          "영문읍면동명",
+          "영문_법정읍면동명",
+          "영문도로명",
+          "영문시도명",
+          "영문시군구명"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "mois"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "South Korea"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "KOR"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "KR"
+            ]
+          },
+          "language": {
+            "enum": [
+              "ko"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "배방읍 북수리 배방산길 197-1"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": ""
+          },
+          "city": {
+            "type": "string",
+            "description": "Preferred city name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": ""
+          },
+          "province": {
+            "type": "string",
+            "description": "Preferred province name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": ""
+          },
+          "법정읍면동명": {
+            "type": "string",
+            "description": "Legal town name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "법정동코드": {
+            "type": "string",
+            "description": "Legal district code.\n"
+          },
+          "법정리명": {
+            "type": "string",
+            "description": "Legal name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "비고1": {
+            "type": "string",
+            "description": "Note 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "비고2": {
+            "type": "string",
+            "description": "Note 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변동전도로명주소": {
+            "type": "string",
+            "description": "Changed street name address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변경이력정보": {
+            "type": "string",
+            "description": "Change history information.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변경이력사유": {
+            "type": "string",
+            "description": "Change history reason.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변경전_도로명주소": {
+            "type": "string",
+            "description": "Previous road name address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변경사유": {
+            "type": "string",
+            "description": "Change reason.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "변경사유코드": {
+            "type": "string",
+            "description": "Change reason code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "층일련번호": {
+            "type": "string",
+            "description": "Floor serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "층명칭": {
+            "type": "string",
+            "description": "Floor name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "대표지번여부": {
+            "type": "string",
+            "description": "Is representative address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "대표여부": {
+            "type": "string",
+            "description": "Is representative.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "다량배달처명": {
+            "type": "string",
+            "description": "Bulk delivery location name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "동일련번호": {
+            "type": "string",
+            "description": "Building serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "동명칭": {
+            "type": "string",
+            "description": "Building name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "도로명": {
+            "type": "string",
+            "description": "Road name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "도로명_로마자": {
+            "type": "string",
+            "description": "Romanized road name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "도로명번호": {
+            "type": "string",
+            "description": "Road name number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "도로명코드": {
+            "type": "string",
+            "description": "Road name code.\n"
+          },
+          "도로명코드_고시일자": {
+            "type": "string",
+            "description": "Road name code creation date.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "도로명코드_말소일자": {
+            "type": "string",
+            "description": "Road name code deletion date.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "읍면동구분": {
+            "type": "string",
+            "description": "Town classification.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "읍면동일련번호": {
+            "type": "string",
+            "description": "Town serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "읍면동코드": {
+            "type": "string",
+            "description": "Town code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "읍면동명": {
+            "type": "string",
+            "description": "Town name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "읍면동명_로마자": {
+            "type": "string",
+            "description": "Romanized town name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "건축물대장_건물명": {
+            "type": "string",
+            "description": "Building name in building register.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "건물본번": {
+            "type": "string",
+            "description": "Building number.\n"
+          },
+          "건물부번": {
+            "type": "string",
+            "description": "Building sub-number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "건물관리번호": {
+            "type": "string",
+            "description": "Building management number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "기초구역번호": {
+            "type": "string",
+            "description": "Basic area number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "공동주택여부": {
+            "type": "string",
+            "description": "Is apartment.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "고시일자": {
+            "type": "string",
+            "description": "Creation date.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "관리번호": {
+            "type": "string",
+            "description": "Management number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "행정동코드": {
+            "type": "string",
+            "description": "Administrative district code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "행정동명": {
+            "type": "string",
+            "description": "Administrative district name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "호일련번호": {
+            "type": "string",
+            "description": "Unit serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "호명칭": {
+            "type": "string",
+            "description": "Unit name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "호접미사일련번호": {
+            "type": "string",
+            "description": "Unit suffix serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "호접미사명칭": {
+            "type": "string",
+            "description": "Unit suffix name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "이동사유코드": {
+            "type": "string",
+            "description": "Movement reason code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "일련번호": {
+            "type": "string",
+            "description": "Serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "지번일련번호": {
+            "type": "string",
+            "description": "Address serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "지번본번_번지": {
+            "type": "string",
+            "description": "Address building number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "지번부번_호": {
+            "type": "string",
+            "description": "Address unit number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "지하구분": {
+            "type": "string",
+            "description": "Is basement.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "지하여부": {
+            "type": "string",
+            "description": "Level (ground level, underground, aerial).\n"
+          },
+          "산여부": {
+            "type": "string",
+            "description": "Is mountain.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "상위도로명": {
+            "type": "string",
+            "description": "Upper road name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "상위도로명번호": {
+            "type": "string",
+            "description": "Upper road name number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "상세건물명": {
+            "type": "string",
+            "description": "Detailed building name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "상세주소_부여여부": {
+            "type": "string",
+            "description": "Whether detailed address assigned.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "상세주소여부": {
+            "type": "string",
+            "description": "Whether detailed address exists.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "사용여부": {
+            "type": "string",
+            "description": "In use.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시도명": {
+            "type": "string",
+            "description": "City name.\n"
+          },
+          "시도명_로마자": {
+            "type": "string",
+            "description": "Romanized city name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시군구_건물명": {
+            "type": "string",
+            "description": "District building name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시군구코드": {
+            "type": "string",
+            "description": "District code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시군구명": {
+            "type": "string",
+            "description": "District name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시군구명_로마자": {
+            "type": "string",
+            "description": "Romanized district name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "시군구용_건물명": {
+            "type": "string",
+            "description": "District building name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "우편일련번호": {
+            "type": "string",
+            "description": "Postal sequence number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "우편번호": {
+            "type": "string",
+            "description": "Postal code.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "우편번호_일련번호": {
+            "type": "string",
+            "description": "Postal code serial number.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문_법정리명": {
+            "type": "string",
+            "description": "English legal name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문읍면동명": {
+            "type": "string",
+            "description": "English town name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문_법정읍면동명": {
+            "type": "string",
+            "description": "English legal town name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문도로명": {
+            "type": "string",
+            "description": "English road name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문시도명": {
+            "type": "string",
+            "description": "English city name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "영문시군구명": {
+            "type": "string",
+            "description": "English district name.\n\nCan be empty string `\"\"` if not present.\n"
+          }
+        }
+      },
+      "UpujpAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "language",
+          "script",
+          "address",
+          "line_1",
+          "building_name",
+          "neighbourhood",
+          "district",
+          "city",
+          "prefecture",
+          "postcode",
+          "latitude",
+          "longitude",
+          "org_id",
+          "org_type_ind",
+          "org_sub_type_ind",
+          "org_loc_id",
+          "org_dis_id",
+          "org_nei_id",
+          "org_org_id",
+          "org_name",
+          "org_name_trans",
+          "org_loc_sfx",
+          "org_loc_sfx_trans",
+          "org_adr",
+          "org_adr_trans",
+          "org_po_ind",
+          "org_po_start",
+          "org_po_end",
+          "org_dsc",
+          "org_dsc_trans",
+          "org_pcode",
+          "org_pcode_fin",
+          "org_script",
+          "org_language",
+          "str_id",
+          "str_key",
+          "str_loc_id",
+          "str_dis_id",
+          "str_nei_id",
+          "str_org_id",
+          "str_pfx",
+          "str_pfx_trans",
+          "str_qlf_pre",
+          "str_qlf_pre_trans",
+          "str_qlf_suc",
+          "str_qlf_suc_trans",
+          "str_name",
+          "str_name_trans",
+          "str_loc_sfx",
+          "str_loc_sfx_trans",
+          "str_type",
+          "str_type_trans",
+          "str_type_abv",
+          "str_type_abv_trans",
+          "str_adr_num_key",
+          "str_from_num",
+          "str_from_unit",
+          "str_from_alph",
+          "str_to_num",
+          "str_to_unit",
+          "str_to_alph",
+          "str_evenodd",
+          "str_dsc",
+          "str_dsc_trans",
+          "str_blg_id",
+          "str_blg_name",
+          "str_blg_name_trans",
+          "str_blg_type",
+          "str_blg_type_trans",
+          "str_blg_dsc",
+          "str_blg_dsc_trans",
+          "str_ref_str_id",
+          "str_pcode",
+          "str_script",
+          "str_language",
+          "sub_dis_id",
+          "sub_dis_key",
+          "sub_loc_id",
+          "sub_loc_sfx",
+          "sub_loc_sfx_trans",
+          "sub_dis_name",
+          "sub_dis_name_trans",
+          "sub_dis_sfx",
+          "sub_dis_sfx_trans",
+          "sub_dis_dsc",
+          "sub_dis_dsc_trans",
+          "sub_dis_pcode",
+          "sub_dis_pcode_fin",
+          "sub_nei_id",
+          "sub_nei_key",
+          "sub_nei_name",
+          "sub_nei_name_trans",
+          "sub_nei_sfx",
+          "sub_nei_sfx_trans",
+          "sub_nei_zone_from",
+          "sub_nei_zone_to",
+          "sub_nei_dsc",
+          "sub_nei_dsc_trans",
+          "sub_nei_pcode",
+          "sub_script",
+          "sub_language",
+          "loc_id",
+          "loc_key",
+          "loc_adm1_id",
+          "loc_adm1_key",
+          "loc_adm1_name",
+          "loc_adm1_name_trans",
+          "loc_adm1_sfx",
+          "loc_adm1_sfx_trans",
+          "loc_adm1_abv",
+          "loc_adm1_abv_trans",
+          "loc_adm2_id",
+          "loc_adm2_key",
+          "loc_adm2_name",
+          "loc_adm2_name_trans",
+          "loc_adm2_sfx",
+          "loc_adm2_sfx_trans",
+          "loc_adm2_abv",
+          "loc_adm2_abv_trans",
+          "loc_adm3_id",
+          "loc_adm3_key",
+          "loc_adm3_name",
+          "loc_adm3_name_trans",
+          "loc_adm3_sfx",
+          "loc_adm3_sfx_trans",
+          "loc_adm3_abv",
+          "loc_adm3_abv_trans",
+          "loc_name",
+          "loc_name_trans",
+          "loc_sfx",
+          "loc_sfx_trans",
+          "loc_pcode",
+          "loc_pcode_fin",
+          "loc_dsc",
+          "loc_dsc_trans",
+          "loc_script",
+          "loc_language"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "upujp"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Japan"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "JPN"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "JP"
+            ]
+          },
+          "language": {
+            "enum": [
+              "ja",
+              "en"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2-4"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2-4"
+          },
+          "building_name": {
+            "type": "string",
+            "description": "Preferred building name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "電通本社ビル"
+          },
+          "neighbourhood": {
+            "type": "string",
+            "description": "Preferred neighbourhood name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "あいの里一条七丁目"
+          },
+          "district": {
+            "type": "string",
+            "description": "Preferred district name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "上富良野町"
+          },
+          "city": {
+            "type": "string",
+            "description": "Preferred city name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "下関市"
+          },
+          "prefecture": {
+            "type": "string",
+            "description": "Preferred prefecture name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "和歌山県"
+          },
+          "postcode": {
+            "type": "string",
+            "description": "Preferred postal code.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "259-1100"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "The unique identifier of an organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_type_ind": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Indicates the type of organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_sub_type_ind": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Indicates the sub-type of the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_loc_id": {
+            "type": "string",
+            "description": "Locality identifier for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_dis_id": {
+            "type": "string",
+            "description": "District identifier for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_nei_id": {
+            "type": "string",
+            "description": "Neighbourhood identifier for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_org_id": {
+            "type": "string",
+            "description": "Associated organisation identifier for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_name": {
+            "type": "string",
+            "description": "Name of the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_name_trans": {
+            "type": "string",
+            "description": "Translated name of the organisation in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_loc_sfx": {
+            "type": "string",
+            "description": "Suffix of the locality for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_loc_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the locality for the organisation in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_adr": {
+            "type": "string",
+            "description": "Address of the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_adr_trans": {
+            "type": "string",
+            "description": "Translated address of the organisation in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_po_ind": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Indicates whether the organisation has a post office box.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_po_start": {
+            "type": "string",
+            "description": "Post office box number or start of the post office box range associated with the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_po_end": {
+            "type": "string",
+            "description": "End of the post office box range associated with the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_dsc": {
+            "type": "string",
+            "description": "Additional information about the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the organisation in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_pcode": {
+            "type": "string",
+            "description": "Postal code for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_pcode_fin": {
+            "type": "string",
+            "description": "Final postal code for the organisation.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_script": {
+            "type": "string",
+            "description": "Script used for the organisation name.\n\n`Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "org_language": {
+            "type": "string",
+            "description": "Language used for the organisation name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_id": {
+            "type": "string",
+            "description": "Identifier of the street (not unique).\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_key": {
+            "type": "string",
+            "description": "Permanent identifier of the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_loc_id": {
+            "type": "string",
+            "description": "Locality identifier for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_dis_id": {
+            "type": "string",
+            "description": "District identifier for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_nei_id": {
+            "type": "string",
+            "description": "Neighbourhood identifier for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_org_id": {
+            "type": "string",
+            "description": "Associated organisation identifier for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_pfx": {
+            "type": "string",
+            "description": "Prefix of the street name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_pfx_trans": {
+            "type": "string",
+            "description": "Translated prefix of the street name in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_qlf_pre": {
+            "type": "string",
+            "description": "Preceding qualifier of the street name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_qlf_pre_trans": {
+            "type": "string",
+            "description": "Translated preceding qualifier of the street name in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_qlf_suc": {
+            "type": "string",
+            "description": "Succeeding qualifier of the street name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_qlf_suc_trans": {
+            "type": "string",
+            "description": "Translated succeeding qualifier of the street name in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_name": {
+            "type": "string",
+            "description": "Name of the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_name_trans": {
+            "type": "string",
+            "description": "Translated name of the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_loc_sfx": {
+            "type": "string",
+            "description": "Suffix of the locality for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_loc_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the locality for the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_type": {
+            "type": "string",
+            "description": "Type of the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_type_trans": {
+            "type": "string",
+            "description": "Translated type of the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_type_abv": {
+            "type": "string",
+            "description": "Abbreviation of the street type.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_type_abv_trans": {
+            "type": "string",
+            "description": "Translated abbreviation of the street type in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_adr_num_key": {
+            "type": "string",
+            "description": "Permanent identifier of the address.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_from_num": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Lowest address number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_from_unit": {
+            "type": "string",
+            "description": "Lowest unit number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_from_alph": {
+            "type": "string",
+            "description": "Extension of the lowest address number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_to_num": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Highest address number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_to_unit": {
+            "type": "string",
+            "description": "Highest unit number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_to_alph": {
+            "type": "string",
+            "description": "Extension of the highest address number on the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_evenodd": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Indicates whether the address range for this street contains even numbers, odd numbers, or both.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_dsc": {
+            "type": "string",
+            "description": "Additional information about the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_id": {
+            "type": "string",
+            "description": "Identifier of the building for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_name": {
+            "type": "string",
+            "description": "Name of the building for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_name_trans": {
+            "type": "string",
+            "description": "Translated name of the building for the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_type": {
+            "type": "string",
+            "description": "Type of the building for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_type_trans": {
+            "type": "string",
+            "description": "Translated type of the building for the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_dsc": {
+            "type": "string",
+            "description": "Additional information about the building for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_blg_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the building for the street in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_ref_str_id": {
+            "type": "string",
+            "description": "Identifier of the associated street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_pcode": {
+            "type": "string",
+            "description": "Postal code for the street.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_script": {
+            "type": "string",
+            "description": "Script used for the street name.\n\n`Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "str_language": {
+            "type": "string",
+            "description": "Language used for the street name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_id": {
+            "type": "string",
+            "description": "Unique identifier of the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_key": {
+            "type": "string",
+            "description": "Permanent identifier of the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_loc_id": {
+            "type": "string",
+            "description": "Locality identifier for the subdivision.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_loc_sfx": {
+            "type": "string",
+            "description": "Suffix of the locality for the subdivision.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_loc_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the locality for the subdivision in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_name": {
+            "type": "string",
+            "description": "Name of the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_name_trans": {
+            "type": "string",
+            "description": "Translated name of the district in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_sfx": {
+            "type": "string",
+            "description": "Suffix of the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the district in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_dsc": {
+            "type": "string",
+            "description": "Additional information about the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the district in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_pcode": {
+            "type": "string",
+            "description": "Postal code for the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_dis_pcode_fin": {
+            "type": "string",
+            "description": "Final postal code for the district.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_id": {
+            "type": "string",
+            "description": "Identifier of the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_key": {
+            "type": "string",
+            "description": "Permanent identifier of the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_name": {
+            "type": "string",
+            "description": "Name of the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_name_trans": {
+            "type": "string",
+            "description": "Translated name of the neighbourhood in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_sfx": {
+            "type": "string",
+            "description": "Suffix of the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the neighbourhood in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_zone_from": {
+            "type": "string",
+            "description": "Start of the range of zone numbers to which the neighbourhood postal code corresponds.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_zone_to": {
+            "type": "string",
+            "description": "End of the range of zone numbers to which the neighbourhood postal code corresponds.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_dsc": {
+            "type": "string",
+            "description": "Additional information about the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the neighbourhood in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_nei_pcode": {
+            "type": "string",
+            "description": "Postal code for the neighbourhood.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_script": {
+            "type": "string",
+            "description": "Script used for the subdivision names.\n\n`Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "sub_language": {
+            "type": "string",
+            "description": "Language used for the subdivision names.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_id": {
+            "type": "string",
+            "description": "Unique identifier of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_key": {
+            "type": "string",
+            "description": "Permanent identifier of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_id": {
+            "type": "string",
+            "description": "Identifier of administrative division 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_key": {
+            "type": "string",
+            "description": "Permanent identifier of administrative division 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_name": {
+            "type": "string",
+            "description": "Name of administrative division 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_name_trans": {
+            "type": "string",
+            "description": "Translated name of administrative division 1 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_sfx": {
+            "type": "string",
+            "description": "Suffix of administrative division 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of administrative division 1 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_abv": {
+            "type": "string",
+            "description": "Abbreviation of administrative division 1.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm1_abv_trans": {
+            "type": "string",
+            "description": "Translated abbreviation of administrative division 1 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_id": {
+            "type": "string",
+            "description": "Identifier of administrative division 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_key": {
+            "type": "string",
+            "description": "Permanent identifier of administrative division 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_name": {
+            "type": "string",
+            "description": "Name of administrative division 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_name_trans": {
+            "type": "string",
+            "description": "Translated name of administrative division 2 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_sfx": {
+            "type": "string",
+            "description": "Suffix of administrative division 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of administrative division 2 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_abv": {
+            "type": "string",
+            "description": "Abbreviation of administrative division 2.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm2_abv_trans": {
+            "type": "string",
+            "description": "Translated abbreviation of administrative division 2 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_id": {
+            "type": "string",
+            "description": "Identifier of administrative division 3.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_key": {
+            "type": "string",
+            "description": "Permanent identifier of administrative division 3.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_name": {
+            "type": "string",
+            "description": "Name of administrative division 3.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_name_trans": {
+            "type": "string",
+            "description": "Translated name of administrative division 3 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_sfx": {
+            "type": "string",
+            "description": "Suffix of administrative division 3.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of administrative division 3 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_abv": {
+            "type": "string",
+            "description": "Abbreviation of administrative division 3.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_adm3_abv_trans": {
+            "type": "string",
+            "description": "Translated abbreviation of administrative division 3 in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_name": {
+            "type": "string",
+            "description": "Name of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_name_trans": {
+            "type": "string",
+            "description": "Translated name of the locality in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_sfx": {
+            "type": "string",
+            "description": "Suffix of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_sfx_trans": {
+            "type": "string",
+            "description": "Translated suffix of the locality in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_pcode": {
+            "type": "string",
+            "description": "Postal code of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_pcode_fin": {
+            "type": "string",
+            "description": "Final postal code of the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_dsc": {
+            "type": "string",
+            "description": "Additional information about the locality.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_dsc_trans": {
+            "type": "string",
+            "description": "Translated additional information about the locality in Latin script.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_script": {
+            "type": "string",
+            "description": "Script used for the locality names.\n\n`Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "loc_language": {
+            "type": "string",
+            "description": "Language used for the locality names.\n\nCan be empty string `\"\"` if not present.\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -8298,6 +9722,15 @@
               },
               {
                 "$ref": "#/components/schemas/CannarAddress"
+              },
+              {
+                "$ref": "#/components/schemas/FodbosaAddress"
+              },
+              {
+                "$ref": "#/components/schemas/MoisAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UpujpAddress"
               }
             ]
           },
@@ -9073,7 +10506,10 @@
           "kadaster",
           "kartverket",
           "sdfi",
-          "cannar"
+          "cannar",
+          "fodbosa",
+          "mois",
+          "upujp"
         ],
         "properties": {
           "paf": {
@@ -9207,7 +10643,12 @@
           },
           "kartverket": {
             "type": "boolean",
-            "description": "Norway: Karverket Address File",
+            "description": "Norway: Kartverket Address File",
+            "example": true
+          },
+          "mois": {
+            "type": "boolean",
+            "description": "South Korea: MOIS Address File",
             "example": true
           },
           "sdfi": {
@@ -9218,6 +10659,16 @@
           "cannar": {
             "type": "boolean",
             "description": "Canada: Statistics Canada National Address Register",
+            "example": true
+          },
+          "fodbosa": {
+            "type": "boolean",
+            "description": "Belgium: FOD BOSA Address File",
+            "example": true
+          },
+          "upujp": {
+            "type": "boolean",
+            "description": "Japan: UPU Address File",
             "example": true
           }
         }
@@ -9546,6 +10997,21 @@
               "cannar": {
                 "type": "boolean",
                 "description": "Canada: Statistics Canada National Address Register",
+                "example": true
+              },
+              "fodbosa": {
+                "type": "boolean",
+                "description": "Belgium: FOD BOSA Address File",
+                "example": true
+              },
+              "mois": {
+                "type": "boolean",
+                "description": "South Korea: MOIS Address File",
+                "example": true
+              },
+              "upujp": {
+                "type": "boolean",
+                "description": "Japan: UPU Address File",
                 "example": true
               }
             }
@@ -11106,6 +12572,15 @@
               },
               {
                 "$ref": "#/components/schemas/CannarAddress"
+              },
+              {
+                "$ref": "#/components/schemas/FodbosaAddress"
+              },
+              {
+                "$ref": "#/components/schemas/MoisAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UpujpAddress"
               }
             ]
           }
