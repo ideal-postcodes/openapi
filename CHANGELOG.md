@@ -1,3 +1,10 @@
+# [4.12.0](https://github.com/ideal-postcodes/openapi/compare/4.11.0...4.12.0) (2025-06-09)
+
+
+### Features
+
+* **Datasets:** Add new global datasets ([7a19b56](https://github.com/ideal-postcodes/openapi/commit/7a19b561737853269cffd314fbcbcdf18748354e))
+
 # [4.11.0](https://github.com/ideal-postcodes/openapi/compare/4.10.1...4.11.0) (2025-06-05)
 
 
