@@ -63,7 +63,7 @@ export interface paths {
   };
   "/umprn/{umprn}": {
     /**
-     * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+     * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
      *
      * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
      *
@@ -89,8 +89,8 @@ export interface paths {
      * Returns public information on your API Key.
      *
      * This endpoint can be used for the following:
-     * - Determine if the key is currently useable via the `available` property
-     * - Determine available contexts for a an API Key
+     *  - Determine if the key is currently usable via the `available` property
+     *  - Determine available contexts for an API Key
      * - Identify the currently likely context of a user given their location
      *
      * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -153,13 +153,13 @@ export interface paths {
      *
      * ### Deciding on an Acceptable Confidence Score Threshold
      *
-     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
      *
      * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-     * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+     *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
      * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
      *
-     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
      */
     post: operations["AddressCleanse"];
   };
@@ -331,7 +331,7 @@ export interface paths {
      *
      * ## Suggestion Format
      *
-     * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+     * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
      *
      * ## Rate Limiting and Cost
      *
@@ -894,6 +894,7 @@ export interface components {
       | "pl"
       | "pt"
       | "ro"
+      | "rm"
       | "ru"
       | "sk"
       | "sl"
@@ -1134,6 +1135,9 @@ export interface components {
      *   - `fodbosa` (BEL) Belgium Dataset
      *   - `mois` (KOR) South Korea Dataset
      *   - `upujp` (JPN) Japan UPU Address File
+     *   - `azat` (AUT) Austria Dataset
+     *   - `azch` (CHE) Switzerland Dataset
+     *   - `azde` (DEU) Germany Dataset
      * @enum {string}
      */
     Dataset:
@@ -1165,7 +1169,10 @@ export interface components {
       | "cannar"
       | "fodbosa"
       | "mois"
-      | "upujp";
+      | "upujp"
+      | "azat"
+      | "azch"
+      | "azde";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -5735,6 +5742,492 @@ export interface components {
     } & {
       script: unknown;
     };
+    AzAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "azat" | "azch" | "azde";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "AUT" | "CHE" | "DEU" | "LIE";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "AT" | "CH" | "DE" | "LI";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Austria" | "Germany" | "Liechtenstein" | "Switzerland";
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Domkloster 4
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example
+       */
+      line_2: string;
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "de" | "fr" | "it" | "rm";
+      /**
+       * @description Address / House Number uniquely identifying the address along the specified street.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 4
+       */
+      address: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /**
+       * @description The province name associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Nordrhein-Westfalen
+       */
+      province: string;
+      /**
+       * @description Address type (Austria only).
+       *
+       * `2` = Main address
+       * `3` = Ident address
+       * `4` = Historical address
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 2
+       */
+      adresstyp: string;
+      /**
+       * @description Packstation machine type (Germany only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example FSK_74_mit Dach_lang
+       */
+      automatentyp: string;
+      /**
+       * @description Identifier for the state associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 5
+       */
+      bundeslandkennziffer: string;
+      /**
+       * @description Name of the state associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Nordrhein-Westfalen
+       */
+      bundeslandname: string;
+      /**
+       * @description Date of change of the city name associated with the address, if applicable, in the format MMYYYY.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 012025
+       */
+      city_change_date: string;
+      /**
+       * @description Name of the community associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Köln, Stadt
+       */
+      community: string;
+      /**
+       * @description Date of change of the community name associated with the address, if applicable, in the format MMYYYY.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 042025
+       */
+      community_change_date: string;
+      /**
+       * @description Company name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example BMW AG
+       */
+      empfaenger: string;
+      /**
+       * @description Type of ZIP code.
+       *
+       * `P` = Postbox
+       * `M` = Street and Postbox
+       * `E` = Single major customer
+       * `G` = Group major customer
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example P
+       */
+      flag_plz_typ: string;
+      /**
+       * @description Reference to the main address (Austria only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1800595
+       */
+      gebaeudereferenz: string;
+      /**
+       * @description Name of the town associated with the address (Austria only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Alpbach
+       */
+      gemeinde: string;
+      /**
+       * @description Old name of the community associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Niedergeckler
+       */
+      gemeinde_alt: string;
+      /**
+       * @description Statistischen Bundesamtes town identifier associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 5315000
+       */
+      gemeindekennziffer: string;
+      /**
+       * @description Old Statistischen Bundesamtes town identifier associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16068021
+       */
+      gemeindekennziffer_alt: string;
+      /**
+       * @description Postal code associated with a company.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 18050
+       */
+      gk_plz: string;
+      /**
+       * @description Statistischen Bundesamtes size class (0-9) associated with the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 9
+       */
+      groessenklasse: string;
+      /**
+       * @description House number.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 4
+       */
+      hsnr: string;
+      /**
+       * @description Old house number.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 4
+       */
+      hsnr_alt: string;
+      /**
+       * @description House number including the house number suffix.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1/61
+       */
+      hsnr_gesamt: string;
+      /**
+       * @description House number (short format).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 95/3
+       */
+      hsnr_kurz: string;
+      /**
+       * @description House number suffix.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example /3
+       */
+      hsnr_zusatz: string;
+      /**
+       * @description Old house number suffix.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example B
+       */
+      hsnr_zusatz_alt: string;
+      /**
+       * @description Canton name (Switzerland only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Luzern
+       */
+      kanton: string;
+      /**
+       * @description Canton code (Switzerland only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example LU
+       */
+      kantonkennzeichen: string;
+      /**
+       * @description District identifier (Germany only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 8426
+       */
+      kreiskennziffer: string;
+      /**
+       * @description District name (Germany only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Köln, Stadt
+       */
+      kreisname: string;
+      /**
+       * @description Packstation routing region (Germany only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 42
+       */
+      lr: string;
+      /**
+       * @description City name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Köln
+       */
+      ort: string;
+      /**
+       * @description Old city name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Katschow
+       */
+      ort_alt: string;
+      /**
+       * @description City number.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 11733519
+       */
+      orts_nummer: string;
+      /**
+       * @description Old city number.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 86942319
+       */
+      orts_nummer_alt: string;
+      /**
+       * @description Municipality name (Austria only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Alpbach
+       */
+      ortschaft: string;
+      /**
+       * @description Municipality identifier (Austria only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 10469
+       */
+      ortschaftskennziffer: string;
+      /**
+       * @description Old municipality identifier (Austria only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 14485
+       */
+      ortschaftskennziffer_alt: string;
+      /**
+       * @description City district name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Altstadt-Nord
+       */
+      ortsteil: string;
+      /**
+       * @description City name suffix.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example a. Neckar
+       */
+      ortszusatz: string;
+      /**
+       * @description Packstation number (Germany only).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 457
+       */
+      packstation_id: string;
+      /**
+       * @description Postal code.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 50667
+       */
+      plz: string;
+      /**
+       * @description Old postal code.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 15864
+       */
+      plz_alt: string;
+      /**
+       * @description Postal code type.
+       *
+       * `1` = Postbox
+       * `2` = Counter
+       * `3` = Group Major Customer
+       * `4` = Single Major Customer
+       * `5` = Campaign
+       * `6` = Street
+       * `7` = Street and Postbox
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 6
+       */
+      plz_typ: string;
+      /**
+       * @description PO box range start.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1101
+       */
+      postfach_von: string;
+      /**
+       * @description PO box range end.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1165
+       */
+      postfach_bis: string;
+      /**
+       * @description Accuracy of the coordinates.
+       *
+       * `1` = accurate to house number
+       * `2` = accurate to street
+       * `3` = accurate to district
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1
+       */
+      quality: string;
+      /**
+       * @description Government district identifier.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 53
+       */
+      regierungsbezirkkennziffer: string;
+      /**
+       * @description Government district name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Reg.-Bez. Köln
+       */
+      regierungsbezirkname: string;
+      /**
+       * @description Street name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Domkloster
+       */
+      strasse: string;
+      /**
+       * @description Old street name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Alter Markt
+       */
+      strasse_alt: string;
+      /**
+       * @description Street name (short format).
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example A d Schlossterrassen
+       */
+      strasse_kurz: string;
+      /**
+       * @description Street identifier.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 100273825
+       */
+      strassenschluessel: string;
+      /**
+       * @description Old street identifier.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 100030587
+       */
+      strassenschluessel_alt: string;
+      x_wgs84: string | number;
+      y_wgs84: string | number;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -5801,7 +6294,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["AzAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -6451,6 +6945,21 @@ export interface components {
        * @example true
        */
       upujp: boolean;
+      /**
+       * @description AZ Direct: Austria Address File
+       * @example true
+       */
+      azat: boolean;
+      /**
+       * @description AZ Direct: Switzerland Address File
+       * @example true
+       */
+      azch: boolean;
+      /**
+       * @description AZ Direct: Germany Address File
+       * @example true
+       */
+      azde: boolean;
     };
     /**
      * API Key Automated Topup
@@ -6696,6 +7205,21 @@ export interface components {
          * @example true
          */
         upujp?: boolean;
+        /**
+         * @description AZ Direct: Austria Address File
+         * @example true
+         */
+        azat?: boolean;
+        /**
+         * @description AZ Direct: Switzerland Address File
+         * @example true
+         */
+        azch?: boolean;
+        /**
+         * @description AZ Direct: Germany Address File
+         * @example true
+         */
+        azde?: boolean;
       };
     };
     /** Key Usage */
@@ -7644,7 +8168,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["AzAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
@@ -9005,7 +9530,7 @@ export interface operations {
     };
   };
   /**
-   * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+   * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
    *
    * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
    *
@@ -9068,8 +9593,8 @@ export interface operations {
    * Returns public information on your API Key.
    *
    * This endpoint can be used for the following:
-   * - Determine if the key is currently useable via the `available` property
-   * - Determine available contexts for a an API Key
+   *  - Determine if the key is currently usable via the `available` property
+   *  - Determine available contexts for an API Key
    * - Identify the currently likely context of a user given their location
    *
    * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -9365,13 +9890,13 @@ export interface operations {
    *
    * ### Deciding on an Acceptable Confidence Score Threshold
    *
-   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
    *
    * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-   * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+   *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
    * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
    *
-   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
    */
   AddressCleanse: {
     parameters: {
@@ -10176,7 +10701,7 @@ export interface operations {
    *
    * ## Suggestion Format
    *
-   * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+   * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
    *
    * ## Rate Limiting and Cost
    *

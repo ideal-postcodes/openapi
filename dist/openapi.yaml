@@ -103,7 +103,7 @@ tags:
     description: Monitor and manage API Keys
   - name: Licensees
     description: |
-      The Licensee resource represents an alternate legal End User of our data who may not be same entity as the owners of the account.
+      The Licensee resource represents an alternate legal End User of our data who may not be the same entity as the owners of the account.
 
       The concept of Licensees underpins our sublicensing platform, which allows users to license multiple external organisations or individuals to access data under the same account.
 
@@ -407,7 +407,7 @@ paths:
       summary: Retrieve by UMPRN
       operationId: UMPRN
       description: |
-        Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+        Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
 
         UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
 
@@ -517,8 +517,8 @@ paths:
         Returns public information on your API Key.
 
         This endpoint can be used for the following:
-        - Determine if the key is currently useable via the `available` property
-        - Determine available contexts for a an API Key
+         - Determine if the key is currently usable via the `available` property
+         - Determine available contexts for an API Key
         - Identify the currently likely context of a user given their location
 
         You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -731,13 +731,13 @@ paths:
 
         ### Deciding on an Acceptable Confidence Score Threshold
 
-        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
 
         When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-        - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+         - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
         - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
 
-        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
       operationId: AddressCleanse
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
@@ -1349,7 +1349,7 @@ paths:
 
         ## Suggestion Format
 
-        Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+        Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
 
         ## Rate Limiting and Cost
 
@@ -2821,6 +2821,7 @@ components:
         - pl
         - pt
         - ro
+        - rm
         - ru
         - sk
         - sl
@@ -3135,6 +3136,9 @@ components:
           - `fodbosa` (BEL) Belgium Dataset
           - `mois` (KOR) South Korea Dataset
           - `upujp` (JPN) Japan UPU Address File
+          - `azat` (AUT) Austria Dataset
+          - `azch` (CHE) Switzerland Dataset
+          - `azde` (DEU) Germany Dataset
       enum:
         - paf
         - pafw
@@ -3165,6 +3169,9 @@ components:
         - fodbosa
         - mois
         - upujp
+        - azat
+        - azch
+        - azde
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -9251,6 +9258,536 @@ components:
             Language used for the locality names.
 
             Can be empty string `""` if not present.
+    AzAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - latitude
+        - longitude
+        - province
+        - adresstyp
+        - automatentyp
+        - bundeslandkennziffer
+        - bundeslandname
+        - city_change_date
+        - community
+        - community_change_date
+        - empfaenger
+        - flag_plz_typ
+        - gebaeudereferenz
+        - gemeinde
+        - gemeinde_alt
+        - gemeindekennziffer
+        - gemeindekennziffer_alt
+        - gk_plz
+        - groessenklasse
+        - hsnr
+        - hsnr_alt
+        - hsnr_gesamt
+        - hsnr_kurz
+        - hsnr_zusatz
+        - hsnr_zusatz_alt
+        - kanton
+        - kantonkennzeichen
+        - kreiskennziffer
+        - kreisname
+        - lr
+        - ort
+        - ort_alt
+        - orts_nummer
+        - orts_nummer_alt
+        - ortschaft
+        - ortschaftskennziffer
+        - ortschaftskennziffer_alt
+        - ortsteil
+        - ortszusatz
+        - packstation_id
+        - plz
+        - plz_alt
+        - plz_typ
+        - postfach_von
+        - postfach_bis
+        - quality
+        - regierungsbezirkkennziffer
+        - regierungsbezirkname
+        - strasse
+        - strasse_alt
+        - strasse_kurz
+        - strassenschluessel
+        - strassenschluessel_alt
+        - x_wgs84
+        - y_wgs84
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - azat
+            - azch
+            - azde
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - AUT
+            - CHE
+            - DEU
+            - LIE
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - AT
+            - CH
+            - DE
+            - LI
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Austria
+            - Germany
+            - Liechtenstein
+            - Switzerland
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Domkloster 4
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: ''
+        language:
+          enum:
+            - de
+            - fr
+            - it
+            - rm
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '4'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        province:
+          type: string
+          description: |
+            The province name associated with the address.
+
+            Can be empty string `""` if not present.
+          example: Nordrhein-Westfalen
+        adresstyp:
+          type: string
+          description: |
+            Address type (Austria only).
+
+            `2` = Main address
+            `3` = Ident address
+            `4` = Historical address
+
+            Can be empty string `""` if not present.
+          example: '2'
+        automatentyp:
+          type: string
+          description: |
+            Packstation machine type (Germany only).
+
+            Can be empty string `""` if not present.
+          example: FSK_74_mit Dach_lang
+        bundeslandkennziffer:
+          type: string
+          description: |
+            Identifier for the state associated with the address.
+
+            Can be empty string `""` if not present.
+          example: '5'
+        bundeslandname:
+          type: string
+          description: |
+            Name of the state associated with the address.
+
+            Can be empty string `""` if not present.
+          example: Nordrhein-Westfalen
+        city_change_date:
+          type: string
+          description: |
+            Date of change of the city name associated with the address, if applicable, in the format MMYYYY.
+
+            Can be empty string `""` if not present.
+          example: '012025'
+        community:
+          type: string
+          description: |
+            Name of the community associated with the address.
+
+            Can be empty string `""` if not present.
+          example: Köln, Stadt
+        community_change_date:
+          type: string
+          description: |
+            Date of change of the community name associated with the address, if applicable, in the format MMYYYY.
+
+            Can be empty string `""` if not present.
+          example: '042025'
+        empfaenger:
+          type: string
+          description: |
+            Company name.
+
+            Can be empty string `""` if not present.
+          example: BMW AG
+        flag_plz_typ:
+          type: string
+          description: |
+            Type of ZIP code.
+
+            `P` = Postbox
+            `M` = Street and Postbox
+            `E` = Single major customer
+            `G` = Group major customer
+
+            Can be empty string `""` if not present.
+          example: P
+        gebaeudereferenz:
+          type: string
+          description: |
+            Reference to the main address (Austria only).
+
+            Can be empty string `""` if not present.
+          example: '1800595'
+        gemeinde:
+          type: string
+          description: |
+            Name of the town associated with the address (Austria only).
+
+            Can be empty string `""` if not present.
+          example: Alpbach
+        gemeinde_alt:
+          type: string
+          description: |
+            Old name of the community associated with the address.
+
+            Can be empty string `""` if not present.
+          example: Niedergeckler
+        gemeindekennziffer:
+          type: string
+          description: |
+            Statistischen Bundesamtes town identifier associated with the address.
+
+            Can be empty string `""` if not present.
+          example: '5315000'
+        gemeindekennziffer_alt:
+          type: string
+          description: |
+            Old Statistischen Bundesamtes town identifier associated with the address.
+
+            Can be empty string `""` if not present.
+          example: '16068021'
+        gk_plz:
+          type: string
+          description: |
+            Postal code associated with a company.
+
+            Can be empty string `""` if not present.
+          example: '18050'
+        groessenklasse:
+          type: string
+          description: |
+            Statistischen Bundesamtes size class (0-9) associated with the address.
+
+            Can be empty string `""` if not present.
+          example: '9'
+        hsnr:
+          type: string
+          description: |
+            House number.
+
+            Can be empty string `""` if not present.
+          example: '4'
+        hsnr_alt:
+          type: string
+          description: |
+            Old house number.
+
+            Can be empty string `""` if not present.
+          example: '4'
+        hsnr_gesamt:
+          type: string
+          description: |
+            House number including the house number suffix.
+
+            Can be empty string `""` if not present.
+          example: 1/61
+        hsnr_kurz:
+          type: string
+          description: |
+            House number (short format).
+
+            Can be empty string `""` if not present.
+          example: 95/3
+        hsnr_zusatz:
+          type: string
+          description: |
+            House number suffix.
+
+            Can be empty string `""` if not present.
+          example: /3
+        hsnr_zusatz_alt:
+          type: string
+          description: |
+            Old house number suffix.
+
+            Can be empty string `""` if not present.
+          example: B
+        kanton:
+          type: string
+          description: |
+            Canton name (Switzerland only).
+
+            Can be empty string `""` if not present.
+          example: Luzern
+        kantonkennzeichen:
+          type: string
+          description: |
+            Canton code (Switzerland only).
+
+            Can be empty string `""` if not present.
+          example: LU
+        kreiskennziffer:
+          type: string
+          description: |
+            District identifier (Germany only).
+
+            Can be empty string `""` if not present.
+          example: '8426'
+        kreisname:
+          type: string
+          description: |
+            District name (Germany only).
+
+            Can be empty string `""` if not present.
+          example: Köln, Stadt
+        lr:
+          type: string
+          description: |
+            Packstation routing region (Germany only).
+
+            Can be empty string `""` if not present.
+          example: '42'
+        ort:
+          type: string
+          description: |
+            City name.
+
+            Can be empty string `""` if not present.
+          example: Köln
+        ort_alt:
+          type: string
+          description: |
+            Old city name.
+
+            Can be empty string `""` if not present.
+          example: Katschow
+        orts_nummer:
+          type: string
+          description: |
+            City number.
+
+            Can be empty string `""` if not present.
+          example: '11733519'
+        orts_nummer_alt:
+          type: string
+          description: |
+            Old city number.
+
+            Can be empty string `""` if not present.
+          example: '86942319'
+        ortschaft:
+          type: string
+          description: |
+            Municipality name (Austria only).
+
+            Can be empty string `""` if not present.
+          example: Alpbach
+        ortschaftskennziffer:
+          type: string
+          description: |
+            Municipality identifier (Austria only).
+
+            Can be empty string `""` if not present.
+          example: '10469'
+        ortschaftskennziffer_alt:
+          type: string
+          description: |
+            Old municipality identifier (Austria only).
+
+            Can be empty string `""` if not present.
+          example: '14485'
+        ortsteil:
+          type: string
+          description: |
+            City district name.
+
+            Can be empty string `""` if not present.
+          example: Altstadt-Nord
+        ortszusatz:
+          type: string
+          description: |
+            City name suffix.
+
+            Can be empty string `""` if not present.
+          example: a. Neckar
+        packstation_id:
+          type: string
+          description: |
+            Packstation number (Germany only).
+
+            Can be empty string `""` if not present.
+          example: '457'
+        plz:
+          type: string
+          description: |
+            Postal code.
+
+            Can be empty string `""` if not present.
+          example: '50667'
+        plz_alt:
+          type: string
+          description: |
+            Old postal code.
+
+            Can be empty string `""` if not present.
+          example: '15864'
+        plz_typ:
+          type: string
+          description: |
+            Postal code type.
+
+            `1` = Postbox
+            `2` = Counter
+            `3` = Group Major Customer
+            `4` = Single Major Customer
+            `5` = Campaign
+            `6` = Street
+            `7` = Street and Postbox
+
+            Can be empty string `""` if not present.
+          example: '6'
+        postfach_von:
+          type: string
+          description: |
+            PO box range start.
+
+            Can be empty string `""` if not present.
+          example: '1101'
+        postfach_bis:
+          type: string
+          description: |
+            PO box range end.
+
+            Can be empty string `""` if not present.
+          example: '1165'
+        quality:
+          type: string
+          description: |
+            Accuracy of the coordinates.
+
+            `1` = accurate to house number
+            `2` = accurate to street
+            `3` = accurate to district
+
+            Can be empty string `""` if not present.
+          example: '1'
+        regierungsbezirkkennziffer:
+          type: string
+          description: |
+            Government district identifier.
+
+            Can be empty string `""` if not present.
+          example: '53'
+        regierungsbezirkname:
+          type: string
+          description: |
+            Government district name.
+
+            Can be empty string `""` if not present.
+          example: Reg.-Bez. Köln
+        strasse:
+          type: string
+          description: |
+            Street name.
+
+            Can be empty string `""` if not present.
+          example: Domkloster
+        strasse_alt:
+          type: string
+          description: |
+            Old street name.
+
+            Can be empty string `""` if not present.
+          example: Alter Markt
+        strasse_kurz:
+          type: string
+          description: |
+            Street name (short format).
+
+            Can be empty string `""` if not present.
+          example: A d Schlossterrassen
+        strassenschluessel:
+          type: string
+          description: |
+            Street identifier.
+
+            Can be empty string `""` if not present.
+          example: '100273825'
+        strassenschluessel_alt:
+          type: string
+          description: |
+            Old street identifier.
+
+            Can be empty string `""` if not present.
+          example: '100030587'
+        x_wgs84:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              minimum: -180
+              maximum: 180
+              description: Longitude of the address in the WGS84 coordinate system.
+              example: 6.958088172
+        y_wgs84:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              minimum: -90
+              maximum: 90
+              description: Latitude of the address in the WGS84 coordinate system.
+              example: 50.941310573
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -9362,6 +9899,7 @@ components:
             - $ref: '#/components/schemas/FodbosaAddress'
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/AzAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -9972,6 +10510,9 @@ components:
         - fodbosa
         - mois
         - upujp
+        - azat
+        - azch
+        - azde
       properties:
         paf:
           type: boolean
@@ -10099,6 +10640,18 @@ components:
         upujp:
           type: boolean
           description: 'Japan: UPU Address File'
+          example: true
+        azat:
+          type: boolean
+          description: 'AZ Direct: Austria Address File'
+          example: true
+        azch:
+          type: boolean
+          description: 'AZ Direct: Switzerland Address File'
+          example: true
+        azde:
+          type: boolean
+          description: 'AZ Direct: Germany Address File'
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -10376,6 +10929,18 @@ components:
             upujp:
               type: boolean
               description: 'Japan: UPU Address File'
+              example: true
+            azat:
+              type: boolean
+              description: 'AZ Direct: Austria Address File'
+              example: true
+            azch:
+              type: boolean
+              description: 'AZ Direct: Switzerland Address File'
+              example: true
+            azde:
+              type: boolean
+              description: 'AZ Direct: Germany Address File'
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -11630,6 +12195,7 @@ components:
             - $ref: '#/components/schemas/FodbosaAddress'
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/AzAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
