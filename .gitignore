@@ -22,3 +22,5 @@ public
 dist/openapi.d.ts
 dist/openapi.js
 .DS_Store
+.claude
+CLAUDE.md
