@@ -11,11 +11,11 @@
     "typescript": "~5.7.2"
   },
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "tsc",
     "semantic-release": "semantic-release --no-ci",
-    "start": "redocly preview",
+    "start": "redocly preview --project-dir dist",
     "mock": "npm run build && prism mock ./dist/openapi.yaml",
-    "build": "tsc",
+    "build": "tsc && redocly build-docs -o dist/index.html",
     "test": "redocly lint dist/openapi.yaml && redocly lint dist/openapi.json"
   },
   "main": "dist/openapi.js",
@@ -45,7 +45,7 @@
       "next"
     ]
   },
-  "license": "MIT",
+  "license": "Copyright IDDQD Limited",
   "files": [
     "openapi.ts",
     "dist"
