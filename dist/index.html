@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Documentation - Ideal Postcodes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+  <style>
+    :root {
+      --ideal-primary-blue: #375BDC;
+      --ideal-dark-bg: #2B3544;
+      --ideal-light-bg: #F8F9FA;
+      --ideal-white: #FFFFFF;
+      --ideal-dark-text: #1A202C;
+      --ideal-medium-text: #4A5568;
+      --ideal-light-text: #718096;
+      --ideal-accent-yellow: #FFEB3B;
+      --ideal-border: #E2E8F0;
+      --ideal-hover: rgba(55, 91, 220, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--ideal-white);
+      line-height: 1.6;
+    }
+
+    /* Header Styling */
+    .brand-header {
+      background: linear-gradient(135deg, var(--ideal-primary-blue) 0%, #4F6EFF 100%);
+      color: var(--ideal-white);
+      padding: 2rem 0;
+      box-shadow: 0 4px 20px rgba(55, 91, 220, 0.15);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--ideal-white);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--ideal-primary-blue);
+      font-size: 1.5rem;
+    }
+
+    .header-content h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.025em;
+    }
+
+    .header-content p {
+      font-size: 1rem;
+      margin: 0.25rem 0 0 0;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .header-link {
+      color: var(--ideal-white);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.875rem;
+    }
+
+    .header-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .header-link.primary {
+      background: var(--ideal-accent-yellow);
+      color: var(--ideal-dark-text);
+    }
+
+    .header-link.primary:hover {
+      background: #FFED4E;
+      color: var(--ideal-dark-text);
+    }
+
+    /* API Documentation Container */
+    .api-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: var(--ideal-white);
+      min-height: calc(100vh - 140px);
+    }
+
+    /* Footer */
+    .brand-footer {
+      background: var(--ideal-dark-bg);
+      color: var(--ideal-white);
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--ideal-white);
+    }
+
+    .footer-section a {
+      color: #CBD5E0;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-section a:hover {
+      color: var(--ideal-white);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #4A5568;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      text-align: center;
+      color: #CBD5E0;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .header-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    /* Custom RapiDoc Styling */
+    rapi-doc {
+      --bg-color: #FFFFFF;
+      --text-color: #1A202C;
+      --header-color: #2D3748;
+      --primary-color: #375BDC;
+      --nav-bg-color: #F7FAFC;
+      --nav-text-color: #2D3748;
+      --nav-hover-bg-color: rgba(55, 91, 220, 0.1);
+      --nav-hover-text-color: #375BDC;
+      --nav-accent-color: #375BDC;
+      --border-color: #E2E8F0;
+      --code-bg-color: #F7FAFC;
+      --input-bg-color: #FFFFFF;
+      --font-regular: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <header class="brand-header">
+    <div class="header-container">
+      <div class="logo-section">
+        <div class="logo">IP</div>
+        <div class="header-content">
+          <h1>API Documentation</h1>
+          <p>Address validation & postcode lookup services</p>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="https://docs.ideal-postcodes.co.uk" class="header-link">Documentation</a>
+        <a href="https://ideal-postcodes.co.uk/support" class="header-link">Support</a>
+        <a href="https://account.ideal-postcodes.co.uk/users/sign_up" class="header-link primary">Start Free Trial</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="api-container">
+    <rapi-doc
+      spec-url="https://openapi.ideal-postcodes.co.uk/openapi.yaml"
+      theme="light"
+      bg-color="#FFFFFF"
+      text-color="#1A202C"
+      primary-color="#375BDC"
+      regular-font="Inter"
+      show-header="false"
+      show-info="true"
+      allow-authentication="false"
+      allow-server-selection="false"
+      allow-api-list-style-selection="false"
+      nav-item-spacing="relaxed"
+      response-area-height="500px"
+      render-style="focused"
+      schema-style="table"
+      schema-expand-level="2"
+      default-schema-tab="schema"
+      persist-auth="true"
+      fill-request-fields-with-example="true"
+      sort-tags="false"
+      match-type="includes"
+      nav-bg-color="#F7FAFC"
+      nav-text-color="#2D3748"
+      nav-hover-bg-color="rgba(55, 91, 220, 0.1)"
+      nav-hover-text-color="#375BDC"
+      nav-accent-color="#375BDC"
+    > </rapi-doc>
+  </div>
+
+  <footer class="brand-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Ideal Postcodes</h3>
+        <a href="https://ideal-postcodes.co.uk">Website</a>
+        <a href="https://account.ideal-postcodes.co.uk/login">Account Login</a>
+        <a href="https://ideal-postcodes.co.uk/pricing">Pricing</a>
+        <a href="https://status.ideal-postcodes.co.uk">Status Page</a>
+      </div>
+      <div class="footer-section">
+        <h3>Developers</h3>
+        <a href="https://docs.ideal-postcodes.co.uk">Documentation</a>
+        <a href="https://docs.ideal-postcodes.co.uk/docs/api">API Reference</a>
+        <a href="https://github.com/ideal-postcodes">GitHub</a>
+        <a href="https://docs.ideal-postcodes.co.uk/docs/integrations">Integrations</a>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <a href="https://ideal-postcodes.co.uk/support">Contact Support</a>
+        <a href="https://docs.ideal-postcodes.co.uk/docs/guides">Guides</a>
+        <a href="https://blog.ideal-postcodes.co.uk/">Blog</a>
+        <a href="https://terms.ideal-postcodes.co.uk">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 IDDQD Limited. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
