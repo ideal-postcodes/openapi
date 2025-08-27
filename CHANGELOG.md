@@ -1,3 +1,10 @@
+## [4.12.1](https://github.com/ideal-postcodes/openapi/compare/4.12.0...4.12.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **Redocly:** Migrate to v2 ([3c5642b](https://github.com/ideal-postcodes/openapi/commit/3c5642b389ab143957d424264b5058743903fb9c))
+
 # [4.12.0](https://github.com/ideal-postcodes/openapi/compare/4.11.0...4.12.0) (2025-06-09)
 
 
