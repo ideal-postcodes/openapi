@@ -7,7 +7,7 @@
     "@cablanchard/tsconfig": "~2.0.0",
     "@redocly/cli": "~2.0.7",
     "@stoplight/prism-cli": "~5.0.0",
-    "semantic-release": "~23.0.8",
+    "semantic-release": "~24.2.9",
     "typescript": "~5.7.2"
   },
   "scripts": {
