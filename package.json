@@ -8,7 +8,7 @@
     "@redocly/cli": "~2.0.7",
     "@stoplight/prism-cli": "~5.0.0",
     "semantic-release": "~23.0.8",
-    "typescript": "~5.7.2"
+    "typescript": "~5.9.3"
   },
   "scripts": {
     "prepublish": "tsc",
