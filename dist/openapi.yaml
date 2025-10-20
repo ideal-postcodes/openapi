@@ -103,7 +103,7 @@ tags:
     description: Monitor and manage API Keys
   - name: Licensees
     description: |
-      The Licensee resource represents an alternate legal End User of our data who may not be same entity as the owners of the account.
+      The Licensee resource represents an alternate legal End User of our data who may not be the same entity as the owners of the account.
 
       The concept of Licensees underpins our sublicensing platform, which allows users to license multiple external organisations or individuals to access data under the same account.
 
@@ -407,7 +407,7 @@ paths:
       summary: Retrieve by UMPRN
       operationId: UMPRN
       description: |
-        Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+        Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
 
         UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
 
@@ -517,8 +517,8 @@ paths:
         Returns public information on your API Key.
 
         This endpoint can be used for the following:
-        - Determine if the key is currently useable via the `available` property
-        - Determine available contexts for a an API Key
+         - Determine if the key is currently usable via the `available` property
+         - Determine available contexts for an API Key
         - Identify the currently likely context of a user given their location
 
         You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -731,13 +731,13 @@ paths:
 
         ### Deciding on an Acceptable Confidence Score Threshold
 
-        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
 
         When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-        - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+         - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
         - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
 
-        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
       operationId: AddressCleanse
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
@@ -832,13 +832,13 @@ paths:
         - Free-form address submitted as a single string in `query`
           - Example: "123 Main St, Springfield, CO 81073-1119"
         - Only free-form and zip code address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `zip_code` for the ZIP code
           - Example:
             - `query`: "123 Main St, Springfield CO"
             - `zip_code`: "81073-1119"
         - Only free-form, city and state address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `city` for the city
           - `state` for the state
           - Example:
@@ -868,11 +868,15 @@ paths:
                 query:
                   type: string
                   description: |
-                    Freeform address input to verify.
+                    Address input to verify.
 
-                    Can be submitted standalone, or with the following address components:
+                    If submitting a freeform address verification query, enter the full address. E.g. `query=123 Main St, Springfield, CO, 81073`
+
+                    Otherwise, query can be accompanied with the following address components:
                     - `zip_code`
                     - `city` and `state`
+
+                    If zip_code or `city` and `state` or supplied, please omit this information from query by using it purely for the first address line. E.g. `query=123 Main St`
                   example: 123 Main St, Springfield, CO 81073
                 zip_code:
                   type: string
@@ -1349,7 +1353,7 @@ paths:
 
         ## Suggestion Format
 
-        Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+        Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
 
         ## Rate Limiting and Cost
 
@@ -3135,6 +3139,7 @@ components:
           - `fodbosa` (BEL) Belgium Dataset
           - `mois` (KOR) South Korea Dataset
           - `upujp` (JPN) Japan UPU Address File
+          - `bev` (AUT) Austria Dataset
       enum:
         - paf
         - pafw
@@ -3165,6 +3170,7 @@ components:
         - fodbosa
         - mois
         - upujp
+        - bev
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -9251,6 +9257,278 @@ components:
             Language used for the locality names.
 
             Can be empty string `""` if not present.
+    BevAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - latitude
+        - longitude
+        - adrcd
+        - kgnr
+        - gkz
+        - okz
+        - plz
+        - skz
+        - zaehlsprengel
+        - hausnrtext
+        - hausnrzahl1
+        - hausnrbuchstabe1
+        - hausnrverbindung1
+        - hausnrzahl2
+        - hausnrbuchstabe2
+        - hausnrbereich
+        - hnr_adr_zusammen
+        - gnradresse
+        - hofname
+        - rw
+        - hw
+        - epsg
+        - quelladresse
+        - bestimmungsart
+        - subcd
+        - objektnummer
+        - objfunktkennziffer
+        - hauptadresse
+        - hausnrverbindung2
+        - hausnrzahl3
+        - hausnrbuchstabe3
+        - hausnrverbindung3
+        - hausnrzahl4
+        - hausnrbuchstabe4
+        - hausnrgebaeudebez
+        - hnr_geb_zusammen
+        - eigenschaft
+        - gemeindename
+        - ortsname
+        - strassenname
+        - strassennamenzusatz
+        - szusadrbest
+        - zustellort
+        - zustellort_id
+        - zaehlsprengelname
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - bev
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - AUT
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - AT
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Austria
+        language:
+          enum:
+            - de
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Combination of hnr_adr_zusammen and hnr_geb_zusammen, the full house number and text
+            Can be empty string `""` if not present.
+          example: '40'
+        line_1:
+          type: string
+          description: |
+            First address line.
+            Can be empty string `""` if not present.
+          example: Poltenweg 40
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        adrcd:
+          type: string
+          description: |
+            Id of the address
+        kgnr:
+          type: string
+          description: |
+            Cadastral number of the municipality
+        gkz:
+          type: string
+          description: |
+            Municipality code identifier
+        okz:
+          type: string
+          description: |
+            Locality Code identifier
+        plz:
+          type: string
+          description: |
+            Postal Code
+        skz:
+          type: string
+          description: |
+            Street Code Identifier
+        zaehlsprengel:
+          type: string
+          description: |
+            Census District Identifier
+        hausnrtext:
+          type: string
+          description: |
+            Text before house number
+        hausnrzahl1:
+          type: number
+          description: |
+            House number part 1
+        hausnrbuchstabe1:
+          type: string
+          description: |
+            House number first part of the letter
+        hausnrverbindung1:
+          type: string
+          description: |
+            House number connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel
+        hausnrzahl2:
+          type: number
+          description: |
+            House number part 2
+        hausnrbuchstabe2:
+          type: string
+          description: |
+            House number second part of the letter
+        hausnrbereich:
+          type: string
+          description: |
+            House number valid range (only even/only odd/all) keine angabe = not specified
+        hnr_adr_zusammen:
+          type: string
+          description: |
+            Complete house number (combination of house number parts and letters)
+        gnradresse:
+          type: number
+          description: |
+            Property address number
+        hofname:
+          type: string
+          description: |
+            The hof name is a local term for individual buildings or building complexes, such as farmsteads
+        rw:
+          type: string
+          description: |
+            X coordinate (ETRS89 / LAEA Europe)
+        hw:
+          type: string
+          description: |
+            Y coordinate (ETRS89 / LAEA Europe)
+        epsg:
+          type: number
+          description: |
+            Coordinate reference system identifier
+        quelladresse:
+          type: string
+          description: |
+            Source of the address (official survey, postal service, etc.)
+        bestimmungsart:
+          type: string
+          description: |
+            Type of coordinate determination (official, customary, etc.)
+        subcd:
+          type: string
+          description: |
+            Sub Code to distinguish multiple buildings at the same address
+        objektnummer:
+          type: string
+          description: |
+            Object Number of the building
+        objfunktkennziffer:
+          type: string
+          description: |
+            Building Function Code, see ReadMe for details
+        hauptadresse:
+          type: number
+          description: |
+            Main address, one postal per address (1 = Postal, 0 = Identification)
+        hausnrverbindung2:
+          type: string
+          description: |
+            House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel
+        hausnrzahl3:
+          type: number
+          description: |
+            House number part 3
+        hausnrbuchstabe3:
+          type: string
+          description: |
+            House number third part of the letter
+        hausnrverbindung3:
+          type: string
+          description: |
+            House number 3rd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel
+        hausnrzahl4:
+          type: number
+          description: |
+            House number part 4
+        hausnrbuchstabe4:
+          type: string
+          description: |
+            House number fourth part of the letter
+        hausnrgebaeudebez:
+          type: string
+          description: |
+            Building distinction (e.g., "House", "Building", "Villa", etc.)
+        hnr_geb_zusammen:
+          type: string
+          description: |
+            Full building designation (combination of house number and building designation)
+        eigenschaft:
+          type: string
+          description: |
+            Prominent feature of the property (See ReadMe for details)
+        gemeindename:
+          type: string
+          description: |
+            Name of the municipality
+        ortsname:
+          type: string
+          description: |
+            Name of the locality
+        strassenname:
+          type: string
+          description: |
+            Name of the street
+        strassennamenzusatz:
+          type: string
+          description: |
+            Street name addition (e.g., "Allee", "Strasse", etc.)
+        szusadrbest:
+          type: number
+          description: |
+            Number of addresses associated with the street
+        zustellort:
+          type: string
+          description: |
+            Delivery location (usually the same as the street name)
+        zustellort_id:
+          type: string
+          description: |
+            Delivery location code identifier
+        zaehlsprengelname:
+          type: string
+          description: |
+            Census District Identifier
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -9362,6 +9640,7 @@ components:
             - $ref: '#/components/schemas/FodbosaAddress'
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/BevAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -9972,6 +10251,7 @@ components:
         - fodbosa
         - mois
         - upujp
+        - bev
       properties:
         paf:
           type: boolean
@@ -10099,6 +10379,10 @@ components:
         upujp:
           type: boolean
           description: 'Japan: UPU Address File'
+          example: true
+        bev:
+          type: boolean
+          description: 'Austria: BEV Address File'
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -10376,6 +10660,10 @@ components:
             upujp:
               type: boolean
               description: 'Japan: UPU Address File'
+              example: true
+            bev:
+              type: boolean
+              description: 'Austria: BEV Address File'
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -11630,6 +11918,7 @@ components:
             - $ref: '#/components/schemas/FodbosaAddress'
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/BevAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object

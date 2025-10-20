@@ -63,7 +63,7 @@ export interface paths {
   };
   "/umprn/{umprn}": {
     /**
-     * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+     * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
      *
      * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
      *
@@ -89,8 +89,8 @@ export interface paths {
      * Returns public information on your API Key.
      *
      * This endpoint can be used for the following:
-     * - Determine if the key is currently useable via the `available` property
-     * - Determine available contexts for a an API Key
+     *  - Determine if the key is currently usable via the `available` property
+     *  - Determine available contexts for an API Key
      * - Identify the currently likely context of a user given their location
      *
      * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -153,13 +153,13 @@ export interface paths {
      *
      * ### Deciding on an Acceptable Confidence Score Threshold
      *
-     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
      *
      * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-     * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+     *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
      * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
      *
-     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
      */
     post: operations["AddressCleanse"];
   };
@@ -172,13 +172,13 @@ export interface paths {
      * - Free-form address submitted as a single string in `query`
      *   - Example: "123 Main St, Springfield, CO 81073-1119"
      * - Only free-form and zip code address components submitted as separate parameters:
-     *   - `query` for the street address
+     *   - `query` for the first address line
      *   - `zip_code` for the ZIP code
      *   - Example:
      *     - `query`: "123 Main St, Springfield CO"
      *     - `zip_code`: "81073-1119"
      * - Only free-form, city and state address components submitted as separate parameters:
-     *   - `query` for the street address
+     *   - `query` for the first address line
      *   - `city` for the city
      *   - `state` for the state
      *   - Example:
@@ -331,7 +331,7 @@ export interface paths {
      *
      * ## Suggestion Format
      *
-     * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+     * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
      *
      * ## Rate Limiting and Cost
      *
@@ -1134,6 +1134,7 @@ export interface components {
      *   - `fodbosa` (BEL) Belgium Dataset
      *   - `mois` (KOR) South Korea Dataset
      *   - `upujp` (JPN) Japan UPU Address File
+     *   - `bev` (AUT) Austria Dataset
      * @enum {string}
      */
     Dataset:
@@ -1165,7 +1166,8 @@ export interface components {
       | "cannar"
       | "fodbosa"
       | "mois"
-      | "upujp";
+      | "upujp"
+      | "bev";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -5735,6 +5737,137 @@ export interface components {
     } & {
       script: unknown;
     };
+    BevAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "bev";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "AUT";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "AT";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Austria";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "de";
+      /**
+       * @description Combination of hnr_adr_zusammen and hnr_geb_zusammen, the full house number and text
+       * Can be empty string `""` if not present.
+       *
+       * @example 40
+       */
+      address: string;
+      /**
+       * @description First address line.
+       * Can be empty string `""` if not present.
+       *
+       * @example Poltenweg 40
+       */
+      line_1: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description Id of the address */
+      adrcd: string;
+      /** @description Cadastral number of the municipality */
+      kgnr: string;
+      /** @description Municipality code identifier */
+      gkz: string;
+      /** @description Locality Code identifier */
+      okz: string;
+      /** @description Postal Code */
+      plz: string;
+      /** @description Street Code Identifier */
+      skz: string;
+      /** @description Census District Identifier */
+      zaehlsprengel: string;
+      /** @description Text before house number */
+      hausnrtext: string;
+      /** @description House number part 1 */
+      hausnrzahl1: number;
+      /** @description House number first part of the letter */
+      hausnrbuchstabe1: string;
+      /** @description House number connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung1: string;
+      /** @description House number part 2 */
+      hausnrzahl2: number;
+      /** @description House number second part of the letter */
+      hausnrbuchstabe2: string;
+      /** @description House number valid range (only even/only odd/all) keine angabe = not specified */
+      hausnrbereich: string;
+      /** @description Complete house number (combination of house number parts and letters) */
+      hnr_adr_zusammen: string;
+      /** @description Property address number */
+      gnradresse: number;
+      /** @description The hof name is a local term for individual buildings or building complexes, such as farmsteads */
+      hofname: string;
+      /** @description X coordinate (ETRS89 / LAEA Europe) */
+      rw: string;
+      /** @description Y coordinate (ETRS89 / LAEA Europe) */
+      hw: string;
+      /** @description Coordinate reference system identifier */
+      epsg: number;
+      /** @description Source of the address (official survey, postal service, etc.) */
+      quelladresse: string;
+      /** @description Type of coordinate determination (official, customary, etc.) */
+      bestimmungsart: string;
+      /** @description Sub Code to distinguish multiple buildings at the same address */
+      subcd: string;
+      /** @description Object Number of the building */
+      objektnummer: string;
+      /** @description Building Function Code, see ReadMe for details */
+      objfunktkennziffer: string;
+      /** @description Main address, one postal per address (1 = Postal, 0 = Identification) */
+      hauptadresse: number;
+      /** @description House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung2: string;
+      /** @description House number part 3 */
+      hausnrzahl3: number;
+      /** @description House number third part of the letter */
+      hausnrbuchstabe3: string;
+      /** @description House number 3rd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung3: string;
+      /** @description House number part 4 */
+      hausnrzahl4: number;
+      /** @description House number fourth part of the letter */
+      hausnrbuchstabe4: string;
+      /** @description Building distinction (e.g., "House", "Building", "Villa", etc.) */
+      hausnrgebaeudebez: string;
+      /** @description Full building designation (combination of house number and building designation) */
+      hnr_geb_zusammen: string;
+      /** @description Prominent feature of the property (See ReadMe for details) */
+      eigenschaft: string;
+      /** @description Name of the municipality */
+      gemeindename: string;
+      /** @description Name of the locality */
+      ortsname: string;
+      /** @description Name of the street */
+      strassenname: string;
+      /** @description Street name addition (e.g., "Allee", "Strasse", etc.) */
+      strassennamenzusatz: string;
+      /** @description Number of addresses associated with the street */
+      szusadrbest: number;
+      /** @description Delivery location (usually the same as the street name) */
+      zustellort: string;
+      /** @description Delivery location code identifier */
+      zustellort_id: string;
+      /** @description Census District Identifier */
+      zaehlsprengelname: string;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -5801,7 +5934,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["BevAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -6451,6 +6585,11 @@ export interface components {
        * @example true
        */
       upujp: boolean;
+      /**
+       * @description Austria: BEV Address File
+       * @example true
+       */
+      bev: boolean;
     };
     /**
      * API Key Automated Topup
@@ -6696,6 +6835,11 @@ export interface components {
          * @example true
          */
         upujp?: boolean;
+        /**
+         * @description Austria: BEV Address File
+         * @example true
+         */
+        bev?: boolean;
       };
     };
     /** Key Usage */
@@ -7644,7 +7788,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["BevAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
@@ -9005,7 +9150,7 @@ export interface operations {
     };
   };
   /**
-   * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+   * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
    *
    * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
    *
@@ -9068,8 +9213,8 @@ export interface operations {
    * Returns public information on your API Key.
    *
    * This endpoint can be used for the following:
-   * - Determine if the key is currently useable via the `available` property
-   * - Determine available contexts for a an API Key
+   *  - Determine if the key is currently usable via the `available` property
+   *  - Determine available contexts for an API Key
    * - Identify the currently likely context of a user given their location
    *
    * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -9365,13 +9510,13 @@ export interface operations {
    *
    * ### Deciding on an Acceptable Confidence Score Threshold
    *
-   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
    *
    * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-   * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+   *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
    * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
    *
-   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
    */
   AddressCleanse: {
     parameters: {
@@ -9470,13 +9615,13 @@ export interface operations {
    * - Free-form address submitted as a single string in `query`
    *   - Example: "123 Main St, Springfield, CO 81073-1119"
    * - Only free-form and zip code address components submitted as separate parameters:
-   *   - `query` for the street address
+   *   - `query` for the first address line
    *   - `zip_code` for the ZIP code
    *   - Example:
    *     - `query`: "123 Main St, Springfield CO"
    *     - `zip_code`: "81073-1119"
    * - Only free-form, city and state address components submitted as separate parameters:
-   *   - `query` for the street address
+   *   - `query` for the first address line
    *   - `city` for the city
    *   - `state` for the state
    *   - Example:
@@ -9538,11 +9683,15 @@ export interface operations {
       content: {
         "application/json": {
           /**
-           * @description Freeform address input to verify.
+           * @description Address input to verify.
            *
-           * Can be submitted standalone, or with the following address components:
+           * If submitting a freeform address verification query, enter the full address. E.g. `query=123 Main St, Springfield, CO, 81073`
+           *
+           * Otherwise, query can be accompanied with the following address components:
            * - `zip_code`
            * - `city` and `state`
+           *
+           * If zip_code or `city` and `state` or supplied, please omit this information from query by using it purely for the first address line. E.g. `query=123 Main St`
            *
            * @example 123 Main St, Springfield, CO 81073
            */
@@ -10176,7 +10325,7 @@ export interface operations {
    *
    * ## Suggestion Format
    *
-   * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+   * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
    *
    * ## Rate Limiting and Cost
    *
