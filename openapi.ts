@@ -5863,7 +5863,7 @@ export interface components {
        */
       department_name: "";
       /**
-       * @description Not available for non-UK addresses
+       * @description Name of the company or organisation associated with the address
        * @example Farrell's Gift Shop
        */
       organisation_name: string;

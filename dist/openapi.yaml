@@ -9423,7 +9423,7 @@ components:
             - ''
         organisation_name:
           type: string
-          description: Not available for non-UK addresses
+          description: Name of the company or organisation associated with the address
           example: Farrell's Gift Shop
         udprn:
           type: string
