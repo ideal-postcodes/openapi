@@ -11513,7 +11513,7 @@ components:
         building_or_firm_name:
           type: string
           description: Name of the company or building associated with the address
-          enum: Cooper Ltd
+          example: Cooper Ltd
         address_secondary_abbreviation:
           type: string
           description: Not available for non-US addresses

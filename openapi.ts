@@ -7538,7 +7538,7 @@ export interface components {
       street_post_directional_abbreviation: "";
       /**
        * @description Name of the company or building associated with the address
-       * @enum {string}
+       * @example Cooper Ltd
        */
       building_or_firm_name: string;
       /**
