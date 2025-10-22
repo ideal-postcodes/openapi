@@ -103,7 +103,7 @@ tags:
     description: Monitor and manage API Keys
   - name: Licensees
     description: |
-      The Licensee resource represents an alternate legal End User of our data who may not be same entity as the owners of the account.
+      The Licensee resource represents an alternate legal End User of our data who may not be the same entity as the owners of the account.
 
       The concept of Licensees underpins our sublicensing platform, which allows users to license multiple external organisations or individuals to access data under the same account.
 
@@ -407,7 +407,7 @@ paths:
       summary: Retrieve by UMPRN
       operationId: UMPRN
       description: |
-        Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+        Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
 
         UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
 
@@ -517,8 +517,8 @@ paths:
         Returns public information on your API Key.
 
         This endpoint can be used for the following:
-        - Determine if the key is currently useable via the `available` property
-        - Determine available contexts for a an API Key
+         - Determine if the key is currently usable via the `available` property
+         - Determine available contexts for an API Key
         - Identify the currently likely context of a user given their location
 
         You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -731,13 +731,13 @@ paths:
 
         ### Deciding on an Acceptable Confidence Score Threshold
 
-        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
 
         When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-        - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+         - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
         - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
 
-        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
       operationId: AddressCleanse
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
@@ -832,13 +832,13 @@ paths:
         - Free-form address submitted as a single string in `query`
           - Example: "123 Main St, Springfield, CO 81073-1119"
         - Only free-form and zip code address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `zip_code` for the ZIP code
           - Example:
             - `query`: "123 Main St, Springfield CO"
             - `zip_code`: "81073-1119"
         - Only free-form, city and state address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `city` for the city
           - `state` for the state
           - Example:
@@ -868,11 +868,15 @@ paths:
                 query:
                   type: string
                   description: |
-                    Freeform address input to verify.
+                    Address input to verify.
 
-                    Can be submitted standalone, or with the following address components:
+                    If submitting a freeform address verification query, enter the full address. E.g. `query=123 Main St, Springfield, CO, 81073`
+
+                    Otherwise, query can be accompanied with the following address components:
                     - `zip_code`
                     - `city` and `state`
+
+                    If zip_code or `city` and `state` or supplied, please omit this information from query by using it purely for the first address line. E.g. `query=123 Main St`
                   example: 123 Main St, Springfield, CO 81073
                 zip_code:
                   type: string
@@ -1349,7 +1353,7 @@ paths:
 
         ## Suggestion Format
 
-        Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+        Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
 
         ## Rate Limiting and Cost
 
@@ -9384,9 +9388,8 @@ components:
             - ''
         thoroughfare:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Street name
+          example: Georgia Ave
         dependant_thoroughfare:
           type: string
           description: Not available for non-UK addresses
@@ -9394,19 +9397,16 @@ components:
             - ''
         building_number:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Address or house number
+          example: '2'
         building_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the building associated with the address
+          example: Holland House
         sub_building_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the sub-building associated with the address
+          example: Kingscourt Post Office
         premise:
           type: string
           description: Not available for non-UK addresses
@@ -9414,9 +9414,8 @@ components:
             - ''
         po_box:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: PO Box number
+          example: '100'
         department_name:
           type: string
           description: Not available for non-UK addresses
@@ -9424,9 +9423,8 @@ components:
             - ''
         organisation_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the company or organisation associated with the address
+          example: Farrell's Gift Shop
         udprn:
           type: string
           description: Not available for non-UK addresses. See `id` for address identifier
@@ -11450,14 +11448,12 @@ components:
           $ref: '#/components/schemas/Language'
         primary_number:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: House number or PO Box number
+          example: '10'
         secondary_number:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Unit or apartment number
+          example: '4'
         plus_4_code:
           type: string
           description: Not available for non-US addresses
@@ -11502,9 +11498,8 @@ components:
             - ''
         street_name:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Street name
+          example: Harvey St
         street_suffix_abbreviation:
           type: string
           description: Not available for non-US addresses
@@ -11517,9 +11512,8 @@ components:
             - ''
         building_or_firm_name:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Name of the company or building associated with the address
+          example: Cooper Ltd
         address_secondary_abbreviation:
           type: string
           description: Not available for non-US addresses

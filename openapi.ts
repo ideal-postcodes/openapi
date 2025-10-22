@@ -63,7 +63,7 @@ export interface paths {
   };
   "/umprn/{umprn}": {
     /**
-     * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+     * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
      *
      * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
      *
@@ -89,8 +89,8 @@ export interface paths {
      * Returns public information on your API Key.
      *
      * This endpoint can be used for the following:
-     * - Determine if the key is currently useable via the `available` property
-     * - Determine available contexts for a an API Key
+     *  - Determine if the key is currently usable via the `available` property
+     *  - Determine available contexts for an API Key
      * - Identify the currently likely context of a user given their location
      *
      * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -153,13 +153,13 @@ export interface paths {
      *
      * ### Deciding on an Acceptable Confidence Score Threshold
      *
-     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+     * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
      *
      * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-     * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+     *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
      * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
      *
-     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+     * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
      */
     post: operations["AddressCleanse"];
   };
@@ -172,13 +172,13 @@ export interface paths {
      * - Free-form address submitted as a single string in `query`
      *   - Example: "123 Main St, Springfield, CO 81073-1119"
      * - Only free-form and zip code address components submitted as separate parameters:
-     *   - `query` for the street address
+     *   - `query` for the first address line
      *   - `zip_code` for the ZIP code
      *   - Example:
      *     - `query`: "123 Main St, Springfield CO"
      *     - `zip_code`: "81073-1119"
      * - Only free-form, city and state address components submitted as separate parameters:
-     *   - `query` for the street address
+     *   - `query` for the first address line
      *   - `city` for the city
      *   - `state` for the state
      *   - Example:
@@ -331,7 +331,7 @@ export interface paths {
      *
      * ## Suggestion Format
      *
-     * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+     * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
      *
      * ## Rate Limiting and Cost
      *
@@ -5823,50 +5823,50 @@ export interface components {
        */
       double_dependant_locality: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Street name
+       * @example Georgia Ave
        */
-      thoroughfare: "";
+      thoroughfare: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       dependant_thoroughfare: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Address or house number
+       * @example 2
        */
-      building_number: "";
+      building_number: string;
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the building associated with the address
+       * @example Holland House
        */
-      building_name: "";
+      building_name: string;
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the sub-building associated with the address
+       * @example Kingscourt Post Office
        */
-      sub_building_name: "";
+      sub_building_name: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       premise: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description PO Box number
+       * @example 100
        */
-      po_box: "";
+      po_box: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       department_name: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the company or organisation associated with the address
+       * @example Farrell's Gift Shop
        */
-      organisation_name: "";
+      organisation_name: string;
       /** @description Not available for non-UK addresses. See `id` for address identifier */
       udprn: string;
       /**
@@ -7474,15 +7474,15 @@ export interface components {
       country_iso_2: components["schemas"]["CountryISO2"];
       language: components["schemas"]["Language"];
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description House number or PO Box number
+       * @example 10
        */
-      primary_number: "";
+      primary_number: string;
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Unit or apartment number
+       * @example 4
        */
-      secondary_number: "";
+      secondary_number: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7522,10 +7522,10 @@ export interface components {
        */
       street_pre_directional_abbreviation: "";
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Street name
+       * @example Harvey St
        */
-      street_name: "";
+      street_name: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7537,10 +7537,10 @@ export interface components {
        */
       street_post_directional_abbreviation: "";
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Name of the company or building associated with the address
+       * @example Cooper Ltd
        */
-      building_or_firm_name: "";
+      building_or_firm_name: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -9005,7 +9005,7 @@ export interface operations {
     };
   };
   /**
-   * Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+   * Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
    *
    * UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
    *
@@ -9068,8 +9068,8 @@ export interface operations {
    * Returns public information on your API Key.
    *
    * This endpoint can be used for the following:
-   * - Determine if the key is currently useable via the `available` property
-   * - Determine available contexts for a an API Key
+   *  - Determine if the key is currently usable via the `available` property
+   *  - Determine available contexts for an API Key
    * - Identify the currently likely context of a user given their location
    *
    * You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -9365,13 +9365,13 @@ export interface operations {
    *
    * ### Deciding on an Acceptable Confidence Score Threshold
    *
-   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+   * Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
    *
    * When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-   * - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+   *  - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
    * - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
    *
-   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+   * Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
    */
   AddressCleanse: {
     parameters: {
@@ -9470,13 +9470,13 @@ export interface operations {
    * - Free-form address submitted as a single string in `query`
    *   - Example: "123 Main St, Springfield, CO 81073-1119"
    * - Only free-form and zip code address components submitted as separate parameters:
-   *   - `query` for the street address
+   *   - `query` for the first address line
    *   - `zip_code` for the ZIP code
    *   - Example:
    *     - `query`: "123 Main St, Springfield CO"
    *     - `zip_code`: "81073-1119"
    * - Only free-form, city and state address components submitted as separate parameters:
-   *   - `query` for the street address
+   *   - `query` for the first address line
    *   - `city` for the city
    *   - `state` for the state
    *   - Example:
@@ -9538,11 +9538,15 @@ export interface operations {
       content: {
         "application/json": {
           /**
-           * @description Freeform address input to verify.
+           * @description Address input to verify.
            *
-           * Can be submitted standalone, or with the following address components:
+           * If submitting a freeform address verification query, enter the full address. E.g. `query=123 Main St, Springfield, CO, 81073`
+           *
+           * Otherwise, query can be accompanied with the following address components:
            * - `zip_code`
            * - `city` and `state`
+           *
+           * If zip_code or `city` and `state` or supplied, please omit this information from query by using it purely for the first address line. E.g. `query=123 Main St`
            *
            * @example 123 Main St, Springfield, CO 81073
            */
@@ -10176,7 +10180,7 @@ export interface operations {
    *
    * ## Suggestion Format
    *
-   * Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+   * Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
    *
    * ## Rate Limiting and Cost
    *
