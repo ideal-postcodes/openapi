@@ -1,3 +1,10 @@
+# [4.13.0](https://github.com/ideal-postcodes/openapi/compare/4.12.1...4.13.0) (2025-10-22)
+
+
+### Features
+
+* **Global Address:** Update GBR and USA global address schemas ([1b132c3](https://github.com/ideal-postcodes/openapi/commit/1b132c3c642df3ea9b74503a515ed7043dfaa564))
+
 ## [4.12.1](https://github.com/ideal-postcodes/openapi/compare/4.12.0...4.12.1) (2025-08-27)
 
 
