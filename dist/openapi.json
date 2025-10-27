@@ -9724,8 +9724,16 @@
             "description": "Text before house number\n"
           },
           "hausnrzahl1": {
-            "type": "number",
-            "description": "House number part 1\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available\n"
+              },
+              {
+                "type": "number",
+                "description": "House number part 1\n"
+              }
+            ]
           },
           "hausnrbuchstabe1": {
             "type": "string",
@@ -9736,8 +9744,16 @@
             "description": "House number connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel\n"
           },
           "hausnrzahl2": {
-            "type": "number",
-            "description": "House number part 2\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available\n"
+              },
+              {
+                "type": "number",
+                "description": "House number part 2\n"
+              }
+            ]
           },
           "hausnrbuchstabe2": {
             "type": "string",
@@ -9788,20 +9804,44 @@
             "description": "Object Number of the building\n"
           },
           "objfunktkennziffer": {
-            "type": "string",
-            "description": "Building Function Code, see ReadMe for details\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Building Function Code, see ReadMe for details\n"
+              },
+              {
+                "type": "string[]",
+                "description": "Array containing all Building Function Codes related to address\n"
+              }
+            ]
           },
           "hauptadresse": {
-            "type": "number",
-            "description": "Main address, one postal per address (1 = Postal, 0 = Identification)\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available\n"
+              },
+              {
+                "type": "number",
+                "description": "Main address, one postal per address (1 = Postal, 0 = Identification)\n"
+              }
+            ]
           },
           "hausnrverbindung2": {
             "type": "string",
             "description": "House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel\n"
           },
           "hausnrzahl3": {
-            "type": "number",
-            "description": "House number part 3\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available\n"
+              },
+              {
+                "type": "number",
+                "description": "House number part 3\n"
+              }
+            ]
           },
           "hausnrbuchstabe3": {
             "type": "string",
@@ -9812,8 +9852,16 @@
             "description": "House number 3rd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel\n"
           },
           "hausnrzahl4": {
-            "type": "number",
-            "description": "House number part 4\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string `\"\"` if not available\n"
+              },
+              {
+                "type": "number",
+                "description": "House number part 4\n"
+              }
+            ]
           },
           "hausnrbuchstabe4": {
             "type": "string",

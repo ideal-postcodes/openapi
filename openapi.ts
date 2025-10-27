@@ -5797,14 +5797,12 @@ export interface components {
       zaehlsprengel: string;
       /** @description Text before house number */
       hausnrtext: string;
-      /** @description House number part 1 */
-      hausnrzahl1: number;
+      hausnrzahl1: string | number;
       /** @description House number first part of the letter */
       hausnrbuchstabe1: string;
       /** @description House number connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
       hausnrverbindung1: string;
-      /** @description House number part 2 */
-      hausnrzahl2: number;
+      hausnrzahl2: string | number;
       /** @description House number second part of the letter */
       hausnrbuchstabe2: string;
       /** @description House number valid range (only even/only odd/all) keine angabe = not specified */
@@ -5829,20 +5827,16 @@ export interface components {
       subcd: string;
       /** @description Object Number of the building */
       objektnummer: string;
-      /** @description Building Function Code, see ReadMe for details */
-      objfunktkennziffer: string;
-      /** @description Main address, one postal per address (1 = Postal, 0 = Identification) */
-      hauptadresse: number;
+      objfunktkennziffer: string | unknown;
+      hauptadresse: string | number;
       /** @description House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
       hausnrverbindung2: string;
-      /** @description House number part 3 */
-      hausnrzahl3: number;
+      hausnrzahl3: string | number;
       /** @description House number third part of the letter */
       hausnrbuchstabe3: string;
       /** @description House number 3rd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
       hausnrverbindung3: string;
-      /** @description House number part 4 */
-      hausnrzahl4: number;
+      hausnrzahl4: string | number;
       /** @description House number fourth part of the letter */
       hausnrbuchstabe4: string;
       /** @description Building distinction (e.g., "House", "Building", "Villa", etc.) */
