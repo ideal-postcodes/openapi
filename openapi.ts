@@ -1134,6 +1134,7 @@ export interface components {
      *   - `fodbosa` (BEL) Belgium Dataset
      *   - `mois` (KOR) South Korea Dataset
      *   - `upujp` (JPN) Japan UPU Address File
+     *   - `bev` (AUT) Austria Dataset
      * @enum {string}
      */
     Dataset:
@@ -1165,7 +1166,8 @@ export interface components {
       | "cannar"
       | "fodbosa"
       | "mois"
-      | "upujp";
+      | "upujp"
+      | "bev";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -5735,6 +5737,131 @@ export interface components {
     } & {
       script: unknown;
     };
+    BevAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "bev";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "AUT";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "AT";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Austria";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "de";
+      /**
+       * @description Combination of hnr_adr_zusammen and hnr_geb_zusammen, the full house number and text
+       * Can be empty string `""` if not present.
+       *
+       * @example 40
+       */
+      address: string;
+      /**
+       * @description First address line.
+       * Can be empty string `""` if not present.
+       *
+       * @example Poltenweg 40
+       */
+      line_1: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description Id of the address */
+      adrcd: string;
+      /** @description Cadastral number of the municipality */
+      kgnr: string;
+      /** @description Municipality code identifier */
+      gkz: string;
+      /** @description Locality Code identifier */
+      okz: string;
+      /** @description Postal Code */
+      plz: string;
+      /** @description Street Code Identifier */
+      skz: string;
+      /** @description Census District Identifier */
+      zaehlsprengel: string;
+      /** @description Text before house number */
+      hausnrtext: string;
+      hausnrzahl1: string | number;
+      /** @description House number first part of the letter */
+      hausnrbuchstabe1: string;
+      /** @description House number connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung1: string;
+      hausnrzahl2: string | number;
+      /** @description House number second part of the letter */
+      hausnrbuchstabe2: string;
+      /** @description House number valid range (only even/only odd/all) keine angabe = not specified */
+      hausnrbereich: string;
+      /** @description Complete house number (combination of house number parts and letters) */
+      hnr_adr_zusammen: string;
+      /** @description Property address number */
+      gnradresse: number;
+      /** @description The hof name is a local term for individual buildings or building complexes, such as farmsteads */
+      hofname: string;
+      /** @description X coordinate (ETRS89 / LAEA Europe) */
+      rw: string;
+      /** @description Y coordinate (ETRS89 / LAEA Europe) */
+      hw: string;
+      /** @description Coordinate reference system identifier */
+      epsg: number;
+      /** @description Source of the address (official survey, postal service, etc.) */
+      quelladresse: string;
+      /** @description Type of coordinate determination (official, customary, etc.) */
+      bestimmungsart: string;
+      /** @description Sub Code to distinguish multiple buildings at the same address */
+      subcd: string;
+      /** @description Object Number of the building */
+      objektnummer: string;
+      objfunktkennziffer: string | unknown;
+      hauptadresse: string | number;
+      /** @description House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung2: string;
+      hausnrzahl3: string | number;
+      /** @description House number third part of the letter */
+      hausnrbuchstabe3: string;
+      /** @description House number 3rd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
+      hausnrverbindung3: string;
+      hausnrzahl4: string | number;
+      /** @description House number fourth part of the letter */
+      hausnrbuchstabe4: string;
+      /** @description Building distinction (e.g., "House", "Building", "Villa", etc.) */
+      hausnrgebaeudebez: string;
+      /** @description Full building designation (combination of house number and building designation) */
+      hnr_geb_zusammen: string;
+      /** @description Prominent feature of the property (See ReadMe for details) */
+      eigenschaft: string;
+      /** @description Name of the municipality */
+      gemeindename: string;
+      /** @description Name of the locality */
+      ortsname: string;
+      /** @description Name of the street */
+      strassenname: string;
+      /** @description Street name addition (e.g., "Allee", "Strasse", etc.) */
+      strassennamenzusatz: string;
+      /** @description Number of addresses associated with the street */
+      szusadrbest: number;
+      /** @description Delivery location (usually the same as the street name) */
+      zustellort: string;
+      /** @description Delivery location code identifier */
+      zustellort_id: string;
+      /** @description Census District Identifier */
+      zaehlsprengelname: string;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -5801,7 +5928,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["BevAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -6451,6 +6579,11 @@ export interface components {
        * @example true
        */
       upujp: boolean;
+      /**
+       * @description Austria: BEV Address File
+       * @example true
+       */
+      bev: boolean;
     };
     /**
      * API Key Automated Topup
@@ -6696,6 +6829,11 @@ export interface components {
          * @example true
          */
         upujp?: boolean;
+        /**
+         * @description Austria: BEV Address File
+         * @example true
+         */
+        bev?: boolean;
       };
     };
     /** Key Usage */
@@ -7644,7 +7782,8 @@ export interface components {
         | components["schemas"]["CannarAddress"]
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
-        | components["schemas"]["UpujpAddress"];
+        | components["schemas"]["UpujpAddress"]
+        | components["schemas"]["BevAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
