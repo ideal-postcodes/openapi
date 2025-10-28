@@ -9810,7 +9810,10 @@
                 "description": "Building Function Code, see ReadMe for details\n"
               },
               {
-                "type": "string[]",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
                 "description": "Array containing all Building Function Codes related to address\n"
               }
             ]

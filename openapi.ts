@@ -5827,7 +5827,7 @@ export interface components {
       subcd: string;
       /** @description Object Number of the building */
       objektnummer: string;
-      objfunktkennziffer: string | unknown;
+      objfunktkennziffer: string | string[];
       hauptadresse: string | number;
       /** @description House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
       hausnrverbindung2: string;
