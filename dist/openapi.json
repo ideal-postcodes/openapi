@@ -10101,10 +10101,8 @@
           },
           "thoroughfare": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Street name",
+            "example": "Georgia Ave"
           },
           "dependant_thoroughfare": {
             "type": "string",
@@ -10115,24 +10113,18 @@
           },
           "building_number": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Address or house number",
+            "example": "2"
           },
           "building_name": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Name of the building associated with the address",
+            "example": "Holland House"
           },
           "sub_building_name": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Name of the sub-building associated with the address",
+            "example": "Kingscourt Post Office"
           },
           "premise": {
             "type": "string",
@@ -10143,10 +10135,8 @@
           },
           "po_box": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "PO Box number",
+            "example": "100"
           },
           "department_name": {
             "type": "string",
@@ -10157,10 +10147,8 @@
           },
           "organisation_name": {
             "type": "string",
-            "description": "Not available for non-UK addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Name of the company or organisation associated with the address",
+            "example": "Farrell's Gift Shop"
           },
           "udprn": {
             "type": "string",
@@ -12653,17 +12641,13 @@
           },
           "primary_number": {
             "type": "string",
-            "description": "Not available for non-US addresses",
-            "enum": [
-              ""
-            ]
+            "description": "House number or PO Box number",
+            "example": "10"
           },
           "secondary_number": {
             "type": "string",
-            "description": "Not available for non-US addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Unit or apartment number",
+            "example": "4"
           },
           "plus_4_code": {
             "type": "string",
@@ -12725,10 +12709,8 @@
           },
           "street_name": {
             "type": "string",
-            "description": "Not available for non-US addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Street name",
+            "example": "Harvey St"
           },
           "street_suffix_abbreviation": {
             "type": "string",
@@ -12746,10 +12728,8 @@
           },
           "building_or_firm_name": {
             "type": "string",
-            "description": "Not available for non-US addresses",
-            "enum": [
-              ""
-            ]
+            "description": "Name of the company or building associated with the address",
+            "example": "Cooper Ltd"
           },
           "address_secondary_abbreviation": {
             "type": "string",

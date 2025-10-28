@@ -5951,50 +5951,50 @@ export interface components {
        */
       double_dependant_locality: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Street name
+       * @example Georgia Ave
        */
-      thoroughfare: "";
+      thoroughfare: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       dependant_thoroughfare: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Address or house number
+       * @example 2
        */
-      building_number: "";
+      building_number: string;
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the building associated with the address
+       * @example Holland House
        */
-      building_name: "";
+      building_name: string;
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the sub-building associated with the address
+       * @example Kingscourt Post Office
        */
-      sub_building_name: "";
+      sub_building_name: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       premise: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description PO Box number
+       * @example 100
        */
-      po_box: "";
+      po_box: string;
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       department_name: "";
       /**
-       * @description Not available for non-UK addresses
-       * @enum {string}
+       * @description Name of the company or organisation associated with the address
+       * @example Farrell's Gift Shop
        */
-      organisation_name: "";
+      organisation_name: string;
       /** @description Not available for non-UK addresses. See `id` for address identifier */
       udprn: string;
       /**
@@ -7612,15 +7612,15 @@ export interface components {
       country_iso_2: components["schemas"]["CountryISO2"];
       language: components["schemas"]["Language"];
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description House number or PO Box number
+       * @example 10
        */
-      primary_number: "";
+      primary_number: string;
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Unit or apartment number
+       * @example 4
        */
-      secondary_number: "";
+      secondary_number: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7660,10 +7660,10 @@ export interface components {
        */
       street_pre_directional_abbreviation: "";
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Street name
+       * @example Harvey St
        */
-      street_name: "";
+      street_name: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7675,10 +7675,10 @@ export interface components {
        */
       street_post_directional_abbreviation: "";
       /**
-       * @description Not available for non-US addresses
-       * @enum {string}
+       * @description Name of the company or building associated with the address
+       * @example Cooper Ltd
        */
-      building_or_firm_name: "";
+      building_or_firm_name: string;
       /**
        * @description Not available for non-US addresses
        * @enum {string}
