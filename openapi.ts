@@ -5827,7 +5827,7 @@ export interface components {
       subcd: string;
       /** @description Object Number of the building */
       objektnummer: string;
-      objfunktkennziffer: string | unknown;
+      objfunktkennziffer: string | string[];
       hauptadresse: string | number;
       /** @description House number 2nd connection - Stg. = Staircase, Obj. = Property, Parz. = Parcel */
       hausnrverbindung2: string;
@@ -5951,50 +5951,50 @@ export interface components {
        */
       double_dependant_locality: "";
       /**
-       * @description Street name
-       * @example Georgia Ave
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      thoroughfare: string;
+      thoroughfare: "";
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       dependant_thoroughfare: "";
       /**
-       * @description Address or house number
-       * @example 2
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      building_number: string;
+      building_number: "";
       /**
-       * @description Name of the building associated with the address
-       * @example Holland House
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      building_name: string;
+      building_name: "";
       /**
-       * @description Name of the sub-building associated with the address
-       * @example Kingscourt Post Office
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      sub_building_name: string;
+      sub_building_name: "";
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       premise: "";
       /**
-       * @description PO Box number
-       * @example 100
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      po_box: string;
+      po_box: "";
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
        */
       department_name: "";
       /**
-       * @description Name of the company or organisation associated with the address
-       * @example Farrell's Gift Shop
+       * @description Not available for non-UK addresses
+       * @enum {string}
        */
-      organisation_name: string;
+      organisation_name: "";
       /** @description Not available for non-UK addresses. See `id` for address identifier */
       udprn: string;
       /**
@@ -7612,15 +7612,15 @@ export interface components {
       country_iso_2: components["schemas"]["CountryISO2"];
       language: components["schemas"]["Language"];
       /**
-       * @description House number or PO Box number
-       * @example 10
+       * @description Not available for non-US addresses
+       * @enum {string}
        */
-      primary_number: string;
+      primary_number: "";
       /**
-       * @description Unit or apartment number
-       * @example 4
+       * @description Not available for non-US addresses
+       * @enum {string}
        */
-      secondary_number: string;
+      secondary_number: "";
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7660,10 +7660,10 @@ export interface components {
        */
       street_pre_directional_abbreviation: "";
       /**
-       * @description Street name
-       * @example Harvey St
+       * @description Not available for non-US addresses
+       * @enum {string}
        */
-      street_name: string;
+      street_name: "";
       /**
        * @description Not available for non-US addresses
        * @enum {string}
@@ -7675,10 +7675,10 @@ export interface components {
        */
       street_post_directional_abbreviation: "";
       /**
-       * @description Name of the company or building associated with the address
-       * @example Cooper Ltd
+       * @description Not available for non-US addresses
+       * @enum {string}
        */
-      building_or_firm_name: string;
+      building_or_firm_name: "";
       /**
        * @description Not available for non-US addresses
        * @enum {string}

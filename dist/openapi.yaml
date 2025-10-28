@@ -9466,7 +9466,9 @@ components:
             - type: string
               description: |
                 Building Function Code, see ReadMe for details
-            - type: string[]
+            - type: array
+              items:
+                type: string
               description: |
                 Array containing all Building Function Codes related to address
         hauptadresse:
@@ -9687,8 +9689,9 @@ components:
             - ''
         thoroughfare:
           type: string
-          description: Street name
-          example: Georgia Ave
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         dependant_thoroughfare:
           type: string
           description: Not available for non-UK addresses
@@ -9696,16 +9699,19 @@ components:
             - ''
         building_number:
           type: string
-          description: Address or house number
-          example: '2'
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         building_name:
           type: string
-          description: Name of the building associated with the address
-          example: Holland House
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         sub_building_name:
           type: string
-          description: Name of the sub-building associated with the address
-          example: Kingscourt Post Office
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         premise:
           type: string
           description: Not available for non-UK addresses
@@ -9713,8 +9719,9 @@ components:
             - ''
         po_box:
           type: string
-          description: PO Box number
-          example: '100'
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         department_name:
           type: string
           description: Not available for non-UK addresses
@@ -9722,8 +9729,9 @@ components:
             - ''
         organisation_name:
           type: string
-          description: Name of the company or organisation associated with the address
-          example: Farrell's Gift Shop
+          description: Not available for non-UK addresses
+          enum:
+            - ''
         udprn:
           type: string
           description: Not available for non-UK addresses. See `id` for address identifier
@@ -11756,12 +11764,14 @@ components:
           $ref: '#/components/schemas/Language'
         primary_number:
           type: string
-          description: House number or PO Box number
-          example: '10'
+          description: Not available for non-US addresses
+          enum:
+            - ''
         secondary_number:
           type: string
-          description: Unit or apartment number
-          example: '4'
+          description: Not available for non-US addresses
+          enum:
+            - ''
         plus_4_code:
           type: string
           description: Not available for non-US addresses
@@ -11806,8 +11816,9 @@ components:
             - ''
         street_name:
           type: string
-          description: Street name
-          example: Harvey St
+          description: Not available for non-US addresses
+          enum:
+            - ''
         street_suffix_abbreviation:
           type: string
           description: Not available for non-US addresses
@@ -11820,8 +11831,9 @@ components:
             - ''
         building_or_firm_name:
           type: string
-          description: Name of the company or building associated with the address
-          example: Cooper Ltd
+          description: Not available for non-US addresses
+          enum:
+            - ''
         address_secondary_abbreviation:
           type: string
           description: Not available for non-US addresses
