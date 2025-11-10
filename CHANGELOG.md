@@ -1,3 +1,10 @@
+# [4.14.0](https://github.com/ideal-postcodes/openapi/compare/4.13.0...4.14.0) (2025-11-10)
+
+
+### Features
+
+* **api:** Add dataset filter parameter to autocomplete ([36a90cc](https://github.com/ideal-postcodes/openapi/commit/36a90cce5dd8f163d3d6acc203462e661317b439))
+
 # [4.13.0](https://github.com/ideal-postcodes/openapi/compare/4.12.1...4.13.0) (2025-10-22)
 
 
