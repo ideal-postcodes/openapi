@@ -1,3 +1,10 @@
+## [4.14.1](https://github.com/ideal-postcodes/openapi/compare/4.14.0...4.14.1) (2025-11-12)
+
+
+### Bug Fixes
+
+* **Release:** Update Austria datapoints ([1a30b3f](https://github.com/ideal-postcodes/openapi/commit/1a30b3f3f89f5f93999190bef90c12c6356bfd53))
+
 # [4.14.0](https://github.com/ideal-postcodes/openapi/compare/4.13.0...4.14.0) (2025-11-10)
 
 
