@@ -3141,6 +3141,7 @@ components:
           - `mois` (KOR) South Korea Dataset
           - `upujp` (JPN) Japan UPU Address File
           - `bev` (AUT) Austria Dataset
+          - `kds` (DNK) KDS Dataset
       enum:
         - paf
         - pafw
@@ -3172,6 +3173,7 @@ components:
         - mois
         - upujp
         - bev
+        - kds
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -9562,6 +9564,381 @@ components:
           type: string
           description: |
             Name of the census district
+    KdsAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - latitude
+        - longitude
+        - datafordelerOpdateringstid
+        - datafordelerRowId
+        - datafordelerRowVersion
+        - datafordelerRegisterImportSequenceNumber
+        - forretningshændelse
+        - forretningsområde
+        - forretningsproces
+        - id_namespace
+        - id_lokalId
+        - registreringFra
+        - registreringsaktør
+        - registreringTil
+        - status
+        - virkningFra
+        - virkningsaktør
+        - virkningTil
+        - adressebetegnelse
+        - dørbetegnelse
+        - dørpunkt
+        - etagebetegnelse
+        - bygning
+        - husnummer
+        - oprindelse_kilde
+        - oprindelse_nøjagtighedsklasse
+        - oprindelse_registrering
+        - oprindelse_tekniskStandard
+        - position
+        - adgangsadressebetegnelse
+        - adgangspunkt
+        - husnummerretning
+        - husnummertekst
+        - vejpunkt
+        - jordstykke
+        - placeretPåForeløbigtJordstykke
+        - geoDanmarkBygning
+        - adgangTilBygning
+        - adgangTilTekniskAnlæg
+        - afstemningsområde
+        - kommuneinddeling
+        - menighedsrådsafstemningsområde
+        - sogneinddeling
+        - navngivenVej
+        - administreresAfKommune
+        - beskrivelse
+        - udtaltVejnavn
+        - vejadresseringsnavn
+        - vejnavn
+        - vejnavnebeliggenhed_oprindelse_kilde
+        - vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse
+        - vejnavnebeliggenhed_oprindelse_registrering
+        - vejnavnebeliggenhed_oprindelse_tekniskStandard
+        - vejnavnebeliggenhed_vejnavnelinje
+        - vejnavnebeliggenhed_vejnavneområde
+        - vejnavnebeliggenhed_vejtilslutningspunkter
+        - kommune
+        - vejkode
+        - postnummer
+        - supplerendeBynavn
+        - navn
+        - postnr
+        - postnummerinddeling
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - kds
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - DNK
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - DK
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Denmark
+        language:
+          enum:
+            - da
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name
+          example: Elstedvej 95, Terp, 8200 Aarhus N
+        line_1:
+          type: string
+          description: |
+            First address line.
+            Returns street name, house number, (optional floor, door and city name)
+          example: Elstedvej 95, Terp
+        line_2:
+          type: string
+          description: |
+            Second address line.
+            Returns postal code and postal city name
+          example: 8200 Aarhus N
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        datafordelerOpdateringstid:
+          type: string
+          description: |
+            Data distributor Update Time
+        datafordelerRowId:
+          type: string
+          description: |
+            row ID
+        datafordelerRowVersion:
+          type: string
+          description: |
+            row version
+        datafordelerRegisterImportSequenceNumber:
+          type: string
+          description: |
+            Import sequence number
+        forretningshændelse:
+          type: string
+          description: |
+            The business event that caused the address element to be updated to that version
+        forretningsområde:
+          type: string
+          description: |
+            The business area that has updated the address element to the version in question
+        forretningsproces:
+          type: string
+          description: |
+            The business process that caused the address element to be updated to that version
+        id_namespace:
+          type: string
+          description: |
+            Url of data file
+        id_lokalId:
+          type: string
+          description: |
+            Identification of the address element throughout its entire life cycle
+        registreringFra:
+          type: string
+          description: |
+            The time at which the registration of the relevant version of the address element was made
+        registreringsaktør:
+          type: string
+          description: |
+            The actor who has registered the relevant version of the address element
+        registreringTil:
+          type: string
+          description: |
+            The time when a new registration on the address element has been made, and where this version is therefore no longer the latest
+        status:
+          type: string
+          description: |
+            The status of the address element in the version in question, i.e. the state of the element in the overall lifecycle
+        virkningFra:
+          type: string
+          description: |
+            The time from which the relevant version of the address element takes effect
+        virkningsaktør:
+          type: string
+          description: |
+            The actor who has caused the effect properties for the relevant version of the address element
+        virkningTil:
+          type: string
+          description: |
+            The time when the effect of the relevant version of the address element ceases
+        adressebetegnelse:
+          type: string
+          description: |
+            Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name
+        dørbetegnelse:
+          type: string
+          description: |
+            Door designation/Access point of the address
+        dørpunkt:
+          type: string
+          description: |
+            3D Geographical Point of the location of the door
+        etagebetegnelse:
+          type: string
+          description: |
+            Floor designation of the address
+        bygning:
+          type: string
+          description: |
+            Building related to the address
+        husnummer:
+          type: string
+          description: |
+            House number of the address
+        oprindelse_kilde:
+          type: string
+          description: |
+            Origin source of the data
+        oprindelse_nøjagtighedsklasse:
+          type: string
+          description: |
+            Origin accuracy class of the data
+        oprindelse_registrering:
+          type: string
+          description: |
+            Origin registration date
+        oprindelse_tekniskStandard:
+          type: string
+          description: |
+            Technical standard of the origin
+        position:
+          type: string
+          description: |
+            Geometric postion of the access point using epsg 25832
+        adgangsadressebetegnelse:
+          type: string
+          description: |
+            Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name
+        adgangspunkt:
+          type: string
+          description: |
+            Geographic point that represents the location of an address
+        husnummerretning:
+          type: string
+          description: |
+            Geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
+        husnummertekst:
+          type: string
+          description: |
+            The house number of the address including any letters
+        vejpunkt:
+          type: string
+          description: |
+            Geographic point representing the location of the named road that provides access to a particular access point
+        jordstykke:
+          type: string
+          description: |
+            The piece of land on which the house number is located
+        placeretPåForeløbigtJordstykke:
+          type: string
+          description: |
+            The provisional, i.e. unapproved, plot of land on which the house number is located
+        geoDanmarkBygning:
+          type: string
+          description: |
+            The building in which the house number is located
+        adgangTilBygning:
+          type: string
+          description: |
+            The building to which the house number identifies the access
+        adgangTilTekniskAnlæg:
+          type: string
+          description: |
+            The technical facility to which the house number indicates the access road
+        afstemningsområde:
+          type: string
+          description: |
+            The voting area in which the house number is located
+        kommuneinddeling:
+          type: string
+          description: |
+            The municipal division in which the house number is located
+        menighedsrådsafstemningsområde:
+          type: string
+          description: |
+            The parish council voting area in which the house number is located
+        sogneinddeling:
+          type: string
+          description: |
+            The parish in which the house number is located
+        supplerendeBynavn:
+          type: string
+          description: |
+            The additional city name to which the house number is linked
+        navngivenVej:
+          type: string
+          description: |
+            Indicates the named street to which the house number is attached
+        postnummer:
+          type: string
+          description: |
+            The postal code in which the house number is located
+        administreresAfKommune:
+          type: string
+          description: |
+            Indication of the municipality responsible for registering the road name and geometry of the named road
+        beskrivelse:
+          type: string
+          description: |
+            Brief description of the origin or meaning of the road name
+        udtaltVejnavn:
+          type: string
+          description: |
+            The street name written in full, as it is pronounced
+        vejadresseringsnavn:
+          type: string
+          description: |
+            Abbreviated version of the road name of no more than 20 characters
+        vejnavn:
+          type: string
+          description: |
+            The full road name defined as: A proper name that designates and names a part of the road or path network or similar traffic areas and areas
+        vejnavnebeliggenhed_oprindelse_kilde:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadname_location_origin_source
+        vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadname_location_origin_accuracy_class
+        vejnavnebeliggenhed_oprindelse_registrering:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadname_location_origin_registration
+        vejnavnebeliggenhed_oprindelse_tekniskStandard:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadname_location_origin_technicalStandard
+        vejnavnebeliggenhed_vejnavnelinje:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadname_location_roadnameline
+        vejnavnebeliggenhed_vejnavneområde:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadnamelocation_roadnamearea
+        vejnavnebeliggenhed_vejtilslutningspunkter:
+          type: string
+          description: |
+            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
+            Roadnamelocation_roadconnectionpoints
+        kommune:
+          type: string
+          description: |
+            The municipality code of the municipality to which the relevant part of the named road belongs
+        vejkode:
+          type: string
+          description: |
+            Unique identification of the part of a Named Road that affects a single municipality
+        postnr:
+          type: string
+          description: |
+            The postal code number
+        postnummerinddeling:
+          type: string
+          description: |
+            Unique identifier of the postal code area
+        navn:
+          type: string
+          description: |
+            The name of the postal code area
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -9674,6 +10051,7 @@ components:
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
             - $ref: '#/components/schemas/BevAddress'
+            - $ref: '#/components/schemas/KdsAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -10279,6 +10657,7 @@ components:
         - mois
         - upujp
         - bev
+        - kds
       properties:
         paf:
           type: boolean
@@ -10410,6 +10789,10 @@ components:
         bev:
           type: boolean
           description: 'Austria: BEV Address File'
+          example: true
+        kds:
+          type: boolean
+          description: 'Denmark: KDS Address File'
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -10691,6 +11074,10 @@ components:
             bev:
               type: boolean
               description: 'Austria: BEV Address File'
+              example: true
+            kds:
+              type: boolean
+              description: 'Denmark: KDS Address File'
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -11942,6 +12329,7 @@ components:
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
             - $ref: '#/components/schemas/BevAddress'
+            - $ref: '#/components/schemas/KdsAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
