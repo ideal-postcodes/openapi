@@ -10296,6 +10296,10 @@
           "navn": {
             "type": "string",
             "description": "The name of the postal code area\n"
+          },
+          "bynavn": {
+            "type": "string",
+            "description": "The additional city name associated with the address\n"
           }
         }
       },

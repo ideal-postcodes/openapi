@@ -9945,6 +9945,10 @@ components:
           type: string
           description: |
             The name of the postal code area
+        bynavn:
+          type: string
+          description: |
+            The additional city name associated with the address
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
