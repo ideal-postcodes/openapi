@@ -6079,7 +6079,7 @@ export interface components {
       /** @description The name of the postal code area */
       navn: string;
       /** @description The additional city name associated with the address */
-      bynavn?: string;
+      bynavn: string;
     };
     /**
      * Global Address

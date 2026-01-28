@@ -9639,6 +9639,7 @@ components:
         - navn
         - postnr
         - postnummerinddeling
+        - bynavn
       properties:
         id:
           $ref: '#/components/schemas/ID'

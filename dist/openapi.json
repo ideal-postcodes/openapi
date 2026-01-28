@@ -9989,7 +9989,8 @@
           "supplerendeBynavn",
           "navn",
           "postnr",
-          "postnummerinddeling"
+          "postnummerinddeling",
+          "bynavn"
         ],
         "properties": {
           "id": {
