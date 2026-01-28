@@ -9577,6 +9577,7 @@ components:
         - line_2
         - latitude
         - longitude
+        - region
         - datafordelerOpdateringstid
         - datafordelerRowId
         - datafordelerRowVersion
@@ -9688,6 +9689,11 @@ components:
           $ref: '#/components/schemas/Longitude'
         latitude:
           $ref: '#/components/schemas/Latitude'
+        region:
+          type: string
+          description: |
+            The region in which the address is located
+          example: Nordjylland
         datafordelerOpdateringstid:
           type: string
           description: |

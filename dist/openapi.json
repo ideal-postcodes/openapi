@@ -9928,6 +9928,7 @@
           "line_2",
           "latitude",
           "longitude",
+          "region",
           "datafordelerOpdateringstid",
           "datafordelerRowId",
           "datafordelerRowVersion",
@@ -10046,6 +10047,11 @@
           },
           "latitude": {
             "$ref": "#/components/schemas/Latitude"
+          },
+          "region": {
+            "type": "string",
+            "description": "The region in which the address is located\n",
+            "example": "Nordjylland"
           },
           "datafordelerOpdateringstid": {
             "type": "string",

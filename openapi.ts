@@ -5929,6 +5929,12 @@ export interface components {
       line_2: string;
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
+      /**
+       * @description The region in which the address is located
+       *
+       * @example Nordjylland
+       */
+      region: string;
       /** @description Data distributor Update Time */
       datafordelerOpdateringstid: string;
       /** @description row ID */
