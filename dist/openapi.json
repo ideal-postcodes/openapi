@@ -3780,7 +3780,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset\n  - `fodbosa` (BEL) Belgium Dataset\n  - `mois` (KOR) South Korea Dataset\n  - `upujp` (JPN) Japan UPU Address File\n  - `bev` (AUT) Austria Dataset",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset\n  - `fodbosa` (BEL) Belgium Dataset\n  - `mois` (KOR) South Korea Dataset\n  - `upujp` (JPN) Japan UPU Address File\n  - `bev` (AUT) Austria Dataset\n  - `kds` (DNK) KDS Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3811,7 +3811,8 @@
           "fodbosa",
           "mois",
           "upujp",
-          "bev"
+          "bev",
+          "kds"
         ]
       },
       "CountryISO": {
@@ -9914,6 +9915,395 @@
           }
         }
       },
+      "KdsAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "language",
+          "address",
+          "line_1",
+          "line_2",
+          "latitude",
+          "longitude",
+          "region",
+          "datafordelerOpdateringstid",
+          "datafordelerRowId",
+          "datafordelerRowVersion",
+          "datafordelerRegisterImportSequenceNumber",
+          "forretningshændelse",
+          "forretningsområde",
+          "forretningsproces",
+          "id_namespace",
+          "id_lokalId",
+          "registreringFra",
+          "registreringsaktør",
+          "registreringTil",
+          "status",
+          "virkningFra",
+          "virkningsaktør",
+          "virkningTil",
+          "adressebetegnelse",
+          "dørbetegnelse",
+          "dørpunkt",
+          "etagebetegnelse",
+          "bygning",
+          "husnummer",
+          "oprindelse_kilde",
+          "oprindelse_nøjagtighedsklasse",
+          "oprindelse_registrering",
+          "oprindelse_tekniskStandard",
+          "position",
+          "adgangsadressebetegnelse",
+          "adgangspunkt",
+          "husnummerretning",
+          "husnummertekst",
+          "vejpunkt",
+          "jordstykke",
+          "placeretPåForeløbigtJordstykke",
+          "geoDanmarkBygning",
+          "adgangTilBygning",
+          "adgangTilTekniskAnlæg",
+          "afstemningsområde",
+          "kommuneinddeling",
+          "menighedsrådsafstemningsområde",
+          "sogneinddeling",
+          "navngivenVej",
+          "administreresAfKommune",
+          "beskrivelse",
+          "udtaltVejnavn",
+          "vejadresseringsnavn",
+          "vejnavn",
+          "vejnavnebeliggenhed_oprindelse_kilde",
+          "vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse",
+          "vejnavnebeliggenhed_oprindelse_registrering",
+          "vejnavnebeliggenhed_oprindelse_tekniskStandard",
+          "vejnavnebeliggenhed_vejnavnelinje",
+          "vejnavnebeliggenhed_vejnavneområde",
+          "vejnavnebeliggenhed_vejtilslutningspunkter",
+          "kommune",
+          "vejkode",
+          "postnummer",
+          "supplerendeBynavn",
+          "navn",
+          "postnr",
+          "postnummerinddeling",
+          "bynavn"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "kds"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DNK"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DK"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Denmark"
+            ]
+          },
+          "language": {
+            "enum": [
+              "da"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name\n",
+            "example": "Elstedvej 95, Terp, 8200 Aarhus N"
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\nReturns street name, house number, (optional floor, door and city name)\n",
+            "example": "Elstedvej 95, Terp"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\nReturns postal code and postal city name\n",
+            "example": "8200 Aarhus N"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "region": {
+            "type": "string",
+            "description": "The region in which the address is located\n",
+            "example": "Nordjylland"
+          },
+          "datafordelerOpdateringstid": {
+            "type": "string",
+            "description": "Data distributor Update Time\n"
+          },
+          "datafordelerRowId": {
+            "type": "string",
+            "description": "row ID\n"
+          },
+          "datafordelerRowVersion": {
+            "type": "string",
+            "description": "row version\n"
+          },
+          "datafordelerRegisterImportSequenceNumber": {
+            "type": "string",
+            "description": "Import sequence number\n"
+          },
+          "forretningshændelse": {
+            "type": "string",
+            "description": "The business event that caused the address element to be updated to that version\n"
+          },
+          "forretningsområde": {
+            "type": "string",
+            "description": "The business area that has updated the address element to the version in question\n"
+          },
+          "forretningsproces": {
+            "type": "string",
+            "description": "The business process that caused the address element to be updated to that version\n"
+          },
+          "id_namespace": {
+            "type": "string",
+            "description": "Url of data file\n"
+          },
+          "id_lokalId": {
+            "type": "string",
+            "description": "Identification of the address element throughout its entire life cycle\n"
+          },
+          "registreringFra": {
+            "type": "string",
+            "description": "The time at which the registration of the relevant version of the address element was made\n"
+          },
+          "registreringsaktør": {
+            "type": "string",
+            "description": "The actor who has registered the relevant version of the address element\n"
+          },
+          "registreringTil": {
+            "type": "string",
+            "description": "The time when a new registration on the address element has been made, and where this version is therefore no longer the latest\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the address element in the version in question, i.e. the state of the element in the overall lifecycle\n"
+          },
+          "virkningFra": {
+            "type": "string",
+            "description": "The time from which the relevant version of the address element takes effect\n"
+          },
+          "virkningsaktør": {
+            "type": "string",
+            "description": "The actor who has caused the effect properties for the relevant version of the address element\n"
+          },
+          "virkningTil": {
+            "type": "string",
+            "description": "The time when the effect of the relevant version of the address element ceases\n"
+          },
+          "adressebetegnelse": {
+            "type": "string",
+            "description": "Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name\n"
+          },
+          "dørbetegnelse": {
+            "type": "string",
+            "description": "Door designation/Access point of the address\n"
+          },
+          "dørpunkt": {
+            "type": "string",
+            "description": "3D Geographical Point of the location of the door\n"
+          },
+          "etagebetegnelse": {
+            "type": "string",
+            "description": "Floor designation of the address\n"
+          },
+          "bygning": {
+            "type": "string",
+            "description": "Building related to the address\n"
+          },
+          "husnummer": {
+            "type": "string",
+            "description": "House number of the address\n"
+          },
+          "oprindelse_kilde": {
+            "type": "string",
+            "description": "Origin source of the data\n"
+          },
+          "oprindelse_nøjagtighedsklasse": {
+            "type": "string",
+            "description": "Origin accuracy class of the data\n"
+          },
+          "oprindelse_registrering": {
+            "type": "string",
+            "description": "Origin registration date\n"
+          },
+          "oprindelse_tekniskStandard": {
+            "type": "string",
+            "description": "Technical standard of the origin\n"
+          },
+          "position": {
+            "type": "string",
+            "description": "Geometric postion of the access point using epsg 25832\n"
+          },
+          "adgangsadressebetegnelse": {
+            "type": "string",
+            "description": "Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name\n"
+          },
+          "adgangspunkt": {
+            "type": "string",
+            "description": "Geographic point that represents the location of an address\n"
+          },
+          "husnummerretning": {
+            "type": "string",
+            "description": "Geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map\n"
+          },
+          "husnummertekst": {
+            "type": "string",
+            "description": "The house number of the address including any letters\n"
+          },
+          "vejpunkt": {
+            "type": "string",
+            "description": "Geographic point representing the location of the named road that provides access to a particular access point\n"
+          },
+          "jordstykke": {
+            "type": "string",
+            "description": "The piece of land on which the house number is located\n"
+          },
+          "placeretPåForeløbigtJordstykke": {
+            "type": "string",
+            "description": "The provisional, i.e. unapproved, plot of land on which the house number is located\n"
+          },
+          "geoDanmarkBygning": {
+            "type": "string",
+            "description": "The building in which the house number is located\n"
+          },
+          "adgangTilBygning": {
+            "type": "string",
+            "description": "The building to which the house number identifies the access\n"
+          },
+          "adgangTilTekniskAnlæg": {
+            "type": "string",
+            "description": "The technical facility to which the house number indicates the access road\n"
+          },
+          "afstemningsområde": {
+            "type": "string",
+            "description": "The voting area in which the house number is located\n"
+          },
+          "kommuneinddeling": {
+            "type": "string",
+            "description": "The municipal division in which the house number is located\n"
+          },
+          "menighedsrådsafstemningsområde": {
+            "type": "string",
+            "description": "The parish council voting area in which the house number is located\n"
+          },
+          "sogneinddeling": {
+            "type": "string",
+            "description": "The parish in which the house number is located\n"
+          },
+          "supplerendeBynavn": {
+            "type": "string",
+            "description": "The additional city name to which the house number is linked\n"
+          },
+          "navngivenVej": {
+            "type": "string",
+            "description": "Indicates the named street to which the house number is attached\n"
+          },
+          "postnummer": {
+            "type": "string",
+            "description": "The postal code in which the house number is located\n"
+          },
+          "administreresAfKommune": {
+            "type": "string",
+            "description": "Indication of the municipality responsible for registering the road name and geometry of the named road\n"
+          },
+          "beskrivelse": {
+            "type": "string",
+            "description": "Brief description of the origin or meaning of the road name\n"
+          },
+          "udtaltVejnavn": {
+            "type": "string",
+            "description": "The street name written in full, as it is pronounced\n"
+          },
+          "vejadresseringsnavn": {
+            "type": "string",
+            "description": "Abbreviated version of the road name of no more than 20 characters\n"
+          },
+          "vejnavn": {
+            "type": "string",
+            "description": "The full road name defined as: A proper name that designates and names a part of the road or path network or similar traffic areas and areas\n"
+          },
+          "vejnavnebeliggenhed_oprindelse_kilde": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_source\n"
+          },
+          "vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_accuracy_class\n"
+          },
+          "vejnavnebeliggenhed_oprindelse_registrering": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_registration\n"
+          },
+          "vejnavnebeliggenhed_oprindelse_tekniskStandard": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_technicalStandard\n"
+          },
+          "vejnavnebeliggenhed_vejnavnelinje": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_roadnameline\n"
+          },
+          "vejnavnebeliggenhed_vejnavneområde": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadnamelocation_roadnamearea\n"
+          },
+          "vejnavnebeliggenhed_vejtilslutningspunkter": {
+            "type": "string",
+            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadnamelocation_roadconnectionpoints\n"
+          },
+          "kommune": {
+            "type": "string",
+            "description": "The municipality code of the municipality to which the relevant part of the named road belongs\n"
+          },
+          "vejkode": {
+            "type": "string",
+            "description": "Unique identification of the part of a Named Road that affects a single municipality\n"
+          },
+          "postnr": {
+            "type": "string",
+            "description": "The postal code number\n"
+          },
+          "postnummerinddeling": {
+            "type": "string",
+            "description": "Unique identifier of the postal code area\n"
+          },
+          "navn": {
+            "type": "string",
+            "description": "The name of the postal code area\n"
+          },
+          "bynavn": {
+            "type": "string",
+            "description": "The additional city name associated with the address\n"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -10066,6 +10456,9 @@
               },
               {
                 "$ref": "#/components/schemas/BevAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KdsAddress"
               }
             ]
           },
@@ -10833,7 +11226,8 @@
           "fodbosa",
           "mois",
           "upujp",
-          "bev"
+          "bev",
+          "kds"
         ],
         "properties": {
           "paf": {
@@ -10998,6 +11392,11 @@
           "bev": {
             "type": "boolean",
             "description": "Austria: BEV Address File",
+            "example": true
+          },
+          "kds": {
+            "type": "boolean",
+            "description": "Denmark: KDS Address File",
             "example": true
           }
         }
@@ -11346,6 +11745,11 @@
               "bev": {
                 "type": "boolean",
                 "description": "Austria: BEV Address File",
+                "example": true
+              },
+              "kds": {
+                "type": "boolean",
+                "description": "Denmark: KDS Address File",
                 "example": true
               }
             }
@@ -12910,6 +13314,9 @@
               },
               {
                 "$ref": "#/components/schemas/BevAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KdsAddress"
               }
             ]
           }
