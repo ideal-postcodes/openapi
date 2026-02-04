@@ -1,3 +1,10 @@
+# [4.15.0](https://github.com/ideal-postcodes/openapi/compare/4.14.1...4.15.0) (2026-02-04)
+
+
+### Features
+
+* **API Key:** Add monthly limits ([04ee230](https://github.com/ideal-postcodes/openapi/commit/04ee2307f57c98ba67fab9ab79bbf6b466b4abac))
+
 ## [4.14.1](https://github.com/ideal-postcodes/openapi/compare/4.14.0...4.14.1) (2025-11-12)
 
 
