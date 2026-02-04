@@ -2141,7 +2141,7 @@ export interface components {
        * @description Post County ID
        * @example 10098783
        */
-      post_county_id?: string;
+      post_county_id?: string | null;
       /**
        * @description NUA means "non-unique address".
        *
@@ -2297,6 +2297,8 @@ export interface components {
       /** @description An Post publicity post zone information. */
       publicity_post_zone?: string;
     } & {
+      dataset: unknown;
+      ecad_id: unknown;
       organisation_id: unknown;
       address_point_id: unknown;
       building_id: unknown;
@@ -2342,6 +2344,7 @@ export interface components {
       /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
       ecaf_id?: string;
     } & {
+      dataset: unknown;
       ecaf_id: unknown;
     };
     /**
@@ -6414,6 +6417,22 @@ export interface components {
        */
       consumed: number;
     };
+    /** API Key Monthly Limit */
+    ApiKeyMonthlyLimit: {
+      /**
+       * Format: int32
+       * @description `number` or `null`. The monthly lookup limit currently set on your key.
+       * `null` means the limit is currently disabled.
+       * @example 10000
+       */
+      limit: number | null;
+      /**
+       * Format: int32
+       * @description Number of lookups performed this month which count towards your monthly limit.
+       * @example 2500
+       */
+      consumed: number;
+    };
     /** API Key Individual Limit */
     ApiKeyIndividualLimit: {
       /**
@@ -6642,6 +6661,7 @@ export interface components {
        */
       lookups_remaining: number;
       daily_limit: components["schemas"]["ApiKeyDailyLimit"];
+      monthly_limit: components["schemas"]["ApiKeyMonthlyLimit"];
       individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
       /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
       allowed_urls: string[];
@@ -6681,6 +6701,16 @@ export interface components {
          * @description `number` or `null`. The daily lookup limit currently set on your key.
          * `null` means the limit is currently disabled.
          * @example 1000
+         */
+        limit?: number | null;
+      };
+      /** Monthly Rate Limit */
+      monthly_limit?: {
+        /**
+         * Format: int32
+         * @description `number` or `null`. The monthly lookup limit currently set on your key.
+         * `null` means the limit is currently disabled.
+         * @example 10000
          */
         limit?: number | null;
       };

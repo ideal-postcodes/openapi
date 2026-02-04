@@ -4807,6 +4807,8 @@
         "title": "Ireland ECAD Address",
         "description": "The ECAD contains additional data for each ECAF address.",
         "required": [
+          "dataset",
+          "ecad_id",
           "organisation_id",
           "address_point_id",
           "building_id",
@@ -4926,6 +4928,7 @@
               },
               "post_county_id": {
                 "type": "string",
+                "nullable": true,
                 "description": "Post County ID",
                 "example": "10098783",
                 "maxLength": 10,
@@ -5068,6 +5071,7 @@
         "title": "Ireland ECAF Address",
         "description": "ECAF is the Eircode Address File which contains one record for each Postal Address. English language and Irish language versions are available. It is distributed as a flat file, details of data provision and updates are provided in section 2.",
         "required": [
+          "dataset",
           "ecaf_id"
         ],
         "allOf": [
@@ -10756,6 +10760,32 @@
           }
         }
       },
+      "ApiKeyMonthlyLimit": {
+        "title": "API Key Monthly Limit",
+        "type": "object",
+        "required": [
+          "limit",
+          "consumed"
+        ],
+        "properties": {
+          "limit": {
+            "x-nullable": true,
+            "nullable": true,
+            "minimum": 0,
+            "example": 10000,
+            "type": "integer",
+            "description": "`number` or `null`. The monthly lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
+            "format": "int32"
+          },
+          "consumed": {
+            "minimum": 0,
+            "example": 2500,
+            "type": "integer",
+            "description": "Number of lookups performed this month which count towards your monthly limit.",
+            "format": "int32"
+          }
+        }
+      },
       "ApiKeyIndividualLimit": {
         "title": "API Key Individual Limit",
         "type": "object",
@@ -11055,6 +11085,7 @@
         "required": [
           "lookups_remaining",
           "daily_limit",
+          "monthly_limit",
           "individual_limit",
           "allowed_urls",
           "redact_days",
@@ -11073,6 +11104,9 @@
           },
           "daily_limit": {
             "$ref": "#/components/schemas/ApiKeyDailyLimit"
+          },
+          "monthly_limit": {
+            "$ref": "#/components/schemas/ApiKeyMonthlyLimit"
           },
           "individual_limit": {
             "$ref": "#/components/schemas/ApiKeyIndividualLimit"
@@ -11154,6 +11188,21 @@
                 "example": 1000,
                 "type": "integer",
                 "description": "`number` or `null`. The daily lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
+                "format": "int32"
+              }
+            }
+          },
+          "monthly_limit": {
+            "title": "Monthly Rate Limit",
+            "type": "object",
+            "properties": {
+              "limit": {
+                "x-nullable": true,
+                "nullable": true,
+                "minimum": 0,
+                "example": 10000,
+                "type": "integer",
+                "description": "`number` or `null`. The monthly lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
                 "format": "int32"
               }
             }
