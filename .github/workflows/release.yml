@@ -31,6 +31,9 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      - name: Update npm for OIDC support
+        run: npm install -g npm@latest
+
       - name: Install
         run: pnpm install --frozen-lockfile
 
@@ -41,7 +44,6 @@ jobs:
         run: pnpm test
 
       - name: Semantic Release
-        # Use npx instead of pnpm to ensure npm OIDC token is passed correctly
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
