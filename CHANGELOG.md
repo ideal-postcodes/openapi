@@ -1,3 +1,10 @@
+## [4.15.2](https://github.com/ideal-postcodes/openapi/compare/4.15.1...4.15.2) (2026-02-04)
+
+
+### Bug Fixes
+
+* **Release:** Upgrade npm for OIDC trusted publishing ([da12869](https://github.com/ideal-postcodes/openapi/commit/da12869be1e48c71a4b96926079e83da741dc5c0))
+
 ## [4.15.1](https://github.com/ideal-postcodes/openapi/compare/4.15.0...4.15.1) (2026-02-04)
 
 
