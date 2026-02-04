@@ -1,5 +1,4 @@
 name: Release
-
 on:
   push:
     branches:
@@ -8,36 +7,37 @@ on:
 
 jobs:
   build:
+    # Important this runs on Github Actions infra
+    # npm publish will fail anywhere else (e.g. blacksmith)
     runs-on: ubuntu-latest
+    # https://docs.npmjs.com/trusted-publishers#github-actions-configuration
+    permissions:
+      id-token: write      # Required for npm OIDC
+      contents: write      # Required for semantic-release to create releases/tags
+      issues: write        # Required for semantic-release to comment on issues
+      pull-requests: write # Required for semantic-release to comment on PRs
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
 
       - name: Install
-        run: npm install
-
-      - name: Unit Tests
-        run: npm run test
-        env:
-          CYPRESS_API_KEY: ${{ secrets.API_KEY }}
+        run: npm ci
 
       - name: Build
         run: npm run build
 
+      - name: Unit Tests
+        run: npm run test
+
       - name: Semantic Release
-        run: npm run semantic-release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
