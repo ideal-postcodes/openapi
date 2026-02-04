@@ -1,3 +1,10 @@
+## [4.15.1](https://github.com/ideal-postcodes/openapi/compare/4.15.0...4.15.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **Release:** Trigger release ([8b94d18](https://github.com/ideal-postcodes/openapi/commit/8b94d180897e26293fef929143352250df909d60))
+
 # [4.15.0](https://github.com/ideal-postcodes/openapi/compare/4.14.1...4.15.0) (2026-02-04)
 
 
