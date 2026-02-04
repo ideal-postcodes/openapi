@@ -725,7 +725,7 @@ this package is consumed by a code generator.
 
 Any changes, including backwards incompatible changes will be listed here
 
-## master
+## main
 
 - Fix error response schema on `/postcodes/:postcode`
 
