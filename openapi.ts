@@ -5989,12 +5989,16 @@ export interface components {
       oprindelse_tekniskStandard: string;
       /** @description Geometric postion of the access point using epsg 25832 */
       position: string;
+      position_x: string | number;
+      position_y: string | number;
       /** @description Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name */
       adgangsadressebetegnelse: string;
       /** @description Geographic point that represents the location of an address */
       adgangspunkt: string;
       /** @description Geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map */
       husnummerretning: string;
+      husnummerretning_x: string | number;
+      husnummerretning_y: string | number;
       /** @description The house number of the address including any letters */
       husnummertekst: string;
       /** @description Geographic point representing the location of the named road that provides access to a particular access point */
@@ -6069,9 +6073,9 @@ export interface components {
        */
       vejnavnebeliggenhed_vejtilslutningspunkter: string;
       /** @description The municipality code of the municipality to which the relevant part of the named road belongs */
-      kommune: string;
+      kommune: string[];
       /** @description Unique identification of the part of a Named Road that affects a single municipality */
-      vejkode: string;
+      vejkode: string[];
       /** @description The postal code number */
       postnr: string;
       /** @description Unique identifier of the postal code area */

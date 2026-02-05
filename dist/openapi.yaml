@@ -9605,9 +9605,13 @@ components:
         - oprindelse_registrering
         - oprindelse_tekniskStandard
         - position
+        - position_x
+        - position_y
         - adgangsadressebetegnelse
         - adgangspunkt
         - husnummerretning
+        - husnummerretning_x
+        - husnummerretning_y
         - husnummertekst
         - vejpunkt
         - jordstykke
@@ -9803,6 +9807,20 @@ components:
           type: string
           description: |
             Geometric postion of the access point using epsg 25832
+        position_x:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                X coordinate of the geometric position of the access point using epsg 25832
+        position_y:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Y coordinate of the geometric position of the access point using epsg 25832
         adgangsadressebetegnelse:
           type: string
           description: |
@@ -9815,6 +9833,20 @@ components:
           type: string
           description: |
             Geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
+        husnummerretning_x:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                X coordinate of the geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
+        husnummerretning_y:
+          oneOf:
+            - type: string
+              description: Empty string `""` if not available
+            - type: number
+              description: |
+                Y coordinate of the geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
         husnummertekst:
           type: string
           description: |
@@ -9927,11 +9959,15 @@ components:
             Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
             Roadnamelocation_roadconnectionpoints
         kommune:
-          type: string
+          type: array
+          items:
+            type: string
           description: |
             The municipality code of the municipality to which the relevant part of the named road belongs
         vejkode:
-          type: string
+          type: array
+          items:
+            type: string
           description: |
             Unique identification of the part of a Named Road that affects a single municipality
         postnr:
