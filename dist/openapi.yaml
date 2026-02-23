@@ -9574,14 +9574,8 @@ components:
         - language
         - address
         - line_1
-        - line_2
         - latitude
         - longitude
-        - region
-        - datafordelerOpdateringstid
-        - datafordelerRowId
-        - datafordelerRowVersion
-        - datafordelerRegisterImportSequenceNumber
         - forretningshændelse
         - forretningsområde
         - forretningsproces
@@ -9594,56 +9588,60 @@ components:
         - virkningFra
         - virkningsaktør
         - virkningTil
-        - adressebetegnelse
-        - dørbetegnelse
-        - dørpunkt
-        - etagebetegnelse
-        - bygning
-        - husnummer
-        - oprindelse_kilde
-        - oprindelse_nøjagtighedsklasse
-        - oprindelse_registrering
-        - oprindelse_tekniskStandard
-        - position
-        - position_x
-        - position_y
-        - adgangsadressebetegnelse
-        - adgangspunkt
-        - husnummerretning
-        - husnummerretning_x
-        - husnummerretning_y
-        - husnummertekst
-        - vejpunkt
-        - jordstykke
-        - placeretPåForeløbigtJordstykke
-        - geoDanmarkBygning
-        - adgangTilBygning
-        - adgangTilTekniskAnlæg
-        - afstemningsområde
-        - kommuneinddeling
-        - menighedsrådsafstemningsområde
-        - sogneinddeling
-        - navngivenVej
-        - administreresAfKommune
-        - beskrivelse
-        - udtaltVejnavn
-        - vejadresseringsnavn
-        - vejnavn
-        - vejnavnebeliggenhed_oprindelse_kilde
-        - vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse
-        - vejnavnebeliggenhed_oprindelse_registrering
-        - vejnavnebeliggenhed_oprindelse_tekniskStandard
-        - vejnavnebeliggenhed_vejnavnelinje
-        - vejnavnebeliggenhed_vejnavneområde
-        - vejnavnebeliggenhed_vejtilslutningspunkter
-        - kommune
-        - vejkode
-        - postnummer
-        - supplerendeBynavn
-        - navn
-        - postnr
-        - postnummerinddeling
-        - bynavn
+        - adresse_adressebetegnelse
+        - adresse_dørbetegnelse
+        - adresse_etagebetegnelse
+        - adressepunkt_oprindelse_kilde
+        - adressepunkt_oprindelse_nojagtighedsklasse
+        - adressepunkt_oprindelse_registrering
+        - adressepunkt_oprindelse_tekniskStandard
+        - adressepunkt_position_x
+        - adressepunkt_position_y
+        - husnummer_adgangsadressebetegnelse
+        - husnummer_vejmidte
+        - husnummer_husnummertekst
+        - afstemningsomraadenummer
+        - afstemningsområde_navn
+        - afstemningsstedNavn
+        - kommuneinddeling_kommunekode
+        - kommuneinddeling_navn
+        - LAU1vaerdi
+        - kommuneinddeling_udenforKommuneinddeling
+        - MRafstemningsomraadenummer
+        - menighedsradsafstemningsomrade_navn
+        - LAU2vaerdi
+        - sogneinddeling_sognekode
+        - sogneinddeling_navn
+        - supplerendebynavn_navn
+        - navngivenvej_beskrivelse
+        - navngivenvej_udtaltVejnavn
+        - navngivenvej_vejadresseringsnavn
+        - navngivenvej_vejnavn
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_kilde
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_registrering
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard
+        - navngivenvejkommunedel_vejkode
+        - postnummer_navn
+        - postnummer_postnr
+        - opstillingskredsnummer
+        - opstillingskreds_navn
+        - valgkredsnummer
+        - storkredsnummer
+        - storkreds_navn
+        - valglandsdelsbogstav
+        - valglandsdels_navn
+        - postnummerinddeling_ergadepostnummer
+        - nuts2vaerdi
+        - regionsinddeling_regionskode
+        - regionsinddeling_navn
+        - politikredsnummer
+        - politikreds_navn
+        - myndighedskode
+        - retskredsnummer
+        - retskreds_navn
+        - nuts3vaerdi
+        - landsdel_navn
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -9684,37 +9682,10 @@ components:
             First address line.
             Returns street name, house number, (optional floor, door and city name)
           example: Elstedvej 95, Terp
-        line_2:
-          type: string
-          description: |
-            Second address line.
-            Returns postal code and postal city name
-          example: 8200 Aarhus N
         longitude:
           $ref: '#/components/schemas/Longitude'
         latitude:
           $ref: '#/components/schemas/Latitude'
-        region:
-          type: string
-          description: |
-            The region in which the address is located
-          example: Nordjylland
-        datafordelerOpdateringstid:
-          type: string
-          description: |
-            Data distributor Update Time
-        datafordelerRowId:
-          type: string
-          description: |
-            row ID
-        datafordelerRowVersion:
-          type: string
-          description: |
-            row version
-        datafordelerRegisterImportSequenceNumber:
-          type: string
-          description: |
-            Import sequence number
         forretningshændelse:
           type: string
           description: |
@@ -9763,229 +9734,234 @@ components:
           type: string
           description: |
             The time when the effect of the relevant version of the address element ceases
-        adressebetegnelse:
+        adresse_adressebetegnelse:
           type: string
           description: |
             Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name
-        dørbetegnelse:
+        adresse_dørbetegnelse:
           type: string
           description: |
             Door designation/Access point of the address
-        dørpunkt:
-          type: string
-          description: |
-            3D Geographical Point of the location of the door
-        etagebetegnelse:
+        adresse_etagebetegnelse:
           type: string
           description: |
             Floor designation of the address
-        bygning:
-          type: string
-          description: |
-            Building related to the address
-        husnummer:
-          type: string
-          description: |
-            House number of the address
-        oprindelse_kilde:
+        adressepunkt_oprindelse_kilde:
           type: string
           description: |
             Origin source of the data
-        oprindelse_nøjagtighedsklasse:
+        adressepunkt_oprindelse_nojagtighedsklasse:
           type: string
           description: |
             Origin accuracy class of the data
-        oprindelse_registrering:
+        adressepunkt_oprindelse_registrering:
           type: string
           description: |
             Origin registration date
-        oprindelse_tekniskStandard:
+        adressepunkt_oprindelse_tekniskStandard:
           type: string
           description: |
             Technical standard of the origin
-        position:
-          type: string
-          description: |
-            Geometric postion of the access point using epsg 25832
-        position_x:
+        adressepunkt_position_x:
           oneOf:
             - type: string
               description: Empty string `""` if not available
             - type: number
               description: |
                 X coordinate of the geometric position of the access point using epsg 25832
-        position_y:
+        adressepunkt_position_y:
           oneOf:
             - type: string
               description: Empty string `""` if not available
             - type: number
               description: |
                 Y coordinate of the geometric position of the access point using epsg 25832
-        adgangsadressebetegnelse:
+        husnummer_adgangsadressebetegnelse:
           type: string
           description: |
             Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name
-        adgangspunkt:
+        husnummer_vejmidte:
           type: string
           description: |
-            Geographic point that represents the location of an address
-        husnummerretning:
-          type: string
-          description: |
-            Geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
-        husnummerretning_x:
-          oneOf:
-            - type: string
-              description: Empty string `""` if not available
-            - type: number
-              description: |
-                X coordinate of the geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
-        husnummerretning_y:
-          oneOf:
-            - type: string
-              description: Empty string `""` if not available
-            - type: number
-              description: |
-                Y coordinate of the geographic point used to indicate the direction of a house number (house number text), relative to the Access Point, when it is to be displayed on a map
-        husnummertekst:
+            Municipality code-road code
+        husnummer_husnummertekst:
           type: string
           description: |
             The house number of the address including any letters
-        vejpunkt:
+        afstemningsomraadenummer:
           type: string
           description: |
-            Geographic point representing the location of the named road that provides access to a particular access point
-        jordstykke:
+            Polling district number
+        afstemningsområde_navn:
           type: string
           description: |
-            The piece of land on which the house number is located
-        placeretPåForeløbigtJordstykke:
+            Name of the geographical entity
+        afstemningsstedNavn:
           type: string
           description: |
-            The provisional, i.e. unapproved, plot of land on which the house number is located
-        geoDanmarkBygning:
+            Polling place name
+        kommuneinddeling_kommunekode:
           type: string
           description: |
-            The building in which the house number is located
-        adgangTilBygning:
+            Municipality code
+        kommuneinddeling_navn:
           type: string
           description: |
-            The building to which the house number identifies the access
-        adgangTilTekniskAnlæg:
+            Name of the geographical entity
+        LAU1vaerdi:
           type: string
           description: |
-            The technical facility to which the house number indicates the access road
-        afstemningsområde:
+            LAU1 value (Local Administrative Unit level 1)
+        kommuneinddeling_udenforKommuneinddeling:
           type: string
           description: |
-            The voting area in which the house number is located
-        kommuneinddeling:
+            Outside municipality division (boolean flag)
+        MRafstemningsomraadenummer:
           type: string
           description: |
-            The municipal division in which the house number is located
-        menighedsrådsafstemningsområde:
+            Municipal/regional polling district number
+        menighedsradsafstemningsomrade_navn:
           type: string
           description: |
-            The parish council voting area in which the house number is located
-        sogneinddeling:
+            Name of the geographical entity
+        LAU2vaerdi:
           type: string
           description: |
-            The parish in which the house number is located
-        supplerendeBynavn:
+            LAU2 value (Local Administrative Unit level 2)
+        sogneinddeling_sognekode:
           type: string
           description: |
-            The additional city name to which the house number is linked
-        navngivenVej:
+            Parish code
+        sogneinddeling_navn:
           type: string
           description: |
-            Indicates the named street to which the house number is attached
-        postnummer:
+            Name of the geographical entity
+        supplerendebynavn_navn:
           type: string
           description: |
-            The postal code in which the house number is located
-        administreresAfKommune:
-          type: string
-          description: |
-            Indication of the municipality responsible for registering the road name and geometry of the named road
-        beskrivelse:
+            Name of the geographical entity
+        navngivenvej_beskrivelse:
           type: string
           description: |
             Brief description of the origin or meaning of the road name
-        udtaltVejnavn:
+        navngivenvej_udtaltVejnavn:
           type: string
           description: |
             The street name written in full, as it is pronounced
-        vejadresseringsnavn:
+        navngivenvej_vejadresseringsnavn:
           type: string
           description: |
             Abbreviated version of the road name of no more than 20 characters
-        vejnavn:
+        navngivenvej_vejnavn:
           type: string
           description: |
             The full road name defined as: A proper name that designates and names a part of the road or path network or similar traffic areas and areas
-        vejnavnebeliggenhed_oprindelse_kilde:
+        navngivenvej_vejnavnebeliggenhed_oprindelse_kilde:
           type: string
           description: |
             Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
             Roadname_location_origin_source
-        vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse:
+        navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse:
           type: string
           description: |
             Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
             Roadname_location_origin_accuracy_class
-        vejnavnebeliggenhed_oprindelse_registrering:
+        navngivenvej_vejnavnebeliggenhed_oprindelse_registrering:
           type: string
           description: |
             Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
             Roadname_location_origin_registration
-        vejnavnebeliggenhed_oprindelse_tekniskStandard:
+        navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard:
           type: string
           description: |
             Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
             Roadname_location_origin_technicalStandard
-        vejnavnebeliggenhed_vejnavnelinje:
-          type: string
-          description: |
-            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-            Roadname_location_roadnameline
-        vejnavnebeliggenhed_vejnavneområde:
-          type: string
-          description: |
-            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-            Roadnamelocation_roadnamearea
-        vejnavnebeliggenhed_vejtilslutningspunkter:
-          type: string
-          description: |
-            Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-            Roadnamelocation_roadconnectionpoints
-        kommune:
-          type: array
-          items:
-            type: string
-          description: |
-            The municipality code of the municipality to which the relevant part of the named road belongs
-        vejkode:
+        navngivenvejkommunedel_vejkode:
           type: array
           items:
             type: string
           description: |
             Unique identification of the part of a Named Road that affects a single municipality
-        postnr:
+        postnummer_navn:
           type: string
           description: |
-            The postal code number
-        postnummerinddeling:
+            Name of the city, district, etc. that the postal code includes
+        postnummer_postnr:
           type: string
           description: |
-            Unique identifier of the postal code area
-        navn:
+            Four-digit code that identifies the postal code
+        opstillingskredsnummer:
           type: string
           description: |
-            The name of the postal code area
-        bynavn:
+            Constituency number
+        opstillingskreds_navn:
           type: string
           description: |
-            The additional city name associated with the address
+            Name of the geographical entity
+        valgkredsnummer:
+          type: string
+          description: |
+            National electoral district number
+        storkredsnummer:
+          type: string
+          description: |
+            Regional electoral district number
+        storkreds_navn:
+          type: string
+          description: |
+            Name of the geographical entity
+        valglandsdelsbogstav:
+          type: string
+          description: |
+            National electoral district letter
+        valglandsdels_navn:
+          type: string
+          description: |
+            Name of the geographical entity
+        postnummerinddeling_ergadepostnummer:
+          type: string
+          description: |
+            Whether it is a "street postal code"
+        nuts2vaerdi:
+          type: string
+          description: |
+            NUTS2 value (NUTS level 2)
+        regionsinddeling_regionskode:
+          type: string
+          description: |
+            Region code
+        regionsinddeling_navn:
+          type: string
+          description: |
+            Name of the geographical entity
+        politikredsnummer:
+          type: string
+          description: |
+            Police district number
+        politikreds_navn:
+          type: string
+          description: |
+            Name of the geographical entity
+        myndighedskode:
+          type: string
+          description: |
+            Public authority code
+        retskredsnummer:
+          type: string
+          description: |
+            Judicial district number
+        retskreds_navn:
+          type: string
+          description: |
+            Name of the geographical entity
+        nuts3vaerdi:
+          type: string
+          description: |
+            NUTS3 value (NUTS level 3)
+        landsdel_navn:
+          type: string
+          description: |
+            Name of the geographical entity
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
