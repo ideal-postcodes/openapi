@@ -9925,6 +9925,7 @@
           "language",
           "address",
           "line_1",
+          "line_2",
           "latitude",
           "longitude",
           "forretningshændelse",
@@ -10037,8 +10038,11 @@
           },
           "line_1": {
             "type": "string",
-            "description": "First address line.\nReturns street name, house number, (optional floor, door and city name)\n",
-            "example": "Elstedvej 95, Terp"
+            "description": "First address line.\nReturns street name, house number, (optional floor, door and city name)\n"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n"
           },
           "longitude": {
             "$ref": "#/components/schemas/Longitude"

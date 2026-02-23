@@ -5916,10 +5916,10 @@ export interface components {
       /**
        * @description First address line.
        * Returns street name, house number, (optional floor, door and city name)
-       *
-       * @example Elstedvej 95, Terp
        */
       line_1: string;
+      /** @description Second address line. */
+      line_2: string;
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
       /** @description The business event that caused the address element to be updated to that version */

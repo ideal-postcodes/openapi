@@ -9574,6 +9574,7 @@ components:
         - language
         - address
         - line_1
+        - line_2
         - latitude
         - longitude
         - forretningshændelse
@@ -9681,7 +9682,10 @@ components:
           description: |
             First address line.
             Returns street name, house number, (optional floor, door and city name)
-          example: Elstedvej 95, Terp
+        line_2:
+          type: string
+          description: |
+            Second address line.
         longitude:
           $ref: '#/components/schemas/Longitude'
         latitude:
