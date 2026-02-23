@@ -5955,7 +5955,7 @@ export interface components {
       /** @description Origin source of the data */
       adressepunkt_oprindelse_kilde: string;
       /** @description Origin accuracy class of the data */
-      adressepunkt_oprindelse_nojagtighedsklasse: string;
+      adressepunkt_oprindelse_nøjagtighedsklasse: string;
       /** @description Origin registration date */
       adressepunkt_oprindelse_registrering: string;
       /** @description Technical standard of the origin */
@@ -5974,14 +5974,12 @@ export interface components {
       afstemningsområde_navn: string;
       /** @description Polling place name */
       afstemningsstedNavn: string;
-      /** @description Municipality code */
-      kommuneinddeling_kommunekode: string;
+      kommuneinddeling_kommunekode: boolean | string;
       /** @description Name of the geographical entity */
       kommuneinddeling_navn: string;
       /** @description LAU1 value (Local Administrative Unit level 1) */
       LAU1vaerdi: string;
-      /** @description Outside municipality division (boolean flag) */
-      kommuneinddeling_udenforKommuneinddeling: string;
+      kommuneinddeling_udenforKommuneinddeling: string | boolean;
       /** @description Municipal/regional polling district number */
       MRafstemningsomraadenummer: string;
       /** @description Name of the geographical entity */
@@ -6023,7 +6021,7 @@ export interface components {
        */
       navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard: string;
       /** @description Unique identification of the part of a Named Road that affects a single municipality */
-      navngivenvejkommunedel_vejkode: string[];
+      navngivenvejkommunedel_vejkode: string;
       /** @description Name of the city, district, etc. that the postal code includes */
       postnummer_navn: string;
       /** @description Four-digit code that identifies the postal code */
@@ -6042,8 +6040,7 @@ export interface components {
       valglandsdelsbogstav: string;
       /** @description Name of the geographical entity */
       valglandsdels_navn: string;
-      /** @description Whether it is a "street postal code" */
-      postnummerinddeling_ergadepostnummer: string;
+      postnummerinddeling_ergadepostnummer: string | boolean;
       /** @description NUTS2 value (NUTS level 2) */
       nuts2vaerdi: string;
       /** @description Region code */

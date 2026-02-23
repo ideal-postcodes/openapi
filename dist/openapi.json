@@ -9943,7 +9943,7 @@
           "adresse_dørbetegnelse",
           "adresse_etagebetegnelse",
           "adressepunkt_oprindelse_kilde",
-          "adressepunkt_oprindelse_nojagtighedsklasse",
+          "adressepunkt_oprindelse_nøjagtighedsklasse",
           "adressepunkt_oprindelse_registrering",
           "adressepunkt_oprindelse_tekniskStandard",
           "adressepunkt_position_x",
@@ -10110,7 +10110,7 @@
             "type": "string",
             "description": "Origin source of the data\n"
           },
-          "adressepunkt_oprindelse_nojagtighedsklasse": {
+          "adressepunkt_oprindelse_nøjagtighedsklasse": {
             "type": "string",
             "description": "Origin accuracy class of the data\n"
           },
@@ -10171,8 +10171,16 @@
             "description": "Polling place name\n"
           },
           "kommuneinddeling_kommunekode": {
-            "type": "string",
-            "description": "Municipality code\n"
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Outside municipality division (boolean flag)\n"
+              },
+              {
+                "type": "string",
+                "description": "Empty \"\" if null\n"
+              }
+            ]
           },
           "kommuneinddeling_navn": {
             "type": "string",
@@ -10183,8 +10191,16 @@
             "description": "LAU1 value (Local Administrative Unit level 1)\n"
           },
           "kommuneinddeling_udenforKommuneinddeling": {
-            "type": "string",
-            "description": "Outside municipality division (boolean flag)\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty \"\" if null\n"
+              },
+              {
+                "type": "boolean",
+                "description": "Outside municipality division (boolean flag)\n"
+              }
+            ]
           },
           "MRafstemningsomraadenummer": {
             "type": "string",
@@ -10243,10 +10259,7 @@
             "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_technicalStandard\n"
           },
           "navngivenvejkommunedel_vejkode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "Unique identification of the part of a Named Road that affects a single municipality\n"
           },
           "postnummer_navn": {
@@ -10286,8 +10299,16 @@
             "description": "Name of the geographical entity\n"
           },
           "postnummerinddeling_ergadepostnummer": {
-            "type": "string",
-            "description": "Whether it is a \"street postal code\"\n"
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Empty string if null\n"
+              },
+              {
+                "type": "boolean",
+                "description": "Whether it is a \"street postal code\"\n"
+              }
+            ]
           },
           "nuts2vaerdi": {
             "type": "string",
