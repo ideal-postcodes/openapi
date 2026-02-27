@@ -9987,9 +9987,10 @@
           "nuts2vaerdi",
           "regionsinddeling_regionskode",
           "regionsinddeling_navn",
+          "politikreds_myndighedskode",
           "politikredsnummer",
           "politikreds_navn",
-          "myndighedskode",
+          "retskreds_myndighedskode",
           "retskredsnummer",
           "retskreds_navn",
           "nuts3vaerdi",
@@ -10033,16 +10034,18 @@
           },
           "address": {
             "type": "string",
-            "description": "Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name\n",
-            "example": "Elstedvej 95, Terp, 8200 Aarhus N"
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "95"
           },
           "line_1": {
             "type": "string",
-            "description": "First address line.\nReturns street name, house number, (optional floor, door and city name)\n"
+            "description": "First address line.\n\nMay include street name, house number, floor number and door number.\n",
+            "example": "Vænget 19"
           },
           "line_2": {
             "type": "string",
-            "description": "Second address line.\n"
+            "description": "Second address line.\n\nMay include supplementary city name. Can be empty string `\"\"` if not present.\n",
+            "example": "Benløse"
           },
           "longitude": {
             "$ref": "#/components/schemas/Longitude"
@@ -10052,89 +10055,108 @@
           },
           "forretningshændelse": {
             "type": "string",
-            "description": "The business event that caused the address element to be updated to that version\n"
+            "description": "Business event type that triggered the record.\n",
+            "example": "2"
           },
           "forretningsområde": {
             "type": "string",
-            "description": "The business area that has updated the address element to the version in question\n"
+            "description": "Business domain or subject area the record belongs to.\n",
+            "example": "54.15.10.08"
           },
           "forretningsproces": {
             "type": "string",
-            "description": "The business process that caused the address element to be updated to that version\n"
+            "description": "Business process that produced or last modified the record.\n",
+            "example": "0"
           },
           "id_namespace": {
             "type": "string",
-            "description": "Url of data file\n"
+            "description": "Namespace URI that qualifies the local identifier.\n",
+            "example": "http://data.gov.dk/dar/adresse"
           },
           "id_lokalId": {
             "type": "string",
-            "description": "Identification of the address element throughout its entire life cycle\n"
+            "description": "Local unique identifier for the address object within its namespace.\n",
+            "example": "0000090e-e9f3-4ffe-a0a5-2852666d158c"
           },
           "registreringFra": {
             "type": "string",
-            "description": "The time at which the registration of the relevant version of the address element was made\n"
+            "description": "Start of the registration period (when the record became valid in the register).\n",
+            "example": "2021-06-21T07:54:04.191Z"
           },
           "registreringsaktør": {
             "type": "string",
-            "description": "The actor who has registered the relevant version of the address element\n"
+            "description": "Actor (authority or system) responsible for the registration of the address record.\n",
+            "example": "DAR"
           },
           "registreringTil": {
             "type": "string",
-            "description": "The time when a new registration on the address element has been made, and where this version is therefore no longer the latest\n"
+            "description": "End of the registration period.\n\nCan be empty string `\"\"` if the address is still active.\n"
           },
           "status": {
             "type": "string",
-            "description": "The status of the address element in the version in question, i.e. the state of the element in the overall lifecycle\n"
+            "description": "Current lifecycle status of the object.\n",
+            "example": "4"
           },
           "virkningFra": {
             "type": "string",
-            "description": "The time from which the relevant version of the address element takes effect\n"
+            "description": "Start of the real-world validity period (when the address record takes effect in reality).\n",
+            "example": "2021-06-21T07:54:04.191Z"
           },
           "virkningsaktør": {
             "type": "string",
-            "description": "The actor who has caused the effect properties for the relevant version of the address element\n"
+            "description": "Actor (authority or system) responsible for the real-world change that prompted the record.\n",
+            "example": "AjourføreDarSystem"
           },
           "virkningTil": {
             "type": "string",
-            "description": "The time when the effect of the relevant version of the address element ceases\n"
+            "description": "End of the real-world validity period.\n\nCan be empty string `\"\"` if the address is still valid.\n",
+            "example": "2026-02-14T00:00:00.000Z"
           },
           "adresse_adressebetegnelse": {
             "type": "string",
-            "description": "Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name\n"
+            "description": "Full formatted address.\n\nCommonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.\n",
+            "example": "Æghøjvej 2, Vandet, 8620 Kjellerup"
           },
           "adresse_dørbetegnelse": {
             "type": "string",
-            "description": "Door designation/Access point of the address\n"
+            "description": "Door/unit designation within a building.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "tv"
           },
           "adresse_etagebetegnelse": {
             "type": "string",
-            "description": "Floor designation of the address\n"
+            "description": "Floor designation within a building.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "st"
           },
           "adressepunkt_oprindelse_kilde": {
             "type": "string",
-            "description": "Origin source of the data\n"
+            "description": "Source of the address point geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ekstern"
           },
           "adressepunkt_oprindelse_nøjagtighedsklasse": {
             "type": "string",
-            "description": "Origin accuracy class of the data\n"
+            "description": "Accuracy class of the address point position.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "A"
           },
           "adressepunkt_oprindelse_registrering": {
             "type": "string",
-            "description": "Origin registration date\n"
+            "description": "Date the address point geometry was registered in its source system.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2004-08-16T22:00:00.000Z"
           },
           "adressepunkt_oprindelse_tekniskStandard": {
             "type": "string",
-            "description": "Technical standard of the origin\n"
+            "description": "Technical standard used to establish the address point position.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "TN"
           },
           "adressepunkt_position_x": {
             "oneOf": [
               {
                 "type": "string",
-                "description": "Empty string `\"\"` if not available"
+                "description": "Can be empty string `\"\"` if not present."
               },
               {
                 "type": "number",
-                "description": "X coordinate of the geometric position of the access point using epsg 25832\n"
+                "description": "X coordinate of the geometric position of the address point using EPSG 25832.\n",
+                "example": 691256.48
               }
             ]
           },
@@ -10142,217 +10164,259 @@
             "oneOf": [
               {
                 "type": "string",
-                "description": "Empty string `\"\"` if not available"
+                "description": "Can be empty string `\"\"` if not present."
               },
               {
                 "type": "number",
-                "description": "Y coordinate of the geometric position of the access point using epsg 25832\n"
+                "description": "Y coordinate of the geometric position of the address point using EPSG 25832.\n",
+                "example": 6191928.04
               }
             ]
           },
           "husnummer_adgangsadressebetegnelse": {
             "type": "string",
-            "description": "Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name\n"
+            "description": "Full formatted access address.\n\nCommonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Sydkajen 16, 3600 Frederikssund"
           },
           "husnummer_vejmidte": {
             "type": "string",
-            "description": "Municipality code-road code\n"
+            "description": "Composite identifier formed by combining the municipality code and the road code, separated by a hyphen.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "0250-1248"
           },
           "husnummer_husnummertekst": {
             "type": "string",
-            "description": "The house number of the address including any letters\n"
+            "description": "House number text as it appears on the address.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
           },
           "afstemningsomraadenummer": {
             "type": "string",
-            "description": "Polling district number\n"
+            "description": "Polling district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "01"
           },
           "afstemningsområde_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the polling district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund Midt"
           },
           "afstemningsstedNavn": {
             "type": "string",
-            "description": "Polling place name\n"
+            "description": "Name of the polling station\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssundhallen"
           },
           "kommuneinddeling_kommunekode": {
-            "oneOf": [
-              {
-                "type": "boolean",
-                "description": "Outside municipality division (boolean flag)\n"
-              },
-              {
-                "type": "string",
-                "description": "Empty \"\" if null\n"
-              }
-            ]
+            "type": "string",
+            "description": "Four-digit municipality code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "0250"
           },
           "kommuneinddeling_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the municipality\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund"
           },
           "LAU1vaerdi": {
             "type": "string",
-            "description": "LAU1 value (Local Administrative Unit level 1)\n"
+            "description": "LAU level 1 value (EU Local Administrative Unit classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "250"
           },
           "kommuneinddeling_udenforKommuneinddeling": {
             "oneOf": [
               {
                 "type": "string",
-                "description": "Empty \"\" if null\n"
+                "description": "Can be empty string `\"\"` if not present.\n"
               },
               {
                 "type": "boolean",
-                "description": "Outside municipality division (boolean flag)\n"
+                "description": "Flag indicating the location falls outside a standard municipality division.\n",
+                "example": false
               }
             ]
           },
           "MRafstemningsomraadenummer": {
             "type": "string",
-            "description": "Municipal/regional polling district number\n"
+            "description": "Parish council polling district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1"
           },
           "menighedsradsafstemningsomrade_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the parish council polling district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Gørslev"
           },
           "LAU2vaerdi": {
             "type": "string",
-            "description": "LAU2 value (Local Administrative Unit level 2)\n"
+            "description": "LAU level 2 value (EU Local Administrative Unit classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "7418"
           },
           "sogneinddeling_sognekode": {
             "type": "string",
-            "description": "Parish code\n"
+            "description": "Parish code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "7418"
           },
           "sogneinddeling_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the parish\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund"
           },
           "supplerendebynavn_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Supplementary locality or village name used alongside the postal address.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Blæsbjerg"
           },
           "navngivenvej_beskrivelse": {
             "type": "string",
-            "description": "Brief description of the origin or meaning of the road name\n"
+            "description": "Brief description of the origin or meaning of the road name.\n\nCan be empty string `\"\"` if not present.\n"
           },
           "navngivenvej_udtaltVejnavn": {
             "type": "string",
-            "description": "The street name written in full, as it is pronounced\n"
+            "description": "Phonetic/spoken form of the road name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ærteholmsvej"
           },
           "navngivenvej_vejadresseringsnavn": {
             "type": "string",
-            "description": "Abbreviated version of the road name of no more than 20 characters\n"
+            "description": "Abbreviated road name containing no more than 20 characters.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Sydkajen"
           },
           "navngivenvej_vejnavn": {
             "type": "string",
-            "description": "The full road name defined as: A proper name that designates and names a part of the road or path network or similar traffic areas and areas\n"
+            "description": "Official full road name\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Blåbærheden"
           },
           "navngivenvej_vejnavnebeliggenhed_oprindelse_kilde": {
             "type": "string",
-            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_source\n"
+            "description": "Source of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ekstern"
           },
           "navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse": {
             "type": "string",
-            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_accuracy_class\n"
+            "description": "Accuracy class of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "B"
           },
           "navngivenvej_vejnavnebeliggenhed_oprindelse_registrering": {
             "type": "string",
-            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_registration\n"
+            "description": "Registration date of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2018-05-03T15:57:30.356Z"
           },
           "navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard": {
             "type": "string",
-            "description": "Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location\nRoadname_location_origin_technicalStandard\n"
+            "description": "Technical standard used for the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "NO"
           },
           "navngivenvejkommunedel_vejkode": {
             "type": "string",
-            "description": "Unique identification of the part of a Named Road that affects a single municipality\n"
+            "description": "Road code identifying the road segment within a municipality.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1248"
           },
           "postnummer_navn": {
             "type": "string",
-            "description": "Name of the city, district, etc. that the postal code includes\n"
+            "description": "Postal district name\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Fjenneslev"
           },
           "postnummer_postnr": {
             "type": "string",
-            "description": "Four-digit code that identifies the postal code\n"
+            "description": "Postal code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "4173"
           },
           "opstillingskredsnummer": {
             "type": "string",
-            "description": "Constituency number\n"
+            "description": "Nomination constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "83"
           },
           "opstillingskreds_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the nomination constituency\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ringkøbing"
           },
           "valgkredsnummer": {
             "type": "string",
-            "description": "National electoral district number\n"
+            "description": "Electoral constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "4"
           },
           "storkredsnummer": {
             "type": "string",
-            "description": "Regional electoral district number\n"
+            "description": "Multi-member constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "3"
           },
           "storkreds_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the multi-member constituency\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjælland"
           },
           "valglandsdelsbogstav": {
             "type": "string",
-            "description": "National electoral district letter\n"
+            "description": "Letter identifying the electoral region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "A"
           },
           "valglandsdels_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the electoral region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Hovedstaden"
           },
           "postnummerinddeling_ergadepostnummer": {
             "oneOf": [
               {
                 "type": "string",
-                "description": "Empty string if null\n"
+                "description": "Can be empty string `\"\"` if not present.\n"
               },
               {
                 "type": "boolean",
-                "description": "Whether it is a \"street postal code\"\n"
+                "description": "Flag indicating whether the postal code is a street-level code.\n",
+                "example": false
               }
             ]
           },
           "nuts2vaerdi": {
             "type": "string",
-            "description": "NUTS2 value (NUTS level 2)\n"
+            "description": "NUTS level 2 code (EU regional classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "DK01"
           },
           "regionsinddeling_regionskode": {
             "type": "string",
-            "description": "Region code\n"
+            "description": "Region code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1084"
           },
           "regionsinddeling_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Region Hovedstaden"
+          },
+          "politikreds_myndighedskode": {
+            "type": "string",
+            "description": "Police district code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1468"
           },
           "politikredsnummer": {
             "type": "string",
-            "description": "Police district number\n"
+            "description": "Police district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "9"
           },
           "politikreds_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the police district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjællands Politi"
           },
-          "myndighedskode": {
+          "retskreds_myndighedskode": {
             "type": "string",
-            "description": "Public authority code\n"
+            "description": "Judicial district code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1115"
           },
           "retskredsnummer": {
             "type": "string",
-            "description": "Judicial district number\n"
+            "description": "Judicial district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "18"
           },
           "retskreds_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the judicial district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Retten i Hillerød"
           },
           "nuts3vaerdi": {
             "type": "string",
-            "description": "NUTS3 value (NUTS level 3)\n"
+            "description": "NUTS level 3 code (EU sub-regional classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "DK013"
           },
           "landsdel_navn": {
             "type": "string",
-            "description": "Name of the geographical entity\n"
+            "description": "Name of the statistical subdivision\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjælland"
           }
         }
       },
@@ -11201,6 +11265,32 @@
           }
         }
       },
+      "ApiKeyMonthlyLimit": {
+        "title": "API Key Monthly Limit",
+        "type": "object",
+        "required": [
+          "limit",
+          "consumed"
+        ],
+        "properties": {
+          "limit": {
+            "x-nullable": true,
+            "nullable": true,
+            "minimum": 0,
+            "example": 10000,
+            "type": "integer",
+            "description": "`number` or `null`. The monthly lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
+            "format": "int32"
+          },
+          "consumed": {
+            "minimum": 0,
+            "example": 2500,
+            "type": "integer",
+            "description": "Number of lookups performed this month which count towards your monthly limit.",
+            "format": "int32"
+          }
+        }
+      },
       "ApiKeyIndividualLimit": {
         "title": "API Key Individual Limit",
         "type": "object",
@@ -11506,6 +11596,7 @@
         "required": [
           "lookups_remaining",
           "daily_limit",
+          "monthly_limit",
           "individual_limit",
           "allowed_urls",
           "redact_days",
@@ -11524,6 +11615,9 @@
           },
           "daily_limit": {
             "$ref": "#/components/schemas/ApiKeyDailyLimit"
+          },
+          "monthly_limit": {
+            "$ref": "#/components/schemas/ApiKeyMonthlyLimit"
           },
           "individual_limit": {
             "$ref": "#/components/schemas/ApiKeyIndividualLimit"
@@ -11605,6 +11699,21 @@
                 "example": 1000,
                 "type": "integer",
                 "description": "`number` or `null`. The daily lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
+                "format": "int32"
+              }
+            }
+          },
+          "monthly_limit": {
+            "title": "Monthly Rate Limit",
+            "type": "object",
+            "properties": {
+              "limit": {
+                "x-nullable": true,
+                "nullable": true,
+                "minimum": 0,
+                "example": 10000,
+                "type": "integer",
+                "description": "`number` or `null`. The monthly lookup limit currently set on your key.\n`null` means the limit is currently disabled.",
                 "format": "int32"
               }
             }

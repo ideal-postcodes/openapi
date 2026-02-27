@@ -5908,158 +5908,516 @@ export interface components {
        */
       language: "da";
       /**
-       * @description Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name
+       * @description Address / House Number uniquely identifying the address along the specified street.
        *
-       * @example Elstedvej 95, Terp, 8200 Aarhus N
+       * Can be empty string `""` if not present.
+       *
+       * @example 95
        */
       address: string;
       /**
        * @description First address line.
-       * Returns street name, house number, (optional floor, door and city name)
+       *
+       * May include street name, house number, floor number and door number.
+       *
+       * @example Vænget 19
        */
       line_1: string;
-      /** @description Second address line. */
+      /**
+       * @description Second address line.
+       *
+       * May include supplementary city name. Can be empty string `""` if not present.
+       *
+       * @example Benløse
+       */
       line_2: string;
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
-      /** @description The business event that caused the address element to be updated to that version */
+      /**
+       * @description Business event type that triggered the record.
+       *
+       * @example 2
+       */
       forretningshændelse: string;
-      /** @description The business area that has updated the address element to the version in question */
+      /**
+       * @description Business domain or subject area the record belongs to.
+       *
+       * @example 54.15.10.08
+       */
       forretningsområde: string;
-      /** @description The business process that caused the address element to be updated to that version */
+      /**
+       * @description Business process that produced or last modified the record.
+       *
+       * @example 0
+       */
       forretningsproces: string;
-      /** @description Url of data file */
+      /**
+       * @description Namespace URI that qualifies the local identifier.
+       *
+       * @example http://data.gov.dk/dar/adresse
+       */
       id_namespace: string;
-      /** @description Identification of the address element throughout its entire life cycle */
+      /**
+       * @description Local unique identifier for the address object within its namespace.
+       *
+       * @example 0000090e-e9f3-4ffe-a0a5-2852666d158c
+       */
       id_lokalId: string;
-      /** @description The time at which the registration of the relevant version of the address element was made */
+      /**
+       * @description Start of the registration period (when the record became valid in the register).
+       *
+       * @example 2021-06-21T07:54:04.191Z
+       */
       registreringFra: string;
-      /** @description The actor who has registered the relevant version of the address element */
+      /**
+       * @description Actor (authority or system) responsible for the registration of the address record.
+       *
+       * @example DAR
+       */
       registreringsaktør: string;
-      /** @description The time when a new registration on the address element has been made, and where this version is therefore no longer the latest */
+      /**
+       * @description End of the registration period.
+       *
+       * Can be empty string `""` if the address is still active.
+       */
       registreringTil: string;
-      /** @description The status of the address element in the version in question, i.e. the state of the element in the overall lifecycle */
+      /**
+       * @description Current lifecycle status of the object.
+       *
+       * @example 4
+       */
       status: string;
-      /** @description The time from which the relevant version of the address element takes effect */
+      /**
+       * @description Start of the real-world validity period (when the address record takes effect in reality).
+       *
+       * @example 2021-06-21T07:54:04.191Z
+       */
       virkningFra: string;
-      /** @description The actor who has caused the effect properties for the relevant version of the address element */
+      /**
+       * @description Actor (authority or system) responsible for the real-world change that prompted the record.
+       *
+       * @example AjourføreDarSystem
+       */
       virkningsaktør: string;
-      /** @description The time when the effect of the relevant version of the address element ceases */
+      /**
+       * @description End of the real-world validity period.
+       *
+       * Can be empty string `""` if the address is still valid.
+       *
+       * @example 2026-02-14T00:00:00.000Z
+       */
       virkningTil: string;
-      /** @description Full address, commonly consisting of street name, house number, (optional floor, door and city name), postal code and postal city name */
+      /**
+       * @description Full formatted address.
+       *
+       * Commonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.
+       *
+       * @example Æghøjvej 2, Vandet, 8620 Kjellerup
+       */
       adresse_adressebetegnelse: string;
-      /** @description Door designation/Access point of the address */
+      /**
+       * @description Door/unit designation within a building.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example tv
+       */
       adresse_dørbetegnelse: string;
-      /** @description Floor designation of the address */
+      /**
+       * @description Floor designation within a building.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example st
+       */
       adresse_etagebetegnelse: string;
-      /** @description Origin source of the data */
+      /**
+       * @description Source of the address point geometry.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Ekstern
+       */
       adressepunkt_oprindelse_kilde: string;
-      /** @description Origin accuracy class of the data */
+      /**
+       * @description Accuracy class of the address point position.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example A
+       */
       adressepunkt_oprindelse_nøjagtighedsklasse: string;
-      /** @description Origin registration date */
+      /**
+       * @description Date the address point geometry was registered in its source system.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 2004-08-16T22:00:00.000Z
+       */
       adressepunkt_oprindelse_registrering: string;
-      /** @description Technical standard of the origin */
+      /**
+       * @description Technical standard used to establish the address point position.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example TN
+       */
       adressepunkt_oprindelse_tekniskStandard: string;
       adressepunkt_position_x: string | number;
       adressepunkt_position_y: string | number;
-      /** @description Full access address, commonly consisting of street name, house number, and additional town names, postal code and postal city name */
+      /**
+       * @description Full formatted access address.
+       *
+       * Commonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Sydkajen 16, 3600 Frederikssund
+       */
       husnummer_adgangsadressebetegnelse: string;
-      /** @description Municipality code-road code */
+      /**
+       * @description Composite identifier formed by combining the municipality code and the road code, separated by a hyphen.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 0250-1248
+       */
       husnummer_vejmidte: string;
-      /** @description The house number of the address including any letters */
+      /**
+       * @description House number text as it appears on the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 16
+       */
       husnummer_husnummertekst: string;
-      /** @description Polling district number */
+      /**
+       * @description Polling district number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 01
+       */
       afstemningsomraadenummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the polling district
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Frederikssund Midt
+       */
       afstemningsområde_navn: string;
-      /** @description Polling place name */
+      /**
+       * @description Name of the polling station
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Frederikssundhallen
+       */
       afstemningsstedNavn: string;
-      kommuneinddeling_kommunekode: boolean | string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Four-digit municipality code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 0250
+       */
+      kommuneinddeling_kommunekode: string;
+      /**
+       * @description Name of the municipality
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Frederikssund
+       */
       kommuneinddeling_navn: string;
-      /** @description LAU1 value (Local Administrative Unit level 1) */
+      /**
+       * @description LAU level 1 value (EU Local Administrative Unit classification)
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 250
+       */
       LAU1vaerdi: string;
       kommuneinddeling_udenforKommuneinddeling: string | boolean;
-      /** @description Municipal/regional polling district number */
+      /**
+       * @description Parish council polling district number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1
+       */
       MRafstemningsomraadenummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the parish council polling district
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Gørslev
+       */
       menighedsradsafstemningsomrade_navn: string;
-      /** @description LAU2 value (Local Administrative Unit level 2) */
+      /**
+       * @description LAU level 2 value (EU Local Administrative Unit classification)
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 7418
+       */
       LAU2vaerdi: string;
-      /** @description Parish code */
+      /**
+       * @description Parish code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 7418
+       */
       sogneinddeling_sognekode: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the parish
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Frederikssund
+       */
       sogneinddeling_navn: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Supplementary locality or village name used alongside the postal address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Blæsbjerg
+       */
       supplerendebynavn_navn: string;
-      /** @description Brief description of the origin or meaning of the road name */
+      /**
+       * @description Brief description of the origin or meaning of the road name.
+       *
+       * Can be empty string `""` if not present.
+       */
       navngivenvej_beskrivelse: string;
-      /** @description The street name written in full, as it is pronounced */
+      /**
+       * @description Phonetic/spoken form of the road name.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Ærteholmsvej
+       */
       navngivenvej_udtaltVejnavn: string;
-      /** @description Abbreviated version of the road name of no more than 20 characters */
+      /**
+       * @description Abbreviated road name containing no more than 20 characters.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Sydkajen
+       */
       navngivenvej_vejadresseringsnavn: string;
-      /** @description The full road name defined as: A proper name that designates and names a part of the road or path network or similar traffic areas and areas */
+      /**
+       * @description Official full road name
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Blåbærheden
+       */
       navngivenvej_vejnavn: string;
       /**
-       * @description Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-       * Roadname_location_origin_source
+       * @description Source of the road name location geometry.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Ekstern
        */
       navngivenvej_vejnavnebeliggenhed_oprindelse_kilde: string;
       /**
-       * @description Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-       * Roadname_location_origin_accuracy_class
+       * @description Accuracy class of the road name location geometry.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example B
        */
       navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse: string;
       /**
-       * @description Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-       * Roadname_location_origin_registration
+       * @description Registration date of the road name location geometry.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 2018-05-03T15:57:30.356Z
        */
       navngivenvej_vejnavnebeliggenhed_oprindelse_registrering: string;
       /**
-       * @description Description of the approximate geographical location of the named road. The road name location is expressed either by a road name line or a road name area, as well as origin and quality information for the location of the road name location
-       * Roadname_location_origin_technicalStandard
+       * @description Technical standard used for the road name location geometry.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example NO
        */
       navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard: string;
-      /** @description Unique identification of the part of a Named Road that affects a single municipality */
+      /**
+       * @description Road code identifying the road segment within a municipality.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1248
+       */
       navngivenvejkommunedel_vejkode: string;
-      /** @description Name of the city, district, etc. that the postal code includes */
+      /**
+       * @description Postal district name
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Fjenneslev
+       */
       postnummer_navn: string;
-      /** @description Four-digit code that identifies the postal code */
+      /**
+       * @description Postal code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 4173
+       */
       postnummer_postnr: string;
-      /** @description Constituency number */
+      /**
+       * @description Nomination constituency number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 83
+       */
       opstillingskredsnummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the nomination constituency
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Ringkøbing
+       */
       opstillingskreds_navn: string;
-      /** @description National electoral district number */
+      /**
+       * @description Electoral constituency number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 4
+       */
       valgkredsnummer: string;
-      /** @description Regional electoral district number */
+      /**
+       * @description Multi-member constituency number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 3
+       */
       storkredsnummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the multi-member constituency
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Nordsjælland
+       */
       storkreds_navn: string;
-      /** @description National electoral district letter */
+      /**
+       * @description Letter identifying the electoral region
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example A
+       */
       valglandsdelsbogstav: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the electoral region
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Hovedstaden
+       */
       valglandsdels_navn: string;
       postnummerinddeling_ergadepostnummer: string | boolean;
-      /** @description NUTS2 value (NUTS level 2) */
+      /**
+       * @description NUTS level 2 code (EU regional classification)
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example DK01
+       */
       nuts2vaerdi: string;
-      /** @description Region code */
+      /**
+       * @description Region code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1084
+       */
       regionsinddeling_regionskode: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the region
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Region Hovedstaden
+       */
       regionsinddeling_navn: string;
-      /** @description Police district number */
+      /**
+       * @description Police district code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1468
+       */
+      politikreds_myndighedskode: string;
+      /**
+       * @description Police district number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 9
+       */
       politikredsnummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the police district
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Nordsjællands Politi
+       */
       politikreds_navn: string;
-      /** @description Public authority code */
-      myndighedskode: string;
-      /** @description Judicial district number */
+      /**
+       * @description Judicial district code
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 1115
+       */
+      retskreds_myndighedskode: string;
+      /**
+       * @description Judicial district number
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 18
+       */
       retskredsnummer: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the judicial district
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Retten i Hillerød
+       */
       retskreds_navn: string;
-      /** @description NUTS3 value (NUTS level 3) */
+      /**
+       * @description NUTS level 3 code (EU sub-regional classification)
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example DK013
+       */
       nuts3vaerdi: string;
-      /** @description Name of the geographical entity */
+      /**
+       * @description Name of the statistical subdivision
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Nordsjælland
+       */
       landsdel_navn: string;
     };
     /**
@@ -6600,6 +6958,22 @@ export interface components {
        */
       consumed: number;
     };
+    /** API Key Monthly Limit */
+    ApiKeyMonthlyLimit: {
+      /**
+       * Format: int32
+       * @description `number` or `null`. The monthly lookup limit currently set on your key.
+       * `null` means the limit is currently disabled.
+       * @example 10000
+       */
+      limit: number | null;
+      /**
+       * Format: int32
+       * @description Number of lookups performed this month which count towards your monthly limit.
+       * @example 2500
+       */
+      consumed: number;
+    };
     /** API Key Individual Limit */
     ApiKeyIndividualLimit: {
       /**
@@ -6833,6 +7207,7 @@ export interface components {
        */
       lookups_remaining: number;
       daily_limit: components["schemas"]["ApiKeyDailyLimit"];
+      monthly_limit: components["schemas"]["ApiKeyMonthlyLimit"];
       individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
       /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
       allowed_urls: string[];
@@ -6872,6 +7247,16 @@ export interface components {
          * @description `number` or `null`. The daily lookup limit currently set on your key.
          * `null` means the limit is currently disabled.
          * @example 1000
+         */
+        limit?: number | null;
+      };
+      /** Monthly Rate Limit */
+      monthly_limit?: {
+        /**
+         * Format: int32
+         * @description `number` or `null`. The monthly lookup limit currently set on your key.
+         * `null` means the limit is currently disabled.
+         * @example 10000
          */
         limit?: number | null;
       };
