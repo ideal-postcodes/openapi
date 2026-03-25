@@ -3780,7 +3780,7 @@
       "Dataset": {
         "title": "Dataset",
         "type": "string",
-        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset\n  - `fodbosa` (BEL) Belgium Dataset\n  - `mois` (KOR) South Korea Dataset\n  - `upujp` (JPN) Japan UPU Address File\n  - `bev` (AUT) Austria Dataset",
+        "description": "Indicates the provenance of an address.\n\n  - `paf` (GBR) Postcode Address File\n  - `usps` (USA) USPS Zip+4\n  - `mr` (GBR) Multiple Residence File\n  - `nyb` (GBR) Not Yet Built File\n  - `pafa` (GBR) Alias File\n  - `pafw` (GBR) Welsh File\n  - `ab` (GBR) AddressBase Core\n  - `ecaf` (IRL) Eircode ECAF\n  - `ecad` (IRL) Eircode ECAD\n  - `herewe` (Western Europe) Western Europe Dataset\n  - `heret` (Taiwan) Taiwan Dataset\n  - `heresa` (South America) South America Dataset\n  - `hereo` (Oceania) Oceania Dataset\n  - `herena` (North America) North America Dataset\n  - `herei` (India) India Dataset\n  - `heremea` (Middle East and Africa) Middle East and Africa Dataset\n  - `herem` (Macau) Macau Dataset\n  - `herehk` (Hong Kong) Hong Kong Dataset\n  - `hereee` (Eastern Europe) Eastern Europe Dataset\n  - `hereap` (Asia Pacific) Asia Pacific Dataset\n  - `gnaf` (AUS) Geoscape Geocoded National Address File\n  - `kadaster` (NLD) Kadaster BAG 2.0 Address File\n  - `kartverket` (NOR) Norway Dataset\n  - `sdfi` (DNK) Denmark Dataset\n  - `cannar` (CAN) Canada National Address Register Dataset\n  - `fodbosa` (BEL) Belgium Dataset\n  - `mois` (KOR) South Korea Dataset\n  - `upujp` (JPN) Japan UPU Address File\n  - `bev` (AUT) Austria Dataset\n  - `kds` (DNK) KDS Dataset",
         "enum": [
           "paf",
           "pafw",
@@ -3811,7 +3811,8 @@
           "fodbosa",
           "mois",
           "upujp",
-          "bev"
+          "bev",
+          "kds"
         ]
       },
       "CountryISO": {
@@ -9918,6 +9919,511 @@
           }
         }
       },
+      "KdsAddress": {
+        "required": [
+          "id",
+          "dataset",
+          "country",
+          "country_iso",
+          "country_iso_2",
+          "language",
+          "address",
+          "line_1",
+          "line_2",
+          "latitude",
+          "longitude",
+          "forretningshændelse",
+          "forretningsområde",
+          "forretningsproces",
+          "id_namespace",
+          "id_lokalId",
+          "registreringFra",
+          "registreringsaktør",
+          "registreringTil",
+          "status",
+          "virkningFra",
+          "virkningsaktør",
+          "virkningTil",
+          "adresse_adressebetegnelse",
+          "adresse_dørbetegnelse",
+          "adresse_etagebetegnelse",
+          "adressepunkt_oprindelse_kilde",
+          "adressepunkt_oprindelse_nøjagtighedsklasse",
+          "adressepunkt_oprindelse_registrering",
+          "adressepunkt_oprindelse_tekniskStandard",
+          "adressepunkt_position_x",
+          "adressepunkt_position_y",
+          "husnummer_adgangsadressebetegnelse",
+          "husnummer_vejmidte",
+          "husnummer_husnummertekst",
+          "afstemningsomraadenummer",
+          "afstemningsområde_navn",
+          "afstemningsstedNavn",
+          "kommuneinddeling_kommunekode",
+          "kommuneinddeling_navn",
+          "LAU1vaerdi",
+          "kommuneinddeling_udenforKommuneinddeling",
+          "MRafstemningsomraadenummer",
+          "menighedsradsafstemningsomrade_navn",
+          "LAU2vaerdi",
+          "sogneinddeling_sognekode",
+          "sogneinddeling_navn",
+          "supplerendebynavn_navn",
+          "navngivenvej_beskrivelse",
+          "navngivenvej_udtaltVejnavn",
+          "navngivenvej_vejadresseringsnavn",
+          "navngivenvej_vejnavn",
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_kilde",
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse",
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_registrering",
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard",
+          "navngivenvejkommunedel_vejkode",
+          "postnummer_navn",
+          "postnummer_postnr",
+          "opstillingskredsnummer",
+          "opstillingskreds_navn",
+          "valgkredsnummer",
+          "storkredsnummer",
+          "storkreds_navn",
+          "valglandsdelsbogstav",
+          "valglandsdels_navn",
+          "postnummerinddeling_ergadepostnummer",
+          "nuts2vaerdi",
+          "regionsinddeling_regionskode",
+          "regionsinddeling_navn",
+          "politikreds_myndighedskode",
+          "politikredsnummer",
+          "politikreds_navn",
+          "retskreds_myndighedskode",
+          "retskredsnummer",
+          "retskreds_navn",
+          "nuts3vaerdi",
+          "landsdel_navn"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "dataset": {
+            "type": "string",
+            "enum": [
+              "kds"
+            ]
+          },
+          "country_iso": {
+            "description": "  3 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DNK"
+            ]
+          },
+          "country_iso_2": {
+            "type": "string",
+            "description": " 2 letter country code (ISO 3166-1)\n",
+            "enum": [
+              "DK"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "  Full country names (ISO 3166)\n",
+            "enum": [
+              "Denmark"
+            ]
+          },
+          "language": {
+            "enum": [
+              "da"
+            ],
+            "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address / House Number uniquely identifying the address along the specified street.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "95"
+          },
+          "line_1": {
+            "type": "string",
+            "description": "First address line.\n\nMay include street name, house number, floor number and door number.\n",
+            "example": "Vænget 19"
+          },
+          "line_2": {
+            "type": "string",
+            "description": "Second address line.\n\nMay include supplementary city name. Can be empty string `\"\"` if not present.\n",
+            "example": "Benløse"
+          },
+          "longitude": {
+            "$ref": "#/components/schemas/Longitude"
+          },
+          "latitude": {
+            "$ref": "#/components/schemas/Latitude"
+          },
+          "forretningshændelse": {
+            "type": "string",
+            "description": "Business event type that triggered the record.\n",
+            "example": "2"
+          },
+          "forretningsområde": {
+            "type": "string",
+            "description": "Business domain or subject area the record belongs to.\n",
+            "example": "54.15.10.08"
+          },
+          "forretningsproces": {
+            "type": "string",
+            "description": "Business process that produced or last modified the record.\n",
+            "example": "0"
+          },
+          "id_namespace": {
+            "type": "string",
+            "description": "Namespace URI that qualifies the local identifier.\n",
+            "example": "http://data.gov.dk/dar/adresse"
+          },
+          "id_lokalId": {
+            "type": "string",
+            "description": "Local unique identifier for the address object within its namespace.\n",
+            "example": "0000090e-e9f3-4ffe-a0a5-2852666d158c"
+          },
+          "registreringFra": {
+            "type": "string",
+            "description": "Start of the registration period (when the record became valid in the register).\n",
+            "example": "2021-06-21T07:54:04.191Z"
+          },
+          "registreringsaktør": {
+            "type": "string",
+            "description": "Actor (authority or system) responsible for the registration of the address record.\n",
+            "example": "DAR"
+          },
+          "registreringTil": {
+            "type": "string",
+            "description": "End of the registration period.\n\nCan be empty string `\"\"` if the address is still active.\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current lifecycle status of the object.\n",
+            "example": "4"
+          },
+          "virkningFra": {
+            "type": "string",
+            "description": "Start of the real-world validity period (when the address record takes effect in reality).\n",
+            "example": "2021-06-21T07:54:04.191Z"
+          },
+          "virkningsaktør": {
+            "type": "string",
+            "description": "Actor (authority or system) responsible for the real-world change that prompted the record.\n",
+            "example": "AjourføreDarSystem"
+          },
+          "virkningTil": {
+            "type": "string",
+            "description": "End of the real-world validity period.\n\nCan be empty string `\"\"` if the address is still valid.\n",
+            "example": "2026-02-14T00:00:00.000Z"
+          },
+          "adresse_adressebetegnelse": {
+            "type": "string",
+            "description": "Full formatted address.\n\nCommonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.\n",
+            "example": "Æghøjvej 2, Vandet, 8620 Kjellerup"
+          },
+          "adresse_dørbetegnelse": {
+            "type": "string",
+            "description": "Door/unit designation within a building.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "tv"
+          },
+          "adresse_etagebetegnelse": {
+            "type": "string",
+            "description": "Floor designation within a building.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "st"
+          },
+          "adressepunkt_oprindelse_kilde": {
+            "type": "string",
+            "description": "Source of the address point geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ekstern"
+          },
+          "adressepunkt_oprindelse_nøjagtighedsklasse": {
+            "type": "string",
+            "description": "Accuracy class of the address point position.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "A"
+          },
+          "adressepunkt_oprindelse_registrering": {
+            "type": "string",
+            "description": "Date the address point geometry was registered in its source system.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2004-08-16T22:00:00.000Z"
+          },
+          "adressepunkt_oprindelse_tekniskStandard": {
+            "type": "string",
+            "description": "Technical standard used to establish the address point position.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "TN"
+          },
+          "adressepunkt_position_x": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Can be empty string `\"\"` if not present."
+              },
+              {
+                "type": "number",
+                "description": "X coordinate of the geometric position of the address point using EPSG 25832.\n",
+                "example": 691256.48
+              }
+            ]
+          },
+          "adressepunkt_position_y": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Can be empty string `\"\"` if not present."
+              },
+              {
+                "type": "number",
+                "description": "Y coordinate of the geometric position of the address point using EPSG 25832.\n",
+                "example": 6191928.04
+              }
+            ]
+          },
+          "husnummer_adgangsadressebetegnelse": {
+            "type": "string",
+            "description": "Full formatted access address.\n\nCommonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Sydkajen 16, 3600 Frederikssund"
+          },
+          "husnummer_vejmidte": {
+            "type": "string",
+            "description": "Composite identifier formed by combining the municipality code and the road code, separated by a hyphen.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "0250-1248"
+          },
+          "husnummer_husnummertekst": {
+            "type": "string",
+            "description": "House number text as it appears on the address.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "16"
+          },
+          "afstemningsomraadenummer": {
+            "type": "string",
+            "description": "Polling district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "01"
+          },
+          "afstemningsområde_navn": {
+            "type": "string",
+            "description": "Name of the polling district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund Midt"
+          },
+          "afstemningsstedNavn": {
+            "type": "string",
+            "description": "Name of the polling station\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssundhallen"
+          },
+          "kommuneinddeling_kommunekode": {
+            "type": "string",
+            "description": "Four-digit municipality code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "0250"
+          },
+          "kommuneinddeling_navn": {
+            "type": "string",
+            "description": "Name of the municipality\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund"
+          },
+          "LAU1vaerdi": {
+            "type": "string",
+            "description": "LAU level 1 value (EU Local Administrative Unit classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "250"
+          },
+          "kommuneinddeling_udenforKommuneinddeling": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Can be empty string `\"\"` if not present.\n"
+              },
+              {
+                "type": "boolean",
+                "description": "Flag indicating the location falls outside a standard municipality division.\n",
+                "example": false
+              }
+            ]
+          },
+          "MRafstemningsomraadenummer": {
+            "type": "string",
+            "description": "Parish council polling district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1"
+          },
+          "menighedsradsafstemningsomrade_navn": {
+            "type": "string",
+            "description": "Name of the parish council polling district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Gørslev"
+          },
+          "LAU2vaerdi": {
+            "type": "string",
+            "description": "LAU level 2 value (EU Local Administrative Unit classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "7418"
+          },
+          "sogneinddeling_sognekode": {
+            "type": "string",
+            "description": "Parish code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "7418"
+          },
+          "sogneinddeling_navn": {
+            "type": "string",
+            "description": "Name of the parish\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Frederikssund"
+          },
+          "supplerendebynavn_navn": {
+            "type": "string",
+            "description": "Supplementary locality or village name used alongside the postal address.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Blæsbjerg"
+          },
+          "navngivenvej_beskrivelse": {
+            "type": "string",
+            "description": "Brief description of the origin or meaning of the road name.\n\nCan be empty string `\"\"` if not present.\n"
+          },
+          "navngivenvej_udtaltVejnavn": {
+            "type": "string",
+            "description": "Phonetic/spoken form of the road name.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ærteholmsvej"
+          },
+          "navngivenvej_vejadresseringsnavn": {
+            "type": "string",
+            "description": "Abbreviated road name containing no more than 20 characters.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Sydkajen"
+          },
+          "navngivenvej_vejnavn": {
+            "type": "string",
+            "description": "Official full road name\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Blåbærheden"
+          },
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_kilde": {
+            "type": "string",
+            "description": "Source of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ekstern"
+          },
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse": {
+            "type": "string",
+            "description": "Accuracy class of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "B"
+          },
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_registrering": {
+            "type": "string",
+            "description": "Registration date of the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "2018-05-03T15:57:30.356Z"
+          },
+          "navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard": {
+            "type": "string",
+            "description": "Technical standard used for the road name location geometry.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "NO"
+          },
+          "navngivenvejkommunedel_vejkode": {
+            "type": "string",
+            "description": "Road code identifying the road segment within a municipality.\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1248"
+          },
+          "postnummer_navn": {
+            "type": "string",
+            "description": "Postal district name\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Fjenneslev"
+          },
+          "postnummer_postnr": {
+            "type": "string",
+            "description": "Postal code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "4173"
+          },
+          "opstillingskredsnummer": {
+            "type": "string",
+            "description": "Nomination constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "83"
+          },
+          "opstillingskreds_navn": {
+            "type": "string",
+            "description": "Name of the nomination constituency\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Ringkøbing"
+          },
+          "valgkredsnummer": {
+            "type": "string",
+            "description": "Electoral constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "4"
+          },
+          "storkredsnummer": {
+            "type": "string",
+            "description": "Multi-member constituency number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "3"
+          },
+          "storkreds_navn": {
+            "type": "string",
+            "description": "Name of the multi-member constituency\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjælland"
+          },
+          "valglandsdelsbogstav": {
+            "type": "string",
+            "description": "Letter identifying the electoral region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "A"
+          },
+          "valglandsdels_navn": {
+            "type": "string",
+            "description": "Name of the electoral region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Hovedstaden"
+          },
+          "postnummerinddeling_ergadepostnummer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Can be empty string `\"\"` if not present.\n"
+              },
+              {
+                "type": "boolean",
+                "description": "Flag indicating whether the postal code is a street-level code.\n",
+                "example": false
+              }
+            ]
+          },
+          "nuts2vaerdi": {
+            "type": "string",
+            "description": "NUTS level 2 code (EU regional classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "DK01"
+          },
+          "regionsinddeling_regionskode": {
+            "type": "string",
+            "description": "Region code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1084"
+          },
+          "regionsinddeling_navn": {
+            "type": "string",
+            "description": "Name of the region\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Region Hovedstaden"
+          },
+          "politikreds_myndighedskode": {
+            "type": "string",
+            "description": "Police district code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1468"
+          },
+          "politikredsnummer": {
+            "type": "string",
+            "description": "Police district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "9"
+          },
+          "politikreds_navn": {
+            "type": "string",
+            "description": "Name of the police district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjællands Politi"
+          },
+          "retskreds_myndighedskode": {
+            "type": "string",
+            "description": "Judicial district code\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "1115"
+          },
+          "retskredsnummer": {
+            "type": "string",
+            "description": "Judicial district number\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "18"
+          },
+          "retskreds_navn": {
+            "type": "string",
+            "description": "Name of the judicial district\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Retten i Hillerød"
+          },
+          "nuts3vaerdi": {
+            "type": "string",
+            "description": "NUTS level 3 code (EU sub-regional classification)\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "DK013"
+          },
+          "landsdel_navn": {
+            "type": "string",
+            "description": "Name of the statistical subdivision\n\nCan be empty string `\"\"` if not present.\n",
+            "example": "Nordsjælland"
+          }
+        }
+      },
       "GbrGlobalAddress": {
         "title": "Global Address",
         "description": "Global (non-UK) address in the UK address format",
@@ -10070,6 +10576,9 @@
               },
               {
                 "$ref": "#/components/schemas/BevAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KdsAddress"
               }
             ]
           },
@@ -10863,7 +11372,8 @@
           "fodbosa",
           "mois",
           "upujp",
-          "bev"
+          "bev",
+          "kds"
         ],
         "properties": {
           "paf": {
@@ -11028,6 +11538,11 @@
           "bev": {
             "type": "boolean",
             "description": "Austria: BEV Address File",
+            "example": true
+          },
+          "kds": {
+            "type": "boolean",
+            "description": "Denmark: KDS Address File",
             "example": true
           }
         }
@@ -11395,6 +11910,11 @@
               "bev": {
                 "type": "boolean",
                 "description": "Austria: BEV Address File",
+                "example": true
+              },
+              "kds": {
+                "type": "boolean",
+                "description": "Denmark: KDS Address File",
                 "example": true
               }
             }
@@ -12959,6 +13479,9 @@
               },
               {
                 "$ref": "#/components/schemas/BevAddress"
+              },
+              {
+                "$ref": "#/components/schemas/KdsAddress"
               }
             ]
           }

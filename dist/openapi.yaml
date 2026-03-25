@@ -3141,6 +3141,7 @@ components:
           - `mois` (KOR) South Korea Dataset
           - `upujp` (JPN) Japan UPU Address File
           - `bev` (AUT) Austria Dataset
+          - `kds` (DNK) KDS Dataset
       enum:
         - paf
         - pafw
@@ -3172,6 +3173,7 @@ components:
         - mois
         - upujp
         - bev
+        - kds
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -9566,6 +9568,595 @@ components:
           type: string
           description: |
             Name of the census district
+    KdsAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - latitude
+        - longitude
+        - forretningshændelse
+        - forretningsområde
+        - forretningsproces
+        - id_namespace
+        - id_lokalId
+        - registreringFra
+        - registreringsaktør
+        - registreringTil
+        - status
+        - virkningFra
+        - virkningsaktør
+        - virkningTil
+        - adresse_adressebetegnelse
+        - adresse_dørbetegnelse
+        - adresse_etagebetegnelse
+        - adressepunkt_oprindelse_kilde
+        - adressepunkt_oprindelse_nøjagtighedsklasse
+        - adressepunkt_oprindelse_registrering
+        - adressepunkt_oprindelse_tekniskStandard
+        - adressepunkt_position_x
+        - adressepunkt_position_y
+        - husnummer_adgangsadressebetegnelse
+        - husnummer_vejmidte
+        - husnummer_husnummertekst
+        - afstemningsomraadenummer
+        - afstemningsområde_navn
+        - afstemningsstedNavn
+        - kommuneinddeling_kommunekode
+        - kommuneinddeling_navn
+        - LAU1vaerdi
+        - kommuneinddeling_udenforKommuneinddeling
+        - MRafstemningsomraadenummer
+        - menighedsradsafstemningsomrade_navn
+        - LAU2vaerdi
+        - sogneinddeling_sognekode
+        - sogneinddeling_navn
+        - supplerendebynavn_navn
+        - navngivenvej_beskrivelse
+        - navngivenvej_udtaltVejnavn
+        - navngivenvej_vejadresseringsnavn
+        - navngivenvej_vejnavn
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_kilde
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_registrering
+        - navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard
+        - navngivenvejkommunedel_vejkode
+        - postnummer_navn
+        - postnummer_postnr
+        - opstillingskredsnummer
+        - opstillingskreds_navn
+        - valgkredsnummer
+        - storkredsnummer
+        - storkreds_navn
+        - valglandsdelsbogstav
+        - valglandsdels_navn
+        - postnummerinddeling_ergadepostnummer
+        - nuts2vaerdi
+        - regionsinddeling_regionskode
+        - regionsinddeling_navn
+        - politikreds_myndighedskode
+        - politikredsnummer
+        - politikreds_navn
+        - retskreds_myndighedskode
+        - retskredsnummer
+        - retskreds_navn
+        - nuts3vaerdi
+        - landsdel_navn
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - kds
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - DNK
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - DK
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Denmark
+        language:
+          enum:
+            - da
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '95'
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            May include street name, house number, floor number and door number.
+          example: Vænget 19
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            May include supplementary city name. Can be empty string `""` if not present.
+          example: Benløse
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        forretningshændelse:
+          type: string
+          description: |
+            Business event type that triggered the record.
+          example: '2'
+        forretningsområde:
+          type: string
+          description: |
+            Business domain or subject area the record belongs to.
+          example: 54.15.10.08
+        forretningsproces:
+          type: string
+          description: |
+            Business process that produced or last modified the record.
+          example: '0'
+        id_namespace:
+          type: string
+          description: |
+            Namespace URI that qualifies the local identifier.
+          example: http://data.gov.dk/dar/adresse
+        id_lokalId:
+          type: string
+          description: |
+            Local unique identifier for the address object within its namespace.
+          example: 0000090e-e9f3-4ffe-a0a5-2852666d158c
+        registreringFra:
+          type: string
+          description: |
+            Start of the registration period (when the record became valid in the register).
+          example: '2021-06-21T07:54:04.191Z'
+        registreringsaktør:
+          type: string
+          description: |
+            Actor (authority or system) responsible for the registration of the address record.
+          example: DAR
+        registreringTil:
+          type: string
+          description: |
+            End of the registration period.
+
+            Can be empty string `""` if the address is still active.
+        status:
+          type: string
+          description: |
+            Current lifecycle status of the object.
+          example: '4'
+        virkningFra:
+          type: string
+          description: |
+            Start of the real-world validity period (when the address record takes effect in reality).
+          example: '2021-06-21T07:54:04.191Z'
+        virkningsaktør:
+          type: string
+          description: |
+            Actor (authority or system) responsible for the real-world change that prompted the record.
+          example: AjourføreDarSystem
+        virkningTil:
+          type: string
+          description: |
+            End of the real-world validity period.
+
+            Can be empty string `""` if the address is still valid.
+          example: '2026-02-14T00:00:00.000Z'
+        adresse_adressebetegnelse:
+          type: string
+          description: |
+            Full formatted address.
+
+            Commonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.
+          example: Æghøjvej 2, Vandet, 8620 Kjellerup
+        adresse_dørbetegnelse:
+          type: string
+          description: |
+            Door/unit designation within a building.
+
+            Can be empty string `""` if not present.
+          example: tv
+        adresse_etagebetegnelse:
+          type: string
+          description: |
+            Floor designation within a building.
+
+            Can be empty string `""` if not present.
+          example: st
+        adressepunkt_oprindelse_kilde:
+          type: string
+          description: |
+            Source of the address point geometry.
+
+            Can be empty string `""` if not present.
+          example: Ekstern
+        adressepunkt_oprindelse_nøjagtighedsklasse:
+          type: string
+          description: |
+            Accuracy class of the address point position.
+
+            Can be empty string `""` if not present.
+          example: A
+        adressepunkt_oprindelse_registrering:
+          type: string
+          description: |
+            Date the address point geometry was registered in its source system.
+
+            Can be empty string `""` if not present.
+          example: '2004-08-16T22:00:00.000Z'
+        adressepunkt_oprindelse_tekniskStandard:
+          type: string
+          description: |
+            Technical standard used to establish the address point position.
+
+            Can be empty string `""` if not present.
+          example: TN
+        adressepunkt_position_x:
+          oneOf:
+            - type: string
+              description: Can be empty string `""` if not present.
+            - type: number
+              description: |
+                X coordinate of the geometric position of the address point using EPSG 25832.
+              example: 691256.48
+        adressepunkt_position_y:
+          oneOf:
+            - type: string
+              description: Can be empty string `""` if not present.
+            - type: number
+              description: |
+                Y coordinate of the geometric position of the address point using EPSG 25832.
+              example: 6191928.04
+        husnummer_adgangsadressebetegnelse:
+          type: string
+          description: |
+            Full formatted access address.
+
+            Commonly consisting of street name, house number, floor, door, supplementary city name, postal code and postal city name.
+
+            Can be empty string `""` if not present.
+          example: Sydkajen 16, 3600 Frederikssund
+        husnummer_vejmidte:
+          type: string
+          description: |
+            Composite identifier formed by combining the municipality code and the road code, separated by a hyphen.
+
+            Can be empty string `""` if not present.
+          example: 0250-1248
+        husnummer_husnummertekst:
+          type: string
+          description: |
+            House number text as it appears on the address.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        afstemningsomraadenummer:
+          type: string
+          description: |
+            Polling district number
+
+            Can be empty string `""` if not present.
+          example: '01'
+        afstemningsområde_navn:
+          type: string
+          description: |
+            Name of the polling district
+
+            Can be empty string `""` if not present.
+          example: Frederikssund Midt
+        afstemningsstedNavn:
+          type: string
+          description: |
+            Name of the polling station
+
+            Can be empty string `""` if not present.
+          example: Frederikssundhallen
+        kommuneinddeling_kommunekode:
+          type: string
+          description: |
+            Four-digit municipality code
+
+            Can be empty string `""` if not present.
+          example: '0250'
+        kommuneinddeling_navn:
+          type: string
+          description: |
+            Name of the municipality
+
+            Can be empty string `""` if not present.
+          example: Frederikssund
+        LAU1vaerdi:
+          type: string
+          description: |
+            LAU level 1 value (EU Local Administrative Unit classification)
+
+            Can be empty string `""` if not present.
+          example: '250'
+        kommuneinddeling_udenforKommuneinddeling:
+          oneOf:
+            - type: string
+              description: |
+                Can be empty string `""` if not present.
+            - type: boolean
+              description: |
+                Flag indicating the location falls outside a standard municipality division.
+              example: false
+        MRafstemningsomraadenummer:
+          type: string
+          description: |
+            Parish council polling district number
+
+            Can be empty string `""` if not present.
+          example: '1'
+        menighedsradsafstemningsomrade_navn:
+          type: string
+          description: |
+            Name of the parish council polling district
+
+            Can be empty string `""` if not present.
+          example: Gørslev
+        LAU2vaerdi:
+          type: string
+          description: |
+            LAU level 2 value (EU Local Administrative Unit classification)
+
+            Can be empty string `""` if not present.
+          example: '7418'
+        sogneinddeling_sognekode:
+          type: string
+          description: |
+            Parish code
+
+            Can be empty string `""` if not present.
+          example: '7418'
+        sogneinddeling_navn:
+          type: string
+          description: |
+            Name of the parish
+
+            Can be empty string `""` if not present.
+          example: Frederikssund
+        supplerendebynavn_navn:
+          type: string
+          description: |
+            Supplementary locality or village name used alongside the postal address.
+
+            Can be empty string `""` if not present.
+          example: Blæsbjerg
+        navngivenvej_beskrivelse:
+          type: string
+          description: |
+            Brief description of the origin or meaning of the road name.
+
+            Can be empty string `""` if not present.
+        navngivenvej_udtaltVejnavn:
+          type: string
+          description: |
+            Phonetic/spoken form of the road name.
+
+            Can be empty string `""` if not present.
+          example: Ærteholmsvej
+        navngivenvej_vejadresseringsnavn:
+          type: string
+          description: |
+            Abbreviated road name containing no more than 20 characters.
+
+            Can be empty string `""` if not present.
+          example: Sydkajen
+        navngivenvej_vejnavn:
+          type: string
+          description: |
+            Official full road name
+
+            Can be empty string `""` if not present.
+          example: Blåbærheden
+        navngivenvej_vejnavnebeliggenhed_oprindelse_kilde:
+          type: string
+          description: |
+            Source of the road name location geometry.
+
+            Can be empty string `""` if not present.
+          example: Ekstern
+        navngivenvej_vejnavnebeliggenhed_oprindelse_nøjagtighedsklasse:
+          type: string
+          description: |
+            Accuracy class of the road name location geometry.
+
+            Can be empty string `""` if not present.
+          example: B
+        navngivenvej_vejnavnebeliggenhed_oprindelse_registrering:
+          type: string
+          description: |
+            Registration date of the road name location geometry.
+
+            Can be empty string `""` if not present.
+          example: '2018-05-03T15:57:30.356Z'
+        navngivenvej_vejnavnebeliggenhed_oprindelse_tekniskStandard:
+          type: string
+          description: |
+            Technical standard used for the road name location geometry.
+
+            Can be empty string `""` if not present.
+          example: 'NO'
+        navngivenvejkommunedel_vejkode:
+          type: string
+          description: |
+            Road code identifying the road segment within a municipality.
+
+            Can be empty string `""` if not present.
+          example: '1248'
+        postnummer_navn:
+          type: string
+          description: |
+            Postal district name
+
+            Can be empty string `""` if not present.
+          example: Fjenneslev
+        postnummer_postnr:
+          type: string
+          description: |
+            Postal code
+
+            Can be empty string `""` if not present.
+          example: '4173'
+        opstillingskredsnummer:
+          type: string
+          description: |
+            Nomination constituency number
+
+            Can be empty string `""` if not present.
+          example: '83'
+        opstillingskreds_navn:
+          type: string
+          description: |
+            Name of the nomination constituency
+
+            Can be empty string `""` if not present.
+          example: Ringkøbing
+        valgkredsnummer:
+          type: string
+          description: |
+            Electoral constituency number
+
+            Can be empty string `""` if not present.
+          example: '4'
+        storkredsnummer:
+          type: string
+          description: |
+            Multi-member constituency number
+
+            Can be empty string `""` if not present.
+          example: '3'
+        storkreds_navn:
+          type: string
+          description: |
+            Name of the multi-member constituency
+
+            Can be empty string `""` if not present.
+          example: Nordsjælland
+        valglandsdelsbogstav:
+          type: string
+          description: |
+            Letter identifying the electoral region
+
+            Can be empty string `""` if not present.
+          example: A
+        valglandsdels_navn:
+          type: string
+          description: |
+            Name of the electoral region
+
+            Can be empty string `""` if not present.
+          example: Hovedstaden
+        postnummerinddeling_ergadepostnummer:
+          oneOf:
+            - type: string
+              description: |
+                Can be empty string `""` if not present.
+            - type: boolean
+              description: |
+                Flag indicating whether the postal code is a street-level code.
+              example: false
+        nuts2vaerdi:
+          type: string
+          description: |
+            NUTS level 2 code (EU regional classification)
+
+            Can be empty string `""` if not present.
+          example: DK01
+        regionsinddeling_regionskode:
+          type: string
+          description: |
+            Region code
+
+            Can be empty string `""` if not present.
+          example: '1084'
+        regionsinddeling_navn:
+          type: string
+          description: |
+            Name of the region
+
+            Can be empty string `""` if not present.
+          example: Region Hovedstaden
+        politikreds_myndighedskode:
+          type: string
+          description: |
+            Police district code
+
+            Can be empty string `""` if not present.
+          example: '1468'
+        politikredsnummer:
+          type: string
+          description: |
+            Police district number
+
+            Can be empty string `""` if not present.
+          example: '9'
+        politikreds_navn:
+          type: string
+          description: |
+            Name of the police district
+
+            Can be empty string `""` if not present.
+          example: Nordsjællands Politi
+        retskreds_myndighedskode:
+          type: string
+          description: |
+            Judicial district code
+
+            Can be empty string `""` if not present.
+          example: '1115'
+        retskredsnummer:
+          type: string
+          description: |
+            Judicial district number
+
+            Can be empty string `""` if not present.
+          example: '18'
+        retskreds_navn:
+          type: string
+          description: |
+            Name of the judicial district
+
+            Can be empty string `""` if not present.
+          example: Retten i Hillerød
+        nuts3vaerdi:
+          type: string
+          description: |
+            NUTS level 3 code (EU sub-regional classification)
+
+            Can be empty string `""` if not present.
+          example: DK013
+        landsdel_navn:
+          type: string
+          description: |
+            Name of the statistical subdivision
+
+            Can be empty string `""` if not present.
+          example: Nordsjælland
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -9678,6 +10269,7 @@ components:
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
             - $ref: '#/components/schemas/BevAddress'
+            - $ref: '#/components/schemas/KdsAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -10306,6 +10898,7 @@ components:
         - mois
         - upujp
         - bev
+        - kds
       properties:
         paf:
           type: boolean
@@ -10437,6 +11030,10 @@ components:
         bev:
           type: boolean
           description: 'Austria: BEV Address File'
+          example: true
+        kds:
+          type: boolean
+          description: 'Denmark: KDS Address File'
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -10735,6 +11332,10 @@ components:
             bev:
               type: boolean
               description: 'Austria: BEV Address File'
+              example: true
+            kds:
+              type: boolean
+              description: 'Denmark: KDS Address File'
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -11986,6 +12587,7 @@ components:
             - $ref: '#/components/schemas/MoisAddress'
             - $ref: '#/components/schemas/UpujpAddress'
             - $ref: '#/components/schemas/BevAddress'
+            - $ref: '#/components/schemas/KdsAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
