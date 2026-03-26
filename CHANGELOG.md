@@ -1,3 +1,10 @@
+## [4.16.1](https://github.com/ideal-postcodes/openapi/compare/4.16.0...4.16.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* use pnpm in mock script ([a72096f](https://github.com/ideal-postcodes/openapi/commit/a72096f5d166b2f3e3b5b6e73568ad6c4a134398))
+
 # [4.16.0](https://github.com/ideal-postcodes/openapi/compare/4.15.2...4.16.0) (2026-03-26)
 
 
