@@ -18,7 +18,7 @@
     "prepublish": "tsc",
     "semantic-release": "semantic-release",
     "start": "redocly preview --project-dir dist",
-    "mock": "npm run build && prism mock ./dist/openapi.yaml",
+    "mock": "pnpm build && prism mock ./dist/openapi.yaml",
     "build": "tsc",
     "test": "redocly lint dist/openapi.yaml && redocly lint dist/openapi.json"
   },
