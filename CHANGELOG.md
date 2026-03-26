@@ -1,3 +1,10 @@
+# [4.16.0](https://github.com/ideal-postcodes/openapi/compare/4.15.2...4.16.0) (2026-03-26)
+
+
+### Features
+
+* **openapi:** Add name, contexts, datasets, and notification settings to key details ([9b8153a](https://github.com/ideal-postcodes/openapi/commit/9b8153a7e6432e19e5bced912d4b7ee10f28e6a2))
+
 ## [4.15.2](https://github.com/ideal-postcodes/openapi/compare/4.15.1...4.15.2) (2026-02-04)
 
 
