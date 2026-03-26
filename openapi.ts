@@ -2141,7 +2141,7 @@ export interface components {
        * @description Post County ID
        * @example 10098783
        */
-      post_county_id?: string | null;
+      post_county_id?: string;
       /**
        * @description NUA means "non-unique address".
        *
@@ -2297,8 +2297,6 @@ export interface components {
       /** @description An Post publicity post zone information. */
       publicity_post_zone?: string;
     } & {
-      dataset: unknown;
-      ecad_id: unknown;
       organisation_id: unknown;
       address_point_id: unknown;
       building_id: unknown;
@@ -2344,7 +2342,6 @@ export interface components {
       /** @description The unique identifier in the ECAF is the `ecaf_id`. This unique identifier allows each address in the ECAF to be uniquely identified. It can also be used as index once the data has been imported into a relational database. This is a numeric field that can store values from 0 to 2,147,483,647. It is represented as a number up to 10 digits long. All other fields in ECAF are alphanumeric. */
       ecaf_id?: string;
     } & {
-      dataset: unknown;
       ecaf_id: unknown;
     };
     /**
@@ -6450,6 +6447,16 @@ export interface components {
       emails: string[];
       /** @description Indicates whether email notifications are enabled. */
       enabled: boolean;
+      /**
+       * Format: int32
+       * @description Balance threshold that triggers a reminder email. null means disabled.
+       * @example 500
+       */
+      balance_threshold: number | null;
+      /** @description Send notice when balance hits zero. */
+      no_balance: boolean;
+      /** @description Send notice when rate limit is reached. */
+      limit_reached: boolean;
     };
     /**
      * API Key Dataset Availability
@@ -6618,6 +6625,16 @@ export interface components {
        * @example true
        */
       bev: boolean;
+      /**
+       * @description UK GBR Cleanse
+       * @example true
+       */
+      gbrcleanse: boolean;
+      /**
+       * @description US CASS Cleanse
+       * @example true
+       */
+      uspscleanse: boolean;
     };
     /**
      * API Key Automated Topup
@@ -6655,6 +6672,12 @@ export interface components {
     };
     /** API Key Details */
     ApiKeyDetails: {
+      /**
+       * @description A name for the key
+       * @example My API Key
+       */
+      name: string;
+      contexts: components["schemas"]["AvailableContexts"];
       /**
        * Format: int32
        * @example 19889
@@ -6694,6 +6717,11 @@ export interface components {
     };
     /** API Key Details Update */
     ApiKeyDetailsEditable: {
+      /**
+       * @description A name for the key
+       * @example My API Key
+       */
+      name?: string;
       /** Daily Rate Limit */
       daily_limit?: {
         /**
@@ -6738,6 +6766,16 @@ export interface components {
         emails?: string[];
         /** @description Indicates whether email notifications are enabled. */
         enabled?: boolean;
+        /**
+         * Format: int32
+         * @description Balance threshold that triggers a reminder email. null to disable.
+         * @example 500
+         */
+        balance_threshold?: number | null;
+        /** @description Send notice when balance hits zero. */
+        no_balance?: boolean;
+        /** @description Send notice when rate limit is reached. */
+        limit_reached?: boolean;
       };
       /**
        * @description Accept IP addresses forwarded in the `IDPC-Source-IP` header
@@ -6879,6 +6917,26 @@ export interface components {
          * @example true
          */
         bev?: boolean;
+        /**
+         * @description UK AddressBase dataset
+         * @example false
+         */
+        ab?: boolean;
+        /**
+         * @description Northern Ireland Pointer Dataset
+         * @example false
+         */
+        nip?: boolean;
+        /**
+         * @description UK GBR Cleanse
+         * @example true
+         */
+        gbrcleanse?: boolean;
+        /**
+         * @description US CASS Cleanse
+         * @example true
+         */
+        uspscleanse?: boolean;
       };
     };
     /** Key Usage */

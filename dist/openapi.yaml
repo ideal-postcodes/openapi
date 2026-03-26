@@ -4164,8 +4164,6 @@ components:
       title: Ireland ECAD Address
       description: The ECAD contains additional data for each ECAF address.
       required:
-        - dataset
-        - ecad_id
         - organisation_id
         - address_point_id
         - building_id
@@ -4271,7 +4269,6 @@ components:
               minLength: 1
             post_county_id:
               type: string
-              nullable: true
               description: Post County ID
               example: '10098783'
               maxLength: 10
@@ -4464,7 +4461,6 @@ components:
       title: Ireland ECAF Address
       description: ECAF is the Eircode Address File which contains one record for each Postal Address. English language and Irish language versions are available. It is distributed as a flat file, details of data provision and updates are provided in section 2.
       required:
-        - dataset
         - ecaf_id
       allOf:
         - $ref: '#/components/schemas/EircBase'
@@ -10258,6 +10254,9 @@ components:
       required:
         - emails
         - enabled
+        - balance_threshold
+        - no_balance
+        - limit_reached
       properties:
         emails:
           type: array
@@ -10268,6 +10267,20 @@ components:
         enabled:
           description: Indicates whether email notifications are enabled.
           type: boolean
+        balance_threshold:
+          type: integer
+          format: int32
+          minimum: 0
+          x-nullable: true
+          nullable: true
+          description: Balance threshold that triggers a reminder email. null means disabled.
+          example: 500
+        no_balance:
+          type: boolean
+          description: Send notice when balance hits zero.
+        limit_reached:
+          type: boolean
+          description: Send notice when rate limit is reached.
     ApiKeyDatasets:
       title: API Key Dataset Availability
       description: Indicates which datasets are available and added by default to the address responses
@@ -10306,6 +10319,8 @@ components:
         - mois
         - upujp
         - bev
+        - gbrcleanse
+        - uspscleanse
       properties:
         paf:
           type: boolean
@@ -10438,6 +10453,14 @@ components:
           type: boolean
           description: 'Austria: BEV Address File'
           example: true
+        gbrcleanse:
+          type: boolean
+          description: UK GBR Cleanse
+          example: true
+        uspscleanse:
+          type: boolean
+          description: US CASS Cleanse
+          example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
       description: Automated topup status
@@ -10483,6 +10506,8 @@ components:
       title: API Key Details
       type: object
       required:
+        - name
+        - contexts
         - lookups_remaining
         - daily_limit
         - monthly_limit
@@ -10495,6 +10520,12 @@ components:
         - ip_forwarding
         - datasets
       properties:
+        name:
+          type: string
+          description: A name for the key
+          example: My API Key
+        contexts:
+          $ref: '#/components/schemas/AvailableContexts'
         lookups_remaining:
           minimum: 0
           example: 19889
@@ -10553,6 +10584,12 @@ components:
       title: API Key Details Update
       type: object
       properties:
+        name:
+          type: string
+          maxLength: 32
+          pattern: ^(\w|\s){0,32}$
+          description: A name for the key
+          example: My API Key
         daily_limit:
           title: Daily Rate Limit
           type: object
@@ -10623,6 +10660,20 @@ components:
             enabled:
               description: Indicates whether email notifications are enabled.
               type: boolean
+            balance_threshold:
+              type: integer
+              format: int32
+              minimum: 0
+              x-nullable: true
+              nullable: true
+              description: Balance threshold that triggers a reminder email. null to disable.
+              example: 500
+            no_balance:
+              type: boolean
+              description: Send notice when balance hits zero.
+            limit_reached:
+              type: boolean
+              description: Send notice when rate limit is reached.
         ip_forwarding:
           type: boolean
           default: false
@@ -10735,6 +10786,22 @@ components:
             bev:
               type: boolean
               description: 'Austria: BEV Address File'
+              example: true
+            ab:
+              type: boolean
+              description: UK AddressBase dataset
+              example: false
+            nip:
+              type: boolean
+              description: Northern Ireland Pointer Dataset
+              example: false
+            gbrcleanse:
+              type: boolean
+              description: UK GBR Cleanse
+              example: true
+            uspscleanse:
+              type: boolean
+              description: US CASS Cleanse
               example: true
     KeyUsageResult:
       title: Key Usage
