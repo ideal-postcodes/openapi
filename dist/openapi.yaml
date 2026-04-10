@@ -3237,7 +3237,6 @@ components:
         - HUN
         - KAZ
         - KGZ
-        - KOS
         - LTU
         - LVA
         - MDA
@@ -3252,6 +3251,7 @@ components:
         - TUR
         - UKR
         - UZB
+        - XKX
         - HKG
         - BGD
         - IND
@@ -4269,6 +4269,7 @@ components:
               minLength: 1
             post_county_id:
               type: string
+              nullable: true
               description: Post County ID
               example: '10098783'
               maxLength: 10

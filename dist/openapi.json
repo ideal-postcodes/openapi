@@ -3878,7 +3878,6 @@
           "HUN",
           "KAZ",
           "KGZ",
-          "KOS",
           "LTU",
           "LVA",
           "MDA",
@@ -3893,6 +3892,7 @@
           "TUR",
           "UKR",
           "UZB",
+          "XKX",
           "HKG",
           "BGD",
           "IND",
@@ -4926,6 +4926,7 @@
               },
               "post_county_id": {
                 "type": "string",
+                "nullable": true,
                 "description": "Post County ID",
                 "example": "10098783",
                 "maxLength": 10,
