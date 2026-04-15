@@ -9612,7 +9612,7 @@ components:
         - zip_id
         - gemeindename
         - bfs_nr
-        - kantonskurzel
+        - kantonskürzel
         - adressenanteil
         - e
         - 'n'
@@ -9830,7 +9830,7 @@ components:
           type: number
           description: |
             Federal municipality number assigned by the Federal Statistical Office (BFS-Nr).
-        kantonskurzel:
+        kantonskürzel:
           type: string
           description: |
             Canton abbreviation (e.g. `"ZH"`, `"GE"`).

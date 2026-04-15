@@ -6022,7 +6022,7 @@ export interface components {
        *
        * Can be empty string `""` if not present.
        */
-      kantonskurzel: string;
+      kantonskürzel: string;
       /** @description Proportion of addresses belonging to this locality record. */
       adressenanteil: string;
       /** @description Easting coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95. */
