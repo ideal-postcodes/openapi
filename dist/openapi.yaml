@@ -9656,7 +9656,7 @@ components:
         address:
           type: string
           description: |
-            Full address as a single string. Street name and house number/building name and building number, postal code and city
+            House number, `""` if not present.
           example: '40'
         line_1:
           type: string
@@ -9843,11 +9843,11 @@ components:
         e:
           type: string
           description: |
-            Easting coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95.
+            Longitude of the locality centroid in WGS84 decimal degrees.
         'n':
           type: string
           description: |
-            Northing coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95.
+            Latitude of the locality centroid in WGS84 decimal degrees.
         sprache:
           type: string
           description: |

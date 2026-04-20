@@ -2143,7 +2143,7 @@ export interface components {
        * @description Post County ID
        * @example 10098783
        */
-      post_county_id?: string;
+      post_county_id?: string | null;
       /**
        * @description NUA means "non-unique address".
        *
@@ -5908,7 +5908,7 @@ export interface components {
        */
       language: "de" | "fr" | "it" | "rm";
       /**
-       * @description Full address as a single string. Street name and house number/building name and building number, postal code and city
+       * @description House number, `""` if not present.
        *
        * @example 40
        */
@@ -6025,9 +6025,9 @@ export interface components {
       kantonskürzel: string;
       /** @description Proportion of addresses belonging to this locality record. */
       adressenanteil: string;
-      /** @description Easting coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95. */
+      /** @description Longitude of the locality centroid in WGS84 decimal degrees. */
       e: string;
-      /** @description Northing coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95. */
+      /** @description Latitude of the locality centroid in WGS84 decimal degrees. */
       n: string;
       /** @description Language of the record (e.g. `"de"`, `"fr"`, `"it"`, `"rm"`). */
       sprache: string;

@@ -4927,6 +4927,7 @@
               },
               "post_county_id": {
                 "type": "string",
+                "nullable": true,
                 "description": "Post County ID",
                 "example": "10098783",
                 "maxLength": 10,
@@ -10013,7 +10014,7 @@
           },
           "address": {
             "type": "string",
-            "description": "Full address as a single string. Street name and house number/building name and building number, postal code and city\n",
+            "description": "House number, `\"\"` if not present.\n",
             "example": "40"
           },
           "line_1": {
@@ -10198,11 +10199,11 @@
           },
           "e": {
             "type": "string",
-            "description": "Easting coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95.\n"
+            "description": "Longitude of the locality centroid in WGS84 decimal degrees.\n"
           },
           "n": {
             "type": "string",
-            "description": "Northing coordinate of the locality centroid in the Swiss coordinate system CH1903+/LV95.\n"
+            "description": "Latitude of the locality centroid in WGS84 decimal degrees.\n"
           },
           "sprache": {
             "type": "string",
