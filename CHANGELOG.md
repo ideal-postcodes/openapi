@@ -1,3 +1,10 @@
+# [4.17.0](https://github.com/ideal-postcodes/openapi/compare/4.16.1...4.17.0) (2026-04-23)
+
+
+### Features
+
+* **Kosovo:** Change country code for Kosovo ([1bc150f](https://github.com/ideal-postcodes/openapi/commit/1bc150f1ede759fca15cda3b31e327f909b515fa))
+
 ## [4.16.1](https://github.com/ideal-postcodes/openapi/compare/4.16.0...4.16.1) (2026-03-26)
 
 
