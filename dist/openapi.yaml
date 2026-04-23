@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 4.0.0
+  version: 4.11.0
   license:
     name: AGPLv3
     url: https://opensource.org/licenses/AGPL-3.0
@@ -16,6 +16,16 @@ info:
     We recommend using HTTPS only although HTTP is available.
 
     We use appropriate HTTP status codes where possible to indicate the request status.
+
+    ## OpenAPI Spec
+
+    Our OpenAPI specification is available at:
+
+    - [Github Repository](https://github.com/ideal-postcodes/openapi)
+    - [API Reference](https://openapi.ideal-postcodes.co.uk)
+    - [OpenAPI v3 JSON File](https://openapi.ideal-postcodes.co.uk/openapi.json)
+    - [OpenAPI v3 YAML File](https://openapi.ideal-postcodes.co.uk/openapi.yaml)
+    - [NPM Package](https://www.npmjs.com/package/@ideal-postcodes/openapi)
 
     ## Rate Limiting
 
@@ -74,71 +84,6 @@ info:
     `2XX` status codes indicates success while `4XX` and `5XX` indicate client and server errors respectively.
 
     The second is the **API response code**, which can be found in the `code` property of the response body. This code will provide a more specific reason if a failure has occurred and can point you in the right direction when debugging.
-
-    Please use the glossary of code numbers and HTTP status codes below when debugging your requests.
-
-    ### 200 Request Success
-
-    | HTTP Code | API Code | Description                                  |
-    | --------- | -------- | -------------------------------------------- |
-    | 200       | 2000     | Success. Request was completed successfully. |
-
-    ### 400 Bad Request
-
-    The request could not be understood due to some input error.
-
-    | HTTP Code | API Code | Description                                                                                                                           |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-    | 400       | 4000     | Invalid syntax submitted. Some part of your request was malformed or did not match our specifications.                                |
-    | 400       | 4001     | Validation failed on your submitted data. Some of the data you provided did not meet our validation requirements, e.g. string length. |
-    | 400       | 4005     | Invalid start date. Please ensure start dates are provided as a UTC Timestamp in milliseconds.                                        |
-    | 400       | 4006     | Invalid end date. Please ensure end dates are provided as a UTC Timestamp in milliseconds.                                            |
-    | 400       | 4007     | Invalid date range. Check if your start and end dates are in the right order.                                                         |
-    | 400       | 4008     | Invalid date range. Check that your date range is 90 days or less.                                                                    |
-    | 400       | 4009     | Too many tags. Please specify no more than 3 tags to query.                                                                           |
-
-    ### 401 Unauthorised
-
-    Authorization credentials are not valid.
-
-    | HTTP Code | API Code | Description                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 401       | 4010     | Invalid Key. The `api_key` you provided is not valid.                                                                                                              |
-    | 401       | 4011     | Requesting URL not on whitelist. The cross domain request is not coming from a whitelisted URL. You can update or disable your allowed URLs via your Key settings. |
-    | 401       | 4012     | Failed user authentication. Invalid `user_token` presented.                                                                                                        |
-    | 401       | 4013     | Licensee Key is required. Sublicensed keys require you need to present licensee credentials via the `licensee` parameter.                                          |
-
-    ### 402 Request Failed
-
-    Your request is well-formed but are not able to complete your request for another reason.
-
-    | HTTP Code | API Code | Description                                                                                                                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 402       | 4020     | Key balance depleted. You're out of lookups on your API Key.                                                                                                                                                                                                       |
-    | 402       | 4021     | Limit reached. One of your lookup limits has been breached for today. This could either be your total daily limit on your key or the individual IP limit. You can either wait for for the limit to reset (after a day) or manually disable or increase your limit. |
-
-    ### 404 Resource Not Found
-
-    The resource you requested does not exist.
-
-    | HTTP Code | API Code | Description                                                                                   |
-    | --------- | -------- | --------------------------------------------------------------------------------------------- |
-    | 404       | 4040     | Postcode not found. The postcode you have submitted does not exist.                           |
-    | 404       | 4041     | User not found. Your user could not be identified given the credentials you presented.        |
-    | 404       | 4042     | Key not found. Your key could not be identified given the credentials you presented.          |
-    | 404       | 4044     | No UDPRN found. No address is associated with the UDPRN queried                               |
-    | 404       | 4045     | No licensee found. Your licensee could not be identified given the credentials you presented. |
-    | 404       | 4046     | No UMPRN found. No Multiple Residence premise is associated with the UMPRN queried.           |
-
-    ### 500 Server Error
-
-    A error occurred on our server.
-
-    | HTTP Code | API Code | Description                                                                                                                                                        |
-    | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | 500       | 5000     | An error occurred on our end. These errors are logged and queued so we can understand what went wrong. However, if you need speedy resolution please email support |
-    | 500       | 5001     | Akin to 5000.                                                                                                                                                      |
-    | 500       | 5002     | The server took too long to process on our end, so we aborted the request. You may retry the request.                                                              |
   contact:
     email: support@ideal-postcodes.co.uk
     name: Support
@@ -158,7 +103,7 @@ tags:
     description: Monitor and manage API Keys
   - name: Licensees
     description: |
-      The Licensee resource represents an alternate legal End User of our data who may not be same entity as the owners of the account.
+      The Licensee resource represents an alternate legal End User of our data who may not be the same entity as the owners of the account.
 
       The concept of Licensees underpins our sublicensing platform, which allows users to license multiple external organisations or individuals to access data under the same account.
 
@@ -462,7 +407,7 @@ paths:
       summary: Retrieve by UMPRN
       operationId: UMPRN
       description: |
-        Returns a multiple occupancy address identifited via its UMPRN (Multiple Residence Unique ID).
+        Returns a multiple occupancy address identified via its UMPRN (Multiple Residence Unique ID).
 
         UMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset.
 
@@ -572,8 +517,8 @@ paths:
         Returns public information on your API Key.
 
         This endpoint can be used for the following:
-        - Determine if the key is currently useable via the `available` property
-        - Determine available contexts for a an API Key
+         - Determine if the key is currently usable via the `available` property
+         - Determine available contexts for an API Key
         - Identify the currently likely context of a user given their location
 
         You may pass both API Keys (beginning `ak_`) and Sub-licensed Keys (beginning `sl_`).
@@ -786,13 +731,13 @@ paths:
 
         ### Deciding on an Acceptable Confidence Score Threshold
 
-        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organistation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
+        Different address cleanse projects can have radically different inputs. However, within each project, the inputs tend to repeat the same errors. For instance, some input datasets may be exclusively inputted manually and be prone to typos. Others may have a persistently missing datapoint such as organisation name or postcode. For this reason, it is important to understand that there is no absolute Confidence Score threshold. Instead, the acceptable confidence score must be determined on a project by project basis based on systematic errors present in the data and business goals.
 
         When determining an acceptable Confidence Score threshold you should load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top-to-bottom you will be able to observe matches from best to worst. As you start to hit the lower quality searches, you will be able to roughly determine:
-        - Which confidence scores indicate ambigious matches (i.e. up to building level only)
+         - Which confidence scores indicate ambiguous matches (i.e. up to building level only)
         - Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)
 
-        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the throroughfare or building name only? Are accurate organisation names an important feature?
+        Depending on your business goals, you can also use the Match Levels to determine an acceptable match. For instance, do you need to match up to the thoroughfare or building name only? Are accurate organisation names an important feature?
       operationId: AddressCleanse
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
@@ -887,13 +832,13 @@ paths:
         - Free-form address submitted as a single string in `query`
           - Example: "123 Main St, Springfield, CO 81073-1119"
         - Only free-form and zip code address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `zip_code` for the ZIP code
           - Example:
             - `query`: "123 Main St, Springfield CO"
             - `zip_code`: "81073-1119"
         - Only free-form, city and state address components submitted as separate parameters:
-          - `query` for the street address
+          - `query` for the first address line
           - `city` for the city
           - `state` for the state
           - Example:
@@ -923,11 +868,15 @@ paths:
                 query:
                   type: string
                   description: |
-                    Freeform address input to verify.
+                    Address input to verify.
 
-                    Can be submitted standalone, or with the following address components:
+                    If submitting a freeform address verification query, enter the full address. E.g. `query=123 Main St, Springfield, CO, 81073`
+
+                    Otherwise, query can be accompanied with the following address components:
                     - `zip_code`
                     - `city` and `state`
+
+                    If zip_code or `city` and `state` or supplied, please omit this information from query by using it purely for the first address line. E.g. `query=123 Main St`
                   example: 123 Main St, Springfield, CO 81073
                 zip_code:
                   type: string
@@ -1038,6 +987,7 @@ paths:
             type: string
             maxLength: 150
           style: form
+        - $ref: '#/components/parameters/DatasetParam'
         - $ref: '#/components/parameters/ContextParam'
         - $ref: '#/components/parameters/LimitParam'
         - $ref: '#/components/parameters/BiasLonLatParam'
@@ -1404,7 +1354,7 @@ paths:
 
         ## Suggestion Format
 
-        Each place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.
+        Each place suggestion contains a descriptive name which you can provide to users to uniquely identify a place.
 
         ## Rate Limiting and Cost
 
@@ -2829,6 +2779,7 @@ components:
       enum:
         - en
         - ar
+        - as
         - az
         - be
         - bg
@@ -2857,10 +2808,12 @@ components:
         - id
         - is
         - it
+        - ja
         - ka
         - kk
         - km
         - kn
+        - ko
         - lt
         - lv
         - mk
@@ -3182,6 +3135,12 @@ components:
           - `gnaf` (AUS) Geoscape Geocoded National Address File
           - `kadaster` (NLD) Kadaster BAG 2.0 Address File
           - `kartverket` (NOR) Norway Dataset
+          - `sdfi` (DNK) Denmark Dataset
+          - `cannar` (CAN) Canada National Address Register Dataset
+          - `fodbosa` (BEL) Belgium Dataset
+          - `mois` (KOR) South Korea Dataset
+          - `upujp` (JPN) Japan UPU Address File
+          - `bev` (AUT) Austria Dataset
       enum:
         - paf
         - pafw
@@ -3207,6 +3166,12 @@ components:
         - gnaf
         - kadaster
         - kartverket
+        - sdfi
+        - cannar
+        - fodbosa
+        - mois
+        - upujp
+        - bev
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -3272,7 +3237,6 @@ components:
         - HUN
         - KAZ
         - KGZ
-        - KOS
         - LTU
         - LVA
         - MDA
@@ -3287,6 +3251,7 @@ components:
         - TUR
         - UKR
         - UZB
+        - XKX
         - HKG
         - BGD
         - IND
@@ -4304,6 +4269,7 @@ components:
               minLength: 1
             post_county_id:
               type: string
+              nullable: true
               description: Post County ID
               example: '10098783'
               maxLength: 10
@@ -5007,6 +4973,12 @@ components:
             - order2_name
             - order8_name
             - builtup_name
+            - poi_name
+            - building_unit_name
+            - level_name
+            - unit_name
+            - suppl_address_info
+            - building_grp_name
           properties:
             id:
               $ref: '#/components/schemas/ID'
@@ -5175,6 +5147,30 @@ components:
               type: string
               description: Identifies the lowest administrative level for a country. This level does not cover the entire country, (as opposed to the Order-8 Area level which does cover the entire country). This feature should be used in conjunction with Zone and Order-8 Area for destination selection. The Built-up Area polygon, as published in RDF_CARTO, can also be used for map display.
               example: ''
+            poi_name:
+              type: string
+              description: Name of the point of interest associated with the address.
+              example: Abbazia San Severo
+            building_unit_name:
+              type: string
+              description: Name of the Building associated with a Micro Point Address.
+              example: M193
+            level_name:
+              type: string
+              description: Name of floor or level within a building associated with a Micro Point Address.
+              example: '3'
+            unit_name:
+              type: string
+              description: Name of the unit (suite, etc) associated with a Micro Point Address.
+              example: 30A
+            suppl_address_info:
+              type: string
+              description: Additional address or building information.
+              example: Ballyboughal Post Office
+            building_grp_name:
+              type: string
+              description: Name of the group of buildings with which the address is associated.
+              example: Windgate Cottages
     GnafAddress:
       required:
         - id
@@ -6614,6 +6610,2959 @@ components:
           type: string
           description: |
             Name of region.
+    SdfiAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - line_1
+        - line_2
+        - language
+        - address
+        - latitude
+        - longitude
+        - adresse_id
+        - kvhx
+        - kvh
+        - adgangsadresse
+        - status
+        - darstatus
+        - oprettet
+        - ændret
+        - ikrafttrædelse
+        - nedlagt
+        - vejkode
+        - vejnavn
+        - adresseringsvejnavn
+        - husnr
+        - etage
+        - dør
+        - supplerendebynavn_dagi_id
+        - supplerendebynavn
+        - postnr
+        - postnrnavn
+        - stormodtagerpostnr
+        - stormodtagerpostnrnavn
+        - betegnelse
+        - adressepunktændringsdato
+        - etrs89koordinat_øst
+        - etrs89koordinat_nord
+        - wgs84koordinat_bredde
+        - wgs84koordinat_længde
+        - højde
+        - nøjagtighed
+        - kilde
+        - tekniskstandard
+        - tekstretning
+        - ddkn_m100
+        - ddkn_km1
+        - ddkn_km10
+        - kommunekode
+        - kommunenavn
+        - landsdelsnuts3
+        - landsdelsnavn
+        - regionskode
+        - regionsnavn
+        - afstemningsområdenummer
+        - afstemningsområdenavn
+        - menighedsrådsafstemningsområdenummer
+        - menighedsrådsafstemningsområdenavn
+        - opstillingskredskode
+        - opstillingskredsnavn
+        - storkredsnummer
+        - storkredsnavn
+        - valglandsdelsbogstav
+        - valglandsdelsnavn
+        - sognekode
+        - sognenavn
+        - politikredskode
+        - politikredsnavn
+        - retskredskode
+        - retskredsnavn
+        - jordstykke_ejerlavkode
+        - jordstykke_ejerlavnavn
+        - jordstykke_matrikelnr
+        - jordstykke_esrejendomsnr
+        - ejerlavkode
+        - ejerlavnavn
+        - matrikelnr
+        - esrejendomsnr
+        - zone
+        - brofast
+        - adgangsadresseid
+        - adgangspunktid
+        - navngivenvej_id
+        - adgangsadresse_status
+        - adgangsadresse_darstatus
+        - adgangsadresse_oprettet
+        - adgangsadresse_ændret
+        - adgangsadresse_ikrafttrædelse
+        - adgangsadresse_nedlagt
+        - vejpunkt_id
+        - vejpunkt_ændret
+        - vejpunkt_kilde
+        - vejpunkt_nøjagtighed
+        - vejpunkt_tekniskstandard
+        - vejpunkt_x
+        - vejpunkt_y
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - sdfi
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - DNK
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - DK
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Denmark
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Bakkevej 3
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: Pindstrup
+        language:
+          enum:
+            - da
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        adresse_id:
+          type: string
+          description: |
+            Unique address identifier assigned by the data supplier.
+        kvhx:
+          type: string
+          description: |
+            Unique composite key for the address, containing codes for the municipality, road section, house number, floor and door.
+
+            Can be empty string `""` if not present.
+        kvh:
+          type: string
+          description: |
+            Composite key for the address, containing codes for the municipality, road section and house number.
+
+            Can be empty string `""` if not present.
+        adgangsadresse:
+          type: boolean
+          description: |
+            Indicates whether the address is an access address.
+        status:
+          type: string
+          description: |
+            `1` = final address, `3` = provisional address.
+        darstatus:
+          type: string
+          description: |
+            Status of the address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.
+        oprettet:
+          type: string
+          description: |
+            Date and time of address creation in Danmarks Adresseregister (DAR).
+
+            Can be empty string `""` if not present.
+        ændret:
+          type: string
+          description: |
+            Date and time of the last change to the address in Danmarks Adresseregister (DAR).
+
+            Can be empty string `""` if not present.
+        ikrafttrædelse:
+          type: string
+          description: |
+            Date and time at which the address became valid.
+
+            Can be empty string `""` if not present.
+        nedlagt:
+          type: string
+          description: |
+            Date and time from which the address is retired or suspended (may be in the future).
+
+            Can be empty string `""` if not present.
+        vejkode:
+          type: string
+          description: |
+            Four digit street identifier.
+        vejnavn:
+          type: string
+          description: |
+            Street name.
+        adresseringsvejnavn:
+          type: string
+          description: |
+            A possibly shortened version of the street name of no more than 20 characters, used where there is no space for the full street name.
+        husnr:
+          type: string
+          description: |
+            House number.
+        etage:
+          type: string
+          description: |
+            Floor designation.
+
+            Can be empty string `""` if not present.
+        dør:
+          type: string
+          description: |
+            Door designation.
+
+            Can be empty string `""` if not present.
+        supplerendebynavn_dagi_id:
+          type: string
+          description: |
+            Unique identifier in Danmarks Administrative Geografiske Inddeling (DAGI) of the supplementary town or city name.
+
+            Can be empty string `""` if not present.
+        supplerendebynavn:
+          type: string
+          description: |
+            Supplementary city name.
+
+            Can be empty string `""` if not present.
+        postnr:
+          type: string
+          description: |
+            Postal code.
+        postnrnavn:
+          type: string
+          description: |
+            The city or district name associated with the postal code.
+        stormodtagerpostnr:
+          type: string
+          description: |
+            Bulk recipient postal code (company postal code) which is associated with the address.
+
+            Can be empty string `""` if not present.
+        stormodtagerpostnrnavn:
+          type: string
+          description: |
+            The city or district name associated with the bulk recipient postal code.
+
+            Can be empty string `""` if not present.
+        betegnelse:
+          type: string
+          description: |
+            Full text of postal address.
+        adressepunktændringsdato:
+          type: string
+          description: |
+            Date and time of the last change to the address point.
+
+            Can be empty string `""` if not present.
+        etrs89koordinat_øst:
+          type: string
+          description: |
+            Easting coordinate for the address in the ETRS89 system.
+        etrs89koordinat_nord:
+          type: string
+          description: |
+            Northing coordinate for the address in the ETRS89 system.
+        wgs84koordinat_bredde:
+          description: |
+            Latitude of the address in the WGS84 system.
+
+            Can be empty string `""` if not present.
+          oneOf:
+            - type: string
+            - type: number
+              minimum: -90
+              maximum: 90
+              example: 55.06428998
+        wgs84koordinat_længde:
+          description: |
+            Longitude of the address in the WGS84 system.
+
+            Can be empty string `""` if not present.
+          oneOf:
+            - type: string
+            - type: number
+              minimum: -180
+              maximum: 180
+              example: 15.13688626
+        højde:
+          type: string
+          description: |
+            Height in metres from the mean water level in the seas on Denmark's coasts to ground level at the address, calculated according to the Danish Vertical Reference 1990 (DVR90).
+
+            Can be empty string `""` if not present.
+        nøjagtighed:
+          type: string
+          description: |
+            Code indicating the accuracy of the address point. `A` = accurate to within 2 metres, `B` = accurate to within 100 metres, `U` = no address point.
+        kilde:
+          type: string
+          description: |
+            Code indicating the source of the address point.
+
+            Can be empty string `""` if not present.
+        tekniskstandard:
+          type: string
+          description: |
+            Technical classification code for the location of an address point.
+        tekstretning:
+          type: string
+          description: |
+            Orientation for an address in gons, where a full circle is divided into 400 gons.
+        ddkn_m100:
+          type: string
+          description: |
+            Identifier of the 100m cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        ddkn_km1:
+          type: string
+          description: |
+            Identifier of the 1km cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        ddkn_km10:
+          type: string
+          description: |
+            Identifier of the 10km cell in which the address is located in Det Danske Kvadratnet (DDKN).
+        kommunekode:
+          type: string
+          description: |
+            Four digit identifier of the municipality in which the address is located.
+        kommunenavn:
+          type: string
+          description: |
+            Name of the municipality in which the address is located.
+        landsdelsnuts3:
+          type: string
+          description: |
+            NUTS 3 code of the province in which the address is located.
+        landsdelsnavn:
+          type: string
+          description: |
+            Name of the province in which the address is located.
+        regionskode:
+          type: string
+          description: |
+            Four digit identifier of the region in which the address is located.
+        regionsnavn:
+          type: string
+          description: |
+            Name of the region in which the address is located.
+        afstemningsområdenummer:
+          type: string
+          description: |
+            Identifier of the polling district in which the address is located.
+        afstemningsområdenavn:
+          type: string
+          description: |
+            Unique name of the polling district in which the address is located.
+        menighedsrådsafstemningsområdenummer:
+          type: string
+          description: |
+            Identifier of the parish council polling district in which the address is located.
+
+            Can be empty string `""` if not present.
+        menighedsrådsafstemningsområdenavn:
+          type: string
+          description: |
+            Name of the parish council polling district in which the address is located.
+
+            Can be empty string `""` if not present.
+        opstillingskredskode:
+          type: string
+          description: |
+            Identifier of the local electoral district in which the address is located.
+        opstillingskredsnavn:
+          type: string
+          description: |
+            Name of the local electoral district in which the address is located.
+        storkredsnummer:
+          type: string
+          description: |
+            Identifier of the regional electoral district in which the address is located.
+        storkredsnavn:
+          type: string
+          description: |
+            Name of the regional electoral district in which the address is located.
+        valglandsdelsbogstav:
+          type: string
+          description: |
+            Letter identifier of the national electoral district in which the address is located: `A`, `B` or `C`.
+        valglandsdelsnavn:
+          type: string
+          description: |
+            Name of the national electoral district in which the address is located.
+        sognekode:
+          type: string
+          description: |
+            Identifier of the parish in which the address is located.
+        sognenavn:
+          type: string
+          description: |
+            Name of the parish in which the address is located.
+        politikredskode:
+          type: string
+          description: |
+            Identifier of the police district in which the address is located.
+        politikredsnavn:
+          type: string
+          description: |
+            Name of the police district in which the address is located.
+        retskredskode:
+          type: string
+          description: |
+            Four digit identifier of the judicial district in which the address is located.
+        retskredsnavn:
+          type: string
+          description: |
+            Name of the judicial district in which the address is located.
+        jordstykke_ejerlavkode:
+          type: string
+          description: |
+            Identifier of a cadastral unit with a single owner.
+
+            Can be empty string `""` if not present.
+        jordstykke_ejerlavnavn:
+          type: string
+          description: |
+            Name of a cadastral unit with a single owner.
+
+            Can be empty string `""` if not present.
+        jordstykke_matrikelnr:
+          type: string
+          description: |
+            Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        jordstykke_esrejendomsnr:
+          type: string
+          description: |
+            Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        ejerlavkode:
+          type: string
+          description: |
+            Identifier of a cadastral unit with a single owner (deprecated).
+
+            Can be empty string `""` if not present.
+        ejerlavnavn:
+          type: string
+          description: |
+            Name of a cadastral unit with a single owner (deprecated).
+
+            Can be empty string `""` if not present.
+        matrikelnr:
+          type: string
+          description: |
+            Cadastre identifier for the plot of land on which the address is located, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        esrejendomsnr:
+          type: string
+          description: |
+            Identifier for the property from the Ejendomsstamregisteret (ESR) property register, corresponding to the plot of land associated with the address, consisting of up to 7 characters.
+
+            Can be empty string `""` if not present.
+        zone:
+          type: string
+          description: |
+            Status of the address zone: `Byzone`, `Sommerhusområde` or `Landzone`.
+        brofast:
+          type: boolean
+          description: |
+            Indicates whether the address is connected by a bridge.
+        adgangsadresseid:
+          type: string
+          description: |
+            Identifier of the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangspunktid:
+          type: string
+          description: |
+            Identifier of the access point for the address.
+        navngivenvej_id:
+          type: string
+          description: |
+            Identifier of the named road on which the access address is located.
+        adgangsadresse_status:
+          type: string
+          description: |
+            Status of the access address associated with the address: `1` = final address, `3` = provisional address.
+        adgangsadresse_darstatus:
+          type: string
+          description: |
+            Status of the access address indicated by the status code in Danmarks Adresseregister (DAR): `2` = provisional, `3` = valid, `4` = retired, `5` = suspended.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_oprettet:
+          type: string
+          description: |
+            Date and time of the creation of the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_ændret:
+          type: string
+          description: |
+            Date and time of the last change to the access address associated with the address.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_ikrafttrædelse:
+          type: string
+          description: |
+            Date and time at which the access address became valid.
+
+            Can be empty string `""` if not present.
+        adgangsadresse_nedlagt:
+          type: string
+          description: |
+            Date and time from which the access address is retired or suspended (may be in the future).
+
+            Can be empty string `""` if not present.
+        vejpunkt_id:
+          type: string
+          description: |
+            Unique identifier of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_ændret:
+          type: string
+          description: |
+            Date and time of the last change in Danmarks Adresseregister (DAR) to the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+
+            Can be empty string `""` if not present.
+        vejpunkt_kilde:
+          type: string
+          description: |
+            Source of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_nøjagtighed:
+          type: string
+          description: |
+            Accuracy of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address: `A` = exact, `B` = approximate.
+        vejpunkt_tekniskstandard:
+          type: string
+          description: |
+            Technical classification code for the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_x:
+          type: string
+          description: |
+            Longitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+        vejpunkt_y:
+          type: string
+          description: |
+            Latitude in the WGS84 system of the geographic point on the road network that represents the starting point of the access route leading to the access point for the address.
+    CannarAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - latitude
+        - longitude
+        - loc_guid
+        - addr_guid
+        - apt_no_label
+        - civic_no
+        - civic_no_suffix
+        - official_street_name
+        - official_street_type
+        - official_street_dir
+        - prov_code
+        - csd_eng_name
+        - csd_fre_name
+        - csd_type_eng_code
+        - csd_type_fre_code
+        - mail_street_name
+        - mail_street_type
+        - mail_street_dir
+        - mail_mun_name
+        - mail_prov_abvn
+        - mail_postal_code
+        - bg_dls_lsd
+        - bg_dls_qtr
+        - bg_dls_sctn
+        - bg_dls_twnshp
+        - bg_dls_rng
+        - bg_dls_mrd
+        - bg_x
+        - bg_y
+        - bu_n_civic_add
+        - bu_use
+        - csd_code
+        - fed_code
+        - fed_eng_name
+        - fed_fre_name
+        - er_code
+        - er_eng_name
+        - er_fre_name
+        - reppoint_latitude
+        - reppoint_longitude
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - cannar
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - CAN
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - CA
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Canada
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: 38 Deane St
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: RR 4
+        language:
+          enum:
+            - en
+            - fr
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        loc_guid:
+          type: string
+          description: |
+            Globally unique identifier for location.
+        addr_guid:
+          type: string
+          description: |
+            Globally unique identifier for address.
+        apt_no_label:
+          type: string
+          description: |
+            Apartment or suite number.
+
+            Can be empty string `""` if not present.
+        civic_no:
+          type: string
+          description: |
+            The building number assigned to the address.
+
+            Can be empty string `""` if not present.
+        civic_no_suffix:
+          type: string
+          description: |
+            A suffix attached to the civic number.
+
+            Can be empty string `""` if not present.
+        official_street_name:
+          type: string
+          description: |
+            Official street name.
+
+            Can be empty string `""` if not present.
+        official_street_type:
+          type: string
+          description: |
+            Official street designator.
+
+            Can be empty string `""` if not present.
+        official_street_dir:
+          type: string
+          description: |
+            Official street direction.
+
+            Can be empty string `""` if not present.
+        prov_code:
+          type: string
+          description: |
+            Province code.
+        csd_eng_name:
+          type: string
+          description: |
+            Census subdivision English name.
+
+            Can be empty string `""` if not present.
+        csd_fre_name:
+          type: string
+          description: |
+            Census subdivision French name.
+
+            Can be empty string `""` if not present.
+        csd_type_eng_code:
+          type: string
+          description: |
+            English code indicating the type of Census Subdivision.
+
+            Can be empty string `""` if not present.
+        csd_type_fre_code:
+          type: string
+          description: |
+            French code indicating the type of Census Subdivision.
+
+            Can be empty string `""` if not present.
+        mail_street_name:
+          type: string
+          description: |
+            Name of the street used in the mailing address.
+
+            Can be empty string `""` if not present.
+        mail_street_type:
+          type: string
+          description: |
+            Designator of the street used in the mailing address.
+
+            Can be empty string `""` if not present.
+        mail_street_dir:
+          type: string
+          description: |
+            Direction of the street used in the mailing address.
+
+            Can be empty string `""` if not present.
+        mail_mun_name:
+          type: string
+          description: |
+            Municipality name used in the mailing address.
+
+            Can be empty string `""` if not present.
+        mail_prov_abvn:
+          type: string
+          description: |
+            Province abbreviation used in the mailing address.
+
+            Can be empty string `""` if not present.
+        mail_postal_code:
+          type: string
+          description: |
+            Postal code used in the mailing address.
+
+            Can be empty string `""` if not present.
+        bg_dls_lsd:
+          type: string
+          description: |
+            Legal Subdivision number within the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_dls_qtr:
+          type: string
+          description: |
+            Quarter section within a section of the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_dls_sctn:
+          type: string
+          description: |
+            Section number within a township of the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_dls_twnshp:
+          type: string
+          description: |
+            Township number within the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_dls_rng:
+          type: string
+          description: |
+            Range number within a meridian of the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_dls_mrd:
+          type: string
+          description: |
+            Meridian number within the Dominion Land Survey system for the address location.
+
+            Can be empty string `""` if not present.
+        bg_x:
+          type: string
+          description: |
+            Spatial X coordinate (GPS) of building. (ESPG 3347)
+
+            Can be empty string `""` if not present.
+        bg_y:
+          type: string
+          description: |
+            Spatial Y coordinate (GPS) of building. (ESPG 3347)
+
+            Can be empty string `""` if not present.
+        bu_n_civic_add:
+          type: string
+          description: |
+            Additional delivery information for mailing address.
+
+            Can be empty string `""` if not present.
+          example: PO Box 377
+        bu_use:
+          type: string
+          description: |
+            Building usage codes.
+
+            Can be empty string `""` if not present.
+        csd_code:
+          type: string
+          description: |
+            Unique identifier code for a Census Subdivision (CSD).
+
+            Can be empty string `""` if not present.
+        fed_code:
+          type: string
+          description: |
+            Unique identifier code for a federal electoral district.
+
+            Can be empty string `""` if not present.
+        fed_eng_name:
+          type: string
+          description: |
+            Name of the federal electoral district in English.
+
+            Can be empty string `""` if not present.
+        fed_fre_name:
+          type: string
+          description: |
+            Name of the federal electoral district in French.
+
+            Can be empty string `""` if not present.
+        er_code:
+          type: string
+          description: |
+            Unique identifier code for an economic region.
+
+            Can be empty string `""` if not present.
+        er_eng_name:
+          type: string
+          description: |
+            Name of the economic region in English.
+
+            Can be empty string `""` if not present.
+        er_fre_name:
+          type: string
+          description: |
+            Name of the economic region in French.
+
+            Can be empty string `""` if not present.
+        reppoint_latitude:
+          $ref: '#/components/schemas/Latitude'
+        reppoint_longitude:
+          $ref: '#/components/schemas/Longitude'
+    FodbosaAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - line_1
+        - language
+        - address
+        - latitude
+        - longitude
+        - epsg_31370_x
+        - epsg_31370_y
+        - epsg_4326_lat
+        - epsg_4326_lon
+        - address_id
+        - box_number
+        - house_number
+        - municipality_id
+        - municipality_name_de
+        - municipality_name_fr
+        - municipality_name_nl
+        - postcode
+        - postname_fr
+        - postname_nl
+        - street_id
+        - streetname_de
+        - streetname_fr
+        - streetname_nl
+        - region_code
+        - status
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - fodbosa
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - BEL
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - BE
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Belgium
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Kapellestraat 3
+        language:
+          enum:
+            - de
+            - fr
+            - nl
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '3'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        epsg_31370_x:
+          type: string
+          description: |
+            X coordinate of the address in the BD72 / Belgian Lambert 72 (EPSG:31370) coordinate system.
+        epsg_31370_y:
+          type: string
+          description: |
+            Y coordinate of the address in the BD72 / Belgian Lambert 72 (EPSG:31370) coordinate system.
+        epsg_4326_lat:
+          type: string
+          description: |
+            Latitude of the address in the WGS84 (EPSG:4326) coordinate system.
+        epsg_4326_lon:
+          type: string
+          description: |
+            Longitude of the address in the WGS84 (EPSG:4326) coordinate system.
+        address_id:
+          type: string
+          description: |
+            Address local identifier assigned by the data supplier.
+        box_number:
+          type: string
+          description: |
+            PO Box number.
+
+            Can be empty string `""` if not present.
+        house_number:
+          type: string
+          description: |
+            House number.
+
+            Can be empty string `""` if not present.
+        municipality_id:
+          type: string
+          description: |
+            Municipality local identifier assigned by the data supplier.
+        municipality_name_de:
+          type: string
+          description: |
+            Municipality name in German.
+
+            Can be empty string `""` if not present.
+        municipality_name_fr:
+          type: string
+          description: |
+            Municipality name in French.
+
+            Can be empty string `""` if not present.
+        municipality_name_nl:
+          type: string
+          description: |
+            Municipality name in Dutch.
+
+            Can be empty string `""` if not present.
+        postcode:
+          type: string
+          description: |
+            Postal code.
+        postname_fr:
+          type: string
+          description: |
+            Name of postal area in French.
+
+            Can be empty string `""` if not present.
+        postname_nl:
+          type: string
+          description: |
+            Name of postal area in Dutch.
+
+            Can be empty string `""` if not present.
+        street_id:
+          type: string
+          description: |
+            Street local identifier assigned by the data supplier.
+        streetname_de:
+          type: string
+          description: |
+            Street name in German.
+
+            Can be empty string `""` if not present.
+        streetname_fr:
+          type: string
+          description: |
+            Street name in French.
+
+            Can be empty string `""` if not present.
+        streetname_nl:
+          type: string
+          description: |
+            Street name in Dutch.
+
+            Can be empty string `""` if not present.
+        region_code:
+          type: string
+          description: |
+            ISO 3166-2 code of the region in which the address is located.
+        status:
+          type: string
+          description: |
+            Status of the address: `current`, `proposed` or `retired`.
+    MoisAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - city
+        - province
+        - 법정읍면동명
+        - 법정동코드
+        - 법정리명
+        - 비고1
+        - 비고2
+        - 변동전도로명주소
+        - 변경이력정보
+        - 변경이력사유
+        - 변경전_도로명주소
+        - 변경사유
+        - 변경사유코드
+        - 층일련번호
+        - 층명칭
+        - 대표지번여부
+        - 대표여부
+        - 다량배달처명
+        - 동일련번호
+        - 동명칭
+        - 도로명
+        - 도로명_로마자
+        - 도로명번호
+        - 도로명코드
+        - 도로명코드_고시일자
+        - 도로명코드_말소일자
+        - 읍면동구분
+        - 읍면동일련번호
+        - 읍면동코드
+        - 읍면동명
+        - 읍면동명_로마자
+        - 건축물대장_건물명
+        - 건물본번
+        - 건물부번
+        - 건물관리번호
+        - 기초구역번호
+        - 공동주택여부
+        - 고시일자
+        - 관리번호
+        - 행정동코드
+        - 행정동명
+        - 호일련번호
+        - 호명칭
+        - 호접미사일련번호
+        - 호접미사명칭
+        - 이동사유코드
+        - 일련번호
+        - 지번일련번호
+        - 지번본번_번지
+        - 지번부번_호
+        - 지하구분
+        - 지하여부
+        - 산여부
+        - 상위도로명
+        - 상위도로명번호
+        - 상세건물명
+        - 상세주소_부여여부
+        - 상세주소여부
+        - 사용여부
+        - 시도명
+        - 시도명_로마자
+        - 시군구_건물명
+        - 시군구코드
+        - 시군구명
+        - 시군구명_로마자
+        - 시군구용_건물명
+        - 우편일련번호
+        - 우편번호
+        - 우편번호_일련번호
+        - 영문_법정리명
+        - 영문읍면동명
+        - 영문_법정읍면동명
+        - 영문도로명
+        - 영문시도명
+        - 영문시군구명
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - mois
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - South Korea
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - KOR
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - KR
+        language:
+          enum:
+            - ko
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Address / House Number identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: '16'
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: 배방읍 북수리 배방산길 197-1
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: ''
+        city:
+          type: string
+          description: |
+            Preferred city name.
+
+            Can be empty string `""` if not present.
+          example: ''
+        province:
+          type: string
+          description: |
+            Preferred province name.
+
+            Can be empty string `""` if not present.
+          example: ''
+        법정읍면동명:
+          type: string
+          description: |
+            Legal town name.
+
+            Can be empty string `""` if not present.
+        법정동코드:
+          type: string
+          description: |
+            Legal district code.
+        법정리명:
+          type: string
+          description: |
+            Legal name.
+
+            Can be empty string `""` if not present.
+        비고1:
+          type: string
+          description: |
+            Note 1.
+
+            Can be empty string `""` if not present.
+        비고2:
+          type: string
+          description: |
+            Note 2.
+
+            Can be empty string `""` if not present.
+        변동전도로명주소:
+          type: string
+          description: |
+            Changed street name address.
+
+            Can be empty string `""` if not present.
+        변경이력정보:
+          type: string
+          description: |
+            Change history information.
+
+            Can be empty string `""` if not present.
+        변경이력사유:
+          type: string
+          description: |
+            Change history reason.
+
+            Can be empty string `""` if not present.
+        변경전_도로명주소:
+          type: string
+          description: |
+            Previous road name address.
+
+            Can be empty string `""` if not present.
+        변경사유:
+          type: string
+          description: |
+            Change reason.
+
+            Can be empty string `""` if not present.
+        변경사유코드:
+          type: string
+          description: |
+            Change reason code.
+
+            Can be empty string `""` if not present.
+        층일련번호:
+          type: string
+          description: |
+            Floor serial number.
+
+            Can be empty string `""` if not present.
+        층명칭:
+          type: string
+          description: |
+            Floor name.
+
+            Can be empty string `""` if not present.
+        대표지번여부:
+          type: string
+          description: |
+            Is representative address.
+
+            Can be empty string `""` if not present.
+        대표여부:
+          type: string
+          description: |
+            Is representative.
+
+            Can be empty string `""` if not present.
+        다량배달처명:
+          type: string
+          description: |
+            Bulk delivery location name.
+
+            Can be empty string `""` if not present.
+        동일련번호:
+          type: string
+          description: |
+            Building serial number.
+
+            Can be empty string `""` if not present.
+        동명칭:
+          type: string
+          description: |
+            Building name.
+
+            Can be empty string `""` if not present.
+        도로명:
+          type: string
+          description: |
+            Road name.
+
+            Can be empty string `""` if not present.
+        도로명_로마자:
+          type: string
+          description: |
+            Romanized road name.
+
+            Can be empty string `""` if not present.
+        도로명번호:
+          type: string
+          description: |
+            Road name number.
+
+            Can be empty string `""` if not present.
+        도로명코드:
+          type: string
+          description: |
+            Road name code.
+        도로명코드_고시일자:
+          type: string
+          description: |
+            Road name code creation date.
+
+            Can be empty string `""` if not present.
+        도로명코드_말소일자:
+          type: string
+          description: |
+            Road name code deletion date.
+
+            Can be empty string `""` if not present.
+        읍면동구분:
+          type: string
+          description: |
+            Town classification.
+
+            Can be empty string `""` if not present.
+        읍면동일련번호:
+          type: string
+          description: |
+            Town serial number.
+
+            Can be empty string `""` if not present.
+        읍면동코드:
+          type: string
+          description: |
+            Town code.
+
+            Can be empty string `""` if not present.
+        읍면동명:
+          type: string
+          description: |
+            Town name.
+
+            Can be empty string `""` if not present.
+        읍면동명_로마자:
+          type: string
+          description: |
+            Romanized town name.
+
+            Can be empty string `""` if not present.
+        건축물대장_건물명:
+          type: string
+          description: |
+            Building name in building register.
+
+            Can be empty string `""` if not present.
+        건물본번:
+          type: string
+          description: |
+            Building number.
+        건물부번:
+          type: string
+          description: |
+            Building sub-number.
+
+            Can be empty string `""` if not present.
+        건물관리번호:
+          type: string
+          description: |
+            Building management number.
+
+            Can be empty string `""` if not present.
+        기초구역번호:
+          type: string
+          description: |
+            Basic area number.
+
+            Can be empty string `""` if not present.
+        공동주택여부:
+          type: string
+          description: |
+            Is apartment.
+
+            Can be empty string `""` if not present.
+        고시일자:
+          type: string
+          description: |
+            Creation date.
+
+            Can be empty string `""` if not present.
+        관리번호:
+          type: string
+          description: |
+            Management number.
+
+            Can be empty string `""` if not present.
+        행정동코드:
+          type: string
+          description: |
+            Administrative district code.
+
+            Can be empty string `""` if not present.
+        행정동명:
+          type: string
+          description: |
+            Administrative district name.
+
+            Can be empty string `""` if not present.
+        호일련번호:
+          type: string
+          description: |
+            Unit serial number.
+
+            Can be empty string `""` if not present.
+        호명칭:
+          type: string
+          description: |
+            Unit name.
+
+            Can be empty string `""` if not present.
+        호접미사일련번호:
+          type: string
+          description: |
+            Unit suffix serial number.
+
+            Can be empty string `""` if not present.
+        호접미사명칭:
+          type: string
+          description: |
+            Unit suffix name.
+
+            Can be empty string `""` if not present.
+        이동사유코드:
+          type: string
+          description: |
+            Movement reason code.
+
+            Can be empty string `""` if not present.
+        일련번호:
+          type: string
+          description: |
+            Serial number.
+
+            Can be empty string `""` if not present.
+        지번일련번호:
+          type: string
+          description: |
+            Address serial number.
+
+            Can be empty string `""` if not present.
+        지번본번_번지:
+          type: string
+          description: |
+            Address building number.
+
+            Can be empty string `""` if not present.
+        지번부번_호:
+          type: string
+          description: |
+            Address unit number.
+
+            Can be empty string `""` if not present.
+        지하구분:
+          type: string
+          description: |
+            Is basement.
+
+            Can be empty string `""` if not present.
+        지하여부:
+          type: string
+          description: |
+            Level (ground level, underground, aerial).
+        산여부:
+          type: string
+          description: |
+            Is mountain.
+
+            Can be empty string `""` if not present.
+        상위도로명:
+          type: string
+          description: |
+            Upper road name.
+
+            Can be empty string `""` if not present.
+        상위도로명번호:
+          type: string
+          description: |
+            Upper road name number.
+
+            Can be empty string `""` if not present.
+        상세건물명:
+          type: string
+          description: |
+            Detailed building name.
+
+            Can be empty string `""` if not present.
+        상세주소_부여여부:
+          type: string
+          description: |
+            Whether detailed address assigned.
+
+            Can be empty string `""` if not present.
+        상세주소여부:
+          type: string
+          description: |
+            Whether detailed address exists.
+
+            Can be empty string `""` if not present.
+        사용여부:
+          type: string
+          description: |
+            In use.
+
+            Can be empty string `""` if not present.
+        시도명:
+          type: string
+          description: |
+            City name.
+        시도명_로마자:
+          type: string
+          description: |
+            Romanized city name.
+
+            Can be empty string `""` if not present.
+        시군구_건물명:
+          type: string
+          description: |
+            District building name.
+
+            Can be empty string `""` if not present.
+        시군구코드:
+          type: string
+          description: |
+            District code.
+
+            Can be empty string `""` if not present.
+        시군구명:
+          type: string
+          description: |
+            District name.
+
+            Can be empty string `""` if not present.
+        시군구명_로마자:
+          type: string
+          description: |
+            Romanized district name.
+
+            Can be empty string `""` if not present.
+        시군구용_건물명:
+          type: string
+          description: |
+            District building name.
+
+            Can be empty string `""` if not present.
+        우편일련번호:
+          type: string
+          description: |
+            Postal sequence number.
+
+            Can be empty string `""` if not present.
+        우편번호:
+          type: string
+          description: |
+            Postal code.
+
+            Can be empty string `""` if not present.
+        우편번호_일련번호:
+          type: string
+          description: |
+            Postal code serial number.
+
+            Can be empty string `""` if not present.
+        영문_법정리명:
+          type: string
+          description: |
+            English legal name.
+
+            Can be empty string `""` if not present.
+        영문읍면동명:
+          type: string
+          description: |
+            English town name.
+
+            Can be empty string `""` if not present.
+        영문_법정읍면동명:
+          type: string
+          description: |
+            English legal town name.
+
+            Can be empty string `""` if not present.
+        영문도로명:
+          type: string
+          description: |
+            English road name.
+
+            Can be empty string `""` if not present.
+        영문시도명:
+          type: string
+          description: |
+            English city name.
+
+            Can be empty string `""` if not present.
+        영문시군구명:
+          type: string
+          description: |
+            English district name.
+
+            Can be empty string `""` if not present.
+    UpujpAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - script
+        - address
+        - line_1
+        - building_name
+        - neighbourhood
+        - district
+        - city
+        - prefecture
+        - postcode
+        - latitude
+        - longitude
+        - org_id
+        - org_type_ind
+        - org_sub_type_ind
+        - org_loc_id
+        - org_dis_id
+        - org_nei_id
+        - org_org_id
+        - org_name
+        - org_name_trans
+        - org_loc_sfx
+        - org_loc_sfx_trans
+        - org_adr
+        - org_adr_trans
+        - org_po_ind
+        - org_po_start
+        - org_po_end
+        - org_dsc
+        - org_dsc_trans
+        - org_pcode
+        - org_pcode_fin
+        - org_script
+        - org_language
+        - str_id
+        - str_key
+        - str_loc_id
+        - str_dis_id
+        - str_nei_id
+        - str_org_id
+        - str_pfx
+        - str_pfx_trans
+        - str_qlf_pre
+        - str_qlf_pre_trans
+        - str_qlf_suc
+        - str_qlf_suc_trans
+        - str_name
+        - str_name_trans
+        - str_loc_sfx
+        - str_loc_sfx_trans
+        - str_type
+        - str_type_trans
+        - str_type_abv
+        - str_type_abv_trans
+        - str_adr_num_key
+        - str_from_num
+        - str_from_unit
+        - str_from_alph
+        - str_to_num
+        - str_to_unit
+        - str_to_alph
+        - str_evenodd
+        - str_dsc
+        - str_dsc_trans
+        - str_blg_id
+        - str_blg_name
+        - str_blg_name_trans
+        - str_blg_type
+        - str_blg_type_trans
+        - str_blg_dsc
+        - str_blg_dsc_trans
+        - str_ref_str_id
+        - str_pcode
+        - str_script
+        - str_language
+        - sub_dis_id
+        - sub_dis_key
+        - sub_loc_id
+        - sub_loc_sfx
+        - sub_loc_sfx_trans
+        - sub_dis_name
+        - sub_dis_name_trans
+        - sub_dis_sfx
+        - sub_dis_sfx_trans
+        - sub_dis_dsc
+        - sub_dis_dsc_trans
+        - sub_dis_pcode
+        - sub_dis_pcode_fin
+        - sub_nei_id
+        - sub_nei_key
+        - sub_nei_name
+        - sub_nei_name_trans
+        - sub_nei_sfx
+        - sub_nei_sfx_trans
+        - sub_nei_zone_from
+        - sub_nei_zone_to
+        - sub_nei_dsc
+        - sub_nei_dsc_trans
+        - sub_nei_pcode
+        - sub_script
+        - sub_language
+        - loc_id
+        - loc_key
+        - loc_adm1_id
+        - loc_adm1_key
+        - loc_adm1_name
+        - loc_adm1_name_trans
+        - loc_adm1_sfx
+        - loc_adm1_sfx_trans
+        - loc_adm1_abv
+        - loc_adm1_abv_trans
+        - loc_adm2_id
+        - loc_adm2_key
+        - loc_adm2_name
+        - loc_adm2_name_trans
+        - loc_adm2_sfx
+        - loc_adm2_sfx_trans
+        - loc_adm2_abv
+        - loc_adm2_abv_trans
+        - loc_adm3_id
+        - loc_adm3_key
+        - loc_adm3_name
+        - loc_adm3_name_trans
+        - loc_adm3_sfx
+        - loc_adm3_sfx_trans
+        - loc_adm3_abv
+        - loc_adm3_abv_trans
+        - loc_name
+        - loc_name_trans
+        - loc_sfx
+        - loc_sfx_trans
+        - loc_pcode
+        - loc_pcode_fin
+        - loc_dsc
+        - loc_dsc_trans
+        - loc_script
+        - loc_language
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - upujp
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Japan
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - JPN
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - JP
+        language:
+          enum:
+            - ja
+            - en
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: 2-4
+        address:
+          type: string
+          description: |
+            Address / House Number uniquely identifying the address along the specified street.
+
+            Can be empty string `""` if not present.
+          example: 2-4
+        building_name:
+          type: string
+          description: |
+            Preferred building name.
+
+            Can be empty string `""` if not present.
+          example: 電通本社ビル
+        neighbourhood:
+          type: string
+          description: |
+            Preferred neighbourhood name.
+
+            Can be empty string `""` if not present.
+          example: あいの里一条七丁目
+        district:
+          type: string
+          description: |
+            Preferred district name.
+
+            Can be empty string `""` if not present.
+          example: 上富良野町
+        city:
+          type: string
+          description: |
+            Preferred city name.
+
+            Can be empty string `""` if not present.
+          example: 下関市
+        prefecture:
+          type: string
+          description: |
+            Preferred prefecture name.
+
+            Can be empty string `""` if not present.
+          example: 和歌山県
+        postcode:
+          type: string
+          description: |
+            Preferred postal code.
+
+            Can be empty string `""` if not present.
+          example: 259-1100
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        org_id:
+          type: string
+          description: |
+            The unique identifier of an organisation.
+
+            Can be empty string `""` if not present.
+        org_type_ind:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Indicates the type of organisation.
+
+            Can be empty string `""` if not present.
+        org_sub_type_ind:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Indicates the sub-type of the organisation.
+
+            Can be empty string `""` if not present.
+        org_loc_id:
+          type: string
+          description: |
+            Locality identifier for the organisation.
+
+            Can be empty string `""` if not present.
+        org_dis_id:
+          type: string
+          description: |
+            District identifier for the organisation.
+
+            Can be empty string `""` if not present.
+        org_nei_id:
+          type: string
+          description: |
+            Neighbourhood identifier for the organisation.
+
+            Can be empty string `""` if not present.
+        org_org_id:
+          type: string
+          description: |
+            Associated organisation identifier for the organisation.
+
+            Can be empty string `""` if not present.
+        org_name:
+          type: string
+          description: |
+            Name of the organisation.
+
+            Can be empty string `""` if not present.
+        org_name_trans:
+          type: string
+          description: |
+            Translated name of the organisation in Latin script.
+
+            Can be empty string `""` if not present.
+        org_loc_sfx:
+          type: string
+          description: |
+            Suffix of the locality for the organisation.
+
+            Can be empty string `""` if not present.
+        org_loc_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the locality for the organisation in Latin script.
+
+            Can be empty string `""` if not present.
+        org_adr:
+          type: string
+          description: |
+            Address of the organisation.
+
+            Can be empty string `""` if not present.
+        org_adr_trans:
+          type: string
+          description: |
+            Translated address of the organisation in Latin script.
+
+            Can be empty string `""` if not present.
+        org_po_ind:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Indicates whether the organisation has a post office box.
+
+            Can be empty string `""` if not present.
+        org_po_start:
+          type: string
+          description: |
+            Post office box number or start of the post office box range associated with the organisation.
+
+            Can be empty string `""` if not present.
+        org_po_end:
+          type: string
+          description: |
+            End of the post office box range associated with the organisation.
+
+            Can be empty string `""` if not present.
+        org_dsc:
+          type: string
+          description: |
+            Additional information about the organisation.
+
+            Can be empty string `""` if not present.
+        org_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the organisation in Latin script.
+
+            Can be empty string `""` if not present.
+        org_pcode:
+          type: string
+          description: |
+            Postal code for the organisation.
+
+            Can be empty string `""` if not present.
+        org_pcode_fin:
+          type: string
+          description: |
+            Final postal code for the organisation.
+
+            Can be empty string `""` if not present.
+        org_script:
+          type: string
+          description: |
+            Script used for the organisation name.
+
+            `Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.
+
+            Can be empty string `""` if not present.
+        org_language:
+          type: string
+          description: |
+            Language used for the organisation name.
+
+            Can be empty string `""` if not present.
+        str_id:
+          type: string
+          description: |
+            Identifier of the street (not unique).
+
+            Can be empty string `""` if not present.
+        str_key:
+          type: string
+          description: |
+            Permanent identifier of the street.
+
+            Can be empty string `""` if not present.
+        str_loc_id:
+          type: string
+          description: |
+            Locality identifier for the street.
+
+            Can be empty string `""` if not present.
+        str_dis_id:
+          type: string
+          description: |
+            District identifier for the street.
+
+            Can be empty string `""` if not present.
+        str_nei_id:
+          type: string
+          description: |
+            Neighbourhood identifier for the street.
+
+            Can be empty string `""` if not present.
+        str_org_id:
+          type: string
+          description: |
+            Associated organisation identifier for the street.
+
+            Can be empty string `""` if not present.
+        str_pfx:
+          type: string
+          description: |
+            Prefix of the street name.
+
+            Can be empty string `""` if not present.
+        str_pfx_trans:
+          type: string
+          description: |
+            Translated prefix of the street name in Latin script.
+
+            Can be empty string `""` if not present.
+        str_qlf_pre:
+          type: string
+          description: |
+            Preceding qualifier of the street name.
+
+            Can be empty string `""` if not present.
+        str_qlf_pre_trans:
+          type: string
+          description: |
+            Translated preceding qualifier of the street name in Latin script.
+
+            Can be empty string `""` if not present.
+        str_qlf_suc:
+          type: string
+          description: |
+            Succeeding qualifier of the street name.
+
+            Can be empty string `""` if not present.
+        str_qlf_suc_trans:
+          type: string
+          description: |
+            Translated succeeding qualifier of the street name in Latin script.
+
+            Can be empty string `""` if not present.
+        str_name:
+          type: string
+          description: |
+            Name of the street.
+
+            Can be empty string `""` if not present.
+        str_name_trans:
+          type: string
+          description: |
+            Translated name of the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_loc_sfx:
+          type: string
+          description: |
+            Suffix of the locality for the street.
+
+            Can be empty string `""` if not present.
+        str_loc_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the locality for the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_type:
+          type: string
+          description: |
+            Type of the street.
+
+            Can be empty string `""` if not present.
+        str_type_trans:
+          type: string
+          description: |
+            Translated type of the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_type_abv:
+          type: string
+          description: |
+            Abbreviation of the street type.
+
+            Can be empty string `""` if not present.
+        str_type_abv_trans:
+          type: string
+          description: |
+            Translated abbreviation of the street type in Latin script.
+
+            Can be empty string `""` if not present.
+        str_adr_num_key:
+          type: string
+          description: |
+            Permanent identifier of the address.
+
+            Can be empty string `""` if not present.
+        str_from_num:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Lowest address number on the street.
+
+            Can be empty string `""` if not present.
+        str_from_unit:
+          type: string
+          description: |
+            Lowest unit number on the street.
+
+            Can be empty string `""` if not present.
+        str_from_alph:
+          type: string
+          description: |
+            Extension of the lowest address number on the street.
+
+            Can be empty string `""` if not present.
+        str_to_num:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Highest address number on the street.
+
+            Can be empty string `""` if not present.
+        str_to_unit:
+          type: string
+          description: |
+            Highest unit number on the street.
+
+            Can be empty string `""` if not present.
+        str_to_alph:
+          type: string
+          description: |
+            Extension of the highest address number on the street.
+
+            Can be empty string `""` if not present.
+        str_evenodd:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            Indicates whether the address range for this street contains even numbers, odd numbers, or both.
+
+            Can be empty string `""` if not present.
+        str_dsc:
+          type: string
+          description: |
+            Additional information about the street.
+
+            Can be empty string `""` if not present.
+        str_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_blg_id:
+          type: string
+          description: |
+            Identifier of the building for the street.
+
+            Can be empty string `""` if not present.
+        str_blg_name:
+          type: string
+          description: |
+            Name of the building for the street.
+
+            Can be empty string `""` if not present.
+        str_blg_name_trans:
+          type: string
+          description: |
+            Translated name of the building for the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_blg_type:
+          type: string
+          description: |
+            Type of the building for the street.
+
+            Can be empty string `""` if not present.
+        str_blg_type_trans:
+          type: string
+          description: |
+            Translated type of the building for the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_blg_dsc:
+          type: string
+          description: |
+            Additional information about the building for the street.
+
+            Can be empty string `""` if not present.
+        str_blg_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the building for the street in Latin script.
+
+            Can be empty string `""` if not present.
+        str_ref_str_id:
+          type: string
+          description: |
+            Identifier of the associated street.
+
+            Can be empty string `""` if not present.
+        str_pcode:
+          type: string
+          description: |
+            Postal code for the street.
+
+            Can be empty string `""` if not present.
+        str_script:
+          type: string
+          description: |
+            Script used for the street name.
+
+            `Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.
+
+            Can be empty string `""` if not present.
+        str_language:
+          type: string
+          description: |
+            Language used for the street name.
+
+            Can be empty string `""` if not present.
+        sub_dis_id:
+          type: string
+          description: |
+            Unique identifier of the district.
+
+            Can be empty string `""` if not present.
+        sub_dis_key:
+          type: string
+          description: |
+            Permanent identifier of the district.
+
+            Can be empty string `""` if not present.
+        sub_loc_id:
+          type: string
+          description: |
+            Locality identifier for the subdivision.
+
+            Can be empty string `""` if not present.
+        sub_loc_sfx:
+          type: string
+          description: |
+            Suffix of the locality for the subdivision.
+
+            Can be empty string `""` if not present.
+        sub_loc_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the locality for the subdivision in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_dis_name:
+          type: string
+          description: |
+            Name of the district.
+
+            Can be empty string `""` if not present.
+        sub_dis_name_trans:
+          type: string
+          description: |
+            Translated name of the district in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_dis_sfx:
+          type: string
+          description: |
+            Suffix of the district.
+
+            Can be empty string `""` if not present.
+        sub_dis_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the district in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_dis_dsc:
+          type: string
+          description: |
+            Additional information about the district.
+
+            Can be empty string `""` if not present.
+        sub_dis_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the district in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_dis_pcode:
+          type: string
+          description: |
+            Postal code for the district.
+
+            Can be empty string `""` if not present.
+        sub_dis_pcode_fin:
+          type: string
+          description: |
+            Final postal code for the district.
+
+            Can be empty string `""` if not present.
+        sub_nei_id:
+          type: string
+          description: |
+            Identifier of the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_nei_key:
+          type: string
+          description: |
+            Permanent identifier of the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_nei_name:
+          type: string
+          description: |
+            Name of the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_nei_name_trans:
+          type: string
+          description: |
+            Translated name of the neighbourhood in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_nei_sfx:
+          type: string
+          description: |
+            Suffix of the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_nei_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the neighbourhood in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_nei_zone_from:
+          type: string
+          description: |
+            Start of the range of zone numbers to which the neighbourhood postal code corresponds.
+
+            Can be empty string `""` if not present.
+        sub_nei_zone_to:
+          type: string
+          description: |
+            End of the range of zone numbers to which the neighbourhood postal code corresponds.
+
+            Can be empty string `""` if not present.
+        sub_nei_dsc:
+          type: string
+          description: |
+            Additional information about the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_nei_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the neighbourhood in Latin script.
+
+            Can be empty string `""` if not present.
+        sub_nei_pcode:
+          type: string
+          description: |
+            Postal code for the neighbourhood.
+
+            Can be empty string `""` if not present.
+        sub_script:
+          type: string
+          description: |
+            Script used for the subdivision names.
+
+            `Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.
+
+            Can be empty string `""` if not present.
+        sub_language:
+          type: string
+          description: |
+            Language used for the subdivision names.
+
+            Can be empty string `""` if not present.
+        loc_id:
+          type: string
+          description: |
+            Unique identifier of the locality.
+
+            Can be empty string `""` if not present.
+        loc_key:
+          type: string
+          description: |
+            Permanent identifier of the locality.
+
+            Can be empty string `""` if not present.
+        loc_adm1_id:
+          type: string
+          description: |
+            Identifier of administrative division 1.
+
+            Can be empty string `""` if not present.
+        loc_adm1_key:
+          type: string
+          description: |
+            Permanent identifier of administrative division 1.
+
+            Can be empty string `""` if not present.
+        loc_adm1_name:
+          type: string
+          description: |
+            Name of administrative division 1.
+
+            Can be empty string `""` if not present.
+        loc_adm1_name_trans:
+          type: string
+          description: |
+            Translated name of administrative division 1 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm1_sfx:
+          type: string
+          description: |
+            Suffix of administrative division 1.
+
+            Can be empty string `""` if not present.
+        loc_adm1_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of administrative division 1 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm1_abv:
+          type: string
+          description: |
+            Abbreviation of administrative division 1.
+
+            Can be empty string `""` if not present.
+        loc_adm1_abv_trans:
+          type: string
+          description: |
+            Translated abbreviation of administrative division 1 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm2_id:
+          type: string
+          description: |
+            Identifier of administrative division 2.
+
+            Can be empty string `""` if not present.
+        loc_adm2_key:
+          type: string
+          description: |
+            Permanent identifier of administrative division 2.
+
+            Can be empty string `""` if not present.
+        loc_adm2_name:
+          type: string
+          description: |
+            Name of administrative division 2.
+
+            Can be empty string `""` if not present.
+        loc_adm2_name_trans:
+          type: string
+          description: |
+            Translated name of administrative division 2 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm2_sfx:
+          type: string
+          description: |
+            Suffix of administrative division 2.
+
+            Can be empty string `""` if not present.
+        loc_adm2_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of administrative division 2 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm2_abv:
+          type: string
+          description: |
+            Abbreviation of administrative division 2.
+
+            Can be empty string `""` if not present.
+        loc_adm2_abv_trans:
+          type: string
+          description: |
+            Translated abbreviation of administrative division 2 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm3_id:
+          type: string
+          description: |
+            Identifier of administrative division 3.
+
+            Can be empty string `""` if not present.
+        loc_adm3_key:
+          type: string
+          description: |
+            Permanent identifier of administrative division 3.
+
+            Can be empty string `""` if not present.
+        loc_adm3_name:
+          type: string
+          description: |
+            Name of administrative division 3.
+
+            Can be empty string `""` if not present.
+        loc_adm3_name_trans:
+          type: string
+          description: |
+            Translated name of administrative division 3 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm3_sfx:
+          type: string
+          description: |
+            Suffix of administrative division 3.
+
+            Can be empty string `""` if not present.
+        loc_adm3_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of administrative division 3 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_adm3_abv:
+          type: string
+          description: |
+            Abbreviation of administrative division 3.
+
+            Can be empty string `""` if not present.
+        loc_adm3_abv_trans:
+          type: string
+          description: |
+            Translated abbreviation of administrative division 3 in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_name:
+          type: string
+          description: |
+            Name of the locality.
+
+            Can be empty string `""` if not present.
+        loc_name_trans:
+          type: string
+          description: |
+            Translated name of the locality in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_sfx:
+          type: string
+          description: |
+            Suffix of the locality.
+
+            Can be empty string `""` if not present.
+        loc_sfx_trans:
+          type: string
+          description: |
+            Translated suffix of the locality in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_pcode:
+          type: string
+          description: |
+            Postal code of the locality.
+
+            Can be empty string `""` if not present.
+        loc_pcode_fin:
+          type: string
+          description: |
+            Final postal code of the locality.
+
+            Can be empty string `""` if not present.
+        loc_dsc:
+          type: string
+          description: |
+            Additional information about the locality.
+
+            Can be empty string `""` if not present.
+        loc_dsc_trans:
+          type: string
+          description: |
+            Translated additional information about the locality in Latin script.
+
+            Can be empty string `""` if not present.
+        loc_script:
+          type: string
+          description: |
+            Script used for the locality names.
+
+            `Hani` = Kanji, `Hira` = Hiragana, `Latn` = Latin.
+
+            Can be empty string `""` if not present.
+        loc_language:
+          type: string
+          description: |
+            Language used for the locality names.
+
+            Can be empty string `""` if not present.
+    BevAddress:
+      required:
+        - id
+        - dataset
+        - country
+        - country_iso
+        - country_iso_2
+        - language
+        - address
+        - line_1
+        - line_2
+        - latitude
+        - longitude
+        - adrcd
+        - kgnr
+        - gkz
+        - okz
+        - plz
+        - skz
+        - zaehlsprengel
+        - hausnrtext
+        - hausnrzahl1
+        - hausnrbuchstabe1
+        - hausnrverbindung1
+        - hausnrzahl2
+        - hausnrbuchstabe2
+        - hausnrbereich
+        - hnr_adr_zusammen
+        - gnradresse
+        - hofname
+        - rw
+        - hw
+        - epsg
+        - quelladresse
+        - bestimmungsart
+        - subcd
+        - objektnummer
+        - objfunktkennziffer
+        - hauptadresse
+        - hausnrverbindung2
+        - hausnrzahl3
+        - hausnrbuchstabe3
+        - hausnrverbindung3
+        - hausnrzahl4
+        - hausnrbuchstabe4
+        - hausnrgebaeudebez
+        - hnr_geb_zusammen
+        - eigenschaft
+        - gemeindename
+        - ortsname
+        - strassenname
+        - strassennamenzusatz
+        - szusadrbest
+        - zustellort
+        - zustellort_id
+        - zaehlsprengelname
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        dataset:
+          type: string
+          enum:
+            - bev
+        country_iso:
+          description: |2
+              3 letter country code (ISO 3166-1)
+          enum:
+            - AUT
+        country_iso_2:
+          type: string
+          description: |2
+             2 letter country code (ISO 3166-1)
+          enum:
+            - AT
+        country:
+          type: string
+          description: |2
+              Full country names (ISO 3166)
+          enum:
+            - Austria
+        language:
+          enum:
+            - de
+          description: |
+            Language represented by 2 letter ISO Code (639-1)
+        address:
+          type: string
+          description: |
+            Combination of hnr_adr_zusammen and hnr_geb_zusammen - the full house number and building designation.
+
+            Can be empty string `""` if not present.
+          example: '40'
+        line_1:
+          type: string
+          description: |
+            First address line.
+
+            Can be empty string `""` if not present.
+          example: Villa Kranzmayer
+        line_2:
+          type: string
+          description: |
+            Second address line.
+
+            Can be empty string `""` if not present.
+          example: Römerweg 48
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        adrcd:
+          type: string
+          description: |
+            Unique identifier of the address
+        kgnr:
+          type: string
+          description: |
+            Cadastral number of the municipality of the land parcel associated with the address
+        gkz:
+          type: string
+          description: |
+            Municipality unique identifier
+        okz:
+          type: string
+          description: |
+            Locality unique identifier
+        plz:
+          type: string
+          description: |
+            Postal code
+        skz:
+          type: string
+          description: |
+            Street unique identifier
+        zaehlsprengel:
+          type: string
+          description: |
+            Census district unique identifier
+        hausnrtext:
+          type: string
+          description: |
+            Text before house number
+        hausnrzahl1:
+          oneOf:
+            - type: string
+              description: |
+                Empty string `""` if not available
+            - type: number
+              description: |
+                House number part 1
+        hausnrbuchstabe1:
+          type: string
+          description: |
+            House letter part 1
+        hausnrverbindung1:
+          type: string
+          description: |
+            House number connector 1
+        hausnrzahl2:
+          oneOf:
+            - type: string
+              description: |
+                Empty string `""` if not available
+            - type: number
+              description: |
+                House number part 2
+        hausnrbuchstabe2:
+          type: string
+          description: |
+            House letter part 2
+        hausnrbereich:
+          type: string
+          description: |
+            House number range scheme (even, odd, all or not specified)
+        hnr_adr_zusammen:
+          type: string
+          description: |
+            Complete house number (combination of house number parts and letters)
+        gnradresse:
+          type: number
+          description: |
+            Parcel number used as an address when no house number is present
+        hofname:
+          type: string
+          description: |
+            Name of building or building complex (e.g. farmstead)
+        rw:
+          type: string
+          description: |
+            Easting / X coordinate
+        hw:
+          type: string
+          description: |
+            Northing / Y coordinate
+        epsg:
+          type: number
+          description: |
+            Coordinate reference system identifier
+        quelladresse:
+          type: string
+          description: |
+            Coordinate accuracy level (building level, parcel level, etc.)
+        bestimmungsart:
+          type: string
+          description: |
+            Coordinate determination method (DKM, surveying office, municipality, etc.)
+        subcd:
+          type: string
+          description: |
+            Subcode to distinguish multiple buildings at the same address
+        objektnummer:
+          type: string
+          description: |
+            Object number of the building
+        objfunktkennziffer:
+          type: string
+          description: |
+            All building function codes related to the address
+
+            Can be empty string `""` if not present.
+        hauptadresse:
+          oneOf:
+            - type: string
+              description: |
+                Empty string `""` if not available
+            - type: number
+              description: |
+                Indicates whether this address is the primary address for the associated building.
+        hausnrverbindung2:
+          type: string
+          description: |
+            House number connector 2
+        hausnrzahl3:
+          oneOf:
+            - type: string
+              description: |
+                Empty string `""` if not available
+            - type: number
+              description: |
+                House number part 3
+        hausnrbuchstabe3:
+          type: string
+          description: |
+            House letter part 3
+        hausnrverbindung3:
+          type: string
+          description: |
+            House number connector 3
+        hausnrzahl4:
+          oneOf:
+            - type: string
+              description: |
+                Empty string `""` if not available
+            - type: number
+              description: |
+                House number part 4
+        hausnrbuchstabe4:
+          type: string
+          description: |
+            House letter part 4
+        hausnrgebaeudebez:
+          type: string
+          description: |
+            Building description
+        hnr_geb_zusammen:
+          type: string
+          description: |
+            Combination of house number and building designation
+        eigenschaft:
+          type: string
+          description: |
+            Code indicating the primary use or function of the building associated with the address
+        gemeindename:
+          type: string
+          description: |
+            Name of the municipality
+        ortsname:
+          type: string
+          description: |
+            Name of the locality
+        strassenname:
+          type: string
+          description: |
+            Name of the street
+        strassennamenzusatz:
+          type: string
+          description: |
+            Street type (e.g., "Allee", "Strasse", etc.)
+        szusadrbest:
+          type: number
+          description: |
+            Indicates whether the street type is included in the street name
+        zustellort:
+          type: string
+          description: |
+            Postal town name
+        zustellort_id:
+          type: string
+          description: |
+            Postal town identifier
+        zaehlsprengelname:
+          type: string
+          description: |
+            Name of the census district
     GbrGlobalAddress:
       title: Global Address
       description: Global (non-UK) address in the UK address format
@@ -6720,6 +9669,12 @@ components:
             - $ref: '#/components/schemas/GnafAddress'
             - $ref: '#/components/schemas/KadasterAddress'
             - $ref: '#/components/schemas/KartverketAddress'
+            - $ref: '#/components/schemas/SdfiAddress'
+            - $ref: '#/components/schemas/CannarAddress'
+            - $ref: '#/components/schemas/FodbosaAddress'
+            - $ref: '#/components/schemas/MoisAddress'
+            - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/BevAddress'
         postcode_outward:
           type: string
           description: Not available for non-UK addresses
@@ -6742,9 +9697,8 @@ components:
             - ''
         thoroughfare:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Street name
+          example: Georgia Ave
         dependant_thoroughfare:
           type: string
           description: Not available for non-UK addresses
@@ -6752,19 +9706,16 @@ components:
             - ''
         building_number:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Address or house number
+          example: '2'
         building_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the building associated with the address
+          example: Holland House
         sub_building_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the sub-building associated with the address
+          example: Kingscourt Post Office
         premise:
           type: string
           description: Not available for non-UK addresses
@@ -6772,9 +9723,8 @@ components:
             - ''
         po_box:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: PO Box number
+          example: '100'
         department_name:
           type: string
           description: Not available for non-UK addresses
@@ -6782,9 +9732,8 @@ components:
             - ''
         organisation_name:
           type: string
-          description: Not available for non-UK addresses
-          enum:
-            - ''
+          description: Name of the company or organisation associated with the address
+          example: Farrell's Gift Shop
         udprn:
           type: string
           description: Not available for non-UK addresses. See `id` for address identifier
@@ -7260,6 +10209,29 @@ components:
           type: integer
           description: Number of lookups performed today which count towards your daily limit.
           format: int32
+    ApiKeyMonthlyLimit:
+      title: API Key Monthly Limit
+      type: object
+      required:
+        - limit
+        - consumed
+      properties:
+        limit:
+          x-nullable: true
+          nullable: true
+          minimum: 0
+          example: 10000
+          type: integer
+          description: |-
+            `number` or `null`. The monthly lookup limit currently set on your key.
+            `null` means the limit is currently disabled.
+          format: int32
+        consumed:
+          minimum: 0
+          example: 2500
+          type: integer
+          description: Number of lookups performed this month which count towards your monthly limit.
+          format: int32
     ApiKeyIndividualLimit:
       title: API Key Individual Limit
       type: object
@@ -7283,6 +10255,9 @@ components:
       required:
         - emails
         - enabled
+        - balance_threshold
+        - no_balance
+        - limit_reached
       properties:
         emails:
           type: array
@@ -7293,6 +10268,20 @@ components:
         enabled:
           description: Indicates whether email notifications are enabled.
           type: boolean
+        balance_threshold:
+          type: integer
+          format: int32
+          minimum: 0
+          x-nullable: true
+          nullable: true
+          description: Balance threshold that triggers a reminder email. null means disabled.
+          example: 500
+        no_balance:
+          type: boolean
+          description: Send notice when balance hits zero.
+        limit_reached:
+          type: boolean
+          description: Send notice when rate limit is reached.
     ApiKeyDatasets:
       title: API Key Dataset Availability
       description: Indicates which datasets are available and added by default to the address responses
@@ -7325,6 +10314,14 @@ components:
         - gnaf
         - kadaster
         - kartverket
+        - sdfi
+        - cannar
+        - fodbosa
+        - mois
+        - upujp
+        - bev
+        - gbrcleanse
+        - uspscleanse
       properties:
         paf:
           type: boolean
@@ -7431,7 +10428,39 @@ components:
           description: 'Netherlands: Kadaster BAG 2.0 Address File'
         kartverket:
           type: boolean
-          description: 'Norway: Karverket Address File'
+          description: 'Norway: Kartverket Address File'
+          example: true
+        mois:
+          type: boolean
+          description: 'South Korea: MOIS Address File'
+          example: true
+        sdfi:
+          type: boolean
+          description: 'Denmark: Danmarks Adresseregister (DAR)'
+          example: true
+        cannar:
+          type: boolean
+          description: 'Canada: Statistics Canada National Address Register'
+          example: true
+        fodbosa:
+          type: boolean
+          description: 'Belgium: FOD BOSA Address File'
+          example: true
+        upujp:
+          type: boolean
+          description: 'Japan: UPU Address File'
+          example: true
+        bev:
+          type: boolean
+          description: 'Austria: BEV Address File'
+          example: true
+        gbrcleanse:
+          type: boolean
+          description: UK GBR Cleanse
+          example: true
+        uspscleanse:
+          type: boolean
+          description: US CASS Cleanse
           example: true
     ApiKeyAutomatedTopup:
       title: API Key Automated Topup
@@ -7478,8 +10507,11 @@ components:
       title: API Key Details
       type: object
       required:
+        - name
+        - contexts
         - lookups_remaining
         - daily_limit
+        - monthly_limit
         - individual_limit
         - allowed_urls
         - redact_days
@@ -7489,6 +10521,12 @@ components:
         - ip_forwarding
         - datasets
       properties:
+        name:
+          type: string
+          description: A name for the key
+          example: My API Key
+        contexts:
+          $ref: '#/components/schemas/AvailableContexts'
         lookups_remaining:
           minimum: 0
           example: 19889
@@ -7496,6 +10534,8 @@ components:
           format: int32
         daily_limit:
           $ref: '#/components/schemas/ApiKeyDailyLimit'
+        monthly_limit:
+          $ref: '#/components/schemas/ApiKeyMonthlyLimit'
         individual_limit:
           $ref: '#/components/schemas/ApiKeyIndividualLimit'
         allowed_urls:
@@ -7545,6 +10585,12 @@ components:
       title: API Key Details Update
       type: object
       properties:
+        name:
+          type: string
+          maxLength: 32
+          pattern: ^(\w|\s){0,32}$
+          description: A name for the key
+          example: My API Key
         daily_limit:
           title: Daily Rate Limit
           type: object
@@ -7557,6 +10603,20 @@ components:
               type: integer
               description: |-
                 `number` or `null`. The daily lookup limit currently set on your key.
+                `null` means the limit is currently disabled.
+              format: int32
+        monthly_limit:
+          title: Monthly Rate Limit
+          type: object
+          properties:
+            limit:
+              x-nullable: true
+              nullable: true
+              minimum: 0
+              example: 10000
+              type: integer
+              description: |-
+                `number` or `null`. The monthly lookup limit currently set on your key.
                 `null` means the limit is currently disabled.
               format: int32
         individual_limit:
@@ -7601,6 +10661,20 @@ components:
             enabled:
               description: Indicates whether email notifications are enabled.
               type: boolean
+            balance_threshold:
+              type: integer
+              format: int32
+              minimum: 0
+              x-nullable: true
+              nullable: true
+              description: Balance threshold that triggers a reminder email. null to disable.
+              example: 500
+            no_balance:
+              type: boolean
+              description: Send notice when balance hits zero.
+            limit_reached:
+              type: boolean
+              description: Send notice when rate limit is reached.
         ip_forwarding:
           type: boolean
           default: false
@@ -7689,6 +10763,46 @@ components:
             kartverket:
               type: boolean
               description: 'Norway: Kartverket Address File'
+              example: true
+            sdfi:
+              type: boolean
+              description: 'Denmark: SDFI Address File'
+              example: true
+            cannar:
+              type: boolean
+              description: 'Canada: Statistics Canada National Address Register'
+              example: true
+            fodbosa:
+              type: boolean
+              description: 'Belgium: FOD BOSA Address File'
+              example: true
+            mois:
+              type: boolean
+              description: 'South Korea: MOIS Address File'
+              example: true
+            upujp:
+              type: boolean
+              description: 'Japan: UPU Address File'
+              example: true
+            bev:
+              type: boolean
+              description: 'Austria: BEV Address File'
+              example: true
+            ab:
+              type: boolean
+              description: UK AddressBase dataset
+              example: false
+            nip:
+              type: boolean
+              description: Northern Ireland Pointer Dataset
+              example: false
+            gbrcleanse:
+              type: boolean
+              description: UK GBR Cleanse
+              example: true
+            uspscleanse:
+              type: boolean
+              description: US CASS Cleanse
               example: true
     KeyUsageResult:
       title: Key Usage
@@ -8763,14 +11877,12 @@ components:
           $ref: '#/components/schemas/Language'
         primary_number:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: House number or PO Box number
+          example: '10'
         secondary_number:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Unit or apartment number
+          example: '4'
         plus_4_code:
           type: string
           description: Not available for non-US addresses
@@ -8815,9 +11927,8 @@ components:
             - ''
         street_name:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Street name
+          example: Harvey St
         street_suffix_abbreviation:
           type: string
           description: Not available for non-US addresses
@@ -8830,9 +11941,8 @@ components:
             - ''
         building_or_firm_name:
           type: string
-          description: Not available for non-US addresses
-          enum:
-            - ''
+          description: Name of the company or building associated with the address
+          example: Cooper Ltd
         address_secondary_abbreviation:
           type: string
           description: Not available for non-US addresses
@@ -8938,6 +12048,12 @@ components:
             - $ref: '#/components/schemas/GnafAddress'
             - $ref: '#/components/schemas/KadasterAddress'
             - $ref: '#/components/schemas/KartverketAddress'
+            - $ref: '#/components/schemas/SdfiAddress'
+            - $ref: '#/components/schemas/CannarAddress'
+            - $ref: '#/components/schemas/FodbosaAddress'
+            - $ref: '#/components/schemas/MoisAddress'
+            - $ref: '#/components/schemas/UpujpAddress'
+            - $ref: '#/components/schemas/BevAddress'
     UsaResolveAddressResponse:
       title: Address Retrieve Response (USA)
       type: object
@@ -10202,6 +13318,22 @@ components:
       schema:
         type: string
       style: form
+    DatasetParam:
+      name: dataset
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Dataset'
+      description: |
+        **Filter by Dataset**
+
+        Comma-separated list of datasets to search within.
+
+        Filters autocomplete results to only include addresses from the specified datasets.
+      example: paf,nyb
     ContextParam:
       name: context
       in: query

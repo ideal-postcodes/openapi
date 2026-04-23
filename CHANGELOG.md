@@ -1,3 +1,131 @@
+## [4.16.1](https://github.com/ideal-postcodes/openapi/compare/4.16.0...4.16.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* use pnpm in mock script ([a72096f](https://github.com/ideal-postcodes/openapi/commit/a72096f5d166b2f3e3b5b6e73568ad6c4a134398))
+
+# [4.16.0](https://github.com/ideal-postcodes/openapi/compare/4.15.2...4.16.0) (2026-03-26)
+
+
+### Features
+
+* **openapi:** Add name, contexts, datasets, and notification settings to key details ([9b8153a](https://github.com/ideal-postcodes/openapi/commit/9b8153a7e6432e19e5bced912d4b7ee10f28e6a2))
+
+## [4.15.2](https://github.com/ideal-postcodes/openapi/compare/4.15.1...4.15.2) (2026-02-04)
+
+
+### Bug Fixes
+
+* **Release:** Upgrade npm for OIDC trusted publishing ([da12869](https://github.com/ideal-postcodes/openapi/commit/da12869be1e48c71a4b96926079e83da741dc5c0))
+
+## [4.15.1](https://github.com/ideal-postcodes/openapi/compare/4.15.0...4.15.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **Release:** Trigger release ([8b94d18](https://github.com/ideal-postcodes/openapi/commit/8b94d180897e26293fef929143352250df909d60))
+
+# [4.15.0](https://github.com/ideal-postcodes/openapi/compare/4.14.1...4.15.0) (2026-02-04)
+
+
+### Features
+
+* **API Key:** Add monthly limits ([04ee230](https://github.com/ideal-postcodes/openapi/commit/04ee2307f57c98ba67fab9ab79bbf6b466b4abac))
+
+## [4.14.1](https://github.com/ideal-postcodes/openapi/compare/4.14.0...4.14.1) (2025-11-12)
+
+
+### Bug Fixes
+
+* **Release:** Update Austria datapoints ([1a30b3f](https://github.com/ideal-postcodes/openapi/commit/1a30b3f3f89f5f93999190bef90c12c6356bfd53))
+
+# [4.14.0](https://github.com/ideal-postcodes/openapi/compare/4.13.0...4.14.0) (2025-11-10)
+
+
+### Features
+
+* **api:** Add dataset filter parameter to autocomplete ([36a90cc](https://github.com/ideal-postcodes/openapi/commit/36a90cce5dd8f163d3d6acc203462e661317b439))
+
+# [4.13.0](https://github.com/ideal-postcodes/openapi/compare/4.12.1...4.13.0) (2025-10-22)
+
+
+### Features
+
+* **Global Address:** Update GBR and USA global address schemas ([1b132c3](https://github.com/ideal-postcodes/openapi/commit/1b132c3c642df3ea9b74503a515ed7043dfaa564))
+
+## [4.12.1](https://github.com/ideal-postcodes/openapi/compare/4.12.0...4.12.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **Redocly:** Migrate to v2 ([3c5642b](https://github.com/ideal-postcodes/openapi/commit/3c5642b389ab143957d424264b5058743903fb9c))
+
+# [4.12.0](https://github.com/ideal-postcodes/openapi/compare/4.11.0...4.12.0) (2025-06-09)
+
+
+### Features
+
+* **Datasets:** Add new global datasets ([7a19b56](https://github.com/ideal-postcodes/openapi/commit/7a19b561737853269cffd314fbcbcdf18748354e))
+
+# [4.11.0](https://github.com/ideal-postcodes/openapi/compare/4.10.1...4.11.0) (2025-06-05)
+
+
+### Features
+
+* **OpenAPI:** Update to 4.11.0 ([fe1f1a8](https://github.com/ideal-postcodes/openapi/commit/fe1f1a89d09e20d6e99ffdad94e8d5dd4d8d3a12))
+
+## [4.10.1](https://github.com/ideal-postcodes/openapi/compare/4.10.0...4.10.1) (2025-01-28)
+
+
+### Bug Fixes
+
+* **Canada:** Fix lon/lat types ([7871f7d](https://github.com/ideal-postcodes/openapi/commit/7871f7d76f9dfa5217726ec1be7647f07cde43e4))
+
+# [4.10.0](https://github.com/ideal-postcodes/openapi/compare/4.9.2...4.10.0) (2025-01-27)
+
+
+### Features
+
+* **Canada:** Add Canadian national address file ([b7130cd](https://github.com/ideal-postcodes/openapi/commit/b7130cd5ba657a99b6f6b3cebeb7b0edc8a34f57))
+
+## [4.9.2](https://github.com/ideal-postcodes/openapi/compare/4.9.1...4.9.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* **Release:** Trigger npm release ([ed7d92c](https://github.com/ideal-postcodes/openapi/commit/ed7d92c567508a373f23b321dd1cb10674f783ad))
+
+## [4.9.1](https://github.com/ideal-postcodes/openapi/compare/4.9.0...4.9.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* **Release:** Trigger new release ([d9bbada](https://github.com/ideal-postcodes/openapi/commit/d9bbadae958dc6bf206b4900d64c138f247ef697))
+* **Release:** Trigger new release ([f6782db](https://github.com/ideal-postcodes/openapi/commit/f6782db92c1d67909335c248af30ce3e5cda576a))
+* **Release:** Update GitHub action ([4850973](https://github.com/ideal-postcodes/openapi/commit/4850973f92246d50518ecf05ff5fd79cc1239b13))
+
+# [4.9.0](https://github.com/ideal-postcodes/openapi/compare/4.8.0...4.9.0) (2025-01-20)
+
+
+### Features
+
+* **Denmark:** Add SDFI ([6602bd5](https://github.com/ideal-postcodes/openapi/commit/6602bd5d38cb8e586c5bd3dc42bb7e0755bab729))
+
+# [4.8.0](https://github.com/ideal-postcodes/openapi/compare/4.7.0...4.8.0) (2024-07-10)
+
+
+### Features
+
+* **Language:** Add Assamese (as) language ([7962e54](https://github.com/ideal-postcodes/openapi/commit/7962e54ceae11072fa652335ea7f3cd485c78b5a))
+
+# [4.7.0](https://github.com/ideal-postcodes/openapi/compare/4.6.2...4.7.0) (2024-05-21)
+
+
+### Features
+
+* **Verify:** Improve documentation ([dfba777](https://github.com/ideal-postcodes/openapi/commit/dfba7770097fde63ca90cbf202228ce7174e10dd))
+
 # [4.7.0-beta.1](https://github.com/ideal-postcodes/openapi/compare/4.6.2...4.7.0-beta.1) (2024-05-21)
 
 
@@ -632,7 +760,7 @@ this package is consumed by a code generator.
 
 Any changes, including backwards incompatible changes will be listed here
 
-## master
+## main
 
 - Fix error response schema on `/postcodes/:postcode`
 
