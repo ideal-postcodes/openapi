@@ -1234,7 +1234,6 @@ export interface components {
       | "HUN"
       | "KAZ"
       | "KGZ"
-      | "KOS"
       | "LTU"
       | "LVA"
       | "MDA"
@@ -1249,6 +1248,7 @@ export interface components {
       | "TUR"
       | "UKR"
       | "UZB"
+      | "XKX"
       | "HKG"
       | "BGD"
       | "IND"
@@ -2141,7 +2141,7 @@ export interface components {
        * @description Post County ID
        * @example 10098783
        */
-      post_county_id?: string;
+      post_county_id?: string | null;
       /**
        * @description NUA means "non-unique address".
        *
