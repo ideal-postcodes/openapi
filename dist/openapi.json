@@ -9924,15 +9924,13 @@
           "country_iso",
           "country_iso_2",
           "language",
+          "canton",
           "address",
           "line_1",
           "line_2",
           "latitude",
           "longitude",
-          "street_latitude",
-          "street_longitude",
           "adr_egaid",
-          "geb_str_esid",
           "bdg_egid",
           "adr_edid",
           "stn_label",
@@ -9955,8 +9953,6 @@
           "str_modified",
           "str_easting",
           "str_northing",
-          "str_parent",
-          "str_children",
           "ortschaftsname",
           "plz4",
           "zusatzziffer",
@@ -9964,9 +9960,6 @@
           "gemeindename",
           "bfs_nr",
           "kantonskürzel",
-          "adressenanteil",
-          "e",
-          "n",
           "sprache",
           "validity"
         ],
@@ -10011,6 +10004,10 @@
               "rm"
             ],
             "description": "Language represented by 2 letter ISO Code (639-1)\n"
+          },
+          "canton": {
+            "type": "string",
+            "description": "Canton abbreviation, `\"\"` if not present.\n"
           },
           "address": {
             "type": "string",
@@ -10167,26 +10164,32 @@
           },
           "ortschaftsname": {
             "type": "string",
+            "nullable": true,
             "description": "Locality name from the Official Directory of Localities (Amtliches Ortschaftenverzeichnis).\n"
           },
           "plz4": {
-            "type": "number",
+            "type": "string",
+            "nullable": true,
             "description": "4-digit Swiss postal code.\n"
           },
           "zusatzziffer": {
-            "type": "number",
+            "type": "string",
+            "nullable": true,
             "description": "Additional digit disambiguating postal codes that share the same 4-digit code.\n"
           },
           "zip_id": {
             "type": "number",
+            "nullable": true,
             "description": "Unique identifier for the postal code record.\n"
           },
           "gemeindename": {
             "type": "string",
+            "nullable": true,
             "description": "Municipality name (Gemeindename).\n"
           },
           "bfs_nr": {
             "type": "number",
+            "nullable": true,
             "description": "Federal municipality number assigned by the Federal Statistical Office (BFS-Nr).\n"
           },
           "kantonskürzel": {
@@ -10207,10 +10210,12 @@
           },
           "sprache": {
             "type": "string",
+            "nullable": true,
             "description": "Language of the record (e.g. `\"de\"`, `\"fr\"`, `\"it\"`, `\"rm\"`).\n"
           },
           "validity": {
             "type": "string",
+            "nullable": true,
             "description": "Validity period of the postal code record.\n"
           }
         }

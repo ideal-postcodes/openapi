@@ -5907,6 +5907,8 @@ export interface components {
        * @enum {undefined}
        */
       language: "de" | "fr" | "it" | "rm";
+      /** @description Canton abbreviation, `""` if not present. */
+      canton: string;
       /**
        * @description House number, `""` if not present.
        *
@@ -5931,12 +5933,12 @@ export interface components {
       line_2: string;
       longitude: components["schemas"]["Longitude"];
       latitude: components["schemas"]["Latitude"];
-      street_latitude: string | number;
-      street_longitude: string | number;
+      street_latitude?: string | number;
+      street_longitude?: string | number;
       /** @description Federal building address identifier (Eidgenössischer Gebäudeadressidentifikator). */
       adr_egaid: number;
       /** @description Street identifier from the building register linking the address to a street in the street register. */
-      geb_str_esid: number;
+      geb_str_esid?: number;
       /** @description Federal building identifier (Eidgenössischer Gebäudeidentifikator). */
       bdg_egid: number;
       /** @description Entrance identifier within the building. */
@@ -5998,25 +6000,25 @@ export interface components {
        *
        * Can be empty string `""` if not present.
        */
-      str_parent: string;
+      str_parent?: string;
       /**
        * @description Child street identifiers.
        *
        * Can be empty string `""` if not present.
        */
-      str_children: string;
+      str_children?: string;
       /** @description Locality name from the Official Directory of Localities (Amtliches Ortschaftenverzeichnis). */
-      ortschaftsname: string;
+      ortschaftsname: string | null;
       /** @description 4-digit Swiss postal code. */
-      plz4: number;
+      plz4: string | null;
       /** @description Additional digit disambiguating postal codes that share the same 4-digit code. */
-      zusatzziffer: number;
+      zusatzziffer: string | null;
       /** @description Unique identifier for the postal code record. */
-      zip_id: number;
+      zip_id: number | null;
       /** @description Municipality name (Gemeindename). */
-      gemeindename: string;
+      gemeindename: string | null;
       /** @description Federal municipality number assigned by the Federal Statistical Office (BFS-Nr). */
-      bfs_nr: number;
+      bfs_nr: number | null;
       /**
        * @description Canton abbreviation (e.g. `"ZH"`, `"GE"`).
        *
@@ -6024,15 +6026,15 @@ export interface components {
        */
       kantonskürzel: string;
       /** @description Proportion of addresses belonging to this locality record. */
-      adressenanteil: string;
+      adressenanteil?: string;
       /** @description Longitude of the locality centroid in WGS84 decimal degrees. */
-      e: string;
+      e?: string;
       /** @description Latitude of the locality centroid in WGS84 decimal degrees. */
-      n: string;
+      n?: string;
       /** @description Language of the record (e.g. `"de"`, `"fr"`, `"it"`, `"rm"`). */
-      sprache: string;
+      sprache: string | null;
       /** @description Validity period of the postal code record. */
-      validity: string;
+      validity: string | null;
     };
     /**
      * Global Address
