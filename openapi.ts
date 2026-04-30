@@ -1135,6 +1135,7 @@ export interface components {
      *   - `mois` (KOR) South Korea Dataset
      *   - `upujp` (JPN) Japan UPU Address File
      *   - `bev` (AUT) Austria Dataset
+     *   - `swisstopo` (CHE) Switzerland and Liechtenstein Dataset
      * @enum {string}
      */
     Dataset:
@@ -1167,7 +1168,8 @@ export interface components {
       | "fodbosa"
       | "mois"
       | "upujp"
-      | "bev";
+      | "bev"
+      | "swisstopo";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -5877,6 +5879,163 @@ export interface components {
       /** @description Name of the census district */
       zaehlsprengelname: string;
     };
+    SwisstopoAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "swisstopo";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "CHE" | "LIE";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "CH" | "LI";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "Switzerland" | "Liechtenstein";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "de" | "fr" | "it" | "rm";
+      /** @description Canton abbreviation, `""` if not present. */
+      canton: string;
+      /**
+       * @description House number, `""` if not present.
+       *
+       * @example 40
+       */
+      address: string;
+      /**
+       * @description First address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Villa Kranzmayer
+       */
+      line_1: string;
+      /**
+       * @description Second address line.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example Römerweg 48
+       */
+      line_2: string;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      street_latitude?: string | number;
+      street_longitude?: string | number;
+      /** @description Federal building address identifier (Eidgenössischer Gebäudeadressidentifikator). */
+      adr_egaid: number;
+      /** @description Street identifier from the building register linking the address to a street in the street register. */
+      geb_str_esid?: number;
+      /** @description Federal building identifier (Eidgenössischer Gebäudeidentifikator). */
+      bdg_egid: number;
+      /** @description Entrance identifier within the building. */
+      adr_edid: number;
+      /** @description Street name label. */
+      stn_label: string;
+      /**
+       * @description House/address number (e.g. `"12"`, `"12A"`).
+       *
+       * Can be empty string `""` if not present.
+       */
+      adr_number: string;
+      /** @description Building category from the Federal Building and Dwelling Register (GWR). */
+      bdg_category: string;
+      /**
+       * @description Building name.
+       *
+       * Can be empty string `""` if not present.
+       */
+      bdg_name: string;
+      /** @description Postal code and locality label (e.g. `"8001 Zürich"`). */
+      zip_label: string;
+      /** @description Federal municipality number assigned by the Federal Statistical Office (FSO/BFS). */
+      com_fosnr: number;
+      /** @description Municipality name. */
+      com_name: string;
+      /**
+       * @description Canton abbreviation (e.g. `"ZH"`, `"BE"`).
+       *
+       * Can be empty string `""` if not present.
+       */
+      com_canton: string;
+      /** @description Address status from the GWR. */
+      adr_status: string;
+      /** @description Whether the address is an official address. */
+      adr_official: boolean;
+      /** @description Date the address record was last modified. */
+      adr_modified: string;
+      /** @description Easting coordinate of the address in the Swiss coordinate system CH1903+/LV95. */
+      adr_easting: string;
+      /** @description Northing coordinate of the address in the Swiss coordinate system CH1903+/LV95. */
+      adr_northing: string;
+      /** @description Street identifier from the street register (Strassenverzeichnis). */
+      str_esid: number;
+      /** @description Street type. */
+      str_type: string;
+      /** @description Street status. */
+      str_status: string;
+      /** @description Whether the street name is official. */
+      str_official: boolean;
+      /** @description Date the street record was last modified. */
+      str_modified: string;
+      /** @description Easting coordinate of the street centroid in the Swiss coordinate system CH1903+/LV95. */
+      str_easting: string;
+      /** @description Northing coordinate of the street centroid in the Swiss coordinate system CH1903+/LV95. */
+      str_northing: string;
+      /**
+       * @description Parent street identifier.
+       *
+       * Can be empty string `""` if not present.
+       */
+      str_parent?: string;
+      /**
+       * @description Child street identifiers.
+       *
+       * Can be empty string `""` if not present.
+       */
+      str_children?: string;
+      /** @description Locality name from the Official Directory of Localities (Amtliches Ortschaftenverzeichnis). */
+      ortschaftsname: string | null;
+      /** @description 4-digit Swiss postal code. */
+      plz4: string | null;
+      /** @description Additional digit disambiguating postal codes that share the same 4-digit code. */
+      zusatzziffer: string | null;
+      /** @description Unique identifier for the postal code record. */
+      zip_id: number | null;
+      /** @description Municipality name (Gemeindename). */
+      gemeindename: string | null;
+      /** @description Federal municipality number assigned by the Federal Statistical Office (BFS-Nr). */
+      bfs_nr: number | null;
+      /**
+       * @description Canton abbreviation (e.g. `"ZH"`, `"GE"`).
+       *
+       * Can be empty string `""` if not present.
+       */
+      kantonskürzel: string;
+      /** @description Proportion of addresses belonging to this locality record. */
+      adressenanteil?: string;
+      /** @description Longitude of the locality centroid in WGS84 decimal degrees. */
+      e?: string;
+      /** @description Latitude of the locality centroid in WGS84 decimal degrees. */
+      n?: string;
+      /** @description Language of the record (e.g. `"de"`, `"fr"`, `"it"`, `"rm"`). */
+      sprache: string | null;
+      /** @description Validity period of the postal code record. */
+      validity: string | null;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -5944,7 +6103,8 @@ export interface components {
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
         | components["schemas"]["UpujpAddress"]
-        | components["schemas"]["BevAddress"];
+        | components["schemas"]["BevAddress"]
+        | components["schemas"]["SwisstopoAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -6626,6 +6786,11 @@ export interface components {
        */
       bev: boolean;
       /**
+       * @description Switzerland and Liechtenstein: Swisstopo Address File
+       * @example true
+       */
+      swisstopo: boolean;
+      /**
        * @description UK GBR Cleanse
        * @example true
        */
@@ -6917,6 +7082,11 @@ export interface components {
          * @example true
          */
         bev?: boolean;
+        /**
+         * @description Switzerland and Liechtenstein: Swisstopo Address File
+         * @example true
+         */
+        swisstopo?: boolean;
         /**
          * @description UK AddressBase dataset
          * @example false
