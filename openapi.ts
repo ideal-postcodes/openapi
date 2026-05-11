@@ -1135,6 +1135,7 @@ export interface components {
      *   - `mois` (KOR) South Korea Dataset
      *   - `upujp` (JPN) Japan UPU Address File
      *   - `bev` (AUT) Austria Dataset
+     *   - `ban` (FRA) France BAN Dataset
      * @enum {string}
      */
     Dataset:
@@ -1167,7 +1168,8 @@ export interface components {
       | "fodbosa"
       | "mois"
       | "upujp"
-      | "bev";
+      | "bev"
+      | "ban";
     /**
      * ISO Country Code (3)
      * @description   3 letter country code (ISO 3166-1)
@@ -5877,6 +5879,105 @@ export interface components {
       /** @description Name of the census district */
       zaehlsprengelname: string;
     };
+    BanAddress: {
+      id: components["schemas"]["ID"];
+      /** @enum {string} */
+      dataset: "ban";
+      /**
+       * @description   3 letter country code (ISO 3166-1)
+       *
+       * @enum {undefined}
+       */
+      country_iso: "FRA";
+      /**
+       * @description  2 letter country code (ISO 3166-1)
+       *
+       * @enum {string}
+       */
+      country_iso_2: "FR";
+      /**
+       * @description   Full country names (ISO 3166)
+       *
+       * @enum {string}
+       */
+      country: "France";
+      /**
+       * @description Language represented by 2 letter ISO Code (639-1)
+       *
+       * @enum {undefined}
+       */
+      language: "fr";
+      /**
+       * @description The house number of the address.
+       *
+       * Can be empty string `""` if not present.
+       *
+       * @example 8
+       */
+      address: string;
+      /**
+       * @description First address line (house number, suffix, and street name).
+       *
+       * Can be `null` if not present.
+       *
+       * @example 8 bis avenue des Champs-Élysées
+       */
+      line_1: string | null;
+      /**
+       * @description Second address line (postcode and municipality name).
+       *
+       * Can be `null` if not present.
+       *
+       * @example 75008 Paris
+       */
+      line_2: string | null;
+      longitude: components["schemas"]["Longitude"];
+      latitude: components["schemas"]["Latitude"];
+      /** @description FANTOIR street identifier */
+      id_fantoir: string | null;
+      /** @description House number */
+      numero: number | null;
+      /** @description House number suffix / répétition (`bis`, `ter`, `quater`, etc.) */
+      rep: string | null;
+      /** @description Street name */
+      nom_voie: string;
+      /** @description 5-digit postal code */
+      code_postal: string | null;
+      /** @description INSEE commune code (2-digit département + 3-digit commune) */
+      code_insee: string;
+      /** @description Municipality name */
+      nom_commune: string;
+      /** @description INSEE code of the pre-fusion commune (for merged municipalities) */
+      code_insee_ancienne_commune: string | null;
+      /** @description Name of the pre-fusion commune (for merged municipalities) */
+      nom_ancienne_commune: string | null;
+      /** @description Lambert 93 easting coordinate */
+      x: string | null;
+      /** @description Lambert 93 northing coordinate */
+      y: string | null;
+      /** @description Longitude (WGS84) as returned from source data */
+      lon: string | null;
+      /** @description Latitude (WGS84) as returned from source data */
+      lat: string | null;
+      /** @description Positional accuracy type (`entrée`, `bâtiment`, `parcelle`, `délivrance postale`, etc.) */
+      type_position: string | null;
+      /** @description Address alias */
+      alias: string | null;
+      /** @description Lieu-dit (named place) label */
+      nom_ld: string | null;
+      /** @description Postal routing label */
+      libelle_acheminement: string | null;
+      /** @description AFNOR-normalised street name */
+      nom_afnor: string | null;
+      /** @description Source of position data (`commune`, `IGN`, etc.) */
+      source_position: string | null;
+      /** @description Source of street name data */
+      source_nom_voie: string | null;
+      /** @description Whether the municipality has certified this address */
+      certification_commune: boolean | null;
+      /** @description Cadastral parcel reference(s) */
+      cad_parcelles: string | null;
+    };
     /**
      * Global Address
      * @description Global (non-UK) address in the UK address format
@@ -5944,7 +6045,8 @@ export interface components {
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
         | components["schemas"]["UpujpAddress"]
-        | components["schemas"]["BevAddress"];
+        | components["schemas"]["BevAddress"]
+        | components["schemas"]["BanAddress"];
       /**
        * @description Not available for non-UK addresses
        * @enum {string}
@@ -6626,6 +6728,11 @@ export interface components {
        */
       bev: boolean;
       /**
+       * @description France: BAN (Base Adresse Nationale)
+       * @example true
+       */
+      ban: boolean;
+      /**
        * @description UK GBR Cleanse
        * @example true
        */
@@ -6917,6 +7024,11 @@ export interface components {
          * @example true
          */
         bev?: boolean;
+        /**
+         * @description France: BAN (Base Adresse Nationale)
+         * @example true
+         */
+        ban?: boolean;
         /**
          * @description UK AddressBase dataset
          * @example false
@@ -7886,7 +7998,8 @@ export interface components {
         | components["schemas"]["FodbosaAddress"]
         | components["schemas"]["MoisAddress"]
         | components["schemas"]["UpujpAddress"]
-        | components["schemas"]["BevAddress"];
+        | components["schemas"]["BevAddress"]
+        | components["schemas"]["BanAddress"];
     };
     /** Address Retrieve Response (USA) */
     UsaResolveAddressResponse: {
