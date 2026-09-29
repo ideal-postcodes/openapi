@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 5.0.2
+  version: 5.1.0
   license:
     name: Copyright (C) IDDQD Limited - All Rights Reserved
     url: https://terms.ideal-postcodes.co.uk
@@ -34,17 +34,35 @@ info:
 
     ## Authentication
 
-    Most requests require an **API key** for authentication. Authenticate by passing an `api_key` as part of the query string. For example:
+    Most requests need an **API key**. Send it as a Bearer token in the `Authorization` header:
+
+    ```
+    curl 'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?q=parkside' \
+      -H 'Authorization: Bearer ak_test'
+    ```
+
+    A header keeps the key out of URLs and server logs.
+
+    Two credentials exist, and they do different jobs:
+
+    | Credential | Looks like | Authenticates | Exposure |
+    | --- | --- | --- | --- |
+    | API Key | `ak_test` | Address, postcode and place lookups. Every billable request | Usable in a browser. Restrict it with allowed URLs |
+    | Management Key | `uk_...` | Managing a key under `/keys/{key}`: usage, licensees, configs | Secret. Server side only |
+
+    Requests that manage a key, under `/keys/{key}`, take your **Management Key** instead: `Authorization: Bearer uk_...`. The API key is already in the path. The management key was previously called the user token.
+
+    To bill a request to a licensee, send the licensee key as the Bearer token: `Authorization: Bearer sl_...`.
+
+    If you cannot set headers, for example in some browser integrations, pass the key as `api_key` in the query string (or the management key as `user_token`):
 
     ```
     api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_test&q=parkside
     ```
 
-    Alternatively, pass the key in the `Authorization` header:
+    The query string takes precedence when both are present.
 
-    ```
-    Authorization: api_key="ak_test" [other_key="foo"]
-    ```
+    The older `Authorization: api_key="ak_test"` form still works but is deprecated. Use Bearer in new integrations.
 
     ## Versioning
 
@@ -324,15 +342,8 @@ paths:
         ## Multiple Residence
 
         A small number of postcodes return more than 100 premises. The API returns 100 addresses per page, so use `page` to paginate the result set.
-
-        ## Testing
-
-        - **ID1 1QD** Returns a successful postcode lookup response `2000`
-        - **ID1 KFA** Returns "postcode not found" error `4040`
-        - **ID1 CLIP** Returns "no lookups remaining" error `4020`
-        - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
-
-        Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
+      security:
+        - ApiKey: []
       parameters:
         - name: postcode
           in: path
@@ -496,6 +507,8 @@ paths:
         - `-3` Returns "daily (or individual) lookup limit breached", error `4021`
 
         Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
+      security:
+        - ApiKey: []
       parameters:
         - name: udprn
           in: path
@@ -670,6 +683,8 @@ paths:
         - `-3` Returns "daily (or individual) lookup limit breached", error `4021`
 
         Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
+      security:
+        - ApiKey: []
       parameters:
         - name: umprn
           in: path
@@ -828,11 +843,11 @@ paths:
       description: |
         Returns public information on an API Key: whether it can be used right now (`available`), the search contexts the key is licensed for (`contexts`) and the context that best matches the caller's IP address (`context`).
 
-        The endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no `user_token`.
+        The endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no Management Key.
 
         A key that exists but cannot be used, because it has no lookups left or has breached a limit, returns `200` with `"available": false`. An unknown or malformed key returns an error.
 
-        Supply a valid `user_token` and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A `user_token` that does not own the key is rejected.
+        Supply a valid Management Key and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A Management Key that does not own the key is rejected.
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
       responses:
@@ -897,6 +912,8 @@ paths:
       summary: Details
       operationId: KeyDetails
       description: 'Returns private data on a key: remaining lookups, licensed datasets, usage limits, notification settings and the search contexts the key can serve.'
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -979,6 +996,8 @@ paths:
       summary: Update Details
       description: Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`.
       operationId: UpdateKeyDetails
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -1099,6 +1118,8 @@ paths:
         The range defaults to the last 21 days. `start` and `end` take UNIX timestamps in milliseconds, and `end` defaults to the current time. The maximum range is 90 days.
 
         Query at most three tags at once.
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -1181,7 +1202,7 @@ paths:
       description: |
         Returns a CSV of the paid lookups made on a key, with the information recorded against each one.
 
-        This method requires a `user_token`, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).
+        This method requires your Management Key, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).
 
         You can request a maximum interval of 90 days. Without a start or end date, the interval defaults to the last 21 days.
 
@@ -1210,6 +1231,8 @@ paths:
         By default we redact PII older than 28 days. You can change this period from your dashboard.
 
         Set the interval to `0` days to prevent PII collection altogether.
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -1298,6 +1321,20 @@ paths:
 
         A cleanse that returns a match costs a lookup. A no-match response is free.
 
+        ## Countries
+
+        Cleanse defaults to the UK. Pass `context` with an ISO 3166-1 alpha-3 country
+        code to cleanse an address elsewhere, e.g. `context=USA` or `context=FRA`. The
+        address datasets your key is licensed for decide which countries it can
+        cleanse.
+
+        The response shape is the same for every country: a standardised address in
+        `match`, the raw source record in `match.native`, and the same confidence,
+        fit and Match Level indicators. The Match Levels and confidence score are at
+        their most discriminating for the UK, where cleanse runs against
+        purpose-built indexes; elsewhere they are computed from the country's address
+        dataset.
+
         ## Confidence Score
 
         Each incorrect, missing or misspelled element subtracts from the overall confidence score.
@@ -1313,6 +1350,8 @@ paths:
 
         Depending on your business goals, you can also use the Match Levels to determine an acceptable match. You may need to match only up to the thoroughfare or building name, or accurate organisation names may matter.
       operationId: AddressCleanse
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - $ref: '#/components/parameters/TagsParam'
@@ -1486,6 +1525,8 @@ paths:
 
         Autocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may lead to rate limiting or suspension.
       operationId: FindAddress
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - name: query
@@ -1655,6 +1696,8 @@ paths:
         The API returns resolved addresses, including addresses outside the UK, in a UK format (up to 3 address lines) using UK nomenclature such as postcode and county.
 
         An ID that matches no address returns `404`.
+      security:
+        - ApiKey: []
       parameters:
         - name: address
           in: path
@@ -1804,16 +1847,9 @@ paths:
         ### Search by UPRN
 
         Search by UPRN using the `uprn` filter and excluding the query argument. E.g. `/v1/addresses?uprn=100`.
-
-        ## Testing
-
-        - **ID1 1QD** Returns a successful query response `2000`
-        - **ID1 KFA** Returns an empty query response `2000`
-        - **ID1 CLIP** Returns "no lookups remaining" error `4020`
-        - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
-
-        Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
       operationId: Addresses
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - name: query
@@ -1947,6 +1983,8 @@ paths:
 
         `/places` does not decrement your lookup balance, but resolving a suggestion to a full place does. We rate limit and then suspend integrations that repeatedly call `/places` without resolving.
       operationId: FindPlace
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - name: query
@@ -2079,6 +2117,8 @@ paths:
         On top of the fields carried by the suggestion, the response adds coordinates, language and the underlying dataset record.
 
         Each request decrements your lookup balance. An unknown ID returns `404`.
+      security:
+        - ApiKey: []
       parameters:
         - name: place
           in: path
@@ -2319,8 +2359,10 @@ paths:
       tags:
         - Licensees
       summary: List
-      description: Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sub-licensing.
+      description: Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sublicensing.
       operationId: ListLicensees
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - name: starting_after
@@ -2410,8 +2452,10 @@ paths:
       tags:
         - Licensees
       summary: Create
-      description: Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sub-licensing.
+      description: Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sublicensing.
       operationId: CreateLicensee
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -2443,7 +2487,7 @@ paths:
               -d '{
                 "name": "Qwerty Widgets Limited",
                 "address": "12 High Street, Manchester",
-                "postcode": "ID1 1QD",
+                "postcode": "BR8 7RE",
                 "whitelist": [],
                 "daily": {
                   "limit": 10000
@@ -2458,7 +2502,7 @@ paths:
               body: JSON.stringify({
                 name: 'Qwerty Widgets Limited',
                 address: '12 High Street, Manchester',
-                postcode: 'ID1 1QD',
+                postcode: 'BR8 7RE',
                 whitelist: [],
                 daily: {
                   limit: 10000,
@@ -2478,7 +2522,7 @@ paths:
                 json={
                     "name": "Qwerty Widgets Limited",
                     "address": "12 High Street, Manchester",
-                    "postcode": "ID1 1QD",
+                    "postcode": "BR8 7RE",
                     "whitelist": [],
                     "daily": {
                         "limit": 10000,
@@ -2496,7 +2540,7 @@ paths:
             body = {
               name: "Qwerty Widgets Limited",
               address: "12 High Street, Manchester",
-              postcode: "ID1 1QD",
+              postcode: "BR8 7RE",
               whitelist: [],
               daily: {
                 limit: 10000,
@@ -2515,7 +2559,7 @@ paths:
               CURLOPT_POSTFIELDS => json_encode([
                 "name" => "Qwerty Widgets Limited",
                 "address" => "12 High Street, Manchester",
-                "postcode" => "ID1 1QD",
+                "postcode" => "BR8 7RE",
                 "whitelist" => [],
                 "daily" => [
                   "limit" => 10000,
@@ -2531,6 +2575,8 @@ paths:
       summary: Retrieve
       description: Returns a licensee by its `sl_` key. A cancelled or unknown licensee returns `404`.
       operationId: RetrieveLicensee
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/LicenseePathParam'
@@ -2608,6 +2654,8 @@ paths:
       summary: Cancel
       description: Cancels a licensee. Its key stops working and it drops out of the licensee list. Contact us to reverse it.
       operationId: DeleteLicensee
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/LicenseePathParam'
@@ -2690,12 +2738,14 @@ paths:
               CURLOPT_RETURNTRANSFER => true,
             ]);
             curl_exec($ch);
-    put:
+    post:
       tags:
         - Licensees
       summary: Update
       description: Updates a licensee's address, postcode, allowed URLs and daily limit. Returns the updated licensee. The name is fixed at creation.
       operationId: UpdateLicensee
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/LicenseePathParam'
@@ -2723,7 +2773,7 @@ paths:
         - lang: cURL
           label: curl
           source: |
-            curl -X PUT 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret' \
+            curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret' \
               -H 'Content-Type: application/json' \
               -d '{
                 "daily": {
@@ -2734,7 +2784,7 @@ paths:
           label: JavaScript
           source: |
             const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {
-              method: 'PUT',
+              method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 daily: {
@@ -2749,7 +2799,7 @@ paths:
           source: |
             import requests
 
-            response = requests.put(
+            response = requests.post(
                 "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94",
                 params={"user_token": "uk_secret"},
                 json={
@@ -2771,7 +2821,7 @@ paths:
                 limit: 20000,
               },
             }
-            response = Net::HTTP.put(uri, body.to_json, "Content-Type" => "application/json")
+            response = Net::HTTP.post(uri, body.to_json, "Content-Type" => "application/json")
             result = JSON.parse(response.body)["result"]
         - lang: PHP
           label: PHP
@@ -2779,7 +2829,7 @@ paths:
             <?php
             $ch = curl_init("https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret");
             curl_setopt_array($ch, [
-              CURLOPT_CUSTOMREQUEST => "PUT",
+              CURLOPT_CUSTOMREQUEST => "POST",
               CURLOPT_HTTPHEADER => ["Content-Type: application/json"],
               CURLOPT_POSTFIELDS => json_encode([
                 "daily" => [
@@ -2796,6 +2846,8 @@ paths:
       summary: Regenerate Key
       description: Regenerates a licensee's key and returns the licensee with the new key. The previous key stops working immediately, so update any integration that uses it.
       operationId: RegenerateLicenseeKey
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/LicenseePathParam'
@@ -2820,6 +2872,8 @@ paths:
       summary: List
       description: Returns every configuration stored against a key, oldest first.
       operationId: ListConfigs
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -2895,6 +2949,8 @@ paths:
       summary: Create
       description: Creates a named configuration on a key and returns it.
       operationId: CreateConfig
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/UserTokenParam'
@@ -3071,6 +3127,8 @@ paths:
       summary: Delete
       description: Permanently deletes a configuration object.
       operationId: DeleteConfig
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/ConfigParam'
@@ -3165,6 +3223,8 @@ paths:
       summary: Update
       description: Replaces a configuration's payload and returns the updated configuration. The name is fixed at creation.
       operationId: UpdateConfig
+      security:
+        - ManagementKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyPathParam'
         - $ref: '#/components/parameters/ConfigParam'
@@ -3266,6 +3326,8 @@ paths:
 
         A validated address decrements your lookup balance. An address the API cannot check returns `unknown` and costs no lookup. An address whose domain does not resolve, or publishes no MX records, returns `not_deliverable` and also costs no lookup. Only those two domain failures populate `suggestions`. Every other response returns an empty list.
       operationId: EmailValidation
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - name: query
@@ -3373,6 +3435,8 @@ paths:
 
         Every query decrements your lookup balance, including a number that fails to parse and a number reported as invalid.
       operationId: PhoneNumberValidation
+      security:
+        - ApiKey: []
       parameters:
         - $ref: '#/components/parameters/ApiKeyParam'
         - name: query
@@ -3809,6 +3873,25 @@ paths:
             $response = file_get_contents("https://api.ideal-postcodes.co.uk/v1/sign_up/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
             $result = json_decode($response, true)["result"];
 components:
+  securitySchemes:
+    ApiKey:
+      type: http
+      scheme: bearer
+      description: |
+        **API Key**
+
+        Send your API key as a Bearer token: `Authorization: Bearer ak_test`. A licensee key (`sl_...`) works in its place and bills that licensee.
+
+        Browser integrations that cannot set headers can pass `api_key` in the query string instead.
+    ManagementKey:
+      type: http
+      scheme: bearer
+      description: |
+        **Management Key**
+
+        Send your management key as a Bearer token: `Authorization: Bearer uk_...`. Required to manage an API key, for example `GET /keys/{key}/details`.
+
+        It can also be passed as `user_token` in the query string. Keep it secret: it grants control over your account and keys. It was previously called the user token.
   parameters:
     ApiKeyParam:
       description: |
@@ -3922,13 +4005,13 @@ components:
         type: string
       name: user_token
       description: |
-        **Private User Token**
+        **Management Key**
 
-        A secret key used for sensitive operations on your account and API Keys.
+        A secret key used to manage your account and API Keys. It was previously called the user token.
 
-        Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+        Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
 
-        Typically begins `uk_...`
+        Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
       example: uk_B59ScW1p1HHouf1VqclEPZUx
     StartParam:
       name: start
@@ -3999,7 +4082,7 @@ components:
         Bias search to a geospatial circle determined by an origin and radius in metres. Max radius is `50000`. 
         Uses the format bias_lonlat=[longitude],[latitude],[radius in metres].
         Only one geospatial bias may be provided.
-      example: '-2.095,57.15,100'
+      example: -2.095,57.15,100
     BiasIpParam:
       name: bias_ip
       in: query
@@ -4031,7 +4114,7 @@ components:
         Supply 4 comma separated values ordered `top_left_lon,top_left_lat,bottom_right_lon,bottom_right_lat`. The top-left longitude must be less than the bottom-right longitude, and the top-left latitude greater than the bottom-right latitude. A box which fails either check is ignored.
 
         Only one geospatial box can be provided.
-      example: '-2.096,57.15,-2.095,57.14'
+      example: -2.096,57.15,-2.095,57.14
     PostcodeOutwardParam:
       name: postcode_outward
       in: query
@@ -5417,13 +5500,13 @@ components:
     Northings:
       title: Northings
       description: |-
-        Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+        Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid).
 
-        Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)
+        Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system).
 
         Metres from origin. E.g. `180458`
 
-        Returns an empty string if no location data is available. Otherwise a number is returned  
+        Returns an empty string if no location data is available. Otherwise a number is returned.
       oneOf:
         - type: string
           description: Empty string `""` if not available
@@ -7232,9 +7315,9 @@ components:
           description: |-
             A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.
             A complex building number may be one of the following:
-              - Dual. Two number separated by '/' e.g. 63/64 = 63, 64
+              - Dual. Two numbers separated by '/' e.g. 63/64 = 63, 64
               - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6
-              - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 56, 66
+              - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 65, 66
             The building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality.
         building_group:
           type: string
@@ -12947,7 +13030,7 @@ components:
         loc_name: 旭川市
         loc_name_trans: ASAHIKAWA
         loc_sfx: ''
-        loc_sfx_trans: '-SHI'
+        loc_sfx_trans: -SHI
         loc_pcode: 070-0000
         loc_pcode_fin: ''
         loc_dsc: ''
@@ -14087,14 +14170,14 @@ components:
           title: Postcode Outward
           type: string
           description: |-
-            The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
+            The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
 
             Empty (`""`) where the address has no UK postcode.
         postcode_inward:
           title: Postcode Inward
           type: string
           description: |-
-            The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.
+            The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.
 
             The number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.
 
@@ -14623,7 +14706,7 @@ components:
 
         Its fields follow the layout UK address databases typically use, and much of it reflects Royal Mail's Postcode Address File, the UK's primary address database.
 
-        The API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Despite this mapping fidelity to the source is never compromised with the `native` address field.
+        The API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Fidelity to the local details is retained with the `native` address field.
 
         Pay attention to the address lines (`line_1`, `line_2` and `line_3`), post town, postcode, county and country. Together they are all you need to identify an address uniquely, in the UK or as an international address.
 
@@ -14829,14 +14912,14 @@ components:
           title: Postcode Outward
           type: string
           description: |-
-            The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
+            The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
 
             Empty (`""`) where the address has no UK postcode.
         postcode_inward:
           title: Postcode Inward
           type: string
           description: |-
-            The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.
+            The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.
 
             The number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.
 
@@ -15053,7 +15136,7 @@ components:
           description: |
             Determines whether the key can be used by the requesting agent. 
 
-            Returns false if one of the following conditions are met:
+            Returns false if one of the following conditions is met:
               - Key has no lookups remaining
               - Daily limit has been reached on the key
               - Daily individual limit has been reached
@@ -15452,7 +15535,15 @@ components:
           type: array
           items:
             type: string
-          description: A list of allowed URLs. An empty list means that allowed URLs are disabled.
+          description: |-
+            A list of allowed URLs. An empty list disables the check.
+
+            A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+
+            - `https://www.example.com` allows one site. Scheme and host must match
+            - `*.example.com` allows the domain and all its subdomains
+
+            See [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls).
         redact_days:
           type: integer
           default: 28
@@ -15554,7 +15645,15 @@ components:
             type: string
             maxLength: 256
             pattern: ^[^\s]+$
-          description: A list of allowed URLs. An empty list means that allowed URLs are disabled. Up to 10 allowed.
+          description: |-
+            A list of allowed URLs. An empty list disables the check. Up to 10 allowed.
+
+            A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+
+            - `https://www.example.com` allows one site. Scheme and host must match
+            - `*.example.com` allows the domain and all its subdomains
+
+            See [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls).
         redact_days:
           type: integer
           default: 28
@@ -16526,7 +16625,7 @@ components:
           type: string
           description: Licensee's first, second and third line address as well as post town concatenated by commas
         postcode:
-          example: ID1 1QD
+          example: BR8 7RE
           type: string
           description: Licensee's postcode
         whitelist:
@@ -16534,7 +16633,13 @@ components:
           items:
             type: string
             example: https://www.example.com
-          description: A list of allowed URLs. An empty list means that whitelisting is disabled
+          description: |-
+            A list of allowed URLs. An empty list disables the check.
+
+            A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+
+            - `https://www.example.com` allows one site. Scheme and host must match
+            - `*.example.com` allows the domain and all its subdomains
         daily:
           type: object
           properties:
@@ -16572,7 +16677,7 @@ components:
               description: |
                 Uniquely identifies a licensee for a key. 
 
-                Required to perform paid lookups for a specific licensee. Typically begins `sk_`.
+                Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
             createdAt:
               type: string
               example: '2016-01-21T17:14:49.971Z'
@@ -16588,7 +16693,7 @@ components:
                   minimum: 0
                   type: number
                   format: int32
-                  description: The number lookups performed by the licensee on the day represented b `licesees.daily.updatedAt`
+                  description: The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
                 updatedAt:
                   type: string
                   example: '2016-08-05T16:43:28.865Z'

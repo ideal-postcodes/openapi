@@ -48,15 +48,6 @@ export interface paths {
          *     ## Multiple Residence
          *
          *     A small number of postcodes return more than 100 premises. The API returns 100 addresses per page, so use `page` to paginate the result set.
-         *
-         *     ## Testing
-         *
-         *     - **ID1 1QD** Returns a successful postcode lookup response `2000`
-         *     - **ID1 KFA** Returns "postcode not found" error `4040`
-         *     - **ID1 CLIP** Returns "no lookups remaining" error `4020`
-         *     - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
-         *
-         *     Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
          */
         get: operations["Postcodes"];
         put?: never;
@@ -152,11 +143,11 @@ export interface paths {
          * Availability
          * @description Returns public information on an API Key: whether it can be used right now (`available`), the search contexts the key is licensed for (`contexts`) and the context that best matches the caller's IP address (`context`).
          *
-         *     The endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no `user_token`.
+         *     The endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no Management Key.
          *
          *     A key that exists but cannot be used, because it has no lookups left or has breached a limit, returns `200` with `"available": false`. An unknown or malformed key returns an error.
          *
-         *     Supply a valid `user_token` and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A `user_token` that does not own the key is rejected.
+         *     Supply a valid Management Key and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A Management Key that does not own the key is rejected.
          */
         get: operations["KeyAvailability"];
         put?: never;
@@ -226,7 +217,7 @@ export interface paths {
          * Logs (CSV)
          * @description Returns a CSV of the paid lookups made on a key, with the information recorded against each one.
          *
-         *     This method requires a `user_token`, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).
+         *     This method requires your Management Key, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).
          *
          *     You can request a maximum interval of 90 days. Without a start or end date, the interval defaults to the last 21 days.
          *
@@ -279,6 +270,20 @@ export interface paths {
          * @description Returns the closest matching address for a freeform address input, with Match Level indicators describing how closely each element of the suggested address matches the input. The more impaired the input address, the harder it is to cleanse.
          *
          *     A cleanse that returns a match costs a lookup. A no-match response is free.
+         *
+         *     ## Countries
+         *
+         *     Cleanse defaults to the UK. Pass `context` with an ISO 3166-1 alpha-3 country
+         *     code to cleanse an address elsewhere, e.g. `context=USA` or `context=FRA`. The
+         *     address datasets your key is licensed for decide which countries it can
+         *     cleanse.
+         *
+         *     The response shape is the same for every country: a standardised address in
+         *     `match`, the raw source record in `match.native`, and the same confidence,
+         *     fit and Match Level indicators. The Match Levels and confidence score are at
+         *     their most discriminating for the UK, where cleanse runs against
+         *     purpose-built indexes; elsewhere they are computed from the country's address
+         *     dataset.
          *
          *     ## Confidence Score
          *
@@ -457,15 +462,6 @@ export interface paths {
          *     ### Search by UPRN
          *
          *     Search by UPRN using the `uprn` filter and excluding the query argument. E.g. `/v1/addresses?uprn=100`.
-         *
-         *     ## Testing
-         *
-         *     - **ID1 1QD** Returns a successful query response `2000`
-         *     - **ID1 KFA** Returns an empty query response `2000`
-         *     - **ID1 CLIP** Returns "no lookups remaining" error `4020`
-         *     - **ID1 CHOP** Returns "daily (or individual) lookup limit breached" error `4021`
-         *
-         *     Test requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.
          */
         get: operations["Addresses"];
         put?: never;
@@ -544,13 +540,13 @@ export interface paths {
         };
         /**
          * List
-         * @description Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sub-licensing.
+         * @description Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sublicensing.
          */
         get: operations["ListLicensees"];
         put?: never;
         /**
          * Create
-         * @description Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sub-licensing.
+         * @description Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sublicensing.
          */
         post: operations["CreateLicensee"];
         delete?: never;
@@ -571,12 +567,12 @@ export interface paths {
          * @description Returns a licensee by its `sl_` key. A cancelled or unknown licensee returns `404`.
          */
         get: operations["RetrieveLicensee"];
+        put?: never;
         /**
          * Update
          * @description Updates a licensee's address, postcode, allowed URLs and daily limit. Returns the updated licensee. The name is fixed at creation.
          */
-        put: operations["UpdateLicensee"];
-        post?: never;
+        post: operations["UpdateLicensee"];
         /**
          * Cancel
          * @description Cancels a licensee. Its key stops working and it drops out of the licensee list. Contact us to reverse it.
@@ -833,13 +829,13 @@ export interface components {
         Eastings: string | number;
         /**
          * Northings
-         * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+         * @description Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid).
          *
-         *     Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)
+         *     Northern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system).
          *
          *     Metres from origin. E.g. `180458`
          *
-         *     Returns an empty string if no location data is available. Otherwise a number is returned
+         *     Returns an empty string if no location data is available. Otherwise a number is returned.
          */
         Northings: string | number;
         /**
@@ -2299,9 +2295,9 @@ export interface components {
             /**
              * @description A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.
              *     A complex building number may be one of the following:
-             *       - Dual. Two number separated by '/' e.g. 63/64 = 63, 64
+             *       - Dual. Two numbers separated by '/' e.g. 63/64 = 63, 64
              *       - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6
-             *       - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 56, 66
+             *       - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 65, 66
              *     The building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality.
              */
             building_number: string;
@@ -7270,14 +7266,14 @@ export interface components {
             umprn: string | number;
             /**
              * Postcode Outward
-             * @description The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
+             * @description The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
              *
              *     Empty (`""`) where the address has no UK postcode.
              */
             postcode_outward: string;
             /**
              * Postcode Inward
-             * @description The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.
+             * @description The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.
              *
              *     The number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.
              *
@@ -7665,7 +7661,7 @@ export interface components {
          *
          *     Its fields follow the layout UK address databases typically use, and much of it reflects Royal Mail's Postcode Address File, the UK's primary address database.
          *
-         *     The API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Despite this mapping fidelity to the source is never compromised with the `native` address field.
+         *     The API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Fidelity to the local details is retained with the `native` address field.
          *
          *     Pay attention to the address lines (`line_1`, `line_2` and `line_3`), post town, postcode, county and country. Together they are all you need to identify an address uniquely, in the UK or as an international address.
          *
@@ -7816,14 +7812,14 @@ export interface components {
             umprn: string | number;
             /**
              * Postcode Outward
-             * @description The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
+             * @description The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.
              *
              *     Empty (`""`) where the address has no UK postcode.
              */
             postcode_outward: string;
             /**
              * Postcode Inward
-             * @description The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.
+             * @description The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.
              *
              *     The number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.
              *
@@ -8021,7 +8017,7 @@ export interface components {
             /**
              * @description Determines whether the key can be used by the requesting agent.
              *
-             *     Returns false if one of the following conditions are met:
+             *     Returns false if one of the following conditions is met:
              *       - Key has no lookups remaining
              *       - Daily limit has been reached on the key
              *       - Daily individual limit has been reached
@@ -8346,7 +8342,16 @@ export interface components {
             daily_limit: components["schemas"]["ApiKeyDailyLimit"];
             monthly_limit: components["schemas"]["ApiKeyMonthlyLimit"];
             individual_limit: components["schemas"]["ApiKeyIndividualLimit"];
-            /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. */
+            /**
+             * @description A list of allowed URLs. An empty list disables the check.
+             *
+             *     A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+             *
+             *     - `https://www.example.com` allows one site. Scheme and host must match
+             *     - `*.example.com` allows the domain and all its subdomains
+             *
+             *     See [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls).
+             */
             allowed_urls: string[];
             /**
              * @description Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage
@@ -8418,7 +8423,16 @@ export interface components {
                  */
                 limit?: number | null;
             };
-            /** @description A list of allowed URLs. An empty list means that allowed URLs are disabled. Up to 10 allowed. */
+            /**
+             * @description A list of allowed URLs. An empty list disables the check. Up to 10 allowed.
+             *
+             *     A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+             *
+             *     - `https://www.example.com` allows one site. Scheme and host must match
+             *     - `*.example.com` allows the domain and all its subdomains
+             *
+             *     See [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls).
+             */
             allowed_urls?: string[];
             /**
              * @description Number of days to preserve personal data stored in your key usage history. Set to 0 to prevent personal data storage
@@ -9122,10 +9136,17 @@ export interface components {
             address?: string;
             /**
              * @description Licensee's postcode
-             * @example ID1 1QD
+             * @example BR8 7RE
              */
             postcode?: string;
-            /** @description A list of allowed URLs. An empty list means that whitelisting is disabled */
+            /**
+             * @description A list of allowed URLs. An empty list disables the check.
+             *
+             *     A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+             *
+             *     - `https://www.example.com` allows one site. Scheme and host must match
+             *     - `*.example.com` allows the domain and all its subdomains
+             */
             whitelist?: string[];
             daily?: {
                 /**
@@ -9146,7 +9167,7 @@ export interface components {
             /**
              * @description Uniquely identifies a licensee for a key.
              *
-             *     Required to perform paid lookups for a specific licensee. Typically begins `sk_`.
+             *     Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
              * @example sl_ijoiqsxeQgXW2gkiE0X94
              */
             key: string;
@@ -9158,7 +9179,7 @@ export interface components {
             daily: {
                 /**
                  * Format: int32
-                 * @description The number lookups performed by the licensee on the day represented b `licesees.daily.updatedAt`
+                 * @description The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
                  * @example 232
                  */
                 count: number;
@@ -9529,13 +9550,13 @@ export interface components {
          */
         ApiKeyPathParam: string;
         /**
-         * @description **Private User Token**
+         * @description **Management Key**
          *
-         *     A secret key used for sensitive operations on your account and API Keys.
+         *     A secret key used to manage your account and API Keys. It was previously called the user token.
          *
-         *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+         *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
          *
-         *     Typically begins `uk_...`
+         *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
          * @example uk_B59ScW1p1HHouf1VqclEPZUx
          */
         UserTokenParam: string;
@@ -10135,13 +10156,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10193,13 +10214,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10255,13 +10276,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10336,13 +10357,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11277,13 +11298,13 @@ export interface operations {
                 /** @description ID of the licensee after which to list results */
                 starting_after?: number;
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11337,13 +11358,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11390,13 +11411,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11446,13 +11467,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11506,13 +11527,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11577,13 +11598,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11633,13 +11654,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11682,13 +11703,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11788,13 +11809,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11857,13 +11878,13 @@ export interface operations {
         parameters: {
             query?: {
                 /**
-                 * @description **Private User Token**
+                 * @description **Management Key**
                  *
-                 *     A secret key used for sensitive operations on your account and API Keys.
+                 *     A secret key used to manage your account and API Keys. It was previously called the user token.
                  *
-                 *     Your user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
+                 *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`
+                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];

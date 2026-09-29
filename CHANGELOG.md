@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.1.0 (2026-09-29)
+
+### Minor Changes
+
+- Declare `ApiKey` and `ManagementKey` Bearer security schemes on every operation; authentication docs lead with `Authorization: Bearer`
+- Rename the user token to Management Key throughout
+- Document licensee update as `POST /keys/{key}/licensees/{licensee}`, the method the API serves
+- Cleanse Address documents the `context` parameter for addresses outside the UK
+- Document recommended allowed URL formats
+
+### Patch Changes
+
+- Postcode lookup and address search docs no longer list test postcodes
+- Use BR8 7RE for example postcodes
+
 ## 5.0.2 (2026-09-28)
 
 ### Patch Changes

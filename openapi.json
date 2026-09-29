@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "5.0.2",
+    "version": "5.1.0",
     "license": {
       "name": "Copyright (C) IDDQD Limited - All Rights Reserved",
       "url": "https://terms.ideal-postcodes.co.uk"
     },
     "title": "API Reference",
     "termsOfService": "https://terms.ideal-postcodes.co.uk",
-    "description": "## Getting Started\n\nAll API methods are either a `GET`, `POST` or `OPTIONS` request.\n\nThe API communicates over both HTTPS and plain HTTP using IPv4 and IPv6.\n\nWe use appropriate HTTP status codes where possible to indicate the request status. Every error body also carries a numeric `code`. The [error codes guide](https://docs.ideal-postcodes.co.uk/docs/guides/error-codes) lists each code and how to fix it.\n\n## OpenAPI Spec\n\nOur OpenAPI specification is available at:\n\n- [npm package](https://www.npmjs.com/package/@ideal-postcodes/openapi)\n- [API Reference](https://openapi.ideal-postcodes.co.uk)\n- [OpenAPI v3 JSON File](https://openapi.ideal-postcodes.co.uk/openapi.json)\n- [OpenAPI v3 YAML File](https://openapi.ideal-postcodes.co.uk/openapi.yaml)\n\n## Rate Limiting\n\nEach IP address is rate limited at 30 requests per second. Exceeding the limit returns a 503 response.\n\nThe autocomplete API has an additional rate limit.\n\nIf you expect to exceed the limit, contact us and we can move you to an endpoint with a higher limit.\n\n## Authentication\n\nMost requests require an **API key** for authentication. Authenticate by passing an `api_key` as part of the query string. For example:\n\n```\napi.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_test&q=parkside\n```\n\nAlternatively, pass the key in the `Authorization` header:\n\n```\nAuthorization: api_key=\"ak_test\" [other_key=\"foo\"]\n```\n\n## Versioning\n\nThis API is versioned with a simple prefix in the URL. The current version is `/v1/`. We will maintain backwards-compatibility by releasing breaking changes under a new version.\n\nThe following changes are backwards-compatible:\n\n- Adding new properties to existing API responses\n- Adding new API endpoints\n- Adding new optional request parameters to existing API endpoints\n- Changing the order of properties in existing API responses\n- Changing the autocomplete address suggestion format\n\n## Error Handling\n\nA successful lookup returns an HTTP status code of 200 and a response code of 2000 in the body.\n\nAny other status code means an error. These range from a benign 404 (resource not found) to more urgent problems, such as an API Key out of credit or a failed authentication.\n\n## Testing\n\nTo test the API, create an account. Each new account comes with a free test balance. Contact us if you need more for testing and integration.\n\nThe code samples in this reference use the `ak_test` key. You can use it too, but it is capped at 5 requests per day.\n\n## Metadata\n\nYou can annotate requests that affect your balance with arbitrary metadata. We store it with your lookup history, and you can query it later via the API or the dashboard. We call the ability to label your requests [tagging](https://docs.ideal-postcodes.co.uk/docs/guides/tags).\n\n## Response Codes\n\nThe API returns two indicators to help you determine the status of each HTTP request.\n\nThe first is the **HTTP Status**, which is found in the status line of every HTTP response. The API will return status codes that adhere to HTTP/1.1 Specifications wherever possible.\n\n`2XX` status codes indicate success while `4XX` and `5XX` indicate client and server errors respectively.\n\nThe second is the **API response code**, which can be found in the `code` property of the response body. This code gives a more specific reason for a failure and points you in the right direction when debugging.\n",
+    "description": "## Getting Started\n\nAll API methods are either a `GET`, `POST` or `OPTIONS` request.\n\nThe API communicates over both HTTPS and plain HTTP using IPv4 and IPv6.\n\nWe use appropriate HTTP status codes where possible to indicate the request status. Every error body also carries a numeric `code`. The [error codes guide](https://docs.ideal-postcodes.co.uk/docs/guides/error-codes) lists each code and how to fix it.\n\n## OpenAPI Spec\n\nOur OpenAPI specification is available at:\n\n- [npm package](https://www.npmjs.com/package/@ideal-postcodes/openapi)\n- [API Reference](https://openapi.ideal-postcodes.co.uk)\n- [OpenAPI v3 JSON File](https://openapi.ideal-postcodes.co.uk/openapi.json)\n- [OpenAPI v3 YAML File](https://openapi.ideal-postcodes.co.uk/openapi.yaml)\n\n## Rate Limiting\n\nEach IP address is rate limited at 30 requests per second. Exceeding the limit returns a 503 response.\n\nThe autocomplete API has an additional rate limit.\n\nIf you expect to exceed the limit, contact us and we can move you to an endpoint with a higher limit.\n\n## Authentication\n\nMost requests need an **API key**. Send it as a Bearer token in the `Authorization` header:\n\n```\ncurl 'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?q=parkside' \\\n  -H 'Authorization: Bearer ak_test'\n```\n\nA header keeps the key out of URLs and server logs.\n\nTwo credentials exist, and they do different jobs:\n\n| Credential | Looks like | Authenticates | Exposure |\n| --- | --- | --- | --- |\n| API Key | `ak_test` | Address, postcode and place lookups. Every billable request | Usable in a browser. Restrict it with allowed URLs |\n| Management Key | `uk_...` | Managing a key under `/keys/{key}`: usage, licensees, configs | Secret. Server side only |\n\nRequests that manage a key, under `/keys/{key}`, take your **Management Key** instead: `Authorization: Bearer uk_...`. The API key is already in the path. The management key was previously called the user token.\n\nTo bill a request to a licensee, send the licensee key as the Bearer token: `Authorization: Bearer sl_...`.\n\nIf you cannot set headers, for example in some browser integrations, pass the key as `api_key` in the query string (or the management key as `user_token`):\n\n```\napi.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_test&q=parkside\n```\n\nThe query string takes precedence when both are present.\n\nThe older `Authorization: api_key=\"ak_test\"` form still works but is deprecated. Use Bearer in new integrations.\n\n## Versioning\n\nThis API is versioned with a simple prefix in the URL. The current version is `/v1/`. We will maintain backwards-compatibility by releasing breaking changes under a new version.\n\nThe following changes are backwards-compatible:\n\n- Adding new properties to existing API responses\n- Adding new API endpoints\n- Adding new optional request parameters to existing API endpoints\n- Changing the order of properties in existing API responses\n- Changing the autocomplete address suggestion format\n\n## Error Handling\n\nA successful lookup returns an HTTP status code of 200 and a response code of 2000 in the body.\n\nAny other status code means an error. These range from a benign 404 (resource not found) to more urgent problems, such as an API Key out of credit or a failed authentication.\n\n## Testing\n\nTo test the API, create an account. Each new account comes with a free test balance. Contact us if you need more for testing and integration.\n\nThe code samples in this reference use the `ak_test` key. You can use it too, but it is capped at 5 requests per day.\n\n## Metadata\n\nYou can annotate requests that affect your balance with arbitrary metadata. We store it with your lookup history, and you can query it later via the API or the dashboard. We call the ability to label your requests [tagging](https://docs.ideal-postcodes.co.uk/docs/guides/tags).\n\n## Response Codes\n\nThe API returns two indicators to help you determine the status of each HTTP request.\n\nThe first is the **HTTP Status**, which is found in the status line of every HTTP response. The API will return status codes that adhere to HTTP/1.1 Specifications wherever possible.\n\n`2XX` status codes indicate success while `4XX` and `5XX` indicate client and server errors respectively.\n\nThe second is the **API response code**, which can be found in the `code` property of the response body. This code gives a more specific reason for a failure and points you in the right direction when debugging.\n",
     "contact": {
       "email": "support@ideal-postcodes.co.uk",
       "name": "Support",
@@ -185,7 +185,12 @@
         ],
         "summary": "Lookup Postcode",
         "operationId": "Postcodes",
-        "description": "Returns the complete list of addresses for a postcode. Postcode searches are space and case insensitive.\n\nEach request looks up one postcode. To extract the addresses for several postcodes, send one request per postcode.\n\nUse it to power postcode driven address searches, like [Postcode Lookup](/docs/postcode-lookup/).\n\nPostcode lookup covers the United Kingdom, the Republic of Ireland, the Netherlands and Singapore. The API detects the format of the postcode you submit. UK and Irish postcodes are searched by default. For a Dutch or Singapore postcode, set `context` to `NLD` or `SGP`, or to `GLOBAL` to accept any supported format.\n\nUK postcodes need PAF, Multiple Residence, Not Yet Built, PAF Alias, PAF Welsh, AddressBase or AddressBase Premium on your key. Eircodes need ECAD or ECAF. Dutch postcodes need Kadaster. Singapore postcodes need HERE Asia Pacific. Without a matching licence the request is rejected.\n\nAn unfound postcode costs no lookup. A postcode that returns addresses costs one.\n\n## Postcode Not Found\n\nInvalid postcodes do not affect your lookup balance. The API returns a `404` response with this body:\n\n```json\n{\n  \"code\": 4040,\n  \"message\": \"Postcode not found\",\n  \"suggestions\": [\"SW1A 0AA\"]\n}\n```\n\n### Suggestions\n\nIf a postcode cannot be found, the API returns up to 5 of the closest matching postcodes. It corrects common errors first (e.g. mixing up `O` and `0` or `I` and `1`).\n\nIf the suggestion list is small (fewer than 3), the correct postcode is likely to be among them. Notify the user or trigger new searches immediately.\n\nThe suggestion list is empty if the postcode has deviated too far from a valid postcode format.\n\n## Multiple Residence\n\nA small number of postcodes return more than 100 premises. The API returns 100 addresses per page, so use `page` to paginate the result set.\n\n## Testing\n\n- **ID1 1QD** Returns a successful postcode lookup response `2000`\n- **ID1 KFA** Returns \"postcode not found\" error `4040`\n- **ID1 CLIP** Returns \"no lookups remaining\" error `4020`\n- **ID1 CHOP** Returns \"daily (or individual) lookup limit breached\" error `4021`\n\nTest requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.\n",
+        "description": "Returns the complete list of addresses for a postcode. Postcode searches are space and case insensitive.\n\nEach request looks up one postcode. To extract the addresses for several postcodes, send one request per postcode.\n\nUse it to power postcode driven address searches, like [Postcode Lookup](/docs/postcode-lookup/).\n\nPostcode lookup covers the United Kingdom, the Republic of Ireland, the Netherlands and Singapore. The API detects the format of the postcode you submit. UK and Irish postcodes are searched by default. For a Dutch or Singapore postcode, set `context` to `NLD` or `SGP`, or to `GLOBAL` to accept any supported format.\n\nUK postcodes need PAF, Multiple Residence, Not Yet Built, PAF Alias, PAF Welsh, AddressBase or AddressBase Premium on your key. Eircodes need ECAD or ECAF. Dutch postcodes need Kadaster. Singapore postcodes need HERE Asia Pacific. Without a matching licence the request is rejected.\n\nAn unfound postcode costs no lookup. A postcode that returns addresses costs one.\n\n## Postcode Not Found\n\nInvalid postcodes do not affect your lookup balance. The API returns a `404` response with this body:\n\n```json\n{\n  \"code\": 4040,\n  \"message\": \"Postcode not found\",\n  \"suggestions\": [\"SW1A 0AA\"]\n}\n```\n\n### Suggestions\n\nIf a postcode cannot be found, the API returns up to 5 of the closest matching postcodes. It corrects common errors first (e.g. mixing up `O` and `0` or `I` and `1`).\n\nIf the suggestion list is small (fewer than 3), the correct postcode is likely to be among them. Notify the user or trigger new searches immediately.\n\nThe suggestion list is empty if the postcode has deviated too far from a valid postcode format.\n\n## Multiple Residence\n\nA small number of postcodes return more than 100 premises. The API returns 100 addresses per page, so use `page` to paginate the result set.\n",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "postcode",
@@ -348,6 +353,11 @@
         "summary": "Retrieve by UDPRN",
         "operationId": "UDPRN",
         "description": "Returns the full address for a Unique Delivery Point Reference Number (UDPRN).\n\nStoring the UDPRN lets you retrieve the most recent information for an address, and test whether an address has been deleted.\n\nUDPRNs are an eight digit unique numeric code (e.g. `25962203`) for any premise on the Postcode Address File, Royal Mail's database of UK addresses. The API searches PAF first, then Not Yet Built if your key is licensed for it. A UDPRN on neither dataset returns `404`.\n\nEach address returned costs a lookup.\n\n## Testing\n\nWe provide test UDPRNs that yield both successful and unsuccessful responses. They are:\n\n- `0` Returns a successful UDPRN lookup response `2000`\n- `-1` Returns \"UDPRN not found\", error `4044`\n- `-2` Returns \"no lookups remaining\", error `4020`\n- `-3` Returns \"daily (or individual) lookup limit breached\", error `4021`\n\nTest requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.\n",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "udprn",
@@ -512,6 +522,11 @@
         "summary": "Retrieve by UMPRN",
         "operationId": "UMPRN",
         "description": "Returns the address for a multiple occupancy household, identified by its UMPRN (Multiple Residence Unique ID).\n\nUMPRNs are a unique numeric code for any Multiple Residence household on the optional Multiple Residence dataset. Your key needs that dataset enabled. Without it, and for any UMPRN we cannot find, the API returns `404`.\n\n## Pricing\n\nPer lookup charges apply. We do not charge for empty responses.\n\n## Testing\n\nWe provide test UMPRNs that yield both successful and unsuccessful responses. They are:\n\n- `0` Returns a successful UMPRN lookup response `2000`\n- `-1` Returns \"UMPRN not found\", error `4046`\n- `-2` Returns \"no lookups remaining\", error `4020`\n- `-3` Returns \"daily (or individual) lookup limit breached\", error `4021`\n\nTest requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.\n",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "umprn",
@@ -675,7 +690,7 @@
         ],
         "summary": "Availability",
         "operationId": "KeyAvailability",
-        "description": "Returns public information on an API Key: whether it can be used right now (`available`), the search contexts the key is licensed for (`contexts`) and the context that best matches the caller's IP address (`context`).\n\nThe endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no `user_token`.\n\nA key that exists but cannot be used, because it has no lookups left or has breached a limit, returns `200` with `\"available\": false`. An unknown or malformed key returns an error.\n\nSupply a valid `user_token` and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A `user_token` that does not own the key is rejected.\n",
+        "description": "Returns public information on an API Key: whether it can be used right now (`available`), the search contexts the key is licensed for (`contexts`) and the context that best matches the caller's IP address (`context`).\n\nThe endpoint accepts API Keys (beginning `ak_`) and sub-licensed keys (beginning `sl_`), and needs no Management Key.\n\nA key that exists but cannot be used, because it has no lookups left or has breached a limit, returns `200` with `\"available\": false`. An unknown or malformed key returns an error.\n\nSupply a valid Management Key and the endpoint returns the key's private details instead, as `GET /keys/{key}/details` does. A Management Key that does not own the key is rejected.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -755,6 +770,11 @@
         "summary": "Details",
         "operationId": "KeyDetails",
         "description": "Returns private data on a key: remaining lookups, licensed datasets, usage limits, notification settings and the search contexts the key can serve.",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -836,6 +856,11 @@
         "summary": "Update Details",
         "description": "Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`.",
         "operationId": "UpdateKeyDetails",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -923,6 +948,11 @@
         "summary": "Usage Stats",
         "operationId": "KeyUsage",
         "description": "Reports the number of lookups a key consumed over a date range, as a total and a daily breakdown.\n\nThe range defaults to the last 21 days. `start` and `end` take UNIX timestamps in milliseconds, and `end` defaults to the current time. The maximum range is 90 days.\n\nQuery at most three tags at once.\n",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -1006,7 +1036,12 @@
         ],
         "summary": "Logs (CSV)",
         "operationId": "KeyLogs",
-        "description": "Returns a CSV of the paid lookups made on a key, with the information recorded against each one.\n\nThis method requires a `user_token`, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nYou can request a maximum interval of 90 days. Without a start or end date, the interval defaults to the last 21 days.\n\nThe `Content-Type` returned is CSV (text/csv). For a non-200 response it reverts to JSON, with the error code and message in the body.\n\n## CSV Format\n\nThe CSV has no header row. Columns, in order:\n\n1. Timestamp (ISO 8601)\n2. IP address the request was received from\n3. Search term\n4. URL the request originated from\n5. Lookup type\n6. Tags\n7. Lookups consumed\n8. Licensee name (sublicensing keys only)\n9. Source IP address\n\nThe source IP column carries the address forwarded in the `IDPC-Source-IP` header. It is only recorded for keys with IP address forwarding enabled, and only when the header holds a valid IP address. It is empty otherwise.\n\n## Data Redaction\n\nWe redact Personally Identifiable Data (PII) in your usage log (including IP, source IP, search term and URL data) weekly.\n\nBy default we redact PII older than 28 days. You can change this period from your dashboard.\n\nSet the interval to `0` days to prevent PII collection altogether.\n",
+        "description": "Returns a CSV of the paid lookups made on a key, with the information recorded against each one.\n\nThis method requires your Management Key, which can be found on your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nYou can request a maximum interval of 90 days. Without a start or end date, the interval defaults to the last 21 days.\n\nThe `Content-Type` returned is CSV (text/csv). For a non-200 response it reverts to JSON, with the error code and message in the body.\n\n## CSV Format\n\nThe CSV has no header row. Columns, in order:\n\n1. Timestamp (ISO 8601)\n2. IP address the request was received from\n3. Search term\n4. URL the request originated from\n5. Lookup type\n6. Tags\n7. Lookups consumed\n8. Licensee name (sublicensing keys only)\n9. Source IP address\n\nThe source IP column carries the address forwarded in the `IDPC-Source-IP` header. It is only recorded for keys with IP address forwarding enabled, and only when the header holds a valid IP address. It is empty otherwise.\n\n## Data Redaction\n\nWe redact Personally Identifiable Data (PII) in your usage log (including IP, source IP, search term and URL data) weekly.\n\nBy default we redact PII older than 28 days. You can change this period from your dashboard.\n\nSet the interval to `0` days to prevent PII collection altogether.\n",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -1088,8 +1123,13 @@
           "UK"
         ],
         "summary": "Cleanse Address",
-        "description": "Returns the closest matching address for a freeform address input, with Match Level indicators describing how closely each element of the suggested address matches the input. The more impaired the input address, the harder it is to cleanse.\n\nA cleanse that returns a match costs a lookup. A no-match response is free.\n\n## Confidence Score\n\nEach incorrect, missing or misspelled element subtracts from the overall confidence score.\n\n### Deciding on an Acceptable Confidence Score Threshold\n\nInputs differ widely between address cleanse projects. Within a project, though, they tend to repeat the same errors. Some datasets are keyed in by hand and prone to typos. Others have a persistently missing datapoint such as organisation name or postcode. There is no absolute Confidence Score threshold. Set the acceptable score project by project, based on the systematic errors in the data and your business goals.\n\nTo set a threshold, load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top to bottom shows matches from best to worst. As you reach the lower quality searches you can judge roughly:\n\n- Which confidence scores indicate ambiguous matches (i.e. up to building level only)\n- Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)\n\nDepending on your business goals, you can also use the Match Levels to determine an acceptable match. You may need to match only up to the thoroughfare or building name, or accurate organisation names may matter.\n",
+        "description": "Returns the closest matching address for a freeform address input, with Match Level indicators describing how closely each element of the suggested address matches the input. The more impaired the input address, the harder it is to cleanse.\n\nA cleanse that returns a match costs a lookup. A no-match response is free.\n\n## Countries\n\nCleanse defaults to the UK. Pass `context` with an ISO 3166-1 alpha-3 country\ncode to cleanse an address elsewhere, e.g. `context=USA` or `context=FRA`. The\naddress datasets your key is licensed for decide which countries it can\ncleanse.\n\nThe response shape is the same for every country: a standardised address in\n`match`, the raw source record in `match.native`, and the same confidence,\nfit and Match Level indicators. The Match Levels and confidence score are at\ntheir most discriminating for the UK, where cleanse runs against\npurpose-built indexes; elsewhere they are computed from the country's address\ndataset.\n\n## Confidence Score\n\nEach incorrect, missing or misspelled element subtracts from the overall confidence score.\n\n### Deciding on an Acceptable Confidence Score Threshold\n\nInputs differ widely between address cleanse projects. Within a project, though, they tend to repeat the same errors. Some datasets are keyed in by hand and prone to typos. Others have a persistently missing datapoint such as organisation name or postcode. There is no absolute Confidence Score threshold. Set the acceptable score project by project, based on the systematic errors in the data and your business goals.\n\nTo set a threshold, load a subset of the dataset into a spreadsheet application like Excel and sort on the score. Scrolling from top to bottom shows matches from best to worst. As you reach the lower quality searches you can judge roughly:\n\n- Which confidence scores indicate ambiguous matches (i.e. up to building level only)\n- Which confidence scores indicate a poor or no match (i.e. the nearest matching address is too far from the input address)\n\nDepending on your business goals, you can also use the Match Levels to determine an acceptable match. You may need to match only up to the thoroughfare or building name, or accurate organisation names may matter.\n",
         "operationId": "AddressCleanse",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -1201,6 +1241,11 @@
         "summary": "Find Address",
         "description": "Returns address suggestions for a partial address, ordered by relevance. Use it to power real-time address autofill.\n\nConsider our address autocomplete JavaScript libraries, which add address lookup to a form without calling this API directly.\n\n## API Usage\n\nImplementing our Address Autocomplete API involves:\n\n1. Fetch address suggestions with `/autocomplete/addresses`\n2. Acquire the complete address using the ID from the suggestion\n\nStep 2 decrements your lookup balance.\n\nStep 1 is not a free standalone resource. We rate limit and then suspend integrations that repeatedly make autocomplete requests without a paid Step 2 request.\n\n## Context\n\n`context` limits the search, usually to a single country. It defaults to `GBR`, and an unrecognised context falls back to that default. If your key is not licensed for the datasets covering the context, the request is rejected.\n\nQuerying a full postcode within a supported context returns the entire address list for that postcode.\n\n## Query Filters\n\nRefine results by appending filters to your querystring, e.g. `postcode=sw1a2aa` for postcode `SW1A 2AA`. Invalid filters return an empty set without affecting your lookup count.\n\nTo apply multiple filter terms, use a comma-separated list, e.g. `postcode_outward=e1,e2,e3` combines result sets for E1, E2 and E3. Unless otherwise specified, all filters support multiple terms.\n\nFilters combine with `AND` logic, for instance `su_organisation_indicator=Y&postcode_area=n`. The maximum is **8** filter terms.\n\n## Address Bias\n\nPreface bias searches with `bias_` to boost certain address results. Unlike filters, biasing allows unmatched addresses to appear with lower priority.\n\nFor example, use `bias_postcode_area=SW,SE` to favour addresses in the `SW` and `SE` postcode areas. Invalid bias terms have no effect.\n\nMultiple bias terms are allowed unless stated otherwise, with a combined maximum of **5**.\n\n## Suggestion Format\n\nThe suggestion format is subject to change. We recommend using the suggestion as-is to avoid integration issues.\n\n## Rate Limiting and Cost\n\nThe default rate limit is 3,000 requests per 5 minutes, counted per key and IP address. The `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers report where you stand.\n\nAutocomplete API usage does not impact your balance, but resolving a suggestion to a full address requires a paid request. Autocomplete requests without subsequent paid requests may lead to rate limiting or suspension.\n",
         "operationId": "FindAddress",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -1442,6 +1487,11 @@
         "summary": "Resolve Address",
         "operationId": "ResolveAddress",
         "description": "Returns the complete address for an autocomplete suggestion, identified by its address ID.\n\nThis is the step of the autocomplete flow that costs a lookup. Fetching suggestions is free.\n\nThe API returns resolved addresses, including addresses outside the UK, in a UK format (up to 3 address lines) using UK nomenclature such as postcode and county.\n\nAn ID that matches no address returns `404`.\n",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1535,8 +1585,13 @@
           "UK"
         ],
         "summary": "Extract Addresses",
-        "description": "Returns a list of UK addresses matching the query, ordered by relevance score. `limit` defaults to 10 and caps at 100. `page` defaults to 0.\n\nYou may only extract a single address from each request. To extract multiple addresses, you must perform an individual request for each address.\n\nIf the query is a valid postcode, the API returns the whole address list for that postcode and raises the limit to 100. Use `page` to reach the rest of a postcode holding more than 100 premises. You cannot page beyond 10,000 results.\n\nYour key needs at least one of PAF, Multiple Residence, Not Yet Built, PAF Alias, PAF Welsh, AddressBase or AddressBase Premium. Without one the request is rejected.\n\nA request that returns at least one address costs a lookup. Empty result sets are free.\n\n## Reverse Geocoding\n\nReturn the addresses around a point with the `lon=` and `lat=` querystring arguments. The search radius is 100m and the API sorts addresses by distance from the point.\n\n## Filters\n\nNarrow your results by adding filters to your query string that correspond with an address attribute.\n\nFor instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.\n\nIf a filter term is invalid, e.g. `postcode=SW1A2AAA`, the API returns an empty result set and charges no lookup.\n\nYou can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.\n\nAll filters can accept multiple terms unless stated otherwise below.\n\nMultiple filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.\n\nA combined maximum of 8 terms is allowed across all filters.\n\n## Biases\n\nYou can boost address results that correspond with a given address attribute. All bias searches are prefixed with `bias_`.\n\nBiased searches, unlike filtered searches, still allow unmatched addresses to appear. They rank lower.\n\nFor instance, you can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.\n\nIf a bias term is invalid, e.g. `bias_postcode=SW1A2AAA`, no bias is applied.\n\nYou may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Prefer results in the `E1`, `E2` and `E3` outward codes: `bias_postcode_outward=e1,e2,e3`.\n\nAll biases can accept multiple terms unless stated otherwise below.\n\nA combined maximum of 5 terms is allowed across all biases.\n\n## Search by Postcode and Building Name or Number\n\nSearch by postcode and building attribute with the postcode filter and query argument. E.g. For \"SW1A 2AA Prime Minister\" `/v1/addresses?postcode=sw1a2aa&q=prime minister`.\n\nUsing a filter means a postcode mismatch returns no results and costs no lookup.\n\n### Search by UPRN\n\nSearch by UPRN using the `uprn` filter and excluding the query argument. E.g. `/v1/addresses?uprn=100`.\n\n## Testing\n\n- **ID1 1QD** Returns a successful query response `2000`\n- **ID1 KFA** Returns an empty query response `2000`\n- **ID1 CLIP** Returns \"no lookups remaining\" error `4020`\n- **ID1 CHOP** Returns \"daily (or individual) lookup limit breached\" error `4021`\n\nTest requests undergo the usual authentication and restriction rules. They surface any issues during implementation and do not cost you a lookup.\n",
+        "description": "Returns a list of UK addresses matching the query, ordered by relevance score. `limit` defaults to 10 and caps at 100. `page` defaults to 0.\n\nYou may only extract a single address from each request. To extract multiple addresses, you must perform an individual request for each address.\n\nIf the query is a valid postcode, the API returns the whole address list for that postcode and raises the limit to 100. Use `page` to reach the rest of a postcode holding more than 100 premises. You cannot page beyond 10,000 results.\n\nYour key needs at least one of PAF, Multiple Residence, Not Yet Built, PAF Alias, PAF Welsh, AddressBase or AddressBase Premium. Without one the request is rejected.\n\nA request that returns at least one address costs a lookup. Empty result sets are free.\n\n## Reverse Geocoding\n\nReturn the addresses around a point with the `lon=` and `lat=` querystring arguments. The search radius is 100m and the API sorts addresses by distance from the point.\n\n## Filters\n\nNarrow your results by adding filters to your query string that correspond with an address attribute.\n\nFor instance, you can restrict to postcode `SW1A 2AA` by appending `postcode=sw1a2aa`.\n\nIf a filter term is invalid, e.g. `postcode=SW1A2AAA`, the API returns an empty result set and charges no lookup.\n\nYou can also scope using multiple terms for the same filter with a comma separated list of terms. E.g. Restrict results to E1, E2 and E3 outward codes: `postcode_outward=e1,e2,e3`. Multiple terms are `OR`'ed, i.e. the matching result sets are combined.\n\nAll filters can accept multiple terms unless stated otherwise below.\n\nMultiple filters can also be combined. E.g. Restrict results to small user organisations in the N postcode area: `su_organisation_indicator=Y&postcode_area=n`. Multiple filters are `AND`'ed, i.e. each additional filter narrows the result set.\n\nA combined maximum of 8 terms is allowed across all filters.\n\n## Biases\n\nYou can boost address results that correspond with a given address attribute. All bias searches are prefixed with `bias_`.\n\nBiased searches, unlike filtered searches, still allow unmatched addresses to appear. They rank lower.\n\nFor instance, you can boost addresses with postcode areas `SW` and `SE` by appending `bias_postcode_area=SW,SE`.\n\nIf a bias term is invalid, e.g. `bias_postcode=SW1A2AAA`, no bias is applied.\n\nYou may scope using multiple terms for the same bias with a comma separated list of terms. E.g. Prefer results in the `E1`, `E2` and `E3` outward codes: `bias_postcode_outward=e1,e2,e3`.\n\nAll biases can accept multiple terms unless stated otherwise below.\n\nA combined maximum of 5 terms is allowed across all biases.\n\n## Search by Postcode and Building Name or Number\n\nSearch by postcode and building attribute with the postcode filter and query argument. E.g. For \"SW1A 2AA Prime Minister\" `/v1/addresses?postcode=sw1a2aa&q=prime minister`.\n\nUsing a filter means a postcode mismatch returns no results and costs no lookup.\n\n### Search by UPRN\n\nSearch by UPRN using the `uprn` filter and excluding the query argument. E.g. `/v1/addresses?uprn=100`.\n",
         "operationId": "Addresses",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -1701,6 +1756,11 @@
         "summary": "Find Place",
         "description": "Returns place suggestions for a query, ranked by relevance. Places cover countries, administrative areas, capitals and other administrative seats.\n\n## Implementing Place Autocomplete\n\nRetrieving a full place takes two requests:\n\n1. Fetch suggestions from `/places`\n2. Fetch the place using the `id` on a suggestion\n\nA query returns at most 10 suggestions. An empty query returns an empty result set. Show users the `descriptive_name`. The API drops suggestions that share one, so each name in a response identifies a single place.\n\n## Rate Limiting and Cost\n\nThe rate limit is 3,000 requests per 5 minutes.\n\n`/places` does not decrement your lookup balance, but resolving a suggestion to a full place does. We rate limit and then suspend integrations that repeatedly call `/places` without resolving.\n",
         "operationId": "FindPlace",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -1846,6 +1906,11 @@
         "summary": "Resolve Place",
         "operationId": "ResolvePlace",
         "description": "Returns the full place for a place ID taken from a `/places` suggestion.\n\nOn top of the fields carried by the suggestion, the response adds coordinates, language and the underlying dataset record.\n\nEach request decrements your lookup balance. An unknown ID returns `404`.\n",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "place",
@@ -2095,8 +2160,13 @@
           "Licensees"
         ],
         "summary": "List",
-        "description": "Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sub-licensing.",
+        "description": "Returns a key's licensees, oldest first, up to 100 per request. The list omits cancelled licensees. The key must be enabled for sublicensing.",
         "operationId": "ListLicensees",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2189,8 +2259,13 @@
           "Licensees"
         ],
         "summary": "Create",
-        "description": "Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sub-licensing.",
+        "description": "Creates a licensee on a key and returns it with its generated `sl_` key. The key must be enabled for sublicensing.",
         "operationId": "CreateLicensee",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2235,27 +2310,27 @@
           {
             "lang": "cURL",
             "label": "curl",
-            "source": "curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"name\": \"Qwerty Widgets Limited\",\n    \"address\": \"12 High Street, Manchester\",\n    \"postcode\": \"ID1 1QD\",\n    \"whitelist\": [],\n    \"daily\": {\n      \"limit\": 10000\n    }\n  }'\n"
+            "source": "curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"name\": \"Qwerty Widgets Limited\",\n    \"address\": \"12 High Street, Manchester\",\n    \"postcode\": \"BR8 7RE\",\n    \"whitelist\": [],\n    \"daily\": {\n      \"limit\": 10000\n    }\n  }'\n"
           },
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'Qwerty Widgets Limited',\n    address: '12 High Street, Manchester',\n    postcode: 'ID1 1QD',\n    whitelist: [],\n    daily: {\n      limit: 10000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'Qwerty Widgets Limited',\n    address: '12 High Street, Manchester',\n    postcode: 'BR8 7RE',\n    whitelist: [],\n    daily: {\n      limit: 10000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"name\": \"Qwerty Widgets Limited\",\n        \"address\": \"12 High Street, Manchester\",\n        \"postcode\": \"ID1 1QD\",\n        \"whitelist\": [],\n        \"daily\": {\n            \"limit\": 10000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"name\": \"Qwerty Widgets Limited\",\n        \"address\": \"12 High Street, Manchester\",\n        \"postcode\": \"BR8 7RE\",\n        \"whitelist\": [],\n        \"daily\": {\n            \"limit\": 10000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
           },
           {
             "lang": "Ruby",
             "label": "Ruby",
-            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret\")\nbody = {\n  name: \"Qwerty Widgets Limited\",\n  address: \"12 High Street, Manchester\",\n  postcode: \"ID1 1QD\",\n  whitelist: [],\n  daily: {\n    limit: 10000,\n  },\n}\nresponse = Net::HTTP.post(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
+            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret\")\nbody = {\n  name: \"Qwerty Widgets Limited\",\n  address: \"12 High Street, Manchester\",\n  postcode: \"BR8 7RE\",\n  whitelist: [],\n  daily: {\n    limit: 10000,\n  },\n}\nresponse = Net::HTTP.post(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
           },
           {
             "lang": "PHP",
             "label": "PHP",
-            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_POST => true,\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"name\" => \"Qwerty Widgets Limited\",\n    \"address\" => \"12 High Street, Manchester\",\n    \"postcode\" => \"ID1 1QD\",\n    \"whitelist\" => [],\n    \"daily\" => [\n      \"limit\" => 10000,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
+            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_POST => true,\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"name\" => \"Qwerty Widgets Limited\",\n    \"address\" => \"12 High Street, Manchester\",\n    \"postcode\" => \"BR8 7RE\",\n    \"whitelist\" => [],\n    \"daily\" => [\n      \"limit\" => 10000,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
           }
         ]
       }
@@ -2268,6 +2343,11 @@
         "summary": "Retrieve",
         "description": "Returns a licensee by its `sl_` key. A cancelled or unknown licensee returns `404`.",
         "operationId": "RetrieveLicensee",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2342,6 +2422,11 @@
         "summary": "Cancel",
         "description": "Cancels a licensee. Its key stops working and it drops out of the licensee list. Contact us to reverse it.",
         "operationId": "DeleteLicensee",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2438,13 +2523,18 @@
           }
         ]
       },
-      "put": {
+      "post": {
         "tags": [
           "Licensees"
         ],
         "summary": "Update",
         "description": "Updates a licensee's address, postcode, allowed URLs and daily limit. Returns the updated licensee. The name is fixed at creation.",
         "operationId": "UpdateLicensee",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2492,27 +2582,27 @@
           {
             "lang": "cURL",
             "label": "curl",
-            "source": "curl -X PUT 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"daily\": {\n      \"limit\": 20000\n    }\n  }'\n"
+            "source": "curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"daily\": {\n      \"limit\": 20000\n    }\n  }'\n"
           },
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {\n  method: 'PUT',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    daily: {\n      limit: 20000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    daily: {\n      limit: 20000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.put(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"daily\": {\n            \"limit\": 20000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"daily\": {\n            \"limit\": 20000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
           },
           {
             "lang": "Ruby",
             "label": "Ruby",
-            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret\")\nbody = {\n  daily: {\n    limit: 20000,\n  },\n}\nresponse = Net::HTTP.put(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
+            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret\")\nbody = {\n  daily: {\n    limit: 20000,\n  },\n}\nresponse = Net::HTTP.post(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
           },
           {
             "lang": "PHP",
             "label": "PHP",
-            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_CUSTOMREQUEST => \"PUT\",\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"daily\" => [\n      \"limit\" => 20000,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
+            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"daily\" => [\n      \"limit\" => 20000,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
           }
         ]
       }
@@ -2525,6 +2615,11 @@
         "summary": "Regenerate Key",
         "description": "Regenerates a licensee's key and returns the licensee with the new key. The previous key stops working immediately, so update any integration that uses it.",
         "operationId": "RegenerateLicenseeKey",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2568,6 +2663,11 @@
         "summary": "List",
         "description": "Returns every configuration stored against a key, oldest first.",
         "operationId": "ListConfigs",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2638,6 +2738,11 @@
         "summary": "Create",
         "description": "Creates a named configuration on a key and returns it.",
         "operationId": "CreateConfig",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2796,6 +2901,11 @@
         "summary": "Delete",
         "description": "Permanently deletes a configuration object.",
         "operationId": "DeleteConfig",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2909,6 +3019,11 @@
         "summary": "Update",
         "description": "Replaces a configuration's payload and returns the updated configuration. The name is fixed at creation.",
         "operationId": "UpdateConfig",
+        "security": [
+          {
+            "ManagementKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyPathParam"
@@ -2999,6 +3114,11 @@
         "summary": "Email Validation",
         "description": "Validates an email address and reports whether it is deliverable.\n\nRequires an API Key licensed for email validation. A query over 320 characters is rejected.\n\nA validated address decrements your lookup balance. An address the API cannot check returns `unknown` and costs no lookup. An address whose domain does not resolve, or publishes no MX records, returns `not_deliverable` and also costs no lookup. Only those two domain failures populate `suggestions`. Every other response returns an empty list.\n",
         "operationId": "EmailValidation",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -3100,6 +3220,11 @@
         "summary": "Phone Number Validation",
         "description": "Validates a phone number and returns its country, its national and international formats, and the network it was originally assigned to.\n\nRequires an API Key licensed for phone validation.\n\nEvery query decrements your lookup balance, including a number that fails to parse and a number reported as invalid.\n",
         "operationId": "PhoneNumberValidation",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/components/parameters/ApiKeyParam"
@@ -3547,6 +3672,18 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "**API Key**\n\nSend your API key as a Bearer token: `Authorization: Bearer ak_test`. A licensee key (`sl_...`) works in its place and bills that licensee.\n\nBrowser integrations that cannot set headers can pass `api_key` in the query string instead.\n"
+      },
+      "ManagementKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "**Management Key**\n\nSend your management key as a Bearer token: `Authorization: Bearer uk_...`. Required to manage an API key, for example `GET /keys/{key}/details`.\n\nIt can also be passed as `user_token` in the query string. Keep it secret: it grants control over your account and keys. It was previously called the user token.\n"
+      }
+    },
     "parameters": {
       "ApiKeyParam": {
         "description": "**API Key**\n\nYour unique identifier that allows access to our APIs.\n\nBegins `ak_`. Available from your dashboard.\n",
@@ -3642,7 +3779,7 @@
           "type": "string"
         },
         "name": "user_token",
-        "description": "**Private User Token**\n\nA secret key used for sensitive operations on your account and API Keys.\n\nYour user token can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nTypically begins `uk_...`\n",
+        "description": "**Management Key**\n\nA secret key used to manage your account and API Keys. It was previously called the user token.\n\nYour management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nTypically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.\n",
         "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
       },
       "StartParam": {
@@ -5081,7 +5218,7 @@
       },
       "Northings": {
         "title": "Northings",
-        "description": "Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)\n\nNorthern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system)\n\nMetres from origin. E.g. `180458`\n\nReturns an empty string if no location data is available. Otherwise a number is returned  ",
+        "description": "Northings reference using the [Ordnance Survey National Grid reference system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid).\n\nNorthern Ireland Northings uses the [Irish Grid Reference System](https://en.wikipedia.org/wiki/Irish_grid_reference_system).\n\nMetres from origin. E.g. `180458`\n\nReturns an empty string if no location data is available. Otherwise a number is returned.",
         "oneOf": [
           {
             "type": "string",
@@ -6949,7 +7086,7 @@
             "type": "string",
             "maxLength": 40,
             "minLength": 0,
-            "description": "A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.\nA complex building number may be one of the following:\n  - Dual. Two number separated by '/' e.g. 63/64 = 63, 64\n  - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6\n  - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 56, 66\nThe building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality."
+            "description": "A number associated with the whole building. The building number may have a numeric and an alphanumeric component, which are concatenated e.g. 2A, or alternatively will have a simple building number or a complex building number. The building number always relates to the whole building and not a sub-unit within it.\nA complex building number may be one of the following:\n  - Dual. Two numbers separated by '/' e.g. 63/64 = 63, 64\n  - Sequence. An odd or even sequence of numbers with lower and upper bound separated by an underscore '_' e.g. `1_5` = 1,3,5 and `2_6` = 2,4,6\n  - Range. A range of consecutive numbers with lower and upper bound separated by a dash '-' e.g. `63-66` = 63, 64, 65, 66\nThe building number never appears on a line by itself and can prepend Building Group, Primary Thoroughfare or Primary Locality."
           },
           "building_group": {
             "type": "string",
@@ -13136,12 +13273,12 @@
           "postcode_outward": {
             "title": "Postcode Outward",
             "type": "string",
-            "description": "The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.\n\nEmpty (`\"\"`) where the address has no UK postcode."
+            "description": "The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.\n\nEmpty (`\"\"`) where the address has no UK postcode."
           },
           "postcode_inward": {
             "title": "Postcode Inward",
             "type": "string",
-            "description": "The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.\n\nThe number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.\n\nEmpty (`\"\"`) where the address has no UK postcode."
+            "description": "The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.\n\nThe number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.\n\nEmpty (`\"\"`) where the address has no UK postcode."
           },
           "dependant_locality": {
             "title": "Dependant Locality",
@@ -13826,7 +13963,7 @@
       },
       "Address": {
         "title": "Address",
-        "description": "The standard Ideal Postcodes address, which maps both UK and International addresses.\n\nIts fields follow the layout UK address databases typically use, and much of it reflects Royal Mail's Postcode Address File, the UK's primary address database.\n\nThe API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Despite this mapping fidelity to the source is never compromised with the `native` address field.\n\nPay attention to the address lines (`line_1`, `line_2` and `line_3`), post town, postcode, county and country. Together they are all you need to identify an address uniquely, in the UK or as an international address.\n\nFor international addresses, cities map to `post_town` and states map to `county`.\n\nEvery address carries a `native` object: the raw record from its source dataset, exactly as the dataset supplies it, with local detail the standard fields cannot hold. E.g.\n\n- ECAD records say whether an address sits in a Gaeltacht (Irish-speaking) district and whether the building is residential or commercial\n- USPS records carry the carrier route and congressional district\n- Kadaster records carry the floor area, year of completion and use (residential, office, retail)\n\nThe postcode and address list endpoints return the older `AddressListItem` shape instead, where `native` is absent for the Royal Mail PAF family.",
+        "description": "The standard Ideal Postcodes address, which maps both UK and International addresses.\n\nIts fields follow the layout UK address databases typically use, and much of it reflects Royal Mail's Postcode Address File, the UK's primary address database.\n\nThe API converts non-UK addresses into the same UK layout so international addresses will also seamlessly insert into a standard address database. Fidelity to the local details is retained with the `native` address field.\n\nPay attention to the address lines (`line_1`, `line_2` and `line_3`), post town, postcode, county and country. Together they are all you need to identify an address uniquely, in the UK or as an international address.\n\nFor international addresses, cities map to `post_town` and states map to `county`.\n\nEvery address carries a `native` object: the raw record from its source dataset, exactly as the dataset supplies it, with local detail the standard fields cannot hold. E.g.\n\n- ECAD records say whether an address sits in a Gaeltacht (Irish-speaking) district and whether the building is residential or commercial\n- USPS records carry the carrier route and congressional district\n- Kadaster records carry the floor area, year of completion and use (residential, office, retail)\n\nThe postcode and address list endpoints return the older `AddressListItem` shape instead, where `native` is absent for the Royal Mail PAF family.",
         "example": {
           "id": "paf_23747771",
           "dataset": "paf",
@@ -14030,12 +14167,12 @@
           "postcode_outward": {
             "title": "Postcode Outward",
             "type": "string",
-            "description": "The first part of a postcode is known as the outward code. e.g. The outward code of ID1 1QD is ID1. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.\n\nEmpty (`\"\"`) where the address has no UK postcode."
+            "description": "The first part of a postcode is known as the outward code. e.g. The outward code of BR8 7RE is BR8. Enables mail to be sorted to the correct local area for delivery. This part of the code contains the area and the district to which the mail is to be delivered, e.g. 'PO1', 'SW1A' or 'B23'.\n\nEmpty (`\"\"`) where the address has no UK postcode."
           },
           "postcode_inward": {
             "title": "Postcode Inward",
             "type": "string",
-            "description": "The second part of a postcode is known as the inward code. e.g. The inward code of ID1 1QD is 1QD.\n\nThe number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.\n\nEmpty (`\"\"`) where the address has no UK postcode."
+            "description": "The second part of a postcode is known as the inward code. e.g. The inward code of BR8 7RE is 7RE.\n\nThe number identifies the sector in the postal district. The number is followed by 2 letters. The letters then define one or more properties in that sector.\n\nEmpty (`\"\"`) where the address has no UK postcode."
           },
           "dependant_locality": {
             "title": "Dependant Locality",
@@ -14286,7 +14423,7 @@
             ]
           },
           "available": {
-            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions are met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
+            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions is met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
             "type": "boolean",
             "example": true
           }
@@ -14761,7 +14898,7 @@
             "items": {
               "type": "string"
             },
-            "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled."
+            "description": "A list of allowed URLs. An empty list disables the check.\n\nA request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:\n\n- `https://www.example.com` allows one site. Scheme and host must match\n- `*.example.com` allows the domain and all its subdomains\n\nSee [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls)."
           },
           "redact_days": {
             "type": "integer",
@@ -14886,7 +15023,7 @@
               "maxLength": 256,
               "pattern": "^[^\\s]+$"
             },
-            "description": "A list of allowed URLs. An empty list means that allowed URLs are disabled. Up to 10 allowed."
+            "description": "A list of allowed URLs. An empty list disables the check. Up to 10 allowed.\n\nA request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:\n\n- `https://www.example.com` allows one site. Scheme and host must match\n- `*.example.com` allows the domain and all its subdomains\n\nSee [Allowed URLs](https://docs.ideal-postcodes.co.uk/docs/guides/allowed-urls)."
           },
           "redact_days": {
             "type": "integer",
@@ -16108,7 +16245,7 @@
             "description": "Licensee's first, second and third line address as well as post town concatenated by commas"
           },
           "postcode": {
-            "example": "ID1 1QD",
+            "example": "BR8 7RE",
             "type": "string",
             "description": "Licensee's postcode"
           },
@@ -16118,7 +16255,7 @@
               "type": "string",
               "example": "https://www.example.com"
             },
-            "description": "A list of allowed URLs. An empty list means that whitelisting is disabled"
+            "description": "A list of allowed URLs. An empty list disables the check.\n\nA request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:\n\n- `https://www.example.com` allows one site. Scheme and host must match\n- `*.example.com` allows the domain and all its subdomains"
           },
           "daily": {
             "type": "object",
@@ -16163,7 +16300,7 @@
               "key": {
                 "type": "string",
                 "example": "sl_ijoiqsxeQgXW2gkiE0X94",
-                "description": "Uniquely identifies a licensee for a key. \n\nRequired to perform paid lookups for a specific licensee. Typically begins `sk_`.\n"
+                "description": "Uniquely identifies a licensee for a key. \n\nRequired to perform paid lookups for a specific licensee. Typically begins `sl_`.\n"
               },
               "createdAt": {
                 "type": "string",
@@ -16182,7 +16319,7 @@
                     "minimum": 0,
                     "type": "number",
                     "format": "int32",
-                    "description": "The number lookups performed by the licensee on the day represented b `licesees.daily.updatedAt`"
+                    "description": "The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`"
                   },
                   "updatedAt": {
                     "type": "string",
