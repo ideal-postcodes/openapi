@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.1.1 (2026-10-02)
+
+### Patch Changes
+
+- Fix TypeScript type resolution for CommonJS consumers on `moduleResolution: node16`: the `require` condition serves CommonJS type definitions (`.d.cts`), so `require()`-ing the package no longer fails with TS1479 ("cannot be imported with require")
+- Ships minified output without source maps, reducing the installed package size
+
 ## 5.1.0 (2026-09-29)
 
 ### Minor Changes

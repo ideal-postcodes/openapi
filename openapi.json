@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "5.1.0",
+    "version": "5.1.1",
     "license": {
       "name": "Copyright (C) IDDQD Limited - All Rights Reserved",
       "url": "https://terms.ideal-postcodes.co.uk"
