@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "5.1.1",
+    "version": "5.1.2",
     "license": {
       "name": "Copyright (C) IDDQD Limited - All Rights Reserved",
       "url": "https://terms.ideal-postcodes.co.uk"
@@ -325,12 +325,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, postcodes } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await postcodes({\n  client,\n  path: { postcode: 'SW1A2AA' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA\",\n    params={\n        \"api_key\": \"ak_test\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.postcodes(\"SW1A2AA\")\n"
           },
           {
             "lang": "Ruby",
@@ -742,12 +742,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test');\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, keyAvailability } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await keyAvailability({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test\")\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.key_availability(\"ak_test\")\n"
           },
           {
             "lang": "Ruby",
@@ -830,12 +830,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, keyDetails } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await keyDetails({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.key_details(\"ak_test\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -854,7 +854,7 @@
           "Keys"
         ],
         "summary": "Update Details",
-        "description": "Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`.",
+        "description": "Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`. Datasets set by your plan cannot be changed here: sending one with a different value returns a 400.",
         "operationId": "UpdateKeyDetails",
         "security": [
           {
@@ -915,27 +915,27 @@
           {
             "lang": "cURL",
             "label": "curl",
-            "source": "curl -X PUT 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"name\": \"My Updated Key\",\n    \"daily_limit\": 1000,\n    \"notifications\": {\n      \"enabled\": true\n    }\n  }'\n"
+            "source": "curl -X PUT 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"name\": \"My Updated Key\",\n    \"daily_limit\": {\n      \"limit\": 1000\n    },\n    \"notifications\": {\n      \"enabled\": true\n    }\n  }'\n"
           },
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret', {\n  method: 'PUT',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'My Updated Key',\n    daily_limit: 1000,\n    notifications: {\n      enabled: true,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, updateKeyDetails } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await updateKeyDetails({\n  client,\n  path: { key: 'ak_test' },\n  body: {\n    name: 'My Updated Key',\n    daily_limit: {\n      limit: 1000,\n    },\n    notifications: {\n      enabled: true,\n    },\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.put(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"name\": \"My Updated Key\",\n        \"daily_limit\": 1000,\n        \"notifications\": {\n            \"enabled\": True,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.update_key_details(\n        \"ak_test\",\n        user_token=\"uk_secret\",\n        name=\"My Updated Key\",\n        daily_limit={\"limit\": 1000},\n        notifications={\"enabled\": True},\n    )\n"
           },
           {
             "lang": "Ruby",
             "label": "Ruby",
-            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret\")\nbody = {\n  name: \"My Updated Key\",\n  daily_limit: 1000,\n  notifications: {\n    enabled: true,\n  },\n}\nresponse = Net::HTTP.put(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
+            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret\")\nbody = {\n  name: \"My Updated Key\",\n  daily_limit: {\n    limit: 1000,\n  },\n  notifications: {\n    enabled: true,\n  },\n}\nresponse = Net::HTTP.put(uri, body.to_json, \"Content-Type\" => \"application/json\")\nresult = JSON.parse(response.body)[\"result\"]\n"
           },
           {
             "lang": "PHP",
             "label": "PHP",
-            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_CUSTOMREQUEST => \"PUT\",\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"name\" => \"My Updated Key\",\n    \"daily_limit\" => 1000,\n    \"notifications\" => [\n      \"enabled\" => true,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
+            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_CUSTOMREQUEST => \"PUT\",\n  CURLOPT_HTTPHEADER => [\"Content-Type: application/json\"],\n  CURLOPT_POSTFIELDS => json_encode([\n    \"name\" => \"My Updated Key\",\n    \"daily_limit\" => [\n      \"limit\" => 1000,\n    ],\n    \"notifications\" => [\n      \"enabled\" => true,\n    ],\n  ]),\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
           }
         ]
       }
@@ -1009,12 +1009,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/usage?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, keyUsage } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await keyUsage({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/usage\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.key_usage(\"ak_test\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -1097,12 +1097,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/lookups?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, keyLogs } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data: csv } = await keyLogs({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/lookups\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.key_logs(\"ak_test\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -1213,12 +1213,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/cleanse/addresses', {\n  method: 'POST',\n  headers: {\n    'Authorization': 'api_key=\"ak_test\"',\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({\n    query: '10 downing street sw1a',\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, addressCleanse } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await addressCleanse({\n  client,\n  body: {\n    query: '10 downing street sw1a',\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/cleanse/addresses\",\n    headers={\"Authorization\": 'api_key=\"ak_test\"'},\n    json={\n        \"query\": \"10 downing street sw1a\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.address_cleanse(query=\"10 downing street sw1a\")\n"
           },
           {
             "lang": "Ruby",
@@ -1459,12 +1459,17 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n    query: '10 downing',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient } from '@ideal-postcodes/sdk';\nimport { createAutocomplete } from '@ideal-postcodes/sdk/autocomplete';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\n// Debounces keystrokes, drops superseded requests and caches suggestions\nconst autocomplete = createAutocomplete({ client });\n\nconst hits = await autocomplete.find({ query: '10 downing' });\nif (hits?.length) {\n  const address = await autocomplete.resolve({ hit: hits[0] });\n}\n"
+          },
+          {
+            "lang": "JavaScript",
+            "label": "JavaScript (direct)",
+            "source": "import { createIdpcClient, findAddress } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await findAddress({\n  client,\n  query: { query: '10 downing' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses\",\n    params={\n        \"api_key\": \"ak_test\",\n        \"query\": \"10 downing\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.find_address(query=\"10 downing\")\n"
           },
           {
             "lang": "Ruby",
@@ -1559,12 +1564,17 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient } from '@ideal-postcodes/sdk';\nimport { createAutocomplete } from '@ideal-postcodes/sdk/autocomplete';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\n// Debounces keystrokes, drops superseded requests and caches suggestions\nconst autocomplete = createAutocomplete({ client });\n\nconst hits = await autocomplete.find({ query: '10 downing' });\nif (hits?.length) {\n  const address = await autocomplete.resolve({ hit: hits[0] });\n}\n"
+          },
+          {
+            "lang": "JavaScript",
+            "label": "JavaScript (direct)",
+            "source": "import { createIdpcClient, resolveAddress } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await resolveAddress({\n  client,\n  path: { address: 'paf_23747771' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr\",\n    params={\n        \"api_key\": \"ak_test\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.resolve_address(\"paf_23747771\")\n"
           },
           {
             "lang": "Ruby",
@@ -1728,12 +1738,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/addresses?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n    query: '10 downing street london',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, addresses } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await addresses({\n  client,\n  query: { query: '10 downing street london' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/addresses\",\n    params={\n        \"api_key\": \"ak_test\",\n        \"query\": \"10 downing street london\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.addresses(query=\"10 downing street london\")\n"
           },
           {
             "lang": "Ruby",
@@ -1878,12 +1888,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/places?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n    query: 'london',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, findPlace } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await findPlace({\n  client,\n  query: { query: 'london' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/places\",\n    params={\n        \"api_key\": \"ak_test\",\n        \"query\": \"london\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.find_place(query=\"london\")\n"
           },
           {
             "lang": "Ruby",
@@ -2134,12 +2144,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/places/geonames_5353?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, resolvePlace } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await resolvePlace({\n  client,\n  path: { place: 'geonames_5353' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/places/geonames_5353\",\n    params={\n        \"api_key\": \"ak_test\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.resolve_place(\"geonames_5353\")\n"
           },
           {
             "lang": "Ruby",
@@ -2235,12 +2245,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, listLicensees } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await listLicensees({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.list_licensees(\"ak_test\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -2315,12 +2325,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'Qwerty Widgets Limited',\n    address: '12 High Street, Manchester',\n    postcode: 'BR8 7RE',\n    whitelist: [],\n    daily: {\n      limit: 10000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, createLicensee } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await createLicensee({\n  client,\n  path: { key: 'ak_test' },\n  body: {\n    name: 'Qwerty Widgets Limited',\n    address: '12 High Street, Manchester',\n    postcode: 'BR8 7RE',\n    whitelist: [],\n    daily: {\n      limit: 10000,\n    },\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"name\": \"Qwerty Widgets Limited\",\n        \"address\": \"12 High Street, Manchester\",\n        \"postcode\": \"BR8 7RE\",\n        \"whitelist\": [],\n        \"daily\": {\n            \"limit\": 10000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.create_licensee(\n        \"ak_test\",\n        user_token=\"uk_secret\",\n        name=\"Qwerty Widgets Limited\",\n        address=\"12 High Street, Manchester\",\n        postcode=\"BR8 7RE\",\n        whitelist=[],\n        daily={\"limit\": 10000},\n    )\n"
           },
           {
             "lang": "Ruby",
@@ -2396,12 +2406,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, retrieveLicensee } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await retrieveLicensee({\n  client,\n  path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.retrieve_licensee(\"ak_test\", \"sl_ijoiqsxeQgXW2gkiE0X94\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -2504,12 +2514,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {\n  method: 'DELETE',\n});\n"
+            "source": "import { createIdpcClient, deleteLicensee } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await deleteLicensee({\n  client,\n  path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.delete(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94\",\n    params={\"user_token\": \"uk_secret\"},\n)\nresponse.raise_for_status()\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.delete_licensee(\"ak_test\", \"sl_ijoiqsxeQgXW2gkiE0X94\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -2587,12 +2597,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    daily: {\n      limit: 20000,\n    },\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, updateLicensee } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await updateLicensee({\n  client,\n  path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },\n  body: {\n    daily: {\n      limit: 20000,\n    },\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"daily\": {\n            \"limit\": 20000,\n        },\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.update_licensee(\n        \"ak_test\",\n        \"sl_ijoiqsxeQgXW2gkiE0X94\",\n        user_token=\"uk_secret\",\n        daily={\"limit\": 20000},\n    )\n"
           },
           {
             "lang": "Ruby",
@@ -2652,7 +2662,34 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "curl",
+            "source": "curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret'\n"
+          },
+          {
+            "lang": "JavaScript",
+            "label": "JavaScript",
+            "source": "import { createIdpcClient, regenerateLicenseeKey } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await regenerateLicenseeKey({\n  client,\n  path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },\n});\n"
+          },
+          {
+            "lang": "Python",
+            "label": "Python",
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.regenerate_licensee_key(\"ak_test\", \"sl_ijoiqsxeQgXW2gkiE0X94\", user_token=\"uk_secret\")\n"
+          },
+          {
+            "lang": "Ruby",
+            "label": "Ruby",
+            "source": "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret\")\nresponse = Net::HTTP.post(uri, \"\")\nresult = JSON.parse(response.body)[\"result\"]\n"
+          },
+          {
+            "lang": "PHP",
+            "label": "PHP",
+            "source": "<?php\n$ch = curl_init(\"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret\");\ncurl_setopt_array($ch, [\n  CURLOPT_POST => true,\n  CURLOPT_RETURNTRANSFER => true,\n]);\n$result = json_decode(curl_exec($ch), true)[\"result\"];\n"
+          }
+        ]
       }
     },
     "/keys/{key}/configs": {
@@ -2712,12 +2749,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, listConfigs } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await listConfigs({\n  client,\n  path: { key: 'ak_test' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.list_configs(\"ak_test\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -2792,12 +2829,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'woocommerce',\n    payload: '{\"removeOrganisation\": false}',\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, createConfig } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await createConfig({\n  client,\n  path: { key: 'ak_test' },\n  body: {\n    name: 'woocommerce',\n    payload: '{\"removeOrganisation\": false}',\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"name\": \"woocommerce\",\n        \"payload\": \"{\\\"removeOrganisation\\\": false}\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nimport json\n\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.create_config(\n        \"ak_test\",\n        user_token=\"uk_secret\",\n        name=\"woocommerce\",\n        payload=json.dumps({\"removeOrganisation\": False}),\n    )\n"
           },
           {
             "lang": "Ruby",
@@ -2875,12 +2912,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?' +\n  new URLSearchParams({\n    user_token: 'uk_secret',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, retrieveConfig } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await retrieveConfig({\n  client,\n  path: { key: 'ak_test', config: 'woocommerce' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce\",\n    params={\n        \"user_token\": \"uk_secret\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.retrieve_config(\"ak_test\", \"woocommerce\")\n"
           },
           {
             "lang": "Ruby",
@@ -2993,12 +3030,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?user_token=uk_secret', {\n  method: 'DELETE',\n});\n"
+            "source": "import { createIdpcClient, deleteConfig } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await deleteConfig({\n  client,\n  path: { key: 'ak_test', config: 'woocommerce' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.delete(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce\",\n    params={\"user_token\": \"uk_secret\"},\n)\nresponse.raise_for_status()\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.delete_config(\"ak_test\", \"woocommerce\", user_token=\"uk_secret\")\n"
           },
           {
             "lang": "Ruby",
@@ -3086,12 +3123,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?user_token=uk_secret', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    payload: '{\"removeOrganisation\": true}',\n  }),\n});\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, updateConfig } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });\n\nconst { data } = await updateConfig({\n  client,\n  path: { key: 'ak_test', config: 'woocommerce' },\n  body: {\n    payload: '{\"removeOrganisation\": true}',\n  },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.post(\n    \"https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce\",\n    params={\"user_token\": \"uk_secret\"},\n    json={\n        \"payload\": \"{\\\"removeOrganisation\\\": true}\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nimport json\n\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.update_config(\n        \"ak_test\",\n        \"woocommerce\",\n        user_token=\"uk_secret\",\n        payload=json.dumps({\"removeOrganisation\": True}),\n    )\n"
           },
           {
             "lang": "Ruby",
@@ -3192,12 +3229,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/emails?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n    query: 'foo@domain.com',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, emailValidation } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await emailValidation({\n  client,\n  query: { query: 'foo@domain.com' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/emails\",\n    params={\n        \"api_key\": \"ak_test\",\n        \"query\": \"foo@domain.com\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.email_validation(query=\"foo@domain.com\")\n"
           },
           {
             "lang": "Ruby",
@@ -3323,12 +3360,12 @@
           {
             "lang": "JavaScript",
             "label": "JavaScript",
-            "source": "const response = await fetch(\n  'https://api.ideal-postcodes.co.uk/v1/phone_numbers?' +\n  new URLSearchParams({\n    api_key: 'ak_test',\n    query: '02071128019',\n  })\n);\n\nconst { result } = await response.json();\n"
+            "source": "import { createIdpcClient, phoneNumberValidation } from '@ideal-postcodes/sdk';\n\nconst client = createIdpcClient({ apiKey: 'ak_test' });\n\nconst { data } = await phoneNumberValidation({\n  client,\n  query: { query: '02071128019' },\n});\n"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import requests\n\nresponse = requests.get(\n    \"https://api.ideal-postcodes.co.uk/v1/phone_numbers\",\n    params={\n        \"api_key\": \"ak_test\",\n        \"query\": \"02071128019\",\n    },\n)\nresult = response.json()[\"result\"]\n"
+            "source": "# pip install ideal-postcodes\nfrom ideal_postcodes import IdealPostcodes\n\nwith IdealPostcodes(\"ak_test\") as client:\n    result = client.phone_number_validation(query=\"02071128019\")\n"
           },
           {
             "lang": "Ruby",
@@ -3546,7 +3583,7 @@
                       "properties": {
                         "user_token": {
                           "type": "string",
-                          "description": "User-level token used to manage account resources via the api."
+                          "description": "User-level token used to manage account resources via the API."
                         },
                         "test_api_key": {
                           "type": "string",
@@ -3554,7 +3591,7 @@
                         },
                         "user_id": {
                           "type": "string",
-                          "description": "Internal api user id."
+                          "description": "Internal API user ID."
                         }
                       }
                     }
@@ -3769,7 +3806,7 @@
           "type": "string"
         },
         "example": "ak_test",
-        "description": "**API Key**\n\nThe API Key to retrieve. Begins `ak_`.\n"
+        "description": "**API Key**\n\nThe API Key. Begins `ak_`.\n"
       },
       "UserTokenParam": {
         "in": "query",
@@ -3779,7 +3816,7 @@
           "type": "string"
         },
         "name": "user_token",
-        "description": "**Management Key**\n\nA secret key used to manage your account and API Keys. It was previously called the user token.\n\nYour management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nTypically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.\n",
+        "description": "**Management Key**\n\nA secret key used to manage your account and API Keys. It was previously called the user token.\n\nYour management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).\n\nTypically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token=\"uk_...\"` header also works.\n",
         "example": "uk_B59ScW1p1HHouf1VqclEPZUx"
       },
       "StartParam": {
@@ -4340,7 +4377,7 @@
       "ID": {
         "title": "Address Identifier",
         "type": "string",
-        "description": "Global unique internally generated identifier for an address"
+        "description": "Globally unique internally generated identifier for an address"
       },
       "CountryISO": {
         "title": "ISO Country Code (3)",
@@ -14423,7 +14460,7 @@
             ]
           },
           "available": {
-            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions is met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has a valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
+            "description": "Determines whether the key can be used by the requesting agent. \n\nReturns false if one of the following conditions is met:\n  - Key has no lookups remaining\n  - Daily limit has been reached on the key\n  - Daily individual limit has been reached\n  - Key is not being used via an authorised URL\n  - (Sublicensed key only) Key has no valid licensee attached\n  - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee\n",
             "type": "boolean",
             "example": true
           }
@@ -15075,7 +15112,7 @@
           },
           "datasets": {
             "title": "API Key Dataset Availability",
-            "description": "Indicates which datasets are available and added by default to the address responses",
+            "description": "Datasets you can switch on or off for this key. Datasets set by your plan (`paf`, `mr`, `nyb`, `ecad`, `ecaf`) cannot be changed here: sending one with a different value returns a 400.",
             "type": "object",
             "properties": {
               "pafa": {
@@ -16125,7 +16162,7 @@
           "id": {
             "title": "Place Identifier",
             "type": "string",
-            "description": "Global unique internally generated identifier for a place"
+            "description": "Globally unique internally generated identifier for a place"
           },
           "dataset": {
             "title": "Dataset",
@@ -16229,6 +16266,135 @@
           }
         }
       },
+      "Licensee": {
+        "title": "Licensee",
+        "type": "object",
+        "required": [
+          "id",
+          "key",
+          "createdAt",
+          "name",
+          "address",
+          "postcode",
+          "whitelist",
+          "daily"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "56a11209ebe230380bf104c3",
+            "description": "An immutable ID provided for every licensee. Primarily used for paginated list requests.\n"
+          },
+          "key": {
+            "type": "string",
+            "example": "sl_ijoiqsxeQgXW2gkiE0X94",
+            "description": "Uniquely identifies a licensee for a key.\n\nRequired to perform paid lookups for a specific licensee. Typically begins `sl_`.\n"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2016-01-21T17:14:49.971Z",
+            "description": "Timestamp for when the licensee was created"
+          },
+          "name": {
+            "type": "string",
+            "example": "Qwerty Widgets Limited",
+            "description": "Licensee individual or organisation name"
+          },
+          "address": {
+            "example": "12 High Street, Manchester",
+            "type": "string",
+            "description": "Licensee's first, second and third line address as well as post town concatenated by commas"
+          },
+          "postcode": {
+            "example": "BR8 7RE",
+            "type": "string",
+            "description": "Licensee's postcode"
+          },
+          "whitelist": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://www.example.com"
+            },
+            "description": "A list of allowed URLs. An empty list disables the check.\n\nA request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:\n\n- `https://www.example.com` allows one site. Scheme and host must match\n- `*.example.com` allows the domain and all its subdomains"
+          },
+          "daily": {
+            "type": "object",
+            "required": [
+              "limit",
+              "count",
+              "updatedAt"
+            ],
+            "properties": {
+              "limit": {
+                "example": 10000,
+                "x-nullable": true,
+                "nullable": true,
+                "minimum": 0,
+                "format": "int32",
+                "type": "number",
+                "description": "The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active"
+              },
+              "count": {
+                "example": 232,
+                "minimum": 0,
+                "type": "number",
+                "format": "int32",
+                "description": "The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2016-08-05T16:43:28.865Z",
+                "description": "The timestamp when the limit was last used."
+              }
+            }
+          }
+        }
+      },
+      "LicenseesResponse": {
+        "title": "Licensee List Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "description": "List of licensees",
+            "type": "object",
+            "required": [
+              "licensees",
+              "hasMore"
+            ],
+            "properties": {
+              "licensees": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Licensee"
+                }
+              },
+              "hasMore": {
+                "type": "boolean",
+                "description": "Returns true if there are more licensees listed after the maximum number of results as implied by `limit`"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          }
+        }
+      },
       "LicenseeEditable": {
         "title": "Licensee",
         "description": "Licensee object which can be defined by user",
@@ -16273,105 +16439,6 @@
           }
         }
       },
-      "Licensee": {
-        "title": "Licensee",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LicenseeEditable"
-          },
-          {
-            "type": "object",
-            "required": [
-              "id",
-              "key",
-              "createdAt",
-              "name",
-              "address",
-              "postcode",
-              "whitelist",
-              "daily"
-            ],
-            "properties": {
-              "id": {
-                "type": "string",
-                "example": "56a11209ebe230380bf104c3",
-                "description": "An immutable ID provided for every licensee. Primarily used for paginated list requests.\n"
-              },
-              "key": {
-                "type": "string",
-                "example": "sl_ijoiqsxeQgXW2gkiE0X94",
-                "description": "Uniquely identifies a licensee for a key. \n\nRequired to perform paid lookups for a specific licensee. Typically begins `sl_`.\n"
-              },
-              "createdAt": {
-                "type": "string",
-                "example": "2016-01-21T17:14:49.971Z",
-                "description": "Timestamp for when the licensee was created"
-              },
-              "daily": {
-                "required": [
-                  "count",
-                  "updatedAt"
-                ],
-                "type": "object",
-                "properties": {
-                  "count": {
-                    "example": 232,
-                    "minimum": 0,
-                    "type": "number",
-                    "format": "int32",
-                    "description": "The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "example": "2016-08-05T16:43:28.865Z",
-                    "description": "The timestamp when the limit was last used."
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
-      "LicenseesResponse": {
-        "title": "Licensee List Response",
-        "type": "object",
-        "required": [
-          "message",
-          "code",
-          "result"
-        ],
-        "properties": {
-          "result": {
-            "description": "List of licensees",
-            "type": "object",
-            "properties": {
-              "licensees": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Licensee"
-                }
-              },
-              "hasMore": {
-                "type": "boolean",
-                "description": "Returns true if there are more licensees listed after the maximum number of results as implied by `limit`"
-              }
-            }
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Success"
-            ]
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              2000
-            ]
-          }
-        }
-      },
       "LicenseeResponse": {
         "title": "Licensee Response",
         "type": "object",
@@ -16412,12 +16479,12 @@
           "updatedAt": {
             "type": "string",
             "example": "2016-01-21T17:14:49.971Z",
-            "description": "Timestamp for when the config was created"
+            "description": "Timestamp for when the config was last updated"
           },
           "createdAt": {
             "type": "string",
             "example": "2016-01-21T17:14:49.971Z",
-            "description": "Timestamp for when the config was updated"
+            "description": "Timestamp for when the config was created"
           },
           "name": {
             "type": "string",

@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.1.2 (2026-10-22)
+
+### Patch Changes
+
+- `Licensee` and `LicenseesResponse` mark the fields the API always returns as required
+- `PUT /keys/{key}/details` documents the 400 returned when a request changes a dataset set by your plan
+- Clarify the `key` path parameter and Management Key header descriptions
+
 ## 5.1.1 (2026-10-02)
 
 ### Patch Changes

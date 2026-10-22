@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 5.1.1
+  version: 5.1.2
   license:
     name: Copyright (C) IDDQD Limited - All Rights Reserved
     url: https://terms.ideal-postcodes.co.uk
@@ -442,26 +442,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-              })
-            );
+            import { createIdpcClient, postcodes } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await postcodes({
+              client,
+              path: { postcode: 'SW1A2AA' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/postcodes/SW1A2AA",
-                params={
-                    "api_key": "ak_test",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.postcodes("SW1A2AA")
         - lang: Ruby
           label: Ruby
           source: |
@@ -881,16 +877,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test');
+            import { createIdpcClient, keyAvailability } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await keyAvailability({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get("https://api.ideal-postcodes.co.uk/v1/keys/ak_test")
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.key_availability("ak_test")
         - lang: Ruby
           label: Ruby
           source: |
@@ -950,26 +952,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, keyDetails } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await keyDetails({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.key_details("ak_test", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -994,7 +992,7 @@ paths:
       tags:
         - Keys
       summary: Update Details
-      description: Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`.
+      description: 'Updates a key''s settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`. Datasets set by your plan cannot be changed here: sending one with a different value returns a 400.'
       operationId: UpdateKeyDetails
       security:
         - ManagementKey: []
@@ -1034,7 +1032,9 @@ paths:
               -H 'Content-Type: application/json' \
               -d '{
                 "name": "My Updated Key",
-                "daily_limit": 1000,
+                "daily_limit": {
+                  "limit": 1000
+                },
                 "notifications": {
                   "enabled": true
                 }
@@ -1042,36 +1042,37 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            import { createIdpcClient, updateKeyDetails } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await updateKeyDetails({
+              client,
+              path: { key: 'ak_test' },
+              body: {
                 name: 'My Updated Key',
-                daily_limit: 1000,
+                daily_limit: {
+                  limit: 1000,
+                },
                 notifications: {
                   enabled: true,
                 },
-              }),
+              },
             });
-
-            const { result } = await response.json();
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.put(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details",
-                params={"user_token": "uk_secret"},
-                json={
-                    "name": "My Updated Key",
-                    "daily_limit": 1000,
-                    "notifications": {
-                        "enabled": True,
-                    },
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.update_key_details(
+                    "ak_test",
+                    user_token="uk_secret",
+                    name="My Updated Key",
+                    daily_limit={"limit": 1000},
+                    notifications={"enabled": True},
+                )
         - lang: Ruby
           label: Ruby
           source: |
@@ -1081,7 +1082,9 @@ paths:
             uri = URI("https://api.ideal-postcodes.co.uk/v1/keys/ak_test/details?user_token=uk_secret")
             body = {
               name: "My Updated Key",
-              daily_limit: 1000,
+              daily_limit: {
+                limit: 1000,
+              },
               notifications: {
                 enabled: true,
               },
@@ -1098,7 +1101,9 @@ paths:
               CURLOPT_HTTPHEADER => ["Content-Type: application/json"],
               CURLOPT_POSTFIELDS => json_encode([
                 "name" => "My Updated Key",
-                "daily_limit" => 1000,
+                "daily_limit" => [
+                  "limit" => 1000,
+                ],
                 "notifications" => [
                   "enabled" => true,
                 ],
@@ -1153,26 +1158,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/usage?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, keyUsage } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await keyUsage({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/usage",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.key_usage("ak_test", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -1271,26 +1272,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/lookups?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, keyLogs } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data: csv } = await keyLogs({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/lookups",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.key_logs("ak_test", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -1421,31 +1418,24 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/cleanse/addresses', {
-              method: 'POST',
-              headers: {
-                'Authorization': 'api_key="ak_test"',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                query: '10 downing street sw1a',
-              }),
-            });
+            import { createIdpcClient, addressCleanse } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await addressCleanse({
+              client,
+              body: {
+                query: '10 downing street sw1a',
+              },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.post(
-                "https://api.ideal-postcodes.co.uk/v1/cleanse/addresses",
-                headers={"Authorization": 'api_key="ak_test"'},
-                json={
-                    "query": "10 downing street sw1a",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.address_cleanse(query="10 downing street sw1a")
         - lang: Ruby
           label: Ruby
           source: |
@@ -1639,28 +1629,37 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-                query: '10 downing',
-              })
-            );
+            import { createIdpcClient } from '@ideal-postcodes/sdk';
+            import { createAutocomplete } from '@ideal-postcodes/sdk/autocomplete';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            // Debounces keystrokes, drops superseded requests and caches suggestions
+            const autocomplete = createAutocomplete({ client });
+
+            const hits = await autocomplete.find({ query: '10 downing' });
+            if (hits?.length) {
+              const address = await autocomplete.resolve({ hit: hits[0] });
+            }
+        - lang: JavaScript
+          label: JavaScript (direct)
+          source: |
+            import { createIdpcClient, findAddress } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await findAddress({
+              client,
+              query: { query: '10 downing' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses",
-                params={
-                    "api_key": "ak_test",
-                    "query": "10 downing",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.find_address(query="10 downing")
         - lang: Ruby
           label: Ruby
           source: |
@@ -1746,26 +1745,37 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-              })
-            );
+            import { createIdpcClient } from '@ideal-postcodes/sdk';
+            import { createAutocomplete } from '@ideal-postcodes/sdk/autocomplete';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            // Debounces keystrokes, drops superseded requests and caches suggestions
+            const autocomplete = createAutocomplete({ client });
+
+            const hits = await autocomplete.find({ query: '10 downing' });
+            if (hits?.length) {
+              const address = await autocomplete.resolve({ hit: hits[0] });
+            }
+        - lang: JavaScript
+          label: JavaScript (direct)
+          source: |
+            import { createIdpcClient, resolveAddress } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await resolveAddress({
+              client,
+              path: { address: 'paf_23747771' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses/paf_23747771/gbr",
-                params={
-                    "api_key": "ak_test",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.resolve_address("paf_23747771")
         - lang: Ruby
           label: Ruby
           source: |
@@ -1917,28 +1927,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/addresses?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-                query: '10 downing street london',
-              })
-            );
+            import { createIdpcClient, addresses } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await addresses({
+              client,
+              query: { query: '10 downing street london' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/addresses",
-                params={
-                    "api_key": "ak_test",
-                    "query": "10 downing street london",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.addresses(query="10 downing street london")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2062,28 +2066,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/places?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-                query: 'london',
-              })
-            );
+            import { createIdpcClient, findPlace } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await findPlace({
+              client,
+              query: { query: 'london' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/places",
-                params={
-                    "api_key": "ak_test",
-                    "query": "london",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.find_place(query="london")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2314,26 +2312,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/places/geonames_5353?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-              })
-            );
+            import { createIdpcClient, resolvePlace } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await resolvePlace({
+              client,
+              path: { place: 'geonames_5353' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/places/geonames_5353",
-                params={
-                    "api_key": "ak_test",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.resolve_place("geonames_5353")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2408,26 +2402,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, listLicensees } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await listLicensees({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.list_licensees("ak_test", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2496,10 +2486,14 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees?user_token=uk_secret', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            import { createIdpcClient, createLicensee } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await createLicensee({
+              client,
+              path: { key: 'ak_test' },
+              body: {
                 name: 'Qwerty Widgets Limited',
                 address: '12 High Street, Manchester',
                 postcode: 'BR8 7RE',
@@ -2507,29 +2501,24 @@ paths:
                 daily: {
                   limit: 10000,
                 },
-              }),
+              },
             });
-
-            const { result } = await response.json();
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.post(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees",
-                params={"user_token": "uk_secret"},
-                json={
-                    "name": "Qwerty Widgets Limited",
-                    "address": "12 High Street, Manchester",
-                    "postcode": "BR8 7RE",
-                    "whitelist": [],
-                    "daily": {
-                        "limit": 10000,
-                    },
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.create_licensee(
+                    "ak_test",
+                    user_token="uk_secret",
+                    name="Qwerty Widgets Limited",
+                    address="12 High Street, Manchester",
+                    postcode="BR8 7RE",
+                    whitelist=[],
+                    daily={"limit": 10000},
+                )
         - lang: Ruby
           label: Ruby
           source: |
@@ -2608,26 +2597,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, retrieveLicensee } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await retrieveLicensee({
+              client,
+              path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.retrieve_licensee("ak_test", "sl_ijoiqsxeQgXW2gkiE0X94", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2706,19 +2691,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {
-              method: 'DELETE',
+            import { createIdpcClient, deleteLicensee } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await deleteLicensee({
+              client,
+              path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },
             });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.delete(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94",
-                params={"user_token": "uk_secret"},
-            )
-            response.raise_for_status()
+            with IdealPostcodes("ak_test") as client:
+                result = client.delete_licensee("ak_test", "sl_ijoiqsxeQgXW2gkiE0X94", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2783,32 +2771,32 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94?user_token=uk_secret', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            import { createIdpcClient, updateLicensee } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await updateLicensee({
+              client,
+              path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },
+              body: {
                 daily: {
                   limit: 20000,
                 },
-              }),
+              },
             });
-
-            const { result } = await response.json();
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.post(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94",
-                params={"user_token": "uk_secret"},
-                json={
-                    "daily": {
-                        "limit": 20000,
-                    },
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.update_licensee(
+                    "ak_test",
+                    "sl_ijoiqsxeQgXW2gkiE0X94",
+                    user_token="uk_secret",
+                    daily={"limit": 20000},
+                )
         - lang: Ruby
           label: Ruby
           source: |
@@ -2865,6 +2853,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: cURL
+          label: curl
+          source: |
+            curl -X POST 'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret'
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            import { createIdpcClient, regenerateLicenseeKey } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await regenerateLicenseeKey({
+              client,
+              path: { key: 'ak_test', licensee: 'sl_ijoiqsxeQgXW2gkiE0X94' },
+            });
+        - lang: Python
+          label: Python
+          source: |
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
+
+            with IdealPostcodes("ak_test") as client:
+                result = client.regenerate_licensee_key("ak_test", "sl_ijoiqsxeQgXW2gkiE0X94", user_token="uk_secret")
+        - lang: Ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "json"
+
+            uri = URI("https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret")
+            response = Net::HTTP.post(uri, "")
+            result = JSON.parse(response.body)["result"]
+        - lang: PHP
+          label: PHP
+          source: |
+            <?php
+            $ch = curl_init("https://api.ideal-postcodes.co.uk/v1/keys/ak_test/licensees/sl_ijoiqsxeQgXW2gkiE0X94/regenerate-key?user_token=uk_secret");
+            curl_setopt_array($ch, [
+              CURLOPT_POST => true,
+              CURLOPT_RETURNTRANSFER => true,
+            ]);
+            $result = json_decode(curl_exec($ch), true)["result"];
   /keys/{key}/configs:
     get:
       tags:
@@ -2903,26 +2934,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, listConfigs } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await listConfigs({
+              client,
+              path: { key: 'ak_test' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.list_configs("ak_test", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -2986,30 +3013,33 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs?user_token=uk_secret', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            import { createIdpcClient, createConfig } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await createConfig({
+              client,
+              path: { key: 'ak_test' },
+              body: {
                 name: 'woocommerce',
                 payload: '{"removeOrganisation": false}',
-              }),
+              },
             });
-
-            const { result } = await response.json();
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            import json
 
-            response = requests.post(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs",
-                params={"user_token": "uk_secret"},
-                json={
-                    "name": "woocommerce",
-                    "payload": "{\"removeOrganisation\": false}",
-                },
-            )
-            result = response.json()["result"]
+            from ideal_postcodes import IdealPostcodes
+
+            with IdealPostcodes("ak_test") as client:
+                result = client.create_config(
+                    "ak_test",
+                    user_token="uk_secret",
+                    name="woocommerce",
+                    payload=json.dumps({"removeOrganisation": False}),
+                )
         - lang: Ruby
           label: Ruby
           source: |
@@ -3081,26 +3111,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?' +
-              new URLSearchParams({
-                user_token: 'uk_secret',
-              })
-            );
+            import { createIdpcClient, retrieveConfig } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await retrieveConfig({
+              client,
+              path: { key: 'ak_test', config: 'woocommerce' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce",
-                params={
-                    "user_token": "uk_secret",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.retrieve_config("ak_test", "woocommerce")
         - lang: Ruby
           label: Ruby
           source: |
@@ -3185,19 +3211,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?user_token=uk_secret', {
-              method: 'DELETE',
+            import { createIdpcClient, deleteConfig } from '@ideal-postcodes/sdk';
+
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await deleteConfig({
+              client,
+              path: { key: 'ak_test', config: 'woocommerce' },
             });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.delete(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce",
-                params={"user_token": "uk_secret"},
-            )
-            response.raise_for_status()
+            with IdealPostcodes("ak_test") as client:
+                result = client.delete_config("ak_test", "woocommerce", user_token="uk_secret")
         - lang: Ruby
           label: Ruby
           source: |
@@ -3266,28 +3295,32 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch('https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce?user_token=uk_secret', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                payload: '{"removeOrganisation": true}',
-              }),
-            });
+            import { createIdpcClient, updateConfig } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test', userToken: 'uk_secret' });
+
+            const { data } = await updateConfig({
+              client,
+              path: { key: 'ak_test', config: 'woocommerce' },
+              body: {
+                payload: '{"removeOrganisation": true}',
+              },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            import json
 
-            response = requests.post(
-                "https://api.ideal-postcodes.co.uk/v1/keys/ak_test/configs/woocommerce",
-                params={"user_token": "uk_secret"},
-                json={
-                    "payload": "{\"removeOrganisation\": true}",
-                },
-            )
-            result = response.json()["result"]
+            from ideal_postcodes import IdealPostcodes
+
+            with IdealPostcodes("ak_test") as client:
+                result = client.update_config(
+                    "ak_test",
+                    "woocommerce",
+                    user_token="uk_secret",
+                    payload=json.dumps({"removeOrganisation": True}),
+                )
         - lang: Ruby
           label: Ruby
           source: |
@@ -3380,28 +3413,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/emails?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-                query: 'foo@domain.com',
-              })
-            );
+            import { createIdpcClient, emailValidation } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await emailValidation({
+              client,
+              query: { query: 'foo@domain.com' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/emails",
-                params={
-                    "api_key": "ak_test",
-                    "query": "foo@domain.com",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.email_validation(query="foo@domain.com")
         - lang: Ruby
           label: Ruby
           source: |
@@ -3511,28 +3538,22 @@ paths:
         - lang: JavaScript
           label: JavaScript
           source: |
-            const response = await fetch(
-              'https://api.ideal-postcodes.co.uk/v1/phone_numbers?' +
-              new URLSearchParams({
-                api_key: 'ak_test',
-                query: '02071128019',
-              })
-            );
+            import { createIdpcClient, phoneNumberValidation } from '@ideal-postcodes/sdk';
 
-            const { result } = await response.json();
+            const client = createIdpcClient({ apiKey: 'ak_test' });
+
+            const { data } = await phoneNumberValidation({
+              client,
+              query: { query: '02071128019' },
+            });
         - lang: Python
           label: Python
           source: |
-            import requests
+            # pip install ideal-postcodes
+            from ideal_postcodes import IdealPostcodes
 
-            response = requests.get(
-                "https://api.ideal-postcodes.co.uk/v1/phone_numbers",
-                params={
-                    "api_key": "ak_test",
-                    "query": "02071128019",
-                },
-            )
-            result = response.json()["result"]
+            with IdealPostcodes("ak_test") as client:
+                result = client.phone_number_validation(query="02071128019")
         - lang: Ruby
           label: Ruby
           source: |
@@ -3782,13 +3803,13 @@ paths:
                     properties:
                       user_token:
                         type: string
-                        description: User-level token used to manage account resources via the api.
+                        description: User-level token used to manage account resources via the API.
                       test_api_key:
                         type: string
                         description: Initial test API key for the account.
                       user_id:
                         type: string
-                        description: Internal api user id.
+                        description: Internal API user ID.
         '202':
           description: Pending, keep polling
           content:
@@ -3996,7 +4017,7 @@ components:
       description: |
         **API Key**
 
-        The API Key to retrieve. Begins `ak_`.
+        The API Key. Begins `ak_`.
     UserTokenParam:
       in: query
       style: form
@@ -4011,7 +4032,7 @@ components:
 
         Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
 
-        Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+        Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
       example: uk_B59ScW1p1HHouf1VqclEPZUx
     StartParam:
       name: start
@@ -4627,7 +4648,7 @@ components:
     ID:
       title: Address Identifier
       type: string
-      description: Global unique internally generated identifier for an address
+      description: Globally unique internally generated identifier for an address
     CountryISO:
       title: ISO Country Code (3)
       type: string
@@ -15141,7 +15162,7 @@ components:
               - Daily limit has been reached on the key
               - Daily individual limit has been reached
               - Key is not being used via an authorised URL
-              - (Sublicensed key only) Key has a valid licensee attached
+              - (Sublicensed key only) Key has no valid licensee attached
               - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
           type: boolean
           example: true
@@ -15694,7 +15715,7 @@ components:
           description: Accept IP addresses forwarded in the `IDPC-Source-IP` header
         datasets:
           title: API Key Dataset Availability
-          description: Indicates which datasets are available and added by default to the address responses
+          description: 'Datasets you can switch on or off for this key. Datasets set by your plan (`paf`, `mr`, `nyb`, `ecad`, `ecaf`) cannot be changed here: sending one with a different value returns a 400.'
           type: object
           properties:
             pafa:
@@ -16532,7 +16553,7 @@ components:
         id:
           title: Place Identifier
           type: string
-          description: Global unique internally generated identifier for a place
+          description: Globally unique internally generated identifier for a place
         dataset:
           title: Dataset
           type: string
@@ -16611,6 +16632,115 @@ components:
             - Success
         result:
           $ref: '#/components/schemas/Place'
+    Licensee:
+      title: Licensee
+      type: object
+      required:
+        - id
+        - key
+        - createdAt
+        - name
+        - address
+        - postcode
+        - whitelist
+        - daily
+      properties:
+        id:
+          type: string
+          example: 56a11209ebe230380bf104c3
+          description: |
+            An immutable ID provided for every licensee. Primarily used for paginated list requests.
+        key:
+          type: string
+          example: sl_ijoiqsxeQgXW2gkiE0X94
+          description: |
+            Uniquely identifies a licensee for a key.
+
+            Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
+        createdAt:
+          type: string
+          example: '2016-01-21T17:14:49.971Z'
+          description: Timestamp for when the licensee was created
+        name:
+          type: string
+          example: Qwerty Widgets Limited
+          description: Licensee individual or organisation name
+        address:
+          example: 12 High Street, Manchester
+          type: string
+          description: Licensee's first, second and third line address as well as post town concatenated by commas
+        postcode:
+          example: BR8 7RE
+          type: string
+          description: Licensee's postcode
+        whitelist:
+          type: array
+          items:
+            type: string
+            example: https://www.example.com
+          description: |-
+            A list of allowed URLs. An empty list disables the check.
+
+            A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+
+            - `https://www.example.com` allows one site. Scheme and host must match
+            - `*.example.com` allows the domain and all its subdomains
+        daily:
+          type: object
+          required:
+            - limit
+            - count
+            - updatedAt
+          properties:
+            limit:
+              example: 10000
+              x-nullable: true
+              nullable: true
+              minimum: 0
+              format: int32
+              type: number
+              description: The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active
+            count:
+              example: 232
+              minimum: 0
+              type: number
+              format: int32
+              description: The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
+            updatedAt:
+              type: string
+              example: '2016-08-05T16:43:28.865Z'
+              description: The timestamp when the limit was last used.
+    LicenseesResponse:
+      title: Licensee List Response
+      type: object
+      required:
+        - message
+        - code
+        - result
+      properties:
+        result:
+          description: List of licensees
+          type: object
+          required:
+            - licensees
+            - hasMore
+          properties:
+            licensees:
+              type: array
+              items:
+                $ref: '#/components/schemas/Licensee'
+            hasMore:
+              type: boolean
+              description: Returns true if there are more licensees listed after the maximum number of results as implied by `limit`
+        message:
+          type: string
+          enum:
+            - Success
+        code:
+          type: integer
+          format: int32
+          enum:
+            - 2000
     LicenseeEditable:
       title: Licensee
       description: Licensee object which can be defined by user
@@ -16651,81 +16781,6 @@ components:
               format: int32
               type: number
               description: The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active
-    Licensee:
-      title: Licensee
-      allOf:
-        - $ref: '#/components/schemas/LicenseeEditable'
-        - type: object
-          required:
-            - id
-            - key
-            - createdAt
-            - name
-            - address
-            - postcode
-            - whitelist
-            - daily
-          properties:
-            id:
-              type: string
-              example: 56a11209ebe230380bf104c3
-              description: |
-                An immutable ID provided for every licensee. Primarily used for paginated list requests.
-            key:
-              type: string
-              example: sl_ijoiqsxeQgXW2gkiE0X94
-              description: |
-                Uniquely identifies a licensee for a key. 
-
-                Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
-            createdAt:
-              type: string
-              example: '2016-01-21T17:14:49.971Z'
-              description: Timestamp for when the licensee was created
-            daily:
-              required:
-                - count
-                - updatedAt
-              type: object
-              properties:
-                count:
-                  example: 232
-                  minimum: 0
-                  type: number
-                  format: int32
-                  description: The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
-                updatedAt:
-                  type: string
-                  example: '2016-08-05T16:43:28.865Z'
-                  description: The timestamp when the limit was last used.
-    LicenseesResponse:
-      title: Licensee List Response
-      type: object
-      required:
-        - message
-        - code
-        - result
-      properties:
-        result:
-          description: List of licensees
-          type: object
-          properties:
-            licensees:
-              type: array
-              items:
-                $ref: '#/components/schemas/Licensee'
-            hasMore:
-              type: boolean
-              description: Returns true if there are more licensees listed after the maximum number of results as implied by `limit`
-        message:
-          type: string
-          enum:
-            - Success
-        code:
-          type: integer
-          format: int32
-          enum:
-            - 2000
     LicenseeResponse:
       title: Licensee Response
       type: object
@@ -16757,11 +16812,11 @@ components:
         updatedAt:
           type: string
           example: '2016-01-21T17:14:49.971Z'
-          description: Timestamp for when the config was created
+          description: Timestamp for when the config was last updated
         createdAt:
           type: string
           example: '2016-01-21T17:14:49.971Z'
-          description: Timestamp for when the config was updated
+          description: Timestamp for when the config was created
         name:
           type: string
           example: woocommerce

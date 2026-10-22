@@ -172,7 +172,7 @@ export interface paths {
         get: operations["KeyDetails"];
         /**
          * Update Details
-         * @description Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`.
+         * @description Updates a key's settings and returns its private details. Only the fields you send change. A key on an unlimited plan ignores changes to `datasets`, `daily_limit` and `monthly_limit`. Datasets set by your plan cannot be changed here: sending one with a different value returns a 400.
          */
         put: operations["UpdateKeyDetails"];
         post?: never;
@@ -771,7 +771,7 @@ export interface components {
         };
         /**
          * Address Identifier
-         * @description Global unique internally generated identifier for an address
+         * @description Globally unique internally generated identifier for an address
          */
         ID: string;
         /**
@@ -8022,7 +8022,7 @@ export interface components {
              *       - Daily limit has been reached on the key
              *       - Daily individual limit has been reached
              *       - Key is not being used via an authorised URL
-             *       - (Sublicensed key only) Key has a valid licensee attached
+             *       - (Sublicensed key only) Key has no valid licensee attached
              *       - (Sublicensed key only) Key is not being used via an authorised URL specified by licensee
              * @example true
              */
@@ -8463,7 +8463,7 @@ export interface components {
             ip_forwarding: boolean;
             /**
              * API Key Dataset Availability
-             * @description Indicates which datasets are available and added by default to the address responses
+             * @description Datasets you can switch on or off for this key. Datasets set by your plan (`paf`, `mr`, `nyb`, `ecad`, `ecaf`) cannot be changed here: sending one with a different value returns a 400.
              */
             datasets?: {
                 /**
@@ -9090,7 +9090,7 @@ export interface components {
         Place: {
             /**
              * Place Identifier
-             * @description Global unique internally generated identifier for a place
+             * @description Globally unique internally generated identifier for a place
              */
             id: string;
             /**
@@ -9118,6 +9118,85 @@ export interface components {
             /** @enum {string} */
             message: "Success";
             result: components["schemas"]["Place"];
+        };
+        /** Licensee */
+        Licensee: {
+            /**
+             * @description An immutable ID provided for every licensee. Primarily used for paginated list requests.
+             * @example 56a11209ebe230380bf104c3
+             */
+            id: string;
+            /**
+             * @description Uniquely identifies a licensee for a key.
+             *
+             *     Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
+             * @example sl_ijoiqsxeQgXW2gkiE0X94
+             */
+            key: string;
+            /**
+             * @description Timestamp for when the licensee was created
+             * @example 2016-01-21T17:14:49.971Z
+             */
+            createdAt: string;
+            /**
+             * @description Licensee individual or organisation name
+             * @example Qwerty Widgets Limited
+             */
+            name: string;
+            /**
+             * @description Licensee's first, second and third line address as well as post town concatenated by commas
+             * @example 12 High Street, Manchester
+             */
+            address: string;
+            /**
+             * @description Licensee's postcode
+             * @example BR8 7RE
+             */
+            postcode: string;
+            /**
+             * @description A list of allowed URLs. An empty list disables the check.
+             *
+             *     A request is allowed when its `Origin` or `Referer` header matches an entry. Use one of these formats:
+             *
+             *     - `https://www.example.com` allows one site. Scheme and host must match
+             *     - `*.example.com` allows the domain and all its subdomains
+             */
+            whitelist: string[];
+            daily: {
+                /**
+                 * Format: int32
+                 * @description The maximum number of lookups this licensee can perform in a day. `null` indicates the limit is not active
+                 * @example 10000
+                 */
+                limit: number | null;
+                /**
+                 * Format: int32
+                 * @description The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
+                 * @example 232
+                 */
+                count: number;
+                /**
+                 * @description The timestamp when the limit was last used.
+                 * @example 2016-08-05T16:43:28.865Z
+                 */
+                updatedAt: string;
+            };
+        };
+        /** Licensee List Response */
+        LicenseesResponse: {
+            /** @description List of licensees */
+            result: {
+                licensees: components["schemas"]["Licensee"][];
+                /** @description Returns true if there are more licensees listed after the maximum number of results as implied by `limit` */
+                hasMore: boolean;
+            };
+            /** @enum {string} */
+            message: "Success";
+            /**
+             * Format: int32
+             * @enum {integer}
+             */
+            code: 2000;
         };
         /**
          * Licensee
@@ -9157,55 +9236,6 @@ export interface components {
                 limit?: number | null;
             };
         };
-        /** Licensee */
-        Licensee: components["schemas"]["LicenseeEditable"] & {
-            /**
-             * @description An immutable ID provided for every licensee. Primarily used for paginated list requests.
-             * @example 56a11209ebe230380bf104c3
-             */
-            id: string;
-            /**
-             * @description Uniquely identifies a licensee for a key.
-             *
-             *     Required to perform paid lookups for a specific licensee. Typically begins `sl_`.
-             * @example sl_ijoiqsxeQgXW2gkiE0X94
-             */
-            key: string;
-            /**
-             * @description Timestamp for when the licensee was created
-             * @example 2016-01-21T17:14:49.971Z
-             */
-            createdAt: string;
-            daily: {
-                /**
-                 * Format: int32
-                 * @description The number of lookups performed by the licensee on the day represented by `licensees.daily.updatedAt`
-                 * @example 232
-                 */
-                count: number;
-                /**
-                 * @description The timestamp when the limit was last used.
-                 * @example 2016-08-05T16:43:28.865Z
-                 */
-                updatedAt: string;
-            };
-        };
-        /** Licensee List Response */
-        LicenseesResponse: {
-            /** @description List of licensees */
-            result: {
-                licensees?: components["schemas"]["Licensee"][];
-                /** @description Returns true if there are more licensees listed after the maximum number of results as implied by `limit` */
-                hasMore?: boolean;
-            };
-            /** @enum {string} */
-            message: "Success";
-            /**
-             * Format: int32
-             * @enum {integer}
-             */
-            code: 2000;
-        };
         /** Licensee Response */
         LicenseeResponse: {
             result: components["schemas"]["Licensee"];
@@ -9220,12 +9250,12 @@ export interface components {
         /** Config Object */
         Config: {
             /**
-             * @description Timestamp for when the config was created
+             * @description Timestamp for when the config was last updated
              * @example 2016-01-21T17:14:49.971Z
              */
             updatedAt: string;
             /**
-             * @description Timestamp for when the config was updated
+             * @description Timestamp for when the config was created
              * @example 2016-01-21T17:14:49.971Z
              */
             createdAt: string;
@@ -9545,7 +9575,7 @@ export interface components {
         /**
          * @description **API Key**
          *
-         *     The API Key to retrieve. Begins `ak_`.
+         *     The API Key. Begins `ak_`.
          * @example ak_test
          */
         ApiKeyPathParam: string;
@@ -9556,7 +9586,7 @@ export interface components {
          *
          *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
          *
-         *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+         *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
          * @example uk_B59ScW1p1HHouf1VqclEPZUx
          */
         UserTokenParam: string;
@@ -10114,7 +10144,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -10162,7 +10192,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10172,7 +10202,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -10220,7 +10250,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10230,7 +10260,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -10282,7 +10312,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10324,7 +10354,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -10363,7 +10393,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -10394,7 +10424,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11304,7 +11334,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11325,7 +11355,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11364,7 +11394,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11374,7 +11404,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11417,7 +11447,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11427,7 +11457,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11473,7 +11503,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11483,7 +11513,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11533,7 +11563,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11543,7 +11573,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11604,7 +11634,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11614,7 +11644,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11660,7 +11690,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11670,7 +11700,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11709,7 +11739,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11719,7 +11749,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11760,7 +11790,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11815,7 +11845,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11825,7 +11855,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -11884,7 +11914,7 @@ export interface operations {
                  *
                  *     Your management key can be retrieved and managed from your [accounts page](https://account.ideal-postcodes.co.uk/account).
                  *
-                 *     Typically begins `uk_...`. Prefer the `Authorization: Bearer uk_...` header.
+                 *     Typically begins `uk_`. Prefer sending it in the `Authorization` header as `Bearer uk_...` instead of this query parameter. The `Authorization: user_token="uk_..."` header also works.
                  * @example uk_B59ScW1p1HHouf1VqclEPZUx
                  */
                 user_token?: components["parameters"]["UserTokenParam"];
@@ -11894,7 +11924,7 @@ export interface operations {
                 /**
                  * @description **API Key**
                  *
-                 *     The API Key to retrieve. Begins `ak_`.
+                 *     The API Key. Begins `ak_`.
                  * @example ak_test
                  */
                 key: components["parameters"]["ApiKeyPathParam"];
@@ -12152,11 +12182,11 @@ export interface operations {
                         /** @example Success */
                         message: string;
                         result: {
-                            /** @description User-level token used to manage account resources via the api. */
+                            /** @description User-level token used to manage account resources via the API. */
                             user_token: string;
                             /** @description Initial test API key for the account. */
                             test_api_key: string;
-                            /** @description Internal api user id. */
+                            /** @description Internal API user ID. */
                             user_id: string;
                         };
                     };
